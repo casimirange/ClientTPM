@@ -3,16 +3,49 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DepartementsComponent } from './Pages/departements/departements.component';
+import {DepartementMockService} from './services/departement.mock.service';
+import { MachinesComponent } from './Pages/machines/machines.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { ParamsComponent } from './layout/params/params.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { PageTitleComponent } from './layout/page-title/page-title.component';
+import { Erreur404Component } from './layout/erreur404/erreur404.component';
+import { NewMachineComponent } from './Pages/machines/new-machine/new-machine.component';
+import { SingleMachineComponent } from './Pages/machines/single-machine/single-machine.component';
+import { SingleDepartementComponent } from './Pages/departements/single-departement/single-departement.component';
+import { PannesComponent } from './Pages/arrets/pannes/pannes.component';
+import { SinglePanneComponent } from './Pages/arrets/pannes/single-panne/single-panne.component';
+import { NewPanneComponent } from './Pages/arrets/pannes/new-panne/new-panne.component';
+import { BaseLayoutComponent } from './layout/base-layout/base-layout.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DepartementsComponent,
+    MachinesComponent,
+    SidebarComponent,
+    HeaderComponent,
+    ParamsComponent,
+    FooterComponent,
+    PageTitleComponent,
+    Erreur404Component,
+    NewMachineComponent,
+    SingleMachineComponent,
+    SingleDepartementComponent,
+    PannesComponent,
+    SinglePanneComponent,
+    NewPanneComponent,
+    BaseLayoutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    DepartementMockService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
