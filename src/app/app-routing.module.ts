@@ -5,6 +5,8 @@ import {PannesComponent} from "./Pages/arrets/pannes/pannes.component";
 import {NewPanneComponent} from "./Pages/arrets/pannes/new-panne/new-panne.component";
 import {Erreur404Component} from "./layout/erreur404/erreur404.component";
 import {AppComponent} from "./app.component";
+import {SingleDepartementComponent} from "./Pages/departements/single-departement/single-departement.component";
+import {DepartementResolver} from "./Pages/departements/departement.resolver";
 
 
 const routes: Routes = [
@@ -13,7 +15,8 @@ const routes: Routes = [
   //   component: AppComponent,
   //   children: [
 
-  {path: 'departements', component: DepartementsComponent },
+  {path: 'departements', component: DepartementsComponent, resolve: {departements: DepartementResolver} },
+  {path: 'departements/:id', component: SingleDepartementComponent },
   {path: 'dashboard', component: DepartementsComponent },
   {path: 'pannes', component: PannesComponent },
   {path: 'new-panne', component: NewPanneComponent },
@@ -30,6 +33,7 @@ const routes: Routes = [
       routes,
       {enableTracing: true} //pour avoir le suivi des routes dans la console
   )],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [DepartementResolver]
 })
 export class AppRoutingModule { }

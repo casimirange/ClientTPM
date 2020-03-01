@@ -4,5 +4,5 @@
 
 export class Departement {
 
-    constructor(public section: string, public centreDeCout: string, public identification: string, public responsable: string) {}
+    constructor(public nom: string, public centre_cout: string, public responsable: string, public id: number ) {}
 }

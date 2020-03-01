@@ -3,84 +3,130 @@
 <div class="row">
     <div class="col-lg-5">
         <div class="main-card mb-3 card">
+            <div class="card-header bg-info">
+                <table class="table mb-0 mt-0">
+                    <tr>
+                        <td style="color: #fff;" class="">
+                            {{operation == 'add' ? 'Nouveau Département' :
+                              operation == 'edit' ? 'Modifier Département' :
+                              operation == 'remove' ? 'Supprimer Département' : ''}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <div class="card-body">
-                <h5 class="card-title">Nouveau Département</h5>
-                <form id="signupForm" class="col-md-10 mx-auto" method="post" action="#">
-                    <div class="form-group">
-                        <div class="">
-                            <div class="position-relative">
-                                <label for="dep" class="">Nom Département</label>
-                                <input type="text" class="form-control" id="dep" placeholder="SCIERIE"/>
+                <div *ngIf="operation == 'add' || operation == 'edit'">
+                    <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="depForm">
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="dep" class="">Nom Département</label>
+                                    <input type="text" class="form-control" id="dep" placeholder="SCIERIE" formControlName="nom" [(ngModel)]="selectedDep.nom"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="">
-                            <div class="position-relative">
-                                <label for="cc" class="">Centre de coût</label>
-                                <select id="cc" class="multiselect-dropdown form-control">
-                                    <option value="AK">B435</option>
-                                    <option value="AK">B335</option>
-                                    <option value="AK">B100</option>
-                                    <option value="AK">B330</option>
-                                    <option value="AK">B300</option>
-                                </select>
+                        <!--<div style="color: #f65656" *ngIf="depForm.controls['nom'].invalid && (depForm.controls['nom'].touched) ">-->
+                        <!--<span>*</span> minimum 5 caractères-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<div class="">-->
+                        <!--<div class="position-relative">-->
+                        <!--<label for="cc" class="">Centre de coût</label>-->
+                        <!--<select id="cc" class="multiselect-dropdown form-control" formControlName="centre_cout">-->
+                        <!--&lt;!&ndash;<option value="" disabled>Choix du centre de coût</option>&ndash;&gt;-->
+                        <!--<option *ngFor="let ccs of centres" [ngValue]="ccs" >{{ccs}}</option>-->
+                        <!--</select>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="cc" class="">Centre de cout</label>
+                                    <input type="text" class="form-control" id="cc" placeholder="B520" formControlName="centre_cout" [(ngModel)]="selectedDep.centre_cout"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="">
-                            <div class="position-relative">
-                                <label for="REP" class="">Responsable</label>
-                                <input type="text" class="form-control" id="REP" placeholder="Casimir"/>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="REP" class="">Responsable</label>
+                                    <input type="text" class="form-control" id="REP" placeholder="Casimir" formControlName="responsable" [(ngModel)]="selectedDep.responsable"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <!--<div style="color: #f65656" *ngIf="depForm.controls['responsable'].invalid">-->
+                        <!--<span>*</span> minimum 4 caractères-->
+                        <!--</div>-->
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary" name="signup" value="Sign up">
-                            Enregistrer
-                        </button>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"
+                                    (click)="operation == 'add' ? addDepartement() : updateDepartement() " >
+                                {{operation == 'add' ? 'Enregistrer' :
+                                operation == 'edit' ? 'Modifier ' : ''}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="operation == 'remove'">
+                    <p class="card-title">
+                        Centre de Coût : {{selectedDep.centre_cout}} {{selectedDep.nom}} id: {{selectedDep.id}}
+                    </p>
+                    <p>
+                        Voulez-vous supprimer ce département?
+                    </p>
+                    <button class="btn btn-success" [disabled]="!selectedDep.id" (click)="deleteDepartement()">Confirmer</button>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-lg-7">
         <div class="main-card mb-3 card">
-            <div class="card-body"><h5 class="card-title">Liste des Départements</h5>
+            <div class="card-header bg-info">
+                <table class="table mb-0 ">
+                    <tr>
+                        <td style="color: #fff;">Liste des Départements</td>
+                        <td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initDep();">Ajouter</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
                 <table class="mb-0 table table-hover">
                     <thead>
                     <tr>
                         <th>Section</th>
                         <th>Centre de Coût</th>
                         <th>Responsable</th>
-                        <th>Couleur</th>
+                        <!--<th>Couleur</th>-->
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let departement of departements">
-                        <th scope="row">{{departement.section}}</th>
-                        <td>{{departement.centreDeCout}}</td>
+                    <tr class="widget-content" *ngFor="let departement of departements;">
+                        <th scope="row">{{departement.nom}}</th>
+                        <td>{{departement.centre_cout}}</td>
                         <td>{{departement.responsable}}</td>
-                        <td>
-                            <div class="text-center">
-                                <div class="animated lightSpeedIn">
-                                    <div [ngClass]="{
-                                         'bg-warning': departement.section === 'Contreplaqué',
-                                         'bg-danger': departement.section === 'Scierie',
-                                         'bg-success': departement.section === 'Placage'
-                                     }" [class]="'swatch-holder swatch-holder-lg'" style="background: yellow"></div>
-                                </div>
-                            </div>
-                        </td>
+                        <!--<td>-->
+                            <!--<div class="text-center">-->
+                                <!--<div class="animated lightSpeedIn">-->
+                                    <!--<div [ngClass]="{-->
+                                         <!--'bg-warning': departement.nom === 'Contreplaqué',-->
+                                         <!--'bg-danger': departement.nom === 'Scierie',-->
+                                         <!--'bg-success': departement.nom === 'Placage',-->
+                                         <!--'bg-secondary': departement.nom === 'Mindourou'-->
+                                     <!--}" [class]="'swatch-holder swatch-holder-lg'" style="background: yellow"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</td>-->
                         <td>
                             <div class="widget-content-right widget-content-actions">
-                                <button class="border-0 btn-transition btn btn-outline-primary">
+                                <button class="border-0 btn-transition btn btn-outline-success" (click)="operation = 'edit'; selectedDep = departement; onViewDepartement(departement.centre_cout);">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <button class="border-0 btn-transition btn btn-outline-primary" (click)="operation = 'edit'; selectedDep = departement;">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger">
+                                <button class="border-0 btn-transition btn btn-outline-danger" (click)="operation = 'remove'; selectedDep = departement;">
                                     <i class="fa fa-times"></i>
                                 </button>
                             </div>
