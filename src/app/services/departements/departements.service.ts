@@ -24,8 +24,12 @@ export class DepartementsService {
     return this.http.put(API_URLS.DEPARTEMENT_URL, departement);
   }
 
-  deleteDep(cc: string): Observable<any>{
-    return this.http.delete(API_URLS.DEPARTEMENT_URL + `/${cc}`);
+  deleteDep(id: number): Observable<any>{
+    return this.http.delete(API_URLS.DEPARTEMENT_URL + `/${id}`);
+  }
+
+  showDep(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/${id}`);
   }
 
 }
