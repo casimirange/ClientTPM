@@ -3,5 +3,7 @@
  */
 
 export const API_URLS = {
-    DEPARTEMENT_URL: 'http://localhost:8080/api/departements'
-}
+    DEPARTEMENT_URL: 'http://localhost:8080/api/departements',
+    LIGNE_URL: 'http://localhost:8080/api/lignes',
+    TECHNICIEN_URL: 'http://localhost:8080/api/techniciens'
+};

@@ -1,1 +1,77 @@
-<p>single-departement works!</p>
+<app-page-title [heading]="selectedDep.nom.toUpperCase()" [subheading]="subheading" [icon]="
+            selectedDep.nom == 'Scierie' ? 'fa fa-home icon-gradient bg-danger' :
+            selectedDep.nom == 'Brazil' ? 'fa fa-home icon-gradient bg-warning' :
+            selectedDep.nom == 'Placage' ? 'fa fa-home icon-gradient bg-success' :
+            selectedDep.nom == 'Contreplaqué' ? 'fa fa-home icon-gradient bg-info' : 'fa fa-home icon-gradient bg-success'
+"></app-page-title>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div [ngClass]="
+            selectedDep.nom == 'Scierie' ? 'card-header bg-danger' :
+            selectedDep.nom == 'Brazil' ? 'card-header bg-warning' :
+            selectedDep.nom == 'Placage' ? 'card-header bg-success' :
+            selectedDep.nom == 'Contreplaqué' ? 'card-header bg-info' : 'card-header bg-success'">
+                <table class="table mb-0 ">
+                    <tr>
+                        <td style="color: #fff;">Liste des Lignes</td>
+
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
+                <table class="mb-0 table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID Ligne</th>
+                        <th>Noms Lignes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="widget-content" *ngFor="let sel of selectedDep.lignes" >
+                        <td scope="row" >{{sel.idLigne}}</td>
+                        <td scope="row" >{{sel.nomLigne}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div [ngClass]="
+            selectedDep.nom == 'Scierie' ? 'card-header bg-danger' :
+            selectedDep.nom == 'Brazil' ? 'card-header bg-warning' :
+            selectedDep.nom == 'Placage' ? 'card-header bg-success' :
+            selectedDep.nom == 'Contreplaqué' ? 'card-header bg-info' : 'card-header bg-success'">
+                <table class="table mb-0 ">
+                    <tr>
+                        <td style="color: #fff;">Liste des Machines</td>
+
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
+                <table class="mb-0 table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Code</th>
+                        <th>Centre de coût</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="widget-content" >
+                        <th scope="row">{{selectedDep.nom}}</th>
+                        <td>{{selectedDep.centre_cout}}</td>
+                        <td>{{selectedDep.responsable}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29853,7 +29853,7 @@ legend {
 }
 
 .CM {
-    background: url(assets/fonts/CM.svg) no-repeat
+    background: url(/assets/fonts/CM.svg) no-repeat
 }
 
 .CN {
@@ -29893,7 +29893,7 @@ legend {
 }
 
 .DE {
-    background: url(assets/fonts/DE.svg) no-repeat
+    background: url(/assets/fonts/DE.svg) no-repeat
 }
 
 .DJ {
@@ -29965,7 +29965,7 @@ legend {
 }
 
 .FR {
-    background: url(assets/fonts/FR.svg) no-repeat
+    background: url(/assets/fonts/FR.svg) no-repeat
 }
 
 .GA {
@@ -30125,7 +30125,7 @@ legend {
 }
 
 .IT {
-    background: url(assets/fonts/IT.svg) no-repeat
+    background: url(/assets/fonts/IT.svg) no-repeat
 }
 
 .JE {
@@ -30621,11 +30621,11 @@ legend {
 }
 
 .US-CA {
-    background: url(assets/fonts/US-CA.svg) no-repeat
+    background: url(/assets/fonts/US-CA.svg) no-repeat
 }
 
 .US {
-    background: url(assets/fonts/US.svg) no-repeat
+    background: url(/assets/fonts/US.svg) no-repeat
 }
 
 .UY {

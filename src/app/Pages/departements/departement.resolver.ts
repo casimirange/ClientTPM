@@ -3,7 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import {Resolve} from "@angular/router";
-import {DepartementsService} from "../../services/departements.service";
+import {DepartementsService} from "../../services/departements/departements.service";
 
 @Injectable()
 export class DepartementResolver implements Resolve<any>{

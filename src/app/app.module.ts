@@ -22,7 +22,16 @@ import { SinglePanneComponent } from './Pages/arrets/pannes/single-panne/single-
 import { NewPanneComponent } from './Pages/arrets/pannes/new-panne/new-panne.component';
 import { BaseLayoutComponent } from './layout/base-layout/base-layout.component';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { DepartementsService } from "./services/departements.service";
+import { DepartementsService } from "./services/departements/departements.service";
+import { LignesComponent } from './Pages/lignes/lignes.component';
+import { SingleLigneComponent } from './Pages/lignes/single-ligne/single-ligne.component';
+import { LignesService } from "./services/lignes/lignes.service";
+import { TechniciensComponent } from './Pages/technicien/techniciens.component';
+import { SingleTechnicienComponent } from './Pages/technicien/single-technicien/single-technicien.component';
+import {TechniciensService} from "./services/techniciens/techniciens.service";
+import { SingleOperateurComponent } from './Pages/operateurs/single-operateur/single-operateur.component';
+import { OperateursComponent } from './Pages/operateurs/operateurs.component';
+
 
 @NgModule({
   declarations: [
@@ -42,6 +51,12 @@ import { DepartementsService } from "./services/departements.service";
     SinglePanneComponent,
     NewPanneComponent,
     BaseLayoutComponent,
+    LignesComponent,
+    SingleLigneComponent,
+    TechniciensComponent,
+    SingleTechnicienComponent,
+    SingleOperateurComponent,
+    OperateursComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,8 +67,12 @@ import { DepartementsService } from "./services/departements.service";
   ],
   providers: [
     DepartementMockService,
-    DepartementsService
+    DepartementsService,
+    LignesService,
+    TechniciensService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+  ],
 })
 export class AppModule { }

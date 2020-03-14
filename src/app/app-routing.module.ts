@@ -7,6 +7,12 @@ import {Erreur404Component} from "./layout/erreur404/erreur404.component";
 import {AppComponent} from "./app.component";
 import {SingleDepartementComponent} from "./Pages/departements/single-departement/single-departement.component";
 import {DepartementResolver} from "./Pages/departements/departement.resolver";
+import {LignesComponent} from "./Pages/lignes/lignes.component";
+import {SingleLigneComponent} from "./Pages/lignes/single-ligne/single-ligne.component";
+import {TechniciensComponent} from "./Pages/technicien/techniciens.component";
+import {SingleTechnicienComponent} from "./Pages/technicien/single-technicien/single-technicien.component";
+import {MachinesComponent} from "./Pages/machines/machines.component";
+import {SingleMachineComponent} from "./Pages/machines/single-machine/single-machine.component";
 
 
 const routes: Routes = [
@@ -17,6 +23,12 @@ const routes: Routes = [
 
   {path: 'departements', component: DepartementsComponent, resolve: {departements: DepartementResolver} },
   {path: 'departements/:id', component: SingleDepartementComponent },
+  {path: 'lignes', component: LignesComponent },
+  {path: 'lignes/:id', component: SingleLigneComponent },
+  {path: 'techniciens', component: TechniciensComponent },
+  {path: 'techniciens/:id', component: SingleTechnicienComponent },
+  {path: 'machines', component: MachinesComponent },
+  {path: 'machines/:id', component: SingleMachineComponent },
   {path: 'dashboard', component: DepartementsComponent },
   {path: 'pannes', component: PannesComponent },
   {path: 'new-panne', component: NewPanneComponent },

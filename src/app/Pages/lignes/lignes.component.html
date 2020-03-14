@@ -1,0 +1,159 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row">
+    <div class="col-lg-5">
+        <div class="main-card mb-3 card">
+            <div class="card-header bg-info">
+                <table class="table mb-0 mt-0">
+                    <tr>
+                        <td style="color: #fff;" class="">
+                            {{operation == 'add' ? 'Nouveau Département' :
+                            operation == 'edit' ? 'Modifier Département' :
+                            operation == 'remove' ? 'Supprimer Département' : ''}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
+                <div *ngIf="operation == 'add' || operation == 'edit'">
+                    <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="ligneForm">
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="lig" class="">Nom Ligne</label>
+                                    <input type="text" class="form-control" id="lig" placeholder="Massicottage" formControlName="nomL" [(ngModel)]="selectedLigne.nomLigne"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656" *ngIf="ligneForm.controls['nomL'].invalid && (ligneForm.controls['nomL'].touched) ">
+                        <span>*</span> minimum 5 caractères
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="liste" class="">Département</label>
+                                    <select id="liste"  class="multiselect-dropdown form-control"
+                                            formControlName="depL" >
+                                 <option   *ngFor="let dep of deps" [ngValue]="dep.id"  >{{dep.nom}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" [disabled]="ligneForm.invalid"
+                                        (click)="operation == 'add' ? addLigne() : updateLigne() " >
+                                    {{operation == 'add' ? 'Enregistrer' :
+                                    operation == 'edit' ? 'Modifier ' : ''}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="operation == 'remove'">
+                    <ul class="tabs-animated-shadow tabs-animated nav nav-justified tabs-shadow-bordered p-3">
+                        <li class="nav-item">
+                            <a role="tab" class="nav-link active" data-toggle="tab" href="#tab-messages-header">
+                                <span>Nouvelle Ligne</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-errors-header" role="tabpanel">
+                            <div class="scroll-area-sm">
+                                <div class="scrollbar-container">
+                                    <div class="no-results pt-3 pb-0">
+                                        <div class="swal2-icon swal2-question swal2-animate-error-icon">
+                                            <div class="swal2-success-circular-line-left"
+                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                            <span class="swal2-success-line-tip"></span>
+                                            <span class="swal2-success-line-long"></span>
+                                            <div class="swal2-success-ring"></div>
+                                            <div class="swal2-success-fix"
+                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                            <b style="font-size: 1.5em; font-weight: bold">?</b>
+                                            <div class="swal2-success-circular-line-right"
+                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                        </div>
+                                        <div class="results-subtitle">{{selectedLigne.nomLigne}}</div>
+                                        <div class="results-title">Confirmez-vous la suppression de cette ligne ?</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item-divider nav-item"></li>
+                        <li class="nav-item-btn text-center nav-item">
+                            <button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedLigne.idLigne" (click)="deleteLigne(); operation = 'ok'">Supprimer
+                            </button>
+                            &nbsp;&nbsp;
+                            <button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm">Annuler
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div *ngIf="operation == 'ok'">
+                    <div class="no-results pt-3 pb-0">
+                        <div class="swal2-icon swal2-success swal2-animate-success-icon">
+                            <div class="swal2-success-circular-line-left"
+                                 style="background-color: rgb(255, 255, 255);"></div>
+                            <span class="swal2-success-line-tip"></span>
+                            <span class="swal2-success-line-long"></span>
+                            <div class="swal2-success-ring"></div>
+                            <div class="swal2-success-fix"
+                                 style="background-color: rgb(255, 255, 255);"></div>
+                            <div class="swal2-success-circular-line-right"
+                                 style="background-color: rgb(255, 255, 255);"></div>
+                        </div>
+                        <div class="results-subtitle">Suppression Réussie!</div>
+                        <div class="results-title">Ligne supprimée avec succès!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="main-card mb-3 card">
+            <div class="card-header bg-info">
+                <table class="table mb-0 ">
+                    <tr>
+                        <td style="color: #fff;">Liste des Lignes</td>
+                        <td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initLigne();">Ajouter</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
+                <table class="mb-0 table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>Lignes</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="widget-content" *ngFor="let lign of lignes">
+                        <th scope="row" >{{ lign.departement.nom }}</th>
+                        <td>{{lign.nomLigne}}</td>
+                        <td>
+                            <div class="widget-content-right widget-content-actions">
+                                <a [routerLink]="['/lignes', lign.idLigne]">
+                                    <button class="border-0 btn-transition btn btn-outline-success">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </a>
+                                <button class="border-0 btn-transition btn btn-outline-primary" (click)="operation = 'edit'; selectedLigne = lign;">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button class="border-0 btn-transition btn btn-outline-danger" (click)="operation = 'remove'; selectedLigne = lign;">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29893,7 +29893,7 @@ legend {
 }
 
 .DE {
-    background: url(assets/fonts/DE.svg) no-repeat
+    background: url("assets/fonts/DE.svg") no-repeat
 }
 
 .DJ {

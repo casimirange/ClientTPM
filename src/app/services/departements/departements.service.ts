@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {HttpBackend, HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {API_URLS} from "../configs/api.url.configs";
-import {Departement} from '../Models/departement';
+import {API_URLS} from "../../configs/api.url.configs";
+import {Departement} from '../../Models/departement';
 
 @Injectable({
-  // providedIn: 'root'
+  providedIn: 'root'
 })
 export class DepartementsService {
 

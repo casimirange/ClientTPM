@@ -25,28 +25,30 @@
                                 </div>
                             </div>
                         </div>
-                        <!--<div style="color: #f65656" *ngIf="depForm.controls['nom'].invalid && (depForm.controls['nom'].touched) ">-->
-                        <!--<span>*</span> minimum 5 caractères-->
-                        <!--</div>-->
-                        <!--<div class="form-group">-->
-                        <!--<div class="">-->
-                        <!--<div class="position-relative">-->
-                        <!--<label for="cc" class="">Centre de coût</label>-->
-                        <!--<select id="cc" class="multiselect-dropdown form-control" formControlName="centre_cout">-->
-                        <!--&lt;!&ndash;<option value="" disabled>Choix du centre de coût</option>&ndash;&gt;-->
-                        <!--<option *ngFor="let ccs of centres" [ngValue]="ccs" >{{ccs}}</option>-->
-                        <!--</select>-->
-                        <!--</div>-->
-                        <!--</div>-->
+                        <!--<div style="color: #f65656"-->
+                             <!--*ngIf="depForm.controls['nom'].invalid && (depForm.controls['nom'].touched) ">-->
+                            <!--<span>*</span> minimum 5 caractères-->
                         <!--</div>-->
                         <div class="form-group">
                             <div class="">
                                 <div class="position-relative">
-                                    <label for="cc" class="">Centre de cout</label>
-                                    <input type="text" class="form-control" id="cc" placeholder="B520" formControlName="centre_cout" [(ngModel)]="selectedDep.centre_cout"/>
+                                    <label for="cc" class="">Centre de coût</label>
+                                    <select id="cc" class="multiselect-dropdown form-control"
+                                            formControlName="centre_cout" [(ngModel)]="selectedDep.centre_cout">
+                                        <!--<option value="" disabled>Choix du centre de coût</option>-->
+                                        <option *ngFor="let ccs of centres" [value]="ccs">{{ccs}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
+                        <!--<div class="form-group">-->
+                            <!--<div class="">-->
+                                <!--<div class="position-relative">-->
+                                    <!--<label for="cc" class="">Centre de cout</label>-->
+                                    <!--<input type="text" class="form-control" id="cc" placeholder="B520" formControlName="centre_cout" [(ngModel)]="selectedDep.centre_cout"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class="form-group">
                             <div class="">
                                 <div class="position-relative">
@@ -70,12 +72,18 @@
                 </div>
                 <div *ngIf="operation == 'remove'">
                     <p class="card-title">
-                        Centre de Coût : {{selectedDep.centre_cout}} {{selectedDep.nom}} id: {{selectedDep.id}}
+                        Centre de Coût : {{selectedDep.centre_cout}}
+                    </p>
+                    <p>
+                        Nom: {{selectedDep.nom}}
+                    </p>
+                    <p>
+                        ID: {{selectedDep.idDepartement}}
                     </p>
                     <p>
                         Voulez-vous supprimer ce département?
                     </p>
-                    <button class="btn btn-success" [disabled]="!selectedDep.id" (click)="deleteDepartement()">Confirmer</button>
+                    <button class="btn btn-success" [disabled]="!selectedDep.idDepartement" (click)="deleteDepartement()">Confirmer</button>
                 </div>
             </div>
         </div>
@@ -120,15 +128,18 @@
                         <!--</td>-->
                         <td>
                             <div class="widget-content-right widget-content-actions">
-                                <button class="border-0 btn-transition btn btn-outline-success" (click)="operation = 'edit'; selectedDep = departement; onViewDepartement(departement.centre_cout);">
-                                    <i class="fa fa-eye"></i>
-                                </button>
+                                <a [routerLink]="['/departements', departement.idDepartement]">
+                                    <button class="border-0 btn-transition btn btn-outline-success">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </a>
                                 <button class="border-0 btn-transition btn btn-outline-primary" (click)="operation = 'edit'; selectedDep = departement;">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger" (click)="operation = 'remove'; selectedDep = departement;">
+                                <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target=".bd-example-modal-sm" (click)="operation = 'remove'; selectedDep = departement;">
                                     <i class="fa fa-times"></i>
                                 </button>
+
                             </div>
                         </td>
                     </tr>
@@ -138,3 +149,24 @@
         </div>
     </div>
 </div>
+
+
+    <!--<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+        <!--<div class="modal-dialog modal-sm">-->
+            <!--<div class="modal-content">-->
+                <!--<div class="modal-header">-->
+                    <!--<h5 class="modal-title" id="exampleModalLongTitle">{{selectedDep.nom}}</h5>-->
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                        <!--<span aria-hidden="true">&times;</span>-->
+                    <!--</button>-->
+                <!--</div>-->
+                <!--<div class="modal-body">-->
+                    <!--<p>Voulez-vous vraiment supprimer ce Département?</p>-->
+                <!--</div>-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>-->
+                    <!--<button type="button" class="btn btn-danger">Supprimer</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
