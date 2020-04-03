@@ -42,6 +42,17 @@
                         <div class="form-group">
                             <div class="">
                                 <div class="position-relative">
+                                    <label for="fct" class="">Fonction </label>
+                                    <input type="text" class="form-control" id="fct" placeholder="Soudeur" formControlName="fonction" [(ngModel)]="selectedTech.fonction"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656" *ngIf="techForm.controls['fonction'].invalid && (techForm.controls['fonction'].touched) ">
+                            <span>*</span> minimum 4 caractères
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
                                     <label for="mat" class="">Matricule </label>
                                     <input type="text" class="form-control input-mask-trigger" id="mat" placeholder="Matricule" formControlName="matricule" [(ngModel)]="selectedTech.matricule" />
                                 </div>
@@ -60,76 +71,76 @@
                         </div>
                     </form>
                 </div>
-                <div *ngIf="operation == 'remove'">
-                    <ul class="tabs-animated-shadow tabs-animated nav nav-justified tabs-shadow-bordered p-3">
-                        <li class="nav-item">
-                            <a role="tab" class="nav-link active" data-toggle="tab" href="#tab-messages-header">
-                                <span>Nouveau Technicien</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab-errors-header" role="tabpanel">
-                            <div class="scroll-area-sm">
-                                <div class="scrollbar-container">
-                                    <div class="no-results pt-3 pb-0">
-                                        <div class="swal2-icon swal2-question swal2-animate-error-icon">
-                                            <div class="swal2-success-circular-line-left"
-                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                            <span class="swal2-success-line-tip"></span>
-                                            <span class="swal2-success-line-long"></span>
-                                            <div class="swal2-success-ring"></div>
-                                            <div class="swal2-success-fix"
-                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                            <b style="font-size: 1.5em; font-weight: bold">?</b>
-                                            <div class="swal2-success-circular-line-right"
-                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                        </div>
-                                        <div class="results-subtitle">{{selectedTech.nom}}</div>
-                                        <div class="results-title">Confirmez-vous la suppression de cette ligne ?</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item-divider nav-item"></li>
-                        <li class="nav-item-btn text-center nav-item">
-                            <button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedTech.idTechnicien" (click)="deleteTechnicien(); operation = 'ok'">Supprimer
-                            </button>
-                            &nbsp;&nbsp;
-                            <button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm">Annuler
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-                <div *ngIf="operation == 'ok'">
-                    <div class="no-results pt-3 pb-0">
-                        <div class="swal2-icon swal2-success swal2-animate-success-icon">
-                            <div class="swal2-success-circular-line-left"
-                                 style="background-color: rgb(255, 255, 255);"></div>
-                            <span class="swal2-success-line-tip"></span>
-                            <span class="swal2-success-line-long"></span>
-                            <div class="swal2-success-ring"></div>
-                            <div class="swal2-success-fix"
-                                 style="background-color: rgb(255, 255, 255);"></div>
-                            <div class="swal2-success-circular-line-right"
-                                 style="background-color: rgb(255, 255, 255);"></div>
-                        </div>
-                        <div class="results-subtitle">Suppression Réussie!</div>
-                        <div class="results-title">Technicien supprimé avec succès!</div>
-                    </div>
-                </div>
+                <!--<div *ngIf="operation == 'remove'">-->
+                    <!--<ul class="tabs-animated-shadow tabs-animated nav nav-justified tabs-shadow-bordered p-3">-->
+                        <!--<li class="nav-item">-->
+                            <!--<a role="tab" class="nav-link active" data-toggle="tab" href="#tab-messages-header">-->
+                                <!--<span>Nouveau Technicien</span>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                    <!--<div class="tab-content">-->
+                        <!--<div class="tab-pane active" id="tab-errors-header" role="tabpanel">-->
+                            <!--<div class="scroll-area-sm">-->
+                                <!--<div class="scrollbar-container">-->
+                                    <!--<div class="no-results pt-3 pb-0">-->
+                                        <!--<div class="swal2-icon swal2-question swal2-animate-error-icon">-->
+                                            <!--<div class="swal2-success-circular-line-left"-->
+                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                            <!--<span class="swal2-success-line-tip"></span>-->
+                                            <!--<span class="swal2-success-line-long"></span>-->
+                                            <!--<div class="swal2-success-ring"></div>-->
+                                            <!--<div class="swal2-success-fix"-->
+                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                            <!--<b style="font-size: 1.5em; font-weight: bold">?</b>-->
+                                            <!--<div class="swal2-success-circular-line-right"-->
+                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                        <!--</div>-->
+                                        <!--<div class="results-subtitle">{{selectedTech.nom}}</div>-->
+                                        <!--<div class="results-title">Confirmez-vous la suppression de cette ligne ?</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<ul class="nav flex-column">-->
+                        <!--<li class="nav-item-divider nav-item"></li>-->
+                        <!--<li class="nav-item-btn text-center nav-item">-->
+                            <!--<button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedTech.idTechnicien" (click)="deleteTechnicien(); operation = 'ok'">Supprimer-->
+                            <!--</button>-->
+                            <!--&nbsp;&nbsp;-->
+                            <!--<button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm">Annuler-->
+                            <!--</button>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<div *ngIf="operation == 'ok'">-->
+                    <!--<div class="no-results pt-3 pb-0">-->
+                        <!--<div class="swal2-icon swal2-success swal2-animate-success-icon">-->
+                            <!--<div class="swal2-success-circular-line-left"-->
+                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                            <!--<span class="swal2-success-line-tip"></span>-->
+                            <!--<span class="swal2-success-line-long"></span>-->
+                            <!--<div class="swal2-success-ring"></div>-->
+                            <!--<div class="swal2-success-fix"-->
+                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                            <!--<div class="swal2-success-circular-line-right"-->
+                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                        <!--</div>-->
+                        <!--<div class="results-subtitle">Suppression Réussie!</div>-->
+                        <!--<div class="results-title">Technicien supprimé avec succès!</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
     </div>
     <div class="col-lg-7">
         <div class="main-card mb-3 card">
-            <div class="card-header bg-info">
+            <div class="card-header">
                 <table class="table mb-0 ">
                     <tr>
-                        <td style="color: #fff;">Liste des Techniciens</td>
-                        <td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initLigne();">Ajouter</button></td>
+                        <td>Liste des Techniciens</td>
+                        <td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initTech();">Ajouter</button></td>
                     </tr>
                 </table>
             </div>
@@ -140,6 +151,7 @@
                         <th>Matricule</th>
                         <th>Nom</th>
                         <th>Prénom</th>
+                        <th>Fonction</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -148,9 +160,10 @@
                         <th scope="row" >{{ tech.matricule}}</th>
                         <td>{{tech.nom}}</td>
                         <td>{{tech.prenom}}</td>
+                        <td>{{tech.fonction}}</td>
                         <td>
                             <div class="">
-                                <a [routerLink]="['/techniciens', tech.idTechnicien]">
+                                <a [routerLink]="['/techniciens', tech.matricule]">
                                     <button class="border-0 btn btn-outline-success">
                                         <i class="fa fa-eye"></i>
                                     </button>
@@ -158,9 +171,82 @@
                                 <button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = tech;">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech;">
+                                <button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech;showModal=true" data-toggle="modal" data-target="exampleModal">
                                     <i class="fa fa-times"></i>
                                 </button>
+                                <div class="modal" role="dialog" id="mymodal" [ngClass]="{'show': showModal}">
+                                    <div class="modal-dialog" >
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div *ngIf="operation == 'remove'">
+                                                    <div class="tab-content" style="height: auto;">
+                                                        <div class="tab-pane active" id="tab-errors-header" role="tabpanel">
+                                                            <div class="scroll-area-sm">
+                                                                <div class="scrollbar-container">
+                                                                    <div class="no-results pt-3 pb-0">
+                                                                        <div class="swal2-icon swal2-question swal2-animate-error-icon">
+                                                                            <div class="swal2-success-circular-line-left"
+                                                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                                                            <span class="swal2-success-line-tip"></span>
+                                                                            <span class="swal2-success-line-long"></span>
+                                                                            <div class="swal2-success-ring"></div>
+                                                                            <div class="swal2-success-fix"
+                                                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                                                            <b style="font-size: 1.5em; font-weight: bold">?</b>
+                                                                            <div class="swal2-success-circular-line-right"
+                                                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                                                        </div>
+                                                                        <div class="results-subtitle">{{selectedTech.nom}}</div>
+                                                                        <div class="results-title">Confirmez-vous la suppression de ce Technicien ?</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="nav flex-column">
+                                                        <li class="nav-item-divider nav-item"></li>
+                                                        <li class="nav-item-btn text-center nav-item">
+                                                            <button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedTech.matricule" (click)="deleteTechnicien(); operation = 'ok'">Supprimer
+                                                            </button>
+                                                            &nbsp;&nbsp;
+                                                            <button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm" data-dismiss="modal" (click)="showModal=false; operation = 'add'">Annuler
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div *ngIf="operation == 'ok'">
+                                                    <ul class="nav flex-column">
+                                                        <li class="nav-item-btn text-right nav-item">
+                                                            <button class="close" data-dismiss="modal" (click)="showModal=false; operation = 'add'">&times;
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="no-results pt-3 pb-0">
+                                                        <div class="swal2-icon swal2-success swal2-animate-success-icon">
+                                                            <div class="swal2-success-circular-line-left"
+                                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                                            <span class="swal2-success-line-tip"></span>
+                                                            <span class="swal2-success-line-long"></span>
+                                                            <div class="swal2-success-ring"></div>
+                                                            <div class="swal2-success-fix"
+                                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                                            <div class="swal2-success-circular-line-right"
+                                                                 style="background-color: rgb(255, 255, 255);"></div>
+                                                        </div>
+                                                        <div class="results-subtitle">Suppression Réussie!</div>
+                                                        <div class="results-title">Technicien supprimé avec succès!</div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--<button class="btn btn-primary" type="button" data-toggle="modal" data-target="exampleModal" (click)="showModal=true">&times;</button>-->
                             </div>
                         </td>
                     </tr>
@@ -170,3 +256,6 @@
         </div>
     </div>
 </div>
+
+
+

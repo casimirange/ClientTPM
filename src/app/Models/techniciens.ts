@@ -6,6 +6,7 @@ import {Pannes} from "./pannes";
 export class Technicien {
     nom?: string;
     prenom?: string;
+    fonction?: string;
     idTechnicien?: number;
     matricule?: number;
     // pannes?: Pannes;

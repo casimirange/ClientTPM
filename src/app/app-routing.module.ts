@@ -13,6 +13,8 @@ import {TechniciensComponent} from "./Pages/technicien/techniciens.component";
 import {SingleTechnicienComponent} from "./Pages/technicien/single-technicien/single-technicien.component";
 import {MachinesComponent} from "./Pages/machines/machines.component";
 import {SingleMachineComponent} from "./Pages/machines/single-machine/single-machine.component";
+import {OperateursComponent} from "./Pages/operateurs/operateurs.component";
+import {SingleOperateurComponent} from "./Pages/operateurs/single-operateur/single-operateur.component";
 
 
 const routes: Routes = [
@@ -27,6 +29,8 @@ const routes: Routes = [
   {path: 'lignes/:id', component: SingleLigneComponent },
   {path: 'techniciens', component: TechniciensComponent },
   {path: 'techniciens/:id', component: SingleTechnicienComponent },
+  {path: 'operateurs', component: OperateursComponent },
+  {path: 'operateurs/:id', component: SingleOperateurComponent },
   {path: 'machines', component: MachinesComponent },
   {path: 'machines/:id', component: SingleMachineComponent },
   {path: 'dashboard', component: DepartementsComponent },

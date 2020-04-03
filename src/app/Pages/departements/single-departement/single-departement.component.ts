@@ -24,10 +24,13 @@ export class SingleDepartementComponent implements OnInit {
   deps: Departement;
   selectedDep: Departement;
   lignes: Ligne[];
+  nomMaj:string;
 
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
-               private route: ActivatedRoute) { }
+               private route: ActivatedRoute) {
+    this.selectedDep = new Departement();
+  }
 
   ngOnInit() {
     this.showDepartement();
@@ -39,6 +42,7 @@ export class SingleDepartementComponent implements OnInit {
       this.departementService.showDep(Number.parseInt(params['id'])).subscribe(
           res => {
             this.selectedDep = res;
+            this.nomMaj = this.selectedDep.nom.toUpperCase();
             console.log("liste des lignes1");
             console.log(this.selectedDep);
           }

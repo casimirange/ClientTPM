@@ -24,8 +24,8 @@ export class TechniciensService {
     return this.http.put(API_URLS.TECHNICIEN_URL, technicien);
   }
 
-  deleteTech(id: number): Observable<any>{
-    return this.http.delete(API_URLS.TECHNICIEN_URL + `/${id}`);
+  deleteTech(matricule: number): Observable<any>{
+    return this.http.delete(API_URLS.TECHNICIEN_URL + `/${matricule}`);
   }
 
   showTech(id: number): Observable<any>{

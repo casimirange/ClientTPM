@@ -25,13 +25,13 @@
             ],
             "styles": [
               "src/styles.css",
-              "./node_modules/font-awesome/css/font-awesome.css"
-//              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-//              "../node_modules/ngx-snackbar/bundles/style.css"
+              "./node_modules/bootstrap-select/dist/css/bootstrap-select.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": [
-//              "./node_modules/jquery/dist/jquery.js/jquery.min.js",
-              "./node_modules/popper.js/dist/umd/popper.min.js"
+              "node_modules/popper.js/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },
           "configurations": {
@@ -126,6 +126,12 @@
           }
         }
       }
-    }},
-  "defaultProject": "ClientTPM"
+    }
+  },
+  "defaultProject": "ClientTPM",
+  "schematics": {
+    "@scematics/angular:component": {
+      "styleext": "css"
+    }
+  }
 }

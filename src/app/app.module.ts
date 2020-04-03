@@ -31,6 +31,10 @@ import { SingleTechnicienComponent } from './Pages/technicien/single-technicien/
 import {TechniciensService} from "./services/techniciens/techniciens.service";
 import { SingleOperateurComponent } from './Pages/operateurs/single-operateur/single-operateur.component';
 import { OperateursComponent } from './Pages/operateurs/operateurs.component';
+import {OperateursService} from "./services/operateurs/operateurs.service";
+import {MachinesService} from "./services/machines/machines.service";
+import { AgGridModule } from 'ag-grid-angular';
+import {NgxPaginationModule} from "ngx-pagination";
 
 
 @NgModule({
@@ -64,12 +68,16 @@ import { OperateursComponent } from './Pages/operateurs/operateurs.component';
     LoadingBarRouterModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AgGridModule.withComponents([]),
+    NgxPaginationModule
   ],
   providers: [
     DepartementMockService,
     DepartementsService,
     LignesService,
-    TechniciensService
+    TechniciensService,
+    OperateursService,
+    MachinesService,
   ],
   bootstrap: [
     AppComponent,

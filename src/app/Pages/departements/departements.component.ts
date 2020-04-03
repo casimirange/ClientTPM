@@ -3,7 +3,6 @@ import {Departement} from '../../Models/departement';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DepartementsService} from "../../services/departements/departements.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {SnackbarService} from "ngx-snackbar";
 // import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -30,7 +29,7 @@ export class DepartementsComponent implements OnInit {
 
     closeResult: string;
 
-    constructor(private fb: FormBuilder, private departementService: DepartementsService, private route: ActivatedRoute, private router: Router, private snackbarService: SnackbarService ) {
+    constructor(private fb: FormBuilder, private departementService: DepartementsService, private route: ActivatedRoute, private router: Router, ) {
         this.createForm();
         this.newDep = new Departement();
     }

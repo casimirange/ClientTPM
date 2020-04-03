@@ -30,6 +30,7 @@ export class TechniciensComponent implements OnInit {
     this.techForm = this.fb.group({
       nom: ['', [Validators.required]],
       prenom: ['', [Validators.required]],
+      fonction: ['', [Validators.required]],
       matricule: ['', [Validators.required]]
     });
   }
@@ -37,6 +38,7 @@ export class TechniciensComponent implements OnInit {
   ngOnInit() {
     this.loadTechniciens();
     this.initTech();
+
   }
 
   loadTechniciens() {
@@ -83,7 +85,7 @@ export class TechniciensComponent implements OnInit {
   }
 
   deleteTechnicien() {
-    this.techService.deleteTech(this.selectedTech.idTechnicien).subscribe(
+    this.techService.deleteTech(this.selectedTech.matricule).subscribe(
         res => {
           this.selectedTech = new Technicien();
           this.loadTechniciens();

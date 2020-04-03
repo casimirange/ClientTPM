@@ -1,0 +1,15 @@
+.modal.show
+{
+    display: block;
+    vertical-align: middle;
+    margin-top: 10%;
+    box-shadow: #0a66b7;
+}
+
+.modal{
+    box-shadow: none;
+}
+
+
+
+
