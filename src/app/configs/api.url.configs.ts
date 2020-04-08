@@ -4,9 +4,11 @@
 
 export const API_URLS = {
     DEPARTEMENT_URL: 'http://localhost:8080/api/departements',
-    LIGNE_URL: 'http://localhost:8080/api/lignes',
+    LIGNE_URL: 'http://localhost:8080/api/lignes/all',
     TECHNICIEN_URL: 'http://localhost:8080/api/techniciens',
     OPERATEUR_URL: 'http://localhost:8080/api/operateurs',
     MACHINE_URL: 'http://localhost:8080/api/machines',
     PANNES_URL: 'http://localhost:8080/api/pannes',
+
+    USER_URL: 'http://localhost:8080/api/user',
 };

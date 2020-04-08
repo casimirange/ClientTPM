@@ -15,15 +15,18 @@ import {MachinesComponent} from "./Pages/machines/machines.component";
 import {SingleMachineComponent} from "./Pages/machines/single-machine/single-machine.component";
 import {OperateursComponent} from "./Pages/operateurs/operateurs.component";
 import {SingleOperateurComponent} from "./Pages/operateurs/single-operateur/single-operateur.component";
+import {BaseLayoutComponent} from "./layout/base-layout/base-layout.component";
+import {LoginComponent} from "./Pages/auth/login/login.component";
+import {AuthLayoutComponent} from "./layout/auth-layout/auth-layout.component";
 
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: AppComponent,
-  //   children: [
+  {
+    path: '',
+    component: BaseLayoutComponent,
+    children: [
 
-  {path: 'departements', component: DepartementsComponent, resolve: {departements: DepartementResolver} },
+  {path: 'departements', component: DepartementsComponent },
   {path: 'departements/:id', component: SingleDepartementComponent },
   {path: 'lignes', component: LignesComponent },
   {path: 'lignes/:id', component: SingleLigneComponent },
@@ -38,8 +41,17 @@ const routes: Routes = [
   {path: 'new-panne', component: NewPanneComponent },
   {path: 'erreur', component: Erreur404Component },
 
-  //   ]
-  // },
+    ]
+  },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+
+  {path: 'login', component: LoginComponent },
+
+    ]
+  },
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   {path: '**', redirectTo: 'erreur'},
 ];
@@ -47,9 +59,12 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(
       routes,
-      {enableTracing: true} //pour avoir le suivi des routes dans la console
+      {
+        enableTracing: false,
+        scrollPositionRestoration: 'enabled',
+        anchorScrolling: 'enabled',
+      } //pour avoir le suivi des routes dans la console
   )],
-  exports: [RouterModule],
-  providers: [DepartementResolver]
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

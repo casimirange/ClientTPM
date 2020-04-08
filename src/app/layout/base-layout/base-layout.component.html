@@ -1,1 +1,15 @@
-<p>base-layout works!</p>
+<div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
+    <app-header></app-header>
+    <div class="app-main">
+        <app-sidebar></app-sidebar>
+        <div class="app-main__outer">
+            <div class="app-main__inner">
+                <router-outlet></router-outlet>
+            </div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>
+<app-params></app-params>
+
+<ngx-loading-bar></ngx-loading-bar>

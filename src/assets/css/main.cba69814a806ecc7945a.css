@@ -20833,13 +20833,13 @@ legend {
 .app-logo {
     height: 23px;
     width: 97px;
-    background: url(assets/images/logo-inverse.png)
+    background: url(/assets/images/logo-inverse.png)
 }
 
 .app-logo-inverse {
     height: 23px;
     width: 97px;
-    background: url(assets/images/logo.png)
+    background: url(/assets/images/logo.png)
 }
 
 .app-login-box .app-logo {

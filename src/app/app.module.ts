@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,6 +36,9 @@ import {OperateursService} from "./services/operateurs/operateurs.service";
 import {MachinesService} from "./services/machines/machines.service";
 import { AgGridModule } from 'ag-grid-angular';
 import {NgxPaginationModule} from "ngx-pagination";
+import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
+import { LoginComponent } from './Pages/auth/login/login.component';
+import {XhrInterceptor} from "./xhr.interceptor";
 
 
 @NgModule({
@@ -61,6 +65,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     SingleTechnicienComponent,
     SingleOperateurComponent,
     OperateursComponent,
+    AuthLayoutComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +75,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     ReactiveFormsModule,
     HttpClientModule,
     AgGridModule.withComponents([]),
-    NgxPaginationModule
+    NgxPaginationModule,
+
   ],
   providers: [
     DepartementMockService,
@@ -78,6 +85,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     TechniciensService,
     OperateursService,
     MachinesService,
+    {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
+    CookieService
   ],
   bootstrap: [
     AppComponent,
