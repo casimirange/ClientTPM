@@ -8,18 +8,43 @@ import {Operateur} from "./operateurs";
 
 export class Pannes {
     cause?: string;
-    details?: string;
+    détails?: string;
     description?: string;
     date?: Date;
     idMachine?: number;
-    heure_arret?: DateTimeFormat;
-    debut_inter?: DateTimeFormat;
-    fin_inter?: DateTimeFormat;
-    machine?: Machine;
-    technicien?: Technicien;
-    operateur?: Operateur;
+    heureArret?: Date;
+    debutInter?: Date;
+    finInter?: Date;
+    // machine?: Machine;
+    // technicien?: Technicien;
+    // operateur?: Operateur;
     numero?: number;
     etat?: boolean;
+
+
+
+    machine?: string;
+    code?: string;
+
+    // private Date date;
+    // private int numero;
+    // private String cause;
+    // private String description;
+    // private String détails;
+    // private Date heureArret;
+    // private Date debutInter;
+    // private Date finInter;
+    // private boolean etat;
+
+    nomOP?: string;
+    prenomOP?: string;
+    matOp?: number;
+
+    nomTec?: string;
+    preTec?: string;
+    matricule?: number;
+    fonction?: string;
+
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}
 }

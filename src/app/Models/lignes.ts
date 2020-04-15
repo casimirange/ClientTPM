@@ -7,7 +7,7 @@ export class Ligne {
     nomLigne?: string;
     idDepartement?: number;
     idLigne?: number;
-    departement?: Departement;
+    nom?: string;
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}
 }

@@ -1,0 +1,474 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+<div>
+<!--<div class="row">-->
+    <!--<div class="col-lg-5">-->
+        <!--<div class="main-card mb-3 card">-->
+            <!--<div class="card-header bg-info">-->
+                <!--<table class="table mb-0 mt-0">-->
+                    <!--<tr>-->
+                        <!--<td style="color: #fff;" class="">-->
+                            <!--{{operation == 'add' ? 'Nouveau Technicien' :-->
+                            <!--operation == 'edit' ? 'Modifier Technicien' :-->
+                            <!--operation == 'remove' ? 'Supprimer Technicien' : ''}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+            <!--</div>-->
+            <!--<div class="card-body">-->
+                <!--<div *ngIf="operation == 'add' || operation == 'edit'">-->
+                    <!--<form id="signupForm" class="col-md-10 mx-auto" [formGroup]="techForm">-->
+                        <!--<div class="form-group">-->
+                            <!--<div class="">-->
+                                <!--<div class="position-relative">-->
+                                    <!--<label for="lig" class="">Nom </label>-->
+                                    <!--<input type="text" class="form-control" id="lig" placeholder="Nom" formControlName="nom" [(ngModel)]="selectedTech.nom"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="color: #f65656" *ngIf="techForm.controls['nom'].invalid && (techForm.controls['nom'].touched) ">-->
+                            <!--<span>*</span> minimum 4 caractères-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<div class="">-->
+                                <!--<div class="position-relative">-->
+                                    <!--<label for="pre" class="">Prénom </label>-->
+                                    <!--<input type="text" class="form-control" id="pre" placeholder="Prénom" formControlName="prenom" [(ngModel)]="selectedTech.prenom"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="color: #f65656" *ngIf="techForm.controls['prenom'].invalid && (techForm.controls['prenom'].touched) ">-->
+                            <!--<span>*</span> minimum 4 caractères-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<div class="">-->
+                                <!--<div class="position-relative">-->
+                                    <!--<label for="fct" class="">Fonction </label>-->
+                                    <!--<input type="text" class="form-control" id="fct" placeholder="Soudeur" formControlName="fonction" [(ngModel)]="selectedTech.fonction"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="color: #f65656" *ngIf="techForm.controls['fonction'].invalid && (techForm.controls['fonction'].touched) ">-->
+                            <!--<span>*</span> minimum 4 caractères-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<div class="">-->
+                                <!--<div class="position-relative">-->
+                                    <!--<label for="mat" class="">Matricule </label>-->
+                                    <!--<input type="text" class="form-control input-mask-trigger" id="mat" placeholder="Matricule" formControlName="matricule" [(ngModel)]="selectedTech.matricule" />-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="color: #f65656" *ngIf="techForm.controls['matricule'].invalid && (techForm.controls['matricule'].touched) ">-->
+                            <!--<span>*</span> minimum 4 caractères-->
+                        <!--</div>-->
+
+                        <!--<div class="form-group">-->
+                            <!--<button type="submit" class="btn btn-primary" [disabled]="techForm.invalid || techForm.pristine"-->
+                                    <!--(click)="operation == 'add' ? addTechnicien() : updateTechnicien() " >-->
+                                <!--{{operation == 'add' ? 'Enregistrer' :-->
+                                <!--operation == 'edit' ? 'Modifier ' : ''}}-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<div *ngIf="operation == 'remove'">&ndash;&gt;-->
+                <!--&lt;!&ndash;<ul class="tabs-animated-shadow tabs-animated nav nav-justified tabs-shadow-bordered p-3">&ndash;&gt;-->
+                <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+                <!--&lt;!&ndash;<a role="tab" class="nav-link active" data-toggle="tab" href="#tab-messages-header">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>Nouveau Technicien</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="tab-content">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="tab-pane active" id="tab-errors-header" role="tabpanel">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="scroll-area-sm">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="scrollbar-container">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="no-results pt-3 pb-0">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-icon swal2-question swal2-animate-error-icon">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-circular-line-left"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="background-color: rgb(255, 255, 255);"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<span class="swal2-success-line-tip"></span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<span class="swal2-success-line-long"></span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-ring"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-fix"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="background-color: rgb(255, 255, 255);"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<b style="font-size: 1.5em; font-weight: bold">?</b>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-circular-line-right"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="background-color: rgb(255, 255, 255);"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="results-subtitle">{{selectedTech.nom}}</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="results-title">Confirmez-vous la suppression de cette ligne ?</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<ul class="nav flex-column">&ndash;&gt;-->
+                <!--&lt;!&ndash;<li class="nav-item-divider nav-item"></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li class="nav-item-btn text-center nav-item">&ndash;&gt;-->
+                <!--&lt;!&ndash;<button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedTech.idTechnicien" (click)="deleteTechnicien(); operation = 'ok'">Supprimer&ndash;&gt;-->
+                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                <!--&lt;!&ndash;&nbsp;&nbsp;&ndash;&gt;-->
+                <!--&lt;!&ndash;<button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm">Annuler&ndash;&gt;-->
+                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div *ngIf="operation == 'ok'">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="no-results pt-3 pb-0">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-icon swal2-success swal2-animate-success-icon">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-circular-line-left"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="background-color: rgb(255, 255, 255);"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<span class="swal2-success-line-tip"></span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<span class="swal2-success-line-long"></span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-ring"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-fix"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="background-color: rgb(255, 255, 255);"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="swal2-success-circular-line-right"&ndash;&gt;-->
+                <!--&lt;!&ndash;style="background-color: rgb(255, 255, 255);"></div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="results-subtitle">Suppression Réussie!</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="results-title">Technicien supprimé avec succès!</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-lg-7">-->
+        <!--<div class="main-card mb-3 card">-->
+            <!--<div class="card-header">-->
+                <!--<table class="table mb-0 ">-->
+                    <!--<tr>-->
+                        <!--<td>Liste des Techniciens</td>-->
+                        <!--<td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initTech();">Ajouter</button></td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+            <!--</div>-->
+            <!--<div class="card-body">-->
+                <!--<table class="mb-0 table table-hover">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Matricule</th>-->
+                        <!--<th>Nom</th>-->
+                        <!--<th>Prénom</th>-->
+                        <!--<th>Fonction</th>-->
+                        <!--<th>Actions</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr class="widget-content" *ngFor="let tech of techniciens">-->
+                        <!--<th scope="row" >{{ tech.matricule}}</th>-->
+                        <!--<td>{{tech.nom}}</td>-->
+                        <!--<td>{{tech.prenom}}</td>-->
+                        <!--<td>{{tech.fonction}}</td>-->
+                        <!--<td>-->
+                            <!--<div class="">-->
+                                <!--<a [routerLink]="['/techniciens', tech.matricule]">-->
+                                    <!--<button class="border-0 btn btn-outline-success">-->
+                                        <!--<i class="fa fa-eye"></i>-->
+                                    <!--</button>-->
+                                <!--</a>-->
+                                <!--<button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = tech;">-->
+                                    <!--<i class="fa fa-pencil"></i>-->
+                                <!--</button>-->
+                                <!--<button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech;showModal=true" data-toggle="modal" data-target="exampleModal">-->
+                                    <!--<i class="fa fa-times"></i>-->
+                                <!--</button>-->
+                                <!--<div class="modal" role="dialog" id="mymodal" [ngClass]="{'show': showModal}">-->
+                                    <!--<div class="modal-dialog" >-->
+                                        <!--<div class="modal-content">-->
+                                            <!--<div class="modal-body">-->
+                                                <!--<div *ngIf="operation == 'remove'">-->
+                                                    <!--<div class="tab-content" style="height: auto;">-->
+                                                        <!--<div class="tab-pane active" id="tab-errors-header" role="tabpanel">-->
+                                                            <!--<div class="scroll-area-sm">-->
+                                                                <!--<div class="scrollbar-container">-->
+                                                                    <!--<div class="no-results pt-3 pb-0">-->
+                                                                        <!--<div class="swal2-icon swal2-question swal2-animate-error-icon">-->
+                                                                            <!--<div class="swal2-success-circular-line-left"-->
+                                                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                                                            <!--<span class="swal2-success-line-tip"></span>-->
+                                                                            <!--<span class="swal2-success-line-long"></span>-->
+                                                                            <!--<div class="swal2-success-ring"></div>-->
+                                                                            <!--<div class="swal2-success-fix"-->
+                                                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                                                            <!--<b style="font-size: 1.5em; font-weight: bold">?</b>-->
+                                                                            <!--<div class="swal2-success-circular-line-right"-->
+                                                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                                                        <!--</div>-->
+                                                                        <!--<div class="results-subtitle">{{selectedTech.nom}}</div>-->
+                                                                        <!--<div class="results-title">Confirmez-vous la suppression de ce Technicien ?</div>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                    <!--<ul class="nav flex-column">-->
+                                                        <!--<li class="nav-item-divider nav-item"></li>-->
+                                                        <!--<li class="nav-item-btn text-center nav-item">-->
+                                                            <!--<button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedTech.matricule" (click)="deleteTechnicien(); operation = 'ok'">Supprimer-->
+                                                            <!--</button>-->
+                                                            <!--&nbsp;&nbsp;-->
+                                                            <!--<button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm" data-dismiss="modal" (click)="showModal=false; operation = 'add'">Annuler-->
+                                                            <!--</button>-->
+                                                        <!--</li>-->
+                                                    <!--</ul>-->
+                                                <!--</div>-->
+
+                                                <!--<div *ngIf="operation == 'ok'">-->
+                                                    <!--<ul class="nav flex-column">-->
+                                                        <!--<li class="nav-item-btn text-right nav-item">-->
+                                                            <!--<button class="close" data-dismiss="modal" (click)="showModal=false; operation = 'add'">&times;-->
+                                                            <!--</button>-->
+                                                        <!--</li>-->
+                                                    <!--</ul>-->
+                                                    <!--<div class="no-results pt-3 pb-0">-->
+                                                        <!--<div class="swal2-icon swal2-success swal2-animate-success-icon">-->
+                                                            <!--<div class="swal2-success-circular-line-left"-->
+                                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                                            <!--<span class="swal2-success-line-tip"></span>-->
+                                                            <!--<span class="swal2-success-line-long"></span>-->
+                                                            <!--<div class="swal2-success-ring"></div>-->
+                                                            <!--<div class="swal2-success-fix"-->
+                                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                                            <!--<div class="swal2-success-circular-line-right"-->
+                                                                 <!--style="background-color: rgb(255, 255, 255);"></div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="results-subtitle">Suppression Réussie!</div>-->
+                                                        <!--<div class="results-title">Technicien supprimé avec succès!</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+
+
+                                            <!--</div>-->
+
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                                <!--&lt;!&ndash;<button class="btn btn-primary" type="button" data-toggle="modal" data-target="exampleModal" (click)="showModal=true">&times;</button>&ndash;&gt;-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="main-card mb-3 card ">
+            <div class="card-header">Utilisateurs
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-focus" [swal]="deleteSwals">Ajouter Utilisateur</button>
+                    </div>
+                </div>
+            </div>
+
+            <swal #deleteSwals
+                    title="Nouvel Utilisateur"
+                    text= "soumettre"
+                  type="info"
+                  [showCancelButton]="true"
+
+                  [swalOptions]="{
+                    confirmButtonText: 'Supprimer',
+                    cancelButtonText: 'Annuler',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33'
+                    }">
+
+
+            </swal>
+
+            <div class="table-responsive">
+                <table class="align-middle mb-0 table table-sm table-borderless table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Matricule</th>
+                        <th>Utilisateur</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Password</th>
+                        <th class="text-center">Authorisation</th>
+                        <th class="text-center">Statu</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let user of users | paginate:{itemsPerPage: 4, currentPage:p}">
+                        <td class="text-center text-muted">{{user.matricule}}</td>
+                        <td>
+                            <div class="widget-content p-0">
+                                <div class="widget-content-wrapper">
+                                    <div class="widget-content-left mr-3">
+                                        <div class="widget-content-left">
+                                            <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="widget-content-left flex2">
+                                        <div class="widget-heading">{{user.prenom}} {{user.nom}}</div>
+                                        <div class="widget-subheading opacity-7">{{user.fonction}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">{{user.username}}</td>
+                        <td class="text-center">{{user.password}}</td>
+                        <td class="text-center" >
+                            <div *ngFor=" let role of user.role">{{role.nom}}</div>
+                        </td>
+                        <td class="text-center" style="width: 150px;">
+                            <div [ngClass]="
+            user.enable == true ? 'badge badge-success' : 'badge badge-focus'">{{user.enable}}</div>
+                        </td>
+                        <td class="text-center">
+                            <div role="group" class="btn-group-sm btn-group">
+                                <button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>
+                                <button class="btn  btn-danger" (click)="swl()"><i class="fa fa-times"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <!--<div class="float-left">-->
+                    <!--<button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger btn-sm">Delete</button>-->
+                <!--</div>-->
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                            <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
+                            <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-5">
+        <div class="main-card mb-3 card">
+            <div class="card-header bg-info">
+                <table class="table mb-0 mt-0">
+                    <tr>
+                        <td style="color: #fff;" class="">
+                            {{operation == 'add' ? 'Nouveau Technicien' :
+                            operation == 'edit' ? 'Modifier Technicien' :
+                            operation == 'remove' ? 'Supprimer Technicien' : ''}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
+                <div *ngIf="operation == 'add' || operation == 'edit'">
+                    <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="userForm">
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="lig" class="">Nom </label>
+                                    <input type="text" class="form-control" id="lig" placeholder="Nom"
+                                           formControlName="nom" [(ngModel)]="selectedUser.nom"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656"
+                             *ngIf="userForm.controls['nom'].invalid && (userForm.controls['nom'].touched) ">
+                            <span>*</span> minimum 3 caractères
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="pre" class="">Prénom </label>
+                                    <input type="text" class="form-control" id="pre" placeholder="Prénom"
+                                           formControlName="prenom" [(ngModel)]="selectedUser.prenom"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656"
+                             *ngIf="userForm.controls['prenom'].invalid && (userForm.controls['prenom'].touched) ">
+                            <span>*</span> minimum 4 caractères
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="fct" class="">Fonction </label>
+                                    <input type="text" class="form-control" id="fct" placeholder="Soudeur"
+                                           formControlName="fonction" [(ngModel)]="selectedUser.fonction"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656"
+                             *ngIf="userForm.controls['fonction'].invalid && (userForm.controls['fonction'].touched) ">
+                            <span>*</span> minimum 4 caractères
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="email" class="">Email </label>
+                                    <input type="email" class="form-control input-mask-trigger" id="email"
+                                           placeholder="example@alpiwood.com" formControlName="username"
+                                           [(ngModel)]="selectedUser.username"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656"
+                             *ngIf="userForm.controls['username'].invalid && (userForm.controls['username'].touched) ">
+                            <span>*</span> ce n'est pas une email valide
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="mat" class="">Matricule </label>
+                                    <input type="text" class="form-control input-mask-trigger" id="mat"
+                                           placeholder="Matricule" formControlName="matricule"
+                                           [(ngModel)]="selectedUser.matricule"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656"
+                             *ngIf="userForm.controls['matricule'].invalid && (userForm.controls['matricule'].touched) ">
+                            <span>*</span> minimum 4 caractères
+                        </div>
+
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="role" class="">role </label>
+                                    <select id="role"  class="multiselect-dropdown form-control form-control-sm"
+                                            formControlName="role" >
+                                        <option   *ngFor="let rol of roles" [ngValue]="rol.roleId"  >{{rol.nom}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656"
+                             *ngIf="userForm.controls['role'].invalid && (userForm.controls['role'].touched) ">
+                            <span>*</span> minimum 4 caractères
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"
+                                    [disabled]="userForm.invalid || userForm.pristine"
+                                    (click)="operation == 'add' ? addUser() : updateUser() ">
+                                {{operation == 'add' ? 'Enregistrer' :
+                                operation == 'edit' ? 'Modifier ' : ''}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,23 +1,23 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 <div class="row">
-    <div class="col-lg-12">
-        <div class="main-card mb-3 card">
-            <div class="card-body">
-                <button class="btn btn-primary" (click)="getSelectionRow()">Selectionner</button>
-                <ag-grid-angular
-                        #agGrid
-                        style="width: auto; height: 300px"
-                        class="ag-theme-balham"
-                        [rowData]="pannes.reverse() "
+    <!--<div class="col-lg-12">-->
+        <!--<div class="main-card mb-3 card">-->
+            <!--<div class="card-body">-->
+                <!--<button class="btn btn-primary" (click)="getSelectionRow()">Selectionner</button>-->
+                <!--<ag-grid-angular-->
+                        <!--#agGrid-->
+                        <!--style="width: auto; height: 300px"-->
+                        <!--class="ag-theme-balham"-->
+                        <!--[rowData]="pannes.reverse() "-->
 
-                        [columnDefs]="columnDefs"
-                        rowSelection="multiple"
-                >
-                </ag-grid-angular>
-            </div>
-        </div>
-    </div>
+                        <!--[columnDefs]="columnDefs"-->
+
+                <!--&gt;-->
+                <!--</ag-grid-angular>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
 
 <div class="row">
@@ -31,16 +31,57 @@
                         <th>Date</th>
                         <th>Machine</th>
                         <th>Cause</th>
-                        <th>Détails</th>
-                        <th>label</th>
+                        <th>Arrêt</th>
+                        <th>D Inter</th>
+                        <th>F Inter</th>
+                        <th>WT</th>
+                        <th>TTR</th>
+                        <th>DT</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let pan of pannes">
-                        <th scope="row" >{{ pan.date }}</th>
-                        <td>{{pan.etat}}</td>
+                    <tr class="widget-content" *ngFor="let pan of pannes | paginate:{itemsPerPage: 10, currentPage:p}">
+                        <th scope="row" >{{ pan.date  | date: 'dd/MM/y'}}</th>
+                        <td><a [routerLink]="['/departements', pan.code]">{{pan.machine}}</a></td>
                         <td>{{pan.cause}}</td>
-                        <td>{{pan.description}}</td>
+                        <td>{{pan.heureArret | date: 'HH:mm'}}</td>
+                        <td>{{pan.debutInter | date: 'HH:mm'}}</td>
+                        <td>{{pan.finInter | date: 'HH:mm'}}</td>
+                        <td [ngClass]="
+            30 < ((pan.debutInter | date: 'mm') - (pan.heureArret | date: 'mm')) > 20  ? 'wtw' :
+            ((pan.debutInter | date: 'mm') - (pan.heureArret | date: 'mm')) >= 30  ? 'wtd' :
+            ''
+            ">{{(pan.debutInter | date: 'mm') - (pan.heureArret | date: 'mm') }}</td>
+                        <td>
+                            {{
+                                (
+                                    ( pan.finInter | date: 'd' ) - ( pan.debutInter | date: 'd' )
+                                )*60*24
+                                +
+                                (
+                                    ( pan.finInter | date: 'HH' ) - ( pan.debutInter | date: 'HH' )
+                                )*60
+                                +
+                                (
+                                    ( pan.finInter | date: 'mm') - ( pan.debutInter | date: 'mm')
+                                )
+                            }}
+                        </td>
+                        <td>
+                            {{
+                                (
+                                    ( pan.finInter | date: 'd' ) - ( pan.heureArret | date: 'd' )
+                                )*60*24
+                                +
+                                (
+                                    ( pan.finInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
+                                )*60
+                                +
+                                (
+                                    ( pan.finInter | date: 'mm') - ( pan.heureArret | date: 'mm')
+                                )
+                            }}
+                        </td>
                         <td>
                             <div class="widget-content-right widget-content-actions">
                                 <a [routerLink]="['/pannes', pan.numero]">
@@ -59,6 +100,26 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                <button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger btn-sm">Delete</button>
+                </div>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                    <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
+                    <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
+                </div>
             </div>
         </div>
     </div>

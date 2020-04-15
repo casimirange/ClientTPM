@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DepartementsComponent } from './Pages/departements/departements.component';
@@ -39,6 +40,14 @@ import {NgxPaginationModule} from "ngx-pagination";
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { LoginComponent } from './Pages/auth/login/login.component';
 import {XhrInterceptor} from "./xhr.interceptor";
+import { UserComponent } from './Pages/user/user.component';
+import {StoreModule} from "@ngrx/store";
+import {principalReducer} from "./Models/principal.reducer";
+import {AuthService} from "./services/auth/auth.service";
+import {UserService} from "./services/user/user.service";
+import {DepartementResolver} from "./Pages/departements/departement.resolver";
+import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
+import {RoleService} from "./services/role/role.service";
 
 
 @NgModule({
@@ -67,6 +76,7 @@ import {XhrInterceptor} from "./xhr.interceptor";
     OperateursComponent,
     AuthLayoutComponent,
     LoginComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,17 +86,22 @@ import {XhrInterceptor} from "./xhr.interceptor";
     HttpClientModule,
     AgGridModule.withComponents([]),
     NgxPaginationModule,
-
+    StoreModule.forRoot({principal: principalReducer}),
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     DepartementMockService,
     DepartementsService,
+    DepartementResolver,
     LignesService,
     TechniciensService,
     OperateursService,
     MachinesService,
     {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
-    CookieService
+    CookieService,
+    AuthService,
+    UserService,
+    RoleService,
   ],
   bootstrap: [
     AppComponent,

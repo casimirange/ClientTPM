@@ -32,18 +32,18 @@
                             <div class="">
                                 <div class="position-relative">
                                     <label for="liste" class="">Département</label>
-                                    <!--<select id="liste"  class="multiselect-dropdown form-control form-control-sm"-->
-                                            <!--formControlName="depL" >-->
-                                 <!--<option   *ngFor="let dep of deps" [ngValue]="dep.id"  >{{dep.nom}}</option>-->
-                                    <!--</select>-->
-
-                                    <select name="" id="" class="selectpicker form-control" data-live-search="true">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">23</option>
-                                        <option value="">235</option>
-                                        <option value="">2358</option>
+                                    <select id="liste"  class="multiselect-dropdown form-control form-control-sm"
+                                            formControlName="depL" >
+                                 <option   *ngFor="let dep of deps" [ngValue]="dep.id"  >{{dep.nom}}</option>
                                     </select>
+
+                                    <!--<select name="" id="" class="selectpicker form-control" data-live-search="true">-->
+                                        <!--<option value="">1</option>-->
+                                        <!--<option value="">2</option>-->
+                                        <!--<option value="">23</option>-->
+                                        <!--<option value="">235</option>-->
+                                        <!--<option value="">2358</option>-->
+                                    <!--</select>-->
                                 </div>
                             </div>
                         </div>
@@ -134,14 +134,14 @@
                 <table class="mb-0 table table-hover table-sm">
                     <thead>
                     <tr>
-                        <th>Identifiant</th>
+                        <th>Départements</th>
                         <th>Lignes</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let lign of lignes | paginate:{itemsPerPage: 20, currentPage:p}">
-                        <td scope="row" >{{ lign.departement.nom }}</td>
+                    <tr class="widget-content" *ngFor="let lign of lignes | paginate:{itemsPerPage: 7, currentPage:p}">
+                        <td scope="row" >{{ lign.nom }}</td>
                         <td>{{lign.nomLigne}}</td>
                         <td>
                             <div class="widget-content-right widget-content-actions">

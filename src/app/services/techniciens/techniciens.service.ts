@@ -15,6 +15,13 @@ export class TechniciensService {
   getTechniciens(): Observable<any>{
     return this.http.get(API_URLS.TECHNICIEN_URL);
   }
+  getActiveTechniciens(): Observable<any>{
+    return this.http.get(API_URLS.TECHNICIEN_URL+ `/active`);
+  }
+
+  getDesactiveTechniciens(): Observable<any>{
+    return this.http.get(API_URLS.TECHNICIEN_URL+ `/desactive`);
+  }
 
   addTech(technicien: Technicien ): Observable<any>{
     return this.http.post(API_URLS.TECHNICIEN_URL, technicien);
@@ -24,12 +31,16 @@ export class TechniciensService {
     return this.http.put(API_URLS.TECHNICIEN_URL, technicien);
   }
 
-  deleteTech(matricule: number): Observable<any>{
-    return this.http.delete(API_URLS.TECHNICIEN_URL + `/${matricule}`);
+  deleteTech(id: number): Observable<any>{
+    return this.http.delete(API_URLS.TECHNICIEN_URL + `/${id}`);
   }
 
   showTech(id: number): Observable<any>{
     return this.http.get(API_URLS.TECHNICIEN_URL + `/${id}`);
+  }
+
+  activeTech(matricule: number): Observable<any>{
+    return this.http.put(API_URLS.TECHNICIEN_URL + `/${matricule}`);
   }
 
 }

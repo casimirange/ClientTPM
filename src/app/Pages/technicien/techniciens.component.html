@@ -152,18 +152,20 @@
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Fonction</th>
+                        <th>Etat</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let tech of techniciens">
+                    <tr class="widget-content" *ngFor="let tech of techniciens | paginate:{itemsPerPage: 10, currentPage:p}">
                         <th scope="row" >{{ tech.matricule}}</th>
                         <td>{{tech.nom}}</td>
                         <td>{{tech.prenom}}</td>
                         <td>{{tech.fonction}}</td>
+                        <td>{{tech.etat}}</td>
                         <td>
                             <div class="">
-                                <a [routerLink]="['/techniciens', tech.matricule]">
+                                <a [routerLink]="['/techniciens', tech.idTechnicien]">
                                     <button class="border-0 btn btn-outline-success">
                                         <i class="fa fa-eye"></i>
                                     </button>
@@ -171,9 +173,35 @@
                                 <button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = tech;">
                                     <i class="fa fa-pencil"></i>
                                 </button>
-                                <button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech;showModal=true" data-toggle="modal" data-target="exampleModal">
+                                <!--<button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech; showModal=true" data-toggle="modal" data-target="exampleModal">-->
+                                    <!--<i class="fa fa-pencil"></i>-->
+                                <!--</button>-->
+                                <!--<input type="checkbox" checked data-toggle="toggle" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger" data-size="mini" >-->
+                                <button class="border-0 btn btn-outline-danger" (click)="selectedTech = tech; swl(tech)" >
                                     <i class="fa fa-times"></i>
                                 </button>
+                                <!--<swal-->
+                                        <!--#deleteSwal-->
+                                        <!--title="Supprimer {{ tech.nom}}?"-->
+                                        <!--text="This cannot be undone"-->
+                                        <!--icon="question"-->
+                                        <!--[showCancelButton]="true"-->
+                                        <!--[focusCancel]="true"-->
+
+                                        <!--(confirm)="deleteTechnicien()"-->
+
+                                        <!--[swalOptions]="{ confirmButtonText: 'Supprimer', cancelButtonText: 'Annuler' }"-->
+                                <!--&gt;-->
+                                    <!--<swal-->
+                                            <!--title="Supprimé?"-->
+                                            <!--text="bien joué"-->
+                                            <!--icon="success"-->
+                                            <!--[timer]=4000-->
+                                    <!--&gt;-->
+
+                                    <!--</swal>-->
+                                <!--</swal>-->
+
                                 <div class="modal" role="dialog" id="mymodal" [ngClass]="{'show': showModal}">
                                     <div class="modal-dialog" >
                                         <div class="modal-content">
@@ -252,6 +280,153 @@
                     </tr>
                     </tbody>
                 </table>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                <table class="table mb-0 ">
+                    <tr>
+                        <td>Liste des Techniciens Actifs</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
+                <table class="mb-0 table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Matricule</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Fonction</th>
+                        <th>Etat</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="widget-content" *ngFor="let atech of ActiveTec | paginate:{itemsPerPage: 10, currentPage:p}">
+                        <th scope="row" >{{ atech.matricule}}</th>
+                        <td>{{atech.nom}}</td>
+                        <td>{{atech.prenom}}</td>
+                        <td>{{atech.fonction}}</td>
+                        <td>
+                            <div [ngClass]="
+            atech.etat == true ? 'badge badge-success' : 'badge badge-focus'">{{atech.etat}}</div>
+                        </td>
+                        <td>
+                            <div class="">
+                                <a [routerLink]="['/techniciens', atech.idTechnicien]">
+                                    <button class="border-0 btn btn-outline-success">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </a>
+                                <button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = atech;">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <button class="border-0 btn btn-outline-danger" (click)="selectedTech = atech; swl(atech)" >
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                <table class="table mb-0 ">
+                    <tr>
+                        <td>Liste des Techniciens Désactivés</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body">
+                <table class="mb-0 table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Matricule</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Fonction</th>
+                        <th>Etat</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="widget-content" *ngFor="let dtech of DesactiveTec | paginate:{itemsPerPage: 10, currentPage:p}">
+                        <th scope="row" >{{ dtech.matricule}}</th>
+                        <td>{{dtech.nom}}</td>
+                        <td>{{dtech.prenom}}</td>
+                        <td>{{dtech.fonction}}</td>
+                        <td>
+                            <div [ngClass]="
+            dtech.etat == true ? 'badge badge-success' : 'badge badge-focus'">{{dtech.etat}}</div>
+                        </td>
+                        <td>
+                            <div class="">
+                                <a [routerLink]="['/techniciens', dtech.idTechnicien]">
+                                    <button class="border-0 btn btn-outline-success">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </a>
+                                <button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = dtech;">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                <!--<button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech; showModal=true" data-toggle="modal" data-target="exampleModal">-->
+                                <!--<i class="fa fa-pencil"></i>-->
+                                <!--</button>-->
+                                <!--<input type="checkbox" checked data-toggle="toggle" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger" data-size="mini" >-->
+                                <button class="border-0 btn btn-outline-danger" (click)="selectedTech = dtech; swl(dtech)" >
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

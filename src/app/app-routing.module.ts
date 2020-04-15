@@ -18,6 +18,7 @@ import {SingleOperateurComponent} from "./Pages/operateurs/single-operateur/sing
 import {BaseLayoutComponent} from "./layout/base-layout/base-layout.component";
 import {LoginComponent} from "./Pages/auth/login/login.component";
 import {AuthLayoutComponent} from "./layout/auth-layout/auth-layout.component";
+import {UserComponent} from "./Pages/user/user.component";
 
 
 const routes: Routes = [
@@ -39,7 +40,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DepartementsComponent },
   {path: 'pannes', component: PannesComponent },
   {path: 'new-panne', component: NewPanneComponent },
-  {path: 'erreur', component: Erreur404Component },
+  {path: 'utilisateurs', component: UserComponent },
 
     ]
   },
@@ -49,6 +50,7 @@ const routes: Routes = [
     children: [
 
   {path: 'login', component: LoginComponent },
+  {path: 'erreur', component: Erreur404Component },
 
     ]
   },

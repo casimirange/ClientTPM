@@ -22,6 +22,10 @@ export class PannesComponent implements OnInit {
 
   machines: Machine[];
 
+  WT: number;
+  TTR: number;
+  DT: number;
+
 
   @ViewChild('agGrid', {static: false }) agGrid: AgGridAngular;
 
@@ -32,11 +36,13 @@ export class PannesComponent implements OnInit {
      filter: 'agDateColumnFilter',
      checkboxSelection: true
     },
-    {headerName: 'Cause', field: 'cause', sortable: true, filter: true , cacheQuickFilter: true},
-    {headerName: 'Détails', field: 'détails', sortable: true, filter: true},
-    {headerName: 'Price', field: 'numero', sortable: true, filter: 'agNumberColumnFilter',
+    {headerName: 'Machine', field: 'machine', sortable: true, filter: true , cacheQuickFilter: true},
+    {headerName: 'Cause', field: 'cause', sortable: true, filter: true},
+    {headerName: 'Arrêt', field: 'heureArret', sortable: true, filter: 'agNumberColumnFilter',
       aggFunc: 'sum',},
-    {headerName: 'Machines', field: 'idMachine' , sortable: true, filter: 'agNumberColumnFilter',
+    {headerName: 'Deb Inter', field: 'debutInter  | date: `HH:mm`' , sortable: true, filter: 'agNumberColumnFilter',
+      aggFunc: 'sum',},
+    {headerName: 'Fin Inter', field: 'finInter' , sortable: true, filter: 'agNumberColumnFilter',
       aggFunc: 'sum',}
   ];
 
@@ -57,7 +63,7 @@ export class PannesComponent implements OnInit {
   // }
 
   loadPannes(){
-    this.panneService.getPannes().subscribe(
+    this.panneService.getAllPannes().subscribe(
         data => {
           this.pannes = data;
           this.machines = this.pannes.map(node => node.machine);

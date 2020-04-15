@@ -31,15 +31,8 @@ export class LoginComponent implements OnInit {
     // console.log('pass:'+ this.loginForm.controls['pass'].value)
 
     this.authService.authenticate(this.credentials, ()=>{
-      this.router.navigateByUrl('/departements')
+      this.router.navigateByUrl('/utilisateurs')
     })
   }
-
-  // logout(){
-  //   // console.log('email:'+ this.loginForm.controls['email'].value)
-  //   // console.log('pass:'+ this.loginForm.controls['pass'].value)
-  //
-  //   this.authService.authenticated = false;
-  // }
 
 }

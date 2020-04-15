@@ -73,7 +73,7 @@ export class MachinesComponent implements OnInit {
   }
 
   loadligns() {
-    this.ligneService.getLignes().subscribe(
+    this.ligneService.getAllLignes().subscribe(
         data => {
           this.ligns = data
         },
@@ -106,10 +106,10 @@ export class MachinesComponent implements OnInit {
     console.log("model", this.machineModel);
 
     console.log("ligne :" + this.newligne.idLigne);
-    console.log("nom :" + this.machineForm.controls['nom'].value)
-    console.log("code :" + this.machineForm.controls['code'].value)
-    console.log("cc :" + this.machineForm.controls['cc'].value)
-    console.log("label :" + this.machineForm.controls['label'].value)
+    console.log("nom :" + this.machineForm.controls['nom'].value);
+    console.log("code :" + this.machineForm.controls['code'].value);
+    console.log("cc :" + this.machineForm.controls['cc'].value);
+    console.log("label :" + this.machineForm.controls['label'].value);
 
 
 

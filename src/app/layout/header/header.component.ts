@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
+import {Principal} from "../../Models/principal";
+import {Store} from "@ngrx/store";
+import {PrincipalState} from "../../Models/principal.state";
+import {UserService} from "../../services/user/user.service";
+import {User} from "../../Models/users";
 
 @Component({
   selector: 'app-header',
@@ -9,9 +14,33 @@ import {Router} from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  private principal: Principal;
+
+  hasRole: boolean;
+  nom: string;
+  prenom: string;
+  selectedUser: User;
+  constructor(private authService: AuthService, private router: Router, private store: Store<PrincipalState>,
+              private userService: UserService) { }
 
   ngOnInit() {
+    this.store.select('principal').subscribe(principal => {
+      console.log('prince');
+      console.log(principal);
+      this.principal = principal;
+      this.nom = this.principal.name;
+    });
+    console.log('non');
+    console.log(this.nom);
+
+    this.userService.findUser(this.nom).subscribe(
+        res => {
+          this.selectedUser = res;
+          console.log('user');
+          console.log(this.selectedUser);
+        }
+    );
+
   }
 
   logout(){

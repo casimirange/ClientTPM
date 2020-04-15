@@ -15,6 +15,10 @@ export class PannesService {
     return this.http.get(API_URLS.PANNES_URL);
   }
 
+  getAllPannes(): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/all`);
+  }
+
   addPannes(panne: Pannes ): Observable<any>{
     return this.http.post(API_URLS.PANNES_URL, panne);
   }

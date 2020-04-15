@@ -16,6 +16,10 @@ export class LignesService {
      return this.http.get(API_URLS.LIGNE_URL);
   }
 
+  getAllLignes(): Observable<any>{
+     return this.http.get(API_URLS.LIGNE_URL + `/all`);
+  }
+
   addLigne(ligne: Ligne): Observable<any>{
      return this.http.post(API_URLS.LIGNE_URL, ligne);
   }

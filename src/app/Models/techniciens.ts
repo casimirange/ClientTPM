@@ -10,6 +10,7 @@ export class Technicien {
     idTechnicien?: number;
     matricule?: number;
     // pannes?: Pannes;
+    etat?: boolean;
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}
 }

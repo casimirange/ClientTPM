@@ -4,6 +4,9 @@ import {API_URLS} from "../../configs/api.url.configs";
 import { CookieService } from 'ngx-cookie-service';
 
 import 'rxjs';
+import {Store} from "@ngrx/store";
+import {PrincipalState} from "../../Models/principal.state";
+import {SAVE_PRINCIPAL} from '../../Models/save.principal.action'
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,10 @@ export class AuthService {
 
   authenticated: boolean = false;
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient,
+              private cookieService: CookieService,
+              private store: Store<PrincipalState>
+  ) { }
 
   authenticate(credentials, callback){
     if (credentials){
@@ -21,9 +27,14 @@ export class AuthService {
 
       this.cookieService.set('token', token);
 
-      this.http.get(API_URLS.USER_URL).subscribe(response =>{
+      this.http.get(API_URLS.USER_ROLE_URL).subscribe(response =>{
         if (response && response['name']){
           this.authenticated = true;
+          console.log(response);
+          this.store.dispatch({
+            type: SAVE_PRINCIPAL,
+            payload: response
+          });
         } else {
           this.authenticated = false;
         }

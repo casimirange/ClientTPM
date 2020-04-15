@@ -64,7 +64,7 @@ export class DepartementsComponent implements OnInit {
     ngOnInit() {
         this.loadDepartements();
         this.initDep();
-        // this.departements = this.route.snapshot.data.departements;
+         // this.departements = this.route.snapshot.data.departements;
     }
 
     loadDepartements() {
