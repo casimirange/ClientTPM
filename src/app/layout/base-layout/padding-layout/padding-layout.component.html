@@ -1,0 +1,17 @@
+<div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
+    <app-header></app-header>
+    <div class="app-main">
+        <app-sidebar></app-sidebar>
+        <div class="app-main__outer">
+            <div Class="app-main__inner p-0">
+                <div class="app-inner-layout">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>
+<app-params></app-params>
+
+<ngx-loading-bar></ngx-loading-bar>

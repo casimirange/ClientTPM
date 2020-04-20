@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     // console.log('pass:'+ this.loginForm.controls['pass'].value)
 
     this.authService.authenticate(this.credentials, ()=>{
-      this.router.navigateByUrl('/utilisateurs')
+      this.router.navigateByUrl('/new-panne')
     })
   }
 

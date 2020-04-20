@@ -8,7 +8,7 @@ import {Operateur} from "./operateurs";
 
 export class Pannes {
     cause?: string;
-    détails?: string;
+    details?: string;
     description?: string;
     date?: Date;
     idMachine?: number;
@@ -44,6 +44,10 @@ export class Pannes {
     preTec?: string;
     matricule?: number;
     fonction?: string;
+
+    outil?: string;
+    ref?: string;
+    qte?: number;
 
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}

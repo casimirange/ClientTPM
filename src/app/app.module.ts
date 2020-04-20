@@ -48,6 +48,9 @@ import {UserService} from "./services/user/user.service";
 import {DepartementResolver} from "./Pages/departements/departement.resolver";
 import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 import {RoleService} from "./services/role/role.service";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { PaddingLayoutComponent } from './layout/base-layout/padding-layout/padding-layout.component';
+import { TitleComponent } from './layout/page-title/title/title.component';
 
 
 @NgModule({
@@ -77,6 +80,8 @@ import {RoleService} from "./services/role/role.service";
     AuthLayoutComponent,
     LoginComponent,
     UserComponent,
+    PaddingLayoutComponent,
+    TitleComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,7 +92,10 @@ import {RoleService} from "./services/role/role.service";
     AgGridModule.withComponents([]),
     NgxPaginationModule,
     StoreModule.forRoot({principal: principalReducer}),
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    NgbModule,
+    // DpDatePickerModule,
+    // AmazingTimePickerModule,
   ],
   providers: [
     DepartementMockService,

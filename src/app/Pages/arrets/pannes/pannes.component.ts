@@ -5,6 +5,9 @@ import {Pannes} from "../../../Models/pannes";
 import {AgGridAngular} from "ag-grid-angular"
 import {Machine} from "../../../Models/machines";
 import {MachinesService} from "../../../services/machines/machines.service";
+// import  Swal from 'sweetalert2/dist/sweetalert2.js';
+import 'sweetalert2/src/sweetalert2.scss'
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-pannes',
@@ -21,35 +24,13 @@ export class PannesComponent implements OnInit {
   selectedPanne: Pannes;
 
   machines: Machine[];
-
-  WT: number;
-  TTR: number;
-  DT: number;
-
-
-  @ViewChild('agGrid', {static: false }) agGrid: AgGridAngular;
-
-  columnDefs = [
-    {headerName: 'Date',
-     field: 'date',
-     sortable: true,
-     filter: 'agDateColumnFilter',
-     checkboxSelection: true
-    },
-    {headerName: 'Machine', field: 'machine', sortable: true, filter: true , cacheQuickFilter: true},
-    {headerName: 'Cause', field: 'cause', sortable: true, filter: true},
-    {headerName: 'Arrêt', field: 'heureArret', sortable: true, filter: 'agNumberColumnFilter',
-      aggFunc: 'sum',},
-    {headerName: 'Deb Inter', field: 'debutInter  | date: `HH:mm`' , sortable: true, filter: 'agNumberColumnFilter',
-      aggFunc: 'sum',},
-    {headerName: 'Fin Inter', field: 'finInter' , sortable: true, filter: 'agNumberColumnFilter',
-      aggFunc: 'sum',}
-  ];
+    closeResult: any;
 
   rowData: any;
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
-              private machineService: MachinesService) { }
+              private machineService: MachinesService,
+              private modalService: NgbModal  ) { }
 
   ngOnInit() {
     this.loadPannes();
@@ -66,7 +47,6 @@ export class PannesComponent implements OnInit {
     this.panneService.getAllPannes().subscribe(
         data => {
           this.pannes = data;
-          this.machines = this.pannes.map(node => node.machine);
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -76,6 +56,15 @@ export class PannesComponent implements OnInit {
           console.log(this.pannes);
         }
     );
+  }
+
+  open(content){
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
+          this.closeResult = `Closed with: ${result}`;
+      }, (reason) =>{
+
+          }
+      );
   }
 
 }

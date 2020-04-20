@@ -163,7 +163,8 @@ export class TechniciensComponent implements OnInit {
             cancelButtonColor: '#f65656',
             confirmButtonText: 'OUI',
             cancelButtonText: 'Annuler',
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            showLoaderOnConfirm: true
         }).then((result) => {
             if (result.value) {
                 this.activeTechnicien();

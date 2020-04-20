@@ -19,6 +19,7 @@ import {BaseLayoutComponent} from "./layout/base-layout/base-layout.component";
 import {LoginComponent} from "./Pages/auth/login/login.component";
 import {AuthLayoutComponent} from "./layout/auth-layout/auth-layout.component";
 import {UserComponent} from "./Pages/user/user.component";
+import {PaddingLayoutComponent} from "./layout/base-layout/padding-layout/padding-layout.component";
 
 
 const routes: Routes = [
@@ -39,8 +40,7 @@ const routes: Routes = [
   {path: 'machines/:id', component: SingleMachineComponent },
   {path: 'dashboard', component: DepartementsComponent },
   {path: 'pannes', component: PannesComponent },
-  {path: 'new-panne', component: NewPanneComponent },
-  {path: 'utilisateurs', component: UserComponent },
+  {path: 'utilisateurs', component: UserComponent }
 
     ]
   },
@@ -50,12 +50,21 @@ const routes: Routes = [
     children: [
 
   {path: 'login', component: LoginComponent },
-  {path: 'erreur', component: Erreur404Component },
+  {path: 'erreur', component: Erreur404Component }
+
+    ]
+  },
+  {
+    path: '',
+    component: PaddingLayoutComponent,
+    children: [
+
+  {path: 'new-panne', component: NewPanneComponent }
 
     ]
   },
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  {path: '**', redirectTo: 'erreur'},
+  {path: '**', redirectTo: 'erreur'}
 ];
 
 @NgModule({
