@@ -8,7 +8,7 @@
             <div class="card-header">Liste des Pannes
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
-                        <button routerLink="new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>
+                        <button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr style="cursor: pointer" (click)="open(mymodal)" *ngFor="let pan of pannes | paginate:{itemsPerPage: 10, currentPage:p}">
+                    <tr style="cursor: pointer" (click)="open(mymodal); loadTechPannes(pan)" *ngFor="let pan of pannes | paginate:{itemsPerPage: 7, currentPage:p}">
                         <ng-template #mymodal let-modal>
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
@@ -76,19 +76,19 @@
                                     <div class="scrollbar-container">
                                         <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
                                             <div class="vertical-timeline-item vertical-timeline-element">
-                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-light"></div></span>
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
                                                         <p>{{pan.description}}</p></div>
                                                 </div>
                                             </div>
                                             <div class="vertical-timeline-item vertical-timeline-element">
-                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-light"></div></span>
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
                                                         <p>{{pan.cause}}</p></div>
                                                 </div>
                                             </div>
                                             <div class="vertical-timeline-item vertical-timeline-element">
-                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-light"></div></span>
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
                                                         <p>{{pan.details}}</p></div>
                                                 </div>
@@ -103,9 +103,9 @@
                                             <div class="vertical-timeline-item vertical-timeline-element">
                                                 <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Maintenance</h4>
-                                                        <p>{{pan.preTec}} {{pan.nomTec}} <b class="text-primary">{{pan.matricule}}</b>
+                                                        <p *ngFor="let pt of Tpannes">{{pt.preTec}} {{pt.nomTec}} <b class="text-primary">{{pt.matricule}}</b>
                                                         <span class="float-right">
-                                                           {{pan.fonction}}
+                                                           {{pt.fonction}}
                                                         </span>
                                                         </p>
 
@@ -113,7 +113,7 @@
                                                 </div>
                                             </div>
                                             <div *ngIf="pan.outil" class="vertical-timeline-item vertical-timeline-element">
-                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-secondary"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in">
                                                         <h4 class="timeline-title">Outils utilisés</h4>
                                                         <p><b>{{pan.qte}}</b> {{pan.outil}}: <b class="text-dark">{{pan.ref}}</b></p>                                                           </div>
@@ -150,11 +150,19 @@
                         <td class="text-center">{{pan.heureArret | date: 'HH:mm'}}</td>
                         <td class="text-center" >{{pan.debutInter | date: 'HH:mm'}}</td>
                         <td class="text-center" >{{pan.finInter | date: 'HH:mm'}}</td>
-                        <td class="text-center" [ngClass]="
-            30 < ((pan.debutInter | date: 'mm') - (pan.heureArret | date: 'mm')) > 20  ? 'wtw' :
-            ((pan.debutInter | date: 'mm') - (pan.heureArret | date: 'mm')) >= 30  ? 'wtd' :
-            ''
-            ">
+                        <td [ngClass]="{'text-center': true, 'wtd':
+            ((
+                            ( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )
+                            )*60*24
+                            +
+                            (
+                            ( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
+                            )*60
+                            +
+                            (
+                            ( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')
+                            )) >= 25
+            }">
                             {{
                             (
                             ( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )
@@ -168,6 +176,7 @@
                             ( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')
                             )
                             }}
+
                         </td>
                         <td class="text-center">
                             {{

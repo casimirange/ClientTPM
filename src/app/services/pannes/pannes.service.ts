@@ -19,6 +19,10 @@ export class PannesService {
     return this.http.get(API_URLS.PANNES_URL + `/all`);
   }
 
+  getTechPannes(numero: number): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/all/${numero}`);
+  }
+
   addPannes(panne: Pannes ): Observable<any>{
     return this.http.post(API_URLS.PANNES_URL, panne);
   }

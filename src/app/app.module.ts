@@ -51,6 +51,7 @@ import {RoleService} from "./services/role/role.service";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { PaddingLayoutComponent } from './layout/base-layout/padding-layout/padding-layout.component';
 import { TitleComponent } from './layout/page-title/title/title.component';
+import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 
 
 @NgModule({
@@ -110,6 +111,7 @@ import { TitleComponent } from './layout/page-title/title/title.component';
     AuthService,
     UserService,
     RoleService,
+    AuthGuardService,
   ],
   bootstrap: [
     AppComponent,

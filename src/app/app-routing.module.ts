@@ -20,6 +20,7 @@ import {LoginComponent} from "./Pages/auth/login/login.component";
 import {AuthLayoutComponent} from "./layout/auth-layout/auth-layout.component";
 import {UserComponent} from "./Pages/user/user.component";
 import {PaddingLayoutComponent} from "./layout/base-layout/padding-layout/padding-layout.component";
+import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 
 
 const routes: Routes = [
@@ -28,19 +29,19 @@ const routes: Routes = [
     component: BaseLayoutComponent,
     children: [
 
-  {path: 'departements', component: DepartementsComponent },
-  {path: 'departements/:id', component: SingleDepartementComponent },
-  {path: 'lignes', component: LignesComponent },
-  {path: 'lignes/:id', component: SingleLigneComponent },
-  {path: 'techniciens', component: TechniciensComponent },
-  {path: 'techniciens/:id', component: SingleTechnicienComponent },
-  {path: 'operateurs', component: OperateursComponent },
-  {path: 'operateurs/:id', component: SingleOperateurComponent },
-  {path: 'machines', component: MachinesComponent },
-  {path: 'machines/:id', component: SingleMachineComponent },
-  {path: 'dashboard', component: DepartementsComponent },
-  {path: 'pannes', component: PannesComponent },
-  {path: 'utilisateurs', component: UserComponent }
+  {path: 'departements', canActivate:[AuthGuardService], component: DepartementsComponent },
+  {path: 'departements/:id', canActivate:[AuthGuardService], component: SingleDepartementComponent },
+  {path: 'lignes', canActivate:[AuthGuardService], component: LignesComponent },
+  {path: 'lignes/:id', canActivate:[AuthGuardService], component: SingleLigneComponent },
+  {path: 'techniciens', canActivate:[AuthGuardService], component: TechniciensComponent },
+  {path: 'techniciens/:id', canActivate:[AuthGuardService], component: SingleTechnicienComponent },
+  {path: 'operateurs', canActivate:[AuthGuardService], component: OperateursComponent },
+  {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
+  {path: 'machines', canActivate:[AuthGuardService], component: MachinesComponent },
+  {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
+  {path: 'dashboard', canActivate:[AuthGuardService], component: DepartementsComponent },
+  {path: 'pannes', canActivate:[AuthGuardService], component: PannesComponent },
+  {path: 'utilisateurs', canActivate:[AuthGuardService], component: UserComponent }
 
     ]
   },
@@ -59,12 +60,12 @@ const routes: Routes = [
     component: PaddingLayoutComponent,
     children: [
 
-  {path: 'new-panne', component: NewPanneComponent }
+  {path: 'new-panne', canActivate:[AuthGuardService], component: NewPanneComponent }
 
     ]
   },
-  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-  {path: '**', redirectTo: 'erreur'}
+  {path: '', redirectTo: 'pannes', pathMatch: 'full'},
+  {path: '**', redirectTo: '/erreur'}
 ];
 
 @NgModule({

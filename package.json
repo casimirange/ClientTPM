@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@ng-bootstrap/ng-bootstrap": "^6.0.3",
+    "@ng-select/ng-select": "^4.0.0",
     "@ngrx/store": "^9.1.0",
     "@ngx-loading-bar/core": "^4.2.0",
     "@ngx-loading-bar/http": "^4.2.0",

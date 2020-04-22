@@ -6,7 +6,7 @@ import {Pannes} from "./pannes";
 export class Operateur {
     nom?: string;
     prenom?: string;
-    idTechnicien?: number;
+    idOperateur?: number;
     matricule?: number;
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}

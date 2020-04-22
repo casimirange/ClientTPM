@@ -21,10 +21,12 @@ export class PannesComponent implements OnInit {
   icons = 'fa fa-cog icon-gradient bg-primary';
 
   pannes: Pannes[];
+  Tpannes: Pannes[];
   selectedPanne: Pannes;
 
   machines: Machine[];
     closeResult: any;
+    diff: number;
 
   rowData: any;
   constructor(private fb: FormBuilder,
@@ -34,6 +36,8 @@ export class PannesComponent implements OnInit {
 
   ngOnInit() {
     this.loadPannes();
+    this.loadTechPannes(this.selectedPanne);
+    this.wt();
   }
 
   // getSelectionRow(){
@@ -44,6 +48,7 @@ export class PannesComponent implements OnInit {
   // }
 
   loadPannes(){
+
     this.panneService.getAllPannes().subscribe(
         data => {
           this.pannes = data;
@@ -58,6 +63,22 @@ export class PannesComponent implements OnInit {
     );
   }
 
+  loadTechPannes(pan: Pannes){
+
+    this.panneService.getTechPannes(pan.numero).subscribe(
+        data => {
+          this.Tpannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des pannes Techniques');
+          console.log(this.Tpannes);
+        }
+    );
+  }
+
   open(content){
       this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
           this.closeResult = `Closed with: ${result}`;
@@ -65,6 +86,14 @@ export class PannesComponent implements OnInit {
 
           }
       );
+  }
+
+  wt(){
+      var ha = new Date(this.selectedPanne.heureArret);
+      var di = new Date(this.selectedPanne.debutInter);
+      this.diff = (di - ha)*60;
+
+      return this.diff;
   }
 
 }
