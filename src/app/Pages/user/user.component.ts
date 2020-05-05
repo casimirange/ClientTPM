@@ -3,12 +3,14 @@ import {UserService} from "../../services/user/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../Models/users";
 // import {SwalPortalTargets} from "@sweetalert2/ngx-sweetalert2";
-import  Swal from 'sweetalert2/dist/sweetalert2.js';
+// import  Swal from 'sweetalert2/dist/sweetalert2.js';
+// import  Swal from '@sweetalert2/ngx-sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'
 import {Subscription, timer} from "rxjs";
 import {AuthService} from "../../services/auth/auth.service";
 import {RoleService} from "../../services/role/role.service";
 import {Role} from "../../Models/roles";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-user',
@@ -167,6 +169,7 @@ export class UserComponent implements OnInit {
   }
 
   swl(){
+    const Swal = require('sweetalert2');
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",

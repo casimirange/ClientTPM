@@ -40,7 +40,7 @@ export class TechniciensService {
   }
 
   activeTech(matricule: number): Observable<any>{
-    return this.http.put(API_URLS.TECHNICIEN_URL + `/${matricule}`);
+    return this.http.put(API_URLS.TECHNICIEN_URL+ `/${matricule}`, '');
   }
 
 }

@@ -21,6 +21,7 @@ import {AuthLayoutComponent} from "./layout/auth-layout/auth-layout.component";
 import {UserComponent} from "./Pages/user/user.component";
 import {PaddingLayoutComponent} from "./layout/base-layout/padding-layout/padding-layout.component";
 import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
+import {SinglePanneComponent} from "./Pages/arrets/pannes/single-panne/single-panne.component";
 
 
 const routes: Routes = [
@@ -32,14 +33,14 @@ const routes: Routes = [
   {path: 'departements', canActivate:[AuthGuardService], component: DepartementsComponent },
   {path: 'departements/:id', canActivate:[AuthGuardService], component: SingleDepartementComponent },
   {path: 'lignes', canActivate:[AuthGuardService], component: LignesComponent },
-  {path: 'lignes/:id', canActivate:[AuthGuardService], component: SingleLigneComponent },
+  // {path: 'lignes/:id', canActivate:[AuthGuardService], component: SingleLigneComponent },
   {path: 'techniciens', canActivate:[AuthGuardService], component: TechniciensComponent },
-  {path: 'techniciens/:id', canActivate:[AuthGuardService], component: SingleTechnicienComponent },
+  // {path: 'techniciens/:id', canActivate:[AuthGuardService], component: SingleTechnicienComponent },
   {path: 'operateurs', canActivate:[AuthGuardService], component: OperateursComponent },
-  {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
+  // {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
   {path: 'machines', canActivate:[AuthGuardService], component: MachinesComponent },
-  {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
-  {path: 'dashboard', canActivate:[AuthGuardService], component: DepartementsComponent },
+  // {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
+  // {path: 'dashboard', canActivate:[AuthGuardService], component: DepartementsComponent },
   {path: 'pannes', canActivate:[AuthGuardService], component: PannesComponent },
   {path: 'utilisateurs', canActivate:[AuthGuardService], component: UserComponent }
 
@@ -60,7 +61,8 @@ const routes: Routes = [
     component: PaddingLayoutComponent,
     children: [
 
-  {path: 'new-panne', canActivate:[AuthGuardService], component: NewPanneComponent }
+  {path: 'new-panne', canActivate:[AuthGuardService], component: NewPanneComponent },
+  {path: 'new-panne/:numero', canActivate:[AuthGuardService], component: SinglePanneComponent },
 
     ]
   },

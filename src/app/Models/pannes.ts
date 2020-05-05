@@ -1,4 +1,4 @@
-import DateTimeFormat = Intl.DateTimeFormat;
+// import DateTimeFormat = Intl.DateTimeFormat;
 import {Machine} from "./machines";
 import {Technicien} from "./techniciens";
 import {Operateur} from "./operateurs";
@@ -13,9 +13,9 @@ export class Pannes {
     description?: string;
     date?: string;
     idMachine?: number;
-    heureArret?: string;
-    debutInter?: string;
-    finInter?: string;
+    heureArret?: Date;
+    debutInter?: Date;
+    finInter?: Date;
     numero?: number;
     etat?: boolean;
 
@@ -40,6 +40,8 @@ export class Pannes {
     outil?: string;
     ref?: string;
     qte?: number;
+
+    nbre?: number;
 
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {PannesService} from "../../../services/pannes/pannes.service";
 import {Pannes} from "../../../Models/pannes";
 import {AgGridAngular} from "ag-grid-angular"
@@ -18,34 +18,68 @@ export class PannesComponent implements OnInit {
 
   headings = 'Pannes';
   subheadings = 'Consultez la liste des pannes survenues';
-  icons = 'fa fa-cog icon-gradient bg-primary';
+  icons = 'fa fa-wrench icon-gradient bg-heavy-rain';
 
+  searchPanForm: FormGroup;
+  selectPanForm: FormGroup;
+  rangeForm: FormGroup;
   pannes: Pannes[];
+  cpannes: Pannes[];
   Tpannes: Pannes[];
+  Hpannes: Pannes[];
+  times: Pannes[];
   selectedPanne: Pannes;
+  tail: number;
+  count: number;
 
   machines: Machine[];
     closeResult: any;
-    diff: number;
 
-  rowData: any;
+  dataPanne = {
+      labels: [],
+      datasets: []
+  };
+
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private machineService: MachinesService,
-              private modalService: NgbModal  ) { }
+              private modalService: NgbModal  ) {
+      this.createForm();
+      this.createForms();
+      this.rangeForms();
+
+  }
 
   ngOnInit() {
     this.loadPannes();
-    this.loadTechPannes(this.selectedPanne);
-    this.wt();
+    this.countAllPannes();
+    // this.loadTimePannes();
+    // this.loadTechPannes();
+    // this.TodayPannes();
+    this.selectedPanne = new Pannes();
+    this.getChart();
+    // this.loadHeurePannes(this.selectedPanne);
+    // this.wt();
   }
 
-  // getSelectionRow(){
-  //   const selectedNodes = this.pannes;
-  //   const selectedData = selectedNodes.map(node => node.cause);
-  //   const selectedDataStringPresentation = selectedData.map(node => node.make + ' ' + node.model).join(", ");
-  //   alert(`Selected Node: ${selectedDataStringPresentation}`);
-  // }
+    createForm() {
+        this.searchPanForm = this.fb.group({
+            search: [''],
+        });
+    }
+
+    createForms() {
+        this.selectPanForm = this.fb.group({
+            periode: ['']
+        });
+    }
+
+    rangeForms() {
+        this.rangeForm = this.fb.group({
+            date1: [''],
+            date2: ['']
+        });
+    }
 
   loadPannes(){
 
@@ -61,11 +95,69 @@ export class PannesComponent implements OnInit {
           console.log(this.pannes);
         }
     );
+
   }
 
-  loadTechPannes(pan: Pannes){
+  countAllPannes(){
 
-    this.panneService.getTechPannes(pan.numero).subscribe(
+      this.panneService.getCountPannes().subscribe(
+          data => {
+              this.cpannes = data;
+              this.count = 0;
+              for (let pin of this.cpannes){
+                      this.count = this.count + pin.nbre;
+              }
+
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('Total');
+              console.log(this.count);
+          }
+      );
+  }
+
+  countTodayPannes(){
+
+      this.panneService.getCountTodayPannes().subscribe(
+          data => {
+              this.cpannes = data;
+              this.count = 0;
+              for (let pin of this.cpannes){
+                      this.count = this.count + pin.nbre;
+              }
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('Total');
+              console.log(this.count);
+          }
+      );
+  }
+
+  loadTimePannes(){
+
+    this.panneService.getTimePannes().subscribe(
+        data => {
+          this.times = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des timespanes');
+          console.log(this.times);
+        }
+    );
+  }
+
+  loadTechPannes(){
+
+    this.panneService.getTechPannes(this.selectedPanne.numero).subscribe(
         data => {
           this.Tpannes = data;
         },
@@ -77,6 +169,171 @@ export class PannesComponent implements OnInit {
           console.log(this.Tpannes);
         }
     );
+
+      this.panneService.getHeurePannes(this.selectedPanne.numero).subscribe(
+          data => {
+              this.Hpannes = data;
+              this.tail = this.Hpannes.length;
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('chargement des heures');
+              console.log(this.Hpannes);
+              console.log('longueur');
+              console.log(this.tail);
+          }
+      );
+  }
+
+  TodayPannes(){
+
+    this.panneService.getTodayPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  HierPannes(){
+
+    this.panneService.getHierPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  ThisWeekPannes(){
+
+    this.panneService.getThisWeekPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  LastWeekPannes(){
+
+    this.panneService.getLastWeekPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  LastMonthPannes(){
+
+    this.panneService.getLastMonthPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  ThisMonthPannes(){
+
+    this.panneService.getThisMonthPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  LastYearPannes(){
+
+    this.panneService.getLastYearPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  ThisYearPannes(){
+
+    this.panneService.getThisYearPannes().subscribe(
+        data => {
+          this.pannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('panne aujourd\'hui');
+          console.log(this.pannes);
+        }
+    );
+  }
+
+  rangeDate(){
+      console.log('rien');
+      const d1 = this.rangeForm.controls['date1'].value;
+      const d2 = this.rangeForm.controls['date2'].value;
+
+      console.log(d1 + ' et '+ d2);
+
+      this.panneService.getRangeDatePannes(d1, d2).subscribe(
+          data => {
+              this.pannes = data;
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('panne aujourd\'hui');
+              console.log(this.pannes);
+          }
+      );
   }
 
   open(content){
@@ -88,12 +345,31 @@ export class PannesComponent implements OnInit {
       );
   }
 
-  wt(){
-      var ha = new Date(this.selectedPanne.heureArret);
-      var di = new Date(this.selectedPanne.debutInter);
-      this.diff = (di - ha)*60;
+  getChart(){
 
-      return this.diff;
+      const datasetNbrePanne = {
+          label: "Pannes",
+          data: [],
+          backgroundColor: function(context) {
+
+              var index = context.dataIndex;
+              var value = context.dataset.data[index];
+              return value > 10 ? '#f65656' :  // draw negative values in red
+                  index % 2 ? 'blue' :    // else, alternate values in blue and green
+                      'rgba(156, 211, 253, 0.4)';
+          },
+          borderColor: '#0692fb',
+      };
+
+      this.panneService.getCountPannes().subscribe(
+          list => list.forEach(mach => {
+              this.dataPanne.labels.push(mach.machine);
+              datasetNbrePanne.data.push(mach.nbre);
+          } ) );
+
+      this.dataPanne.datasets.push(datasetNbrePanne);
+
+
   }
 
 }

@@ -9,5 +9,5 @@ export class Principal {
     // accountNonLocked?: boolean;
     // credentialsNonExpired?: boolean;
     // enabled?: boolean;
-    constructor( public authorities?: any) {}
+    constructor( public authorities?: any, public name?: string) {}
 }

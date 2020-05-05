@@ -52,6 +52,10 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { PaddingLayoutComponent } from './layout/base-layout/padding-layout/padding-layout.component';
 import { TitleComponent } from './layout/page-title/title/title.component';
 import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
+import {Ng2SearchPipeModule} from "ng2-search-filter";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {ChartModule} from "angular2-chartjs";
+import { MyChartComponent } from './my-chart/my-chart.component';
 
 
 @NgModule({
@@ -83,6 +87,7 @@ import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
     UserComponent,
     PaddingLayoutComponent,
     TitleComponent,
+    MyChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,6 +100,10 @@ import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
     StoreModule.forRoot({principal: principalReducer}),
     SweetAlert2Module.forRoot(),
     NgbModule,
+    Ng2SearchPipeModule,
+    NgSelectModule,
+    ChartModule
+
     // DpDatePickerModule,
     // AmazingTimePickerModule,
   ],
@@ -112,6 +121,7 @@ import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
     UserService,
     RoleService,
     AuthGuardService,
+  // SweetAlert2LoaderService
   ],
   bootstrap: [
     AppComponent,

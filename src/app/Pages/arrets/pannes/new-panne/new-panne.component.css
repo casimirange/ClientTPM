@@ -1,3 +1,16 @@
 /*@import "~ng-pick-datetime/assets/style/picker.min.css";*/
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+.red{
+    color: #f65656;
+    font-weight: bold;
+}
+
+.fred {
+    color: #495057;
+    background-color: #fff;
+    border-color: #f65656;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(246, 86, 86, 0.25)
+}

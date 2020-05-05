@@ -1,4 +1,4 @@
-<app-page-title [heading]="nomMaj" [subheading]="subheading" [icon]="
+<app-page-title [heading]="selectedDep.nom | uppercase" [subheading]="subheading" [icon]="
             selectedDep.nom == 'Scierie' ? 'fa fa-home icon-gradient bg-danger' :
             selectedDep.nom == 'Brazil' ? 'fa fa-home icon-gradient bg-warning' :
             selectedDep.nom == 'Placage' ? 'fa fa-home icon-gradient bg-success' :
@@ -49,7 +49,7 @@
             selectedDep.nom == 'Contreplaqué' ? 'card-header bg-info' : 'card-header bg-success'">
                 <table class="table mb-0 ">
                     <tr>
-                        <td style="color: #fff;">Liste des Machines</td>
+                        <td style="color: #fff;">Liste des Machines du département {{selectedDep.nom}}</td>
 
                     </tr>
                 </table>

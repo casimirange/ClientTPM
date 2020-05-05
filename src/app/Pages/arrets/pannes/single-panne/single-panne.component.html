@@ -1,1 +1,734 @@
-<p>single-panne works!</p>
+<app-title [heading]="continuePanne.numero" [subheading]="subheadings" [icon]="icons"></app-title>
+
+<div class="">
+
+    <div class="app-inner-layout">
+        <div class="app-inner-layout__wrapper">
+            <div class="app-inner-layout__content card">
+                <div class="card-body">
+                    <h5 class="card-title">Continuer avec la Panne N°{{continuePanne.numero}}</h5>
+                    <form [formGroup]="suitePanForm" id="signupForm" class="col-md-10 mx-auto"  >
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="date" >Date</label>
+                                        <input type="date" id="date" class="form-control form-control-sm" formControlName="dateP" [ngClass]="{'fred': suitePanForm.controls['dateP'].invalid && (suitePanForm.controls['dateP'].touched)}" [(ngModel)]="continuePanne.date" disabled/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="date" >Numero</label>
+                                        <input type="text" id="date" class="form-control form-control-sm" formControlName="numero" [(ngModel)]="continuePanne.numero" disabled/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="ha" [ngClass]="{'red': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}">Heure d'arrêt</label>
+                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" [(ngModel)]="ha" [ngClass]="{'fred': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}" />
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched) ">
+                                        <span>*</span> Date et heure invalide
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="di" [ngClass]="{'red': suitePanForm.controls['debutInter'].invalid && (suitePanForm.controls['debutInter'].touched)}">Début d'intervention</label>
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="di" class="form-control form-control-sm" formControlName="debutInter" [(ngModel)]="di" [ngClass]="{'fred': suitePanForm.controls['debutInter'].invalid && (suitePanForm.controls['debutInter'].touched)}">
+                                    </div>
+                                    <div *ngIf="
+                                    (
+                                    ((ha | date: 'M') == 1) || ((ha | date: 'M') == 3) ||
+                                    ((ha | date: 'M') == 5) || ((ha | date: 'M') == 7) ||
+                                    ((ha | date: 'M') == 8) || ((ha | date: 'M') == 10) ||
+                                    ((ha | date: 'M') == 12)
+                                    ?
+                                        (
+                                            ( di | date: 'y' ) - ( ha | date: 'y' )
+                                        )*60*24*31*12
+                                        +
+                                        (
+                                            ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                        )*60*24*31
+                                        +
+                                        (
+                                            ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                            ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                            ( di | date: 'mm') - ( ha | date: 'mm')
+                                        )
+                                    :
+                                    ((ha | date: 'M') == 4) || ((ha | date: 'M') == 6) ||
+                                    ((ha | date: 'M') == 9) || ((ha | date: 'M') == 11)
+                                    ?
+                                        (
+                                        ( di | date: 'y' ) - ( ha | date: 'y' )
+                                        )*60*24*30*12
+                                        +
+                                        (
+                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                        )*60*24*30
+                                        +
+                                        (
+                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( di | date: 'mm') - ( ha | date: 'mm')
+                                        )
+                                    :
+                                    ((ha | date: 'M') == 2) && ((ha | date: 'y')%4 == 0)
+                                    ?
+                                    (
+                                    ( di | date: 'y' ) - ( ha | date: 'y' )
+                                    )*60*24*29*12
+                                    +
+                                    (
+                                    ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                    )*60*24*29
+                                    +
+                                    (
+                                    ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                    )*60*24
+                                    +
+                                    (
+                                    ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                    )*60
+                                    +
+                                    (
+                                    ( di | date: 'mm') - ( ha | date: 'mm')
+                                    )
+                                    :
+                                    (
+                                    ( di | date: 'y' ) - ( ha | date: 'y' )
+                                    )*60*24*28*12
+                                    +
+                                    (
+                                    ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                    )*60*24*28
+                                    +
+                                    (
+                                    ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                    )*60*24
+                                    +
+                                    (
+                                    ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                    )*60
+                                    +
+                                    (
+                                    ( di | date: 'mm') - ( ha | date: 'mm')
+                                    )
+                                    ) < 0" class="alert alert-danger fade show
+">
+                                        l'heure du début de l'intervention ne peut être inférieur à l'heure d'arrêt {{
+                                        (
+                                        ((ha | date: 'M') == 1) || ((ha | date: 'M') == 3) ||
+                                        ((ha | date: 'M') == 5) || ((ha | date: 'M') == 7) ||
+                                        ((ha | date: 'M') == 8) || ((ha | date: 'M') == 10) ||
+                                        ((ha | date: 'M') == 12)
+                                        ?
+                                        (
+                                        ( di | date: 'y' ) - ( ha | date: 'y' )
+                                        )*60*24*31*12
+                                        +
+                                        (
+                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                        )*60*24*31
+                                        +
+                                        (
+                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( di | date: 'mm') - ( ha | date: 'mm')
+                                        )
+                                        :
+                                        ((ha | date: 'M') == 4) || ((ha | date: 'M') == 6) ||
+                                        ((ha | date: 'M') == 9) || ((ha | date: 'M') == 11)
+                                        ?
+                                        (
+                                        ( di | date: 'y' ) - ( ha | date: 'y' )
+                                        )*60*24*30*12
+                                        +
+                                        (
+                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                        )*60*24*30
+                                        +
+                                        (
+                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( di | date: 'mm') - ( ha | date: 'mm')
+                                        )
+                                        :
+                                        ((ha | date: 'M') == 2) && ((ha | date: 'y')%4 == 0)
+                                        ?
+                                        (
+                                        ( di | date: 'y' ) - ( ha | date: 'y' )
+                                        )*60*24*29*12
+                                        +
+                                        (
+                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                        )*60*24*29
+                                        +
+                                        (
+                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( di | date: 'mm') - ( ha | date: 'mm')
+                                        )
+                                        :
+                                        (
+                                        ( di | date: 'y' ) - ( ha | date: 'y' )
+                                        )*60*24*28*12
+                                        +
+                                        (
+                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
+                                        )*60*24*28
+                                        +
+                                        (
+                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( di | date: 'mm') - ( ha | date: 'mm')
+                                        )
+                                        )
+                                        }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="fi" [ngClass]="{'red': suitePanForm.controls['finInter'].invalid && (suitePanForm.controls['finInter'].touched)}">Fin d'intervention</label>
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="fi" class="form-control form-control-sm" formControlName="finInter" [(ngModel)]="fi" [ngClass]="{'fred': suitePanForm.controls['finInter'].invalid && (suitePanForm.controls['finInter'].touched)}">
+                                    </div>
+                                    <div *ngIf="
+                                    (
+                                    ((di | date: 'M') == 1) || ((di | date: 'M') == 3) ||
+                                    ((di | date: 'M') == 5) || ((di | date: 'M') == 7) ||
+                                    ((di | date: 'M') == 8) || ((di | date: 'M') == 10) ||
+                                    ((di | date: 'M') == 12)
+                                    ?
+                                        (
+                                            ( fi | date: 'y' ) - ( di | date: 'y' )
+                                        )*60*24*31*12
+                                        +
+                                        (
+                                            ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                        )*60*24*31
+                                        +
+                                        (
+                                            ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                            ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                            ( fi | date: 'mm') - ( di | date: 'mm')
+                                        )
+                                    :
+                                    ((di | date: 'M') == 4) || ((di | date: 'M') == 6) ||
+                                    ((di | date: 'M') == 9) || ((di | date: 'M') == 11)
+                                    ?
+                                        (
+                                        ( fi | date: 'y' ) - ( di | date: 'y' )
+                                        )*60*24*30*12
+                                        +
+                                        (
+                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                        )*60*24*30
+                                        +
+                                        (
+                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( fi | date: 'mm') - ( di | date: 'mm')
+                                        )
+                                    :
+                                    ((di | date: 'M') == 2) && ((di | date: 'y')%4 == 0)
+                                    ?
+                                    (
+                                    ( fi | date: 'y' ) - ( di | date: 'y' )
+                                    )*60*24*29*12
+                                    +
+                                    (
+                                    ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                    )*60*24*29
+                                    +
+                                    (
+                                    ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                    )*60*24
+                                    +
+                                    (
+                                    ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                    )*60
+                                    +
+                                    (
+                                    ( fi | date: 'mm') - ( di | date: 'mm')
+                                    )
+                                    :
+                                    (
+                                    ( fi | date: 'y' ) - ( di | date: 'y' )
+                                    )*60*24*28*12
+                                    +
+                                    (
+                                    ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                    )*60*24*28
+                                    +
+                                    (
+                                    ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                    )*60*24
+                                    +
+                                    (
+                                    ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                    )*60
+                                    +
+                                    (
+                                    ( fi | date: 'mm') - ( di | date: 'mm')
+                                    )
+                                    ) < 0" class="alert alert-danger fade show">
+                                        l'heure du début de l'intervention ne peut être inférieur à l'heure d'arrêt {{
+                                        (
+                                        ((di | date: 'M') == 1) || ((di | date: 'M') == 3) ||
+                                        ((di | date: 'M') == 5) || ((di | date: 'M') == 7) ||
+                                        ((di | date: 'M') == 8) || ((di | date: 'M') == 10) ||
+                                        ((di | date: 'M') == 12)
+                                        ?
+                                        (
+                                        ( fi | date: 'y' ) - ( di | date: 'y' )
+                                        )*60*24*31*12
+                                        +
+                                        (
+                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                        )*60*24*31
+                                        +
+                                        (
+                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( fi | date: 'mm') - ( di | date: 'mm')
+                                        )
+                                        :
+                                        ((di | date: 'M') == 4) || ((di | date: 'M') == 6) ||
+                                        ((di | date: 'M') == 9) || ((di | date: 'M') == 11)
+                                        ?
+                                        (
+                                        ( fi | date: 'y' ) - ( di | date: 'y' )
+                                        )*60*24*30*12
+                                        +
+                                        (
+                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                        )*60*24*30
+                                        +
+                                        (
+                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( fi | date: 'mm') - ( di | date: 'mm')
+                                        )
+                                        :
+                                        ((di | date: 'M') == 2) && ((di | date: 'y')%4 == 0)
+                                        ?
+                                        (
+                                        ( fi | date: 'y' ) - ( di | date: 'y' )
+                                        )*60*24*29*12
+                                        +
+                                        (
+                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                        )*60*24*29
+                                        +
+                                        (
+                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( fi | date: 'mm') - ( di | date: 'mm')
+                                        )
+                                        :
+                                        (
+                                        ( fi | date: 'y' ) - ( di | date: 'y' )
+                                        )*60*24*28*12
+                                        +
+                                        (
+                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
+                                        )*60*24*28
+                                        +
+                                        (
+                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
+                                        )*60*24
+                                        +
+                                        (
+                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
+                                        )*60
+                                        +
+                                        (
+                                        ( fi | date: 'mm') - ( di | date: 'mm')
+                                        )
+                                        )
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="form-group">
+
+                            <div class="form-row">
+
+
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="machine" [ngClass]="{'red': suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched)}">Machine</label>
+                                        <!--<select id="machine" class="form-control form-control-sm" formControlName="idMachine" [ngClass]="{'fred': suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched)}"  >-->
+                                            <!--<option  value="{{continuePanne.idMachine}}">-->
+                                                <!--<b>{{continuePanne.idMachine}}</b>&nbsp; {{continuePanne.machine}}-->
+                                            <!--</option>-->
+                                        <!--</select>-->
+                                        <input type="text" [(ngModel)]="continuePanne.idMachine" formControlName="idMachine" class="form-control form-ontrol-sm" disabled>
+                                    </div>
+
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched) ">
+                                        <span>*</span> Veuillez sélectionner la machine en panne
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="op" [ngClass]="{'red': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">Opérateur de Production</label>
+
+                                        <select id="op" class="multiselect-dropdown form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]="selo" [ngClass]="{'fred': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">
+                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOperateur" (select)="selop = op">
+                                                {{op.nom}} &nbsp; {{op.prenom}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched) ">
+                                        <span>*</span> Veuillez sélectionner un Opérateur de production
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div formArrayName="idTechnicien">
+                            <div class="form-group ">
+                                <label>Maintenanciers</label> &nbsp;
+                                <span>
+                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddTech()"><i class="fa fa-plus-circle"></i> Ajouter</button>
+                                </span>
+                            </div>
+
+                            <div class="form-group" *ngFor="let tc of getTechni().controls; let i = index">
+
+                                <div class="form-row">
+                                    <div class="col-md-5 field_wrapper">
+                                        <div class="position-relative form-group">
+                                            <label for="mnt{{i+1}}" [ngClass]="{'red': suitePanForm.controls['idTechnicien'].invalid && (suitePanForm.controls['idTechnicien'].touched)}">Maintenancier N°{{i+1}}</label>
+                                            <select id="mnt{{i+1}}" class="multiselect-dropdown form-control form-control-sm"  [formControlName]="i" [ngClass]="{'fred': suitePanForm.controls['idTechnicien'].invalid && (suitePanForm.controls['idTechnicien'].touched)}">
+                                                <option *ngFor="let tec of techniciens" [ngValue]="tec.idTechnicien" >
+                                                    {{tec.nom}} &nbsp; {{tec.prenom}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched) ">
+                                            <span>*</span> Veuillez sélectionner un maintenancier
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative form-group"><label for="matM{{i+1}}" class="">Matricule</label><input
+                                                name="code" id="matM{{i+1}}" type="text" placeholder="BCP002"
+                                                class="form-control form-control-sm" disabled></div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="position-relative form-group"><label for="fct{{i+1}}" class="">Fonction</label><input
+                                                name="code" id="fct{{i+1}}" type="text" placeholder="Electricien" class="form-control form-control-sm" disabled></div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="position-relative form-group">
+                                            <label class="" style="color:transparent;">Fonction</label>
+                                            <button class="btn-transition btn btn-sm btn-shadow btn-outline-danger form-control-sm form-control" (click)="onMoveTech(i)">-</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="divider"></div>
+
+                        <div class="form-group">
+                            <label for="desc" [ngClass]="{'red': suitePanForm.controls['description'].invalid && (suitePanForm.controls['description'].touched)}">Description du Problème</label>
+                            <div>
+                                <textarea rows="2" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="desc" placeholder="Description..."  formControlName="description"  [ngClass]="{'fred': suitePanForm.controls['description'].invalid && (suitePanForm.controls['description'].touched)}" [(ngModel)]="continuePanne.description" disabled></textarea>
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['description'].invalid && (suitePanForm.controls['description'].touched) ">
+                                <span>*</span> Minimum 5 caractères sont requis
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="cause" [ngClass]="{'red': suitePanForm.controls['cause'].invalid && (suitePanForm.controls['cause'].touched)}">Cause du Problème</label>
+                            <div>
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="Cause..." formControlName="cause" [ngClass]="{'fred': suitePanForm.controls['cause'].invalid && (suitePanForm.controls['cause'].touched)}"></textarea>
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['cause'].invalid && (suitePanForm.controls['cause'].touched) ">
+                                <span>*</span> Minimum 5 caractères sont requis
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="detail" [ngClass]="{'red': suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched)}">Détails d'intervention</label>
+                            <div>
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="detail" placeholder="Détails..." formControlName="details" [ngClass]="{'fred': suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched)}"></textarea>
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched) ">
+                                <span>*</span> Minimum 5 caractères sont requis
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+                        <div class="form-group">
+                            <label class="form-check-label">Avez-vous utilisé des pièces de rechange? </label>
+                            <div class="">
+
+                                <div class="position-relative form-check-inline">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio4" name="pic" class="custom-control-input" formControlName="pic" value="non" [(ngModel)]="piece" checked >
+                                        <label class="custom-control-label" for="exampleCustomRadio4">Non</label>
+                                    </div>
+                                </div>
+                                <div class="position-relative form-check-inline">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio5" name="pic" class="custom-control-input" formControlName="pic" value="oui" [(ngModel)]="piece">
+                                        <label class="custom-control-label" for="exampleCustomRadio5">Oui </label>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" *ngIf="piece == 'oui' ">
+
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="piece" class="">Nom de la pièce</label>
+                                        <input name="code" id="piece" type="text" placeholder="Ampoule"
+                                               class="form-control form-control-sm" formControlName="outil" value="ou12" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="qte" class="">Quantité</label>
+                                        <input name="code" id="qte" type="number" placeholder="01"
+                                               class="form-control form-control-sm" formControlName="qte" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="ref" class="">Référence Magasin</label>
+                                        <input name="code" id="ref" type="text" placeholder="6000157"
+                                               class="form-control form-control-sm" formControlName="ref" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-pill btn-shadow btn btn-primary" (click)="endPanne()" >
+                                <i class="fa fa-save"></i> Boucler la panne
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="app-inner-layout__sidebar card">
+                <ul class="nav flex-column">
+                    <li class="pt-4 pl-3 pr-3 pb-3 nav-item">
+                        <a routerLink="/pannes">
+                            <button class="btn-pill btn-shadow btn btn-primary btn-block">Toutes les Pannes
+                            </button>
+                        </a>
+                    </li>
+                    <li class="nav-item-header nav-item">
+                        <i class="nav-link-icon fa fa-spinner fa-spin"> </i>&nbsp;&nbsp;
+                        <span>Liste des pannes non achevées</span>
+                    </li>
+
+                </ul>
+                <ul class="todo-list-wrapper list-group list-group-flush">
+                    <li style="cursor: pointer" class="list-group-item" >
+                        <div class="todo-indicator bg-warning"></div>
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left ml-1">
+                                    <div class="widget-heading">{{continuePanne.machine}}</div>
+                                    <div class="widget-subheading"><i>{{continuePanne.code}}</i></div>
+                                </div>
+                                <div class="widget-content-right widget-content-actions">
+                                    <button class="border-0 btn-transition btn btn-outline-success">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                    <button class="border-0 btn-transition btn btn-outline-primary">
+                                        <i class="fa fa-pen"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--<ng-template #mymodal let-modal>-->
+                            <!--<div class="modal-header">-->
+                                <!--<h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>-->
+                                <!--<div class="close vertical-timeline-element-content bounce-in" >-->
+                                    <!--<span class="timeline-title"><b>{{pan.machine}}</b></span>-->
+                                    <!--<p>{{pan.code}}</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="modal-body">-->
+                                <!--<div class="tabs-animation">-->
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-md-4 col-xl-4 ">-->
+                                            <!--<span class="timeline-title"><b>Heure Arrêt</b></span>-->
+                                            <!--<p>{{pan.heureArret | date: 'HH:mm'}}</p>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-md-4 col-xl-4 text-center">-->
+                                            <!--<span class="timeline-title"><b>Début Inter</b></span>-->
+                                            <!--<p>{{pan.debutInter | date: 'HH:mm'}}</p>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-md-4 col-xl-4 text-right">-->
+                                            <!--<span class="timeline-title"><b>Fin Inter</b></span>-->
+                                            <!--<p>{{pan.finInter | date: 'HH:mm'}}</p>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                                <!--<div class="scroll-area-lg">-->
+                                    <!--<div class="scrollbar-container">-->
+                                        <!--<div class="vertical-time-icons vertical-timeline vertical-timeline&#45;&#45;animate vertical-timeline&#45;&#45;one-column">-->
+                                            <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
+                                                    <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>-->
+                                                        <!--<p>{{pan.description}}</p></div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
+                                                    <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>-->
+                                                        <!--<p>{{pan.cause}}</p></div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
+                                                    <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>-->
+                                                        <!--<p>{{pan.details}}</p></div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>-->
+                                                    <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>-->
+                                                        <!--<p><b class="text-alternate">{{pan.matOp}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>-->
+                                                    <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>-->
+                                                        <!--<p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp; {{pt.preTec}} {{pt.nomTec}}-->
+                                                            <!--<span class="float-right">-->
+                                                           <!--{{pt.fonction}}-->
+                                                        <!--</span>-->
+                                                        <!--</p>-->
+
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div *ngIf="pan.outil" class="vertical-timeline-item vertical-timeline-element">-->
+                                                <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>-->
+                                                    <!--<div class="vertical-timeline-element-content bounce-in">-->
+                                                        <!--<h4 class="timeline-title">Outils utilisés</h4>-->
+                                                        <!--<p><b>{{pan.qte}}</b> {{pan.outil}}: <b class="text-dark">{{pan.ref}}</b></p>                                                           </div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="d-block clearfix modal-footer">-->
+                                <!--<div class="float-left">-->
+                                    <!--<button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning btn-sm">Modifier</button>-->
+                                <!--</div>-->
+                                <!--<div class="float-right">-->
+                                    <!--<button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger btn-sm" (click)="modal.close('save click')">Annuler</button>-->
+                                    <!--<a [routerLink]="['/continue-panne', pan.numero]">-->
+                                        <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Continuer</button>-->
+                                    <!--</a>-->
+                                <!--</div>-->
+                                <!--&lt;!&ndash;<button class="btn btn-primary" type="button" (click)="modal.close('save click')">Fermer</button>&ndash;&gt;-->
+                            <!--</div>-->
+                        <!--</ng-template>-->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

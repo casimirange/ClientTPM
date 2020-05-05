@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {TechniciensService} from "../../services/techniciens/techniciens.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Technicien} from "../../Models/techniciens";
-import  Swal from 'sweetalert2/dist/sweetalert2.js';
+// import  Swal from 'sweetalert2';
+// import  Swal from '@sweetalert2/ngx-sweetalert2';
 import 'sweetalert2/src/sweetalert2.scss'
 
 @Component({
@@ -149,11 +150,13 @@ export class TechniciensComponent implements OnInit {
               this.initTech();
               this.loadActiveTechniciens();
               this.loadDesactiveTechniciens();
+              this.loadTechniciens();
           }
       );
   }
 
     swl(tec: Technicien){
+      const Swal = require('sweetalert2');
         Swal.fire({
             title: 'Activation',
             text: "Voulez-vous activer/désactiver " + tec.nom.toUpperCase().bold(),

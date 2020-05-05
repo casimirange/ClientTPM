@@ -21,7 +21,9 @@ export class HeaderComponent implements OnInit {
   prenom: string;
   selectedUser: User;
   constructor(private authService: AuthService, private router: Router, private store: Store<PrincipalState>,
-              private userService: UserService) { }
+              private userService: UserService) {
+    this.selectedUser = new User();
+  }
 
   ngOnInit() {
     this.store.select('principal').subscribe(principal => {
