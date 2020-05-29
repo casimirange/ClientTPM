@@ -22,6 +22,10 @@ import {UserComponent} from "./Pages/user/user.component";
 import {PaddingLayoutComponent} from "./layout/base-layout/padding-layout/padding-layout.component";
 import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 import {SinglePanneComponent} from "./Pages/arrets/pannes/single-panne/single-panne.component";
+import {DashboardComponent} from "./Pages/dashboard/dashboard.component";
+import {ArretsComponent} from "./Pages/arrets/arrets/arrets.component";
+import {HeuresMachinesComponent} from "./Pages/heures/heures-machines/heures-machines.component";
+import {StatsGlobalComponent} from "./Pages/stats-global/stats-global.component";
 
 
 const routes: Routes = [
@@ -40,9 +44,11 @@ const routes: Routes = [
   // {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
   {path: 'machines', canActivate:[AuthGuardService], component: MachinesComponent },
   // {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
-  // {path: 'dashboard', canActivate:[AuthGuardService], component: DepartementsComponent },
+  {path: 'dashboard', canActivate:[AuthGuardService], component: DashboardComponent },
   {path: 'pannes', canActivate:[AuthGuardService], component: PannesComponent },
-  {path: 'utilisateurs', canActivate:[AuthGuardService], component: UserComponent }
+  {path: 'arrets', canActivate:[AuthGuardService], component: ArretsComponent },
+  {path: 'utilisateurs', canActivate:[AuthGuardService], component: UserComponent },
+  {path: 'statistiques/alpicam', canActivate:[AuthGuardService], component: StatsGlobalComponent }
 
     ]
   },
@@ -63,7 +69,7 @@ const routes: Routes = [
 
   {path: 'new-panne', canActivate:[AuthGuardService], component: NewPanneComponent },
   {path: 'new-panne/:numero', canActivate:[AuthGuardService], component: SinglePanneComponent },
-
+  {path: 'tempsMachine', canActivate:[AuthGuardService], component: HeuresMachinesComponent },
     ]
   },
   {path: '', redirectTo: 'pannes', pathMatch: 'full'},

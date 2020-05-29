@@ -9,6 +9,9 @@ export const API_URLS = {
     OPERATEUR_URL: 'http://localhost:8080/api/operateurs',
     MACHINE_URL: 'http://localhost:8080/api/machines',
     PANNES_URL: 'http://localhost:8080/api/pannes',
+    ARRETS_URL: 'http://localhost:8080/api/arrets',
+    DASHBOARD_URL: 'http://localhost:8080/api/dashboard',
+    HEURES_URL: 'http://localhost:8080/api/heures',
 
     USER_ROLE_URL: 'http://localhost:8080/api/user',
     USERS_URL: 'http://localhost:8080/crud_user',

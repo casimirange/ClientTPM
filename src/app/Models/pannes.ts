@@ -16,7 +16,10 @@ export class Pannes {
     heureArret?: Date;
     debutInter?: Date;
     finInter?: Date;
-    numero?: number;
+    heure_arret?: Date;
+    debut_inter?: Date;
+    fin_inter?: Date;
+    numero?: string;
     etat?: boolean;
 
 
@@ -26,7 +29,7 @@ export class Pannes {
 
     nomOP?: string;
     prenomOP?: string;
-    matOp?: number;
+    matOP?: number;
 
     idOperateur?: number;
     idTechnicien?: number;
@@ -42,6 +45,17 @@ export class Pannes {
     qte?: number;
 
     nbre?: number;
+    dt?: number;
+    wt?: number;
+    ttr?: number;
+    HT?: number;
+    AT?: number;
+    TDT?: number;
+    MDT?: number;
+    WT?: number;
+    MTTR?: number;
+    dep?: string;
+    idDepartement?: number;
 
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}

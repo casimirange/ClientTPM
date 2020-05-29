@@ -36,44 +36,24 @@
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">Accueil</li>
                 <li>
-                    <a href="#">
-                        <i class="metismenu-icon fa fa-desktop"></i>
+                    <a routerLinkActive="mm-active" routerLink="/dashboard">
+                        <i class="metismenu-icon pe-7s-display1"></i>
                         Tableau de bord
                     </a>
                 </li>
+                <li class="app-sidebar__heading">Statistiques</li>
                 <li>
-                    <a routerLinkActive="mm-active" href="#">
-                        <i class="metismenu-icon fa fa-cogs"></i>
-                        Machines
+                    <a routerLinkActive="mm-active" routerLink="/statistiques/alpicam">
+                        <i class="metismenu-icon pe-7s-graph3"></i>
+                        Alpicam
                     </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon fa fa-users-cog"></i>
-                        Entretien
-                        <i class="metismenu-state-icon fa fa-angle-down"></i>
-                    </a>
-                    <!--<ul>-->
-                        <!--<li>-->
-                            <!--<a routerLinkActive="mm-active" href="entretien.php">-->
-                                <!--<i class="metismenu-icon">-->
-                                <!--</i>Planing de l'entretien-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a routerLinkActive="mm-active" href="apps-chat.html">-->
-                                <!--<i class="metismenu-icon">-->
-                                <!--</i>Nouvelle Tâche-->
-                            <!--</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
                 </li>
                 <li class="app-sidebar__heading">UI Components</li>
                 <li>
                     <a href="#">
-                        <i class="metismenu-icon fa fa-calendar-check"></i>
+                        <i class="metismenu-icon pe-7s-exapnd2"></i>
                         TPM
-                        <i class="metismenu-state-icon fa fa-angle-down"></i>
+                        <i class="metismenu-state-icon pe-7s-angle-down"></i>
                     </a>
                     <!--<ul>-->
                         <!--<li>-->
@@ -92,31 +72,16 @@
                     <!--</ul>-->
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="metismenu-icon fa fa-users"></i>
-                        Employés
-                        <i class="metismenu-state-icon fa fa-angle-down"></i>
+                    <a routerLinkActive="mm-active" routerLink="/tempsMachine">
+                        <i class="metismenu-icon pe-7s-clock fa-spin"></i>
+                        Horaires Machines
                     </a>
-                    <!--<ul>-->
-                        <!--<li>-->
-                            <!--<a routerLinkActive="mm-active" href="components-tabs.html">-->
-                                <!--<i class="metismenu-icon">-->
-                                <!--</i>Créer un employé-->
-                            <!--</a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a routerLinkActive="mm-active" href="components-accordions.html">-->
-                                <!--<i class="metismenu-icon">-->
-                                <!--</i>Liste des employés-->
-                            <!--</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
                 </li>
                 <li>
                     <a href="#">
-                        <i class="metismenu-icon fa fa-clock fa-spin"></i>
+                        <i class="metismenu-icon pe-7s-stopwatch"></i>
                         Arrêts Machines
-                        <i class="metismenu-state-icon fa fa-angle-down"></i>
+                        <i class="metismenu-state-icon pe-7s-angle-down"></i>
                     </a>
                     <ul>
                         <!--<li>-->
@@ -141,22 +106,17 @@
                             <!--</ul>-->
                         <!--</li>-->
                         <li>
-                            <a href="#">
-                                <i class="metismenu-icon"></i>
-                                Pannes machines
-                                <i class="metismenu-state-icon fa fa-angle-down"></i>
-                            </a>
                             <ul>
                                 <li routerLinkActive="mm-active">
-                                    <a routerLinkActive="mm-active" routerLink="/new-panne">
+                                    <a routerLinkActive="mm-active" routerLink="/arrets">
                                         <i class="metismenu-icon">
-                                        </i>Nouvelle Panne
+                                        </i>Toutes les Arrêts
                                     </a>
                                 </li>
                                 <li routerLinkActive="mm-active">
                                     <a routerLinkActive="mm-active" routerLink="/pannes">
                                         <i class="metismenu-icon">
-                                        </i>Toutes les pannes
+                                        </i>Toutes les Pannes
                                     </a>
                                 </li>
                             </ul>
@@ -166,15 +126,15 @@
                 <li class="app-sidebar__heading">Administration</li>
                 <li>
                     <a routerLinkActive="mm-active" routerLink="/utilisateurs">
-                        <i class="metismenu-icon fa fa-key"></i>
+                        <i class="metismenu-icon pe-7s-door-lock"></i>
                         Droits d'accès
                     </a>
                 </li>
                 <li routerLinkActive="mm-active">
                     <a href="#">
-                        <i class="metismenu-icon fa fa-house-damage"></i>
+                        <i class="metismenu-icon pe-7s-settings"></i>
                         Configuration
-                        <i class="metismenu-state-icon fa fa-angle-down"></i>
+                        <i class="metismenu-state-icon pe-7s-angle-down"></i>
                     </a>
                     <ul>
                         <li>

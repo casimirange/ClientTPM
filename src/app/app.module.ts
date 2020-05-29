@@ -56,6 +56,21 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {ChartModule} from "angular2-chartjs";
 import { MyChartComponent } from './my-chart/my-chart.component';
+import { DashboardComponent } from './Pages/dashboard/dashboard.component';
+import {NgxDonutChartModule} from "ngx-doughnut-chart";
+import {NgxChartsModule} from "@swimlane/ngx-charts";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {DashboardService} from "./services/dashboard/dashboard.service";
+import {ChartsModule} from "ng2-charts";
+import { ChartComponent } from './dashboard/chart/chart.component';
+import {DatePipe} from "@angular/common";
+import {ArretsService} from "./services/arrets/arrets.service";
+import { ArretsComponent } from './Pages/arrets/arrets/arrets.component';
+import { HeuresMachinesComponent } from './Pages/heures/heures-machines/heures-machines.component';
+import {HeuresService} from "./services/heures/heures.service";
+import {NgApexchartsModule} from "ng-apexcharts";
+import { ApexComponent } from './dashboard/apexchart/apex.component';
+import { StatsGlobalComponent } from './Pages/stats-global/stats-global.component';
 
 
 @NgModule({
@@ -88,6 +103,12 @@ import { MyChartComponent } from './my-chart/my-chart.component';
     PaddingLayoutComponent,
     TitleComponent,
     MyChartComponent,
+    DashboardComponent,
+    ChartComponent,
+    ArretsComponent,
+    HeuresMachinesComponent,
+    ApexComponent,
+    StatsGlobalComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,7 +123,13 @@ import { MyChartComponent } from './my-chart/my-chart.component';
     NgbModule,
     Ng2SearchPipeModule,
     NgSelectModule,
-    ChartModule
+    ChartModule,
+    NgxDonutChartModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
+    ChartsModule,
+    NgApexchartsModule,
+
 
     // DpDatePickerModule,
     // AmazingTimePickerModule,
@@ -121,6 +148,10 @@ import { MyChartComponent } from './my-chart/my-chart.component';
     UserService,
     RoleService,
     AuthGuardService,
+    DashboardService,
+    DatePipe,
+    ArretsService,
+    HeuresService,
   // SweetAlert2LoaderService
   ],
   bootstrap: [

@@ -1,0 +1,311 @@
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row">
+    <div class="col-lg-5">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                {{operation == 'add' ? 'Nouvel Arrêt' :
+                operation == 'edit' ? 'Modifier l\'Arrêt' :
+                operation == 'remove' ? 'Supprimer l\'arrêt' : ''}}
+            </div>
+            <div class="card-body">
+                <div *ngIf="operation == 'add' || operation == 'edit'">
+                    <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="arretForm">
+
+                        <div class="position-relative form-group">
+                            <label for="date" [ngClass]="{'red': arretForm.controls['date'].invalid && (arretForm.controls['date'].touched)}">Date</label>
+                            <input type="date" id="date" class="form-control form-control-sm" formControlName="date" [ngClass]="{'fred': arretForm.controls['date'].invalid && (arretForm.controls['date'].touched)}" [(ngModel)]="selectedArret.date" />
+                        </div>
+                        <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['date'].invalid && (arretForm.controls['date'].touched) ">
+                            <span>*</span> Date invalide
+                        </div>
+
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="machine" [ngClass]="{'red': arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched)}">Machine</label>
+                                    <select id="machine" class="form-control form-control-sm" formControlName="machine"  [ngClass]="{'fred': arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched)}" [(ngModel)]="selectedArret.idMachine" >
+                                        <option *ngFor="let mach of machines"  [value]="mach.idMachine">
+                                            {{mach.nom}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched) ">
+                            <span>*</span> Veuillez sélectionner la machine en arrêt!
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cause" [ngClass]="{'red': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}">Motif de l'arrêt</label>
+                            <div>
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="cause..." formControlName="cause" [ngClass]="{'fred': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}" [(ngModel)]="selectedArret.cause"></textarea>
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched) ">
+                                <span>*</span> Minimum 5 caractères sont requis
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                                <div class="">
+                                    <div class="position-relative form-group">
+                                        <label for="ha" [ngClass]="{'red': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)}">Heure d'arrêt</label>
+                                        <input type="datetime-local" class="form-control form-control-sm"  id="ha" formControlName="debut" [(ngModel)]="selectedArret.debutArret" [ngClass]="{'fred': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)}" />
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched) ">
+                                        <span>*</span> Date et heure invalide
+                                    </div>
+                                </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="machine" class="">La panne a t-elle été réparée?</label>
+                            <div class="">
+
+                                <div class="position-relative form-check-inline">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio1" name="etat" class="custom-control-input" value="true" formControlName="etat"  required [(ngModel)]="selectedArret.etat">
+                                        <label class="custom-control-label" for="exampleCustomRadio1">Arrêt terminée</label>
+                                    </div>
+                                </div>
+                                <div class="position-relative form-check-inline">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio2" name="etat" class="custom-control-input" value="false" formControlName="etat" required [(ngModel)]="selectedArret.etat">
+                                        <label class="custom-control-label" for="exampleCustomRadio2">Arrêt en cours... </label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="">
+                                <div class="position-relative">
+                                    <label for="fa" [ngClass]="{'red': arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched)}">Fin de l'arrêt</label>
+                                    <input type="datetime-local" class="form-control form-control-sm"  id="fa" formControlName="fin" [(ngModel)]="selectedArret.finArret" [ngClass]="{'fred': arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched)}" />
+                                </div>
+                                <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched) ">
+                                    <span>*</span> Date et heure invalide
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" (click)="operation == 'add' ? addArret() : updateArret()  " >
+                                {{operation == 'add' ? 'Enregistrer' :
+                                operation == 'edit' ? 'Modifier ' : ''}}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Liste des Arrêts
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-focus" (click)="operation = 'add'; initArret();" >Ajouter</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Machine</th>
+                        <th>Motif</th>
+                        <th>Debut</th>
+                        <th>Fin</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="widget-content" *ngFor="let arret of arrets | paginate:{itemsPerPage: 7, currentPage:p}">
+                        <td>{{ arret.date  | date: 'dd/MM/y'}}</td>
+                        <td>{{arret.machine}}</td>
+                        <td>{{arret.cause}}</td>
+                        <td>{{arret.debutArret | date: 'HH:mm'}}</td>
+                        <td>
+                            <div [ngClass]="
+            arret.etat == false ? 'badge badge-warning' : ''">
+                            {{arret.etat == false ? 'en cours...' :
+                            (arret.finArret | date: 'HH:mm')}}</div>
+                        </td>
+                        <td class="text-center">
+                            <div role="group" class="btn-group-sm btn-group">
+                                <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedArret = arret;"><i class="fa fa-pencil"></i></button>
+                                <button class="btn  btn-danger" (click)="newArret= arret ;swl(arret)" ><i class="fa fa-times"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">
+                        <i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;
+                    <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>
+                </div>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                    <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
+                    <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!--<div class="col-lg-6">-->
+        <!--<div class="main-card mb-3 card">-->
+            <!--<div class="card-header">-->
+                <!--<table class="table mb-0 ">-->
+                    <!--<tr>-->
+                        <!--<td>Liste des Techniciens Actifs</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+            <!--</div>-->
+            <!--<div class="card-body">-->
+                <!--<table class="mb-0 table table-hover">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Matricule</th>-->
+                        <!--<th>Nom</th>-->
+                        <!--<th>Prénom</th>-->
+                        <!--<th>Fonction</th>-->
+                        <!--<th>Etat</th>-->
+                        <!--<th>Actions</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr class="widget-content" *ngFor="let atech of ActiveTec | paginate:{itemsPerPage: 10, currentPage:p}">-->
+                        <!--<th scope="row" >{{ atech.matricule}}</th>-->
+                        <!--<td>{{atech.nom}}</td>-->
+                        <!--<td>{{atech.prenom}}</td>-->
+                        <!--<td>{{atech.fonction}}</td>-->
+                        <!--<td>-->
+                            <!--<div [ngClass]="-->
+            <!--atech.etat == true ? 'badge badge-success' : 'badge badge-focus'">{{atech.etat}}</div>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<div class="">-->
+                                <!--<a [routerLink]="['/techniciens', atech.idTechnicien]">-->
+                                    <!--<button class="border-0 btn btn-outline-success">-->
+                                        <!--<i class="fa fa-eye"></i>-->
+                                    <!--</button>-->
+                                <!--</a>-->
+                                <!--<button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = atech;">-->
+                                    <!--<i class="fa fa-pencil"></i>-->
+                                <!--</button>-->
+                                <!--<button class="border-0 btn btn-outline-danger" (click)="selectedTech = atech; swl(atech)" >-->
+                                    <!--<i class="fa fa-times"></i>-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<div class="float-right">-->
+                    <!--<ul class="pagination pagination-sm mb-0">-->
+                        <!--<li>-->
+                            <!--<pagination-controls (pageChange)="p=$event"-->
+                                                 <!--autoHide = "true"-->
+                                                 <!--responsive = "true"-->
+                                                 <!--previousLabel = "Précédent"-->
+                                                 <!--nextLabel = "Suivant">-->
+                            <!--</pagination-controls>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-lg-6">-->
+        <!--<div class="main-card mb-3 card">-->
+            <!--<div class="card-header">-->
+                <!--<table class="table mb-0 ">-->
+                    <!--<tr>-->
+                        <!--<td>Liste des Techniciens Désactivés</td>-->
+                    <!--</tr>-->
+                <!--</table>-->
+            <!--</div>-->
+            <!--<div class="card-body">-->
+                <!--<table class="mb-0 table table-hover">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Matricule</th>-->
+                        <!--<th>Nom</th>-->
+                        <!--<th>Prénom</th>-->
+                        <!--<th>Fonction</th>-->
+                        <!--<th>Etat</th>-->
+                        <!--<th>Actions</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr class="widget-content" *ngFor="let dtech of DesactiveTec | paginate:{itemsPerPage: 10, currentPage:p}">-->
+                        <!--<th scope="row" >{{ dtech.matricule}}</th>-->
+                        <!--<td>{{dtech.nom}}</td>-->
+                        <!--<td>{{dtech.prenom}}</td>-->
+                        <!--<td>{{dtech.fonction}}</td>-->
+                        <!--<td>-->
+                            <!--<div [ngClass]="-->
+            <!--dtech.etat == true ? 'badge badge-success' : 'badge badge-focus'">{{dtech.etat}}</div>-->
+                        <!--</td>-->
+                        <!--<td>-->
+                            <!--<div class="">-->
+                                <!--<a [routerLink]="['/techniciens', dtech.idTechnicien]">-->
+                                    <!--<button class="border-0 btn btn-outline-success">-->
+                                        <!--<i class="fa fa-eye"></i>-->
+                                    <!--</button>-->
+                                <!--</a>-->
+                                <!--<button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = dtech;">-->
+                                    <!--<i class="fa fa-pencil"></i>-->
+                                <!--</button>-->
+                                <!--&lt;!&ndash;<button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech; showModal=true" data-toggle="modal" data-target="exampleModal">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<i class="fa fa-pencil"></i>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="checkbox" checked data-toggle="toggle" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger" data-size="mini" >&ndash;&gt;-->
+                                <!--<button class="border-0 btn btn-outline-danger" (click)="selectedTech = dtech; swl(dtech)" >-->
+                                    <!--<i class="fa fa-times"></i>-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+                <!--<div class="float-right">-->
+                    <!--<ul class="pagination pagination-sm mb-0">-->
+                        <!--<li>-->
+                            <!--<pagination-controls (pageChange)="p=$event"-->
+                                                 <!--autoHide = "true"-->
+                                                 <!--responsive = "true"-->
+                                                 <!--previousLabel = "Précédent"-->
+                                                 <!--nextLabel = "Suivant">-->
+                            <!--</pagination-controls>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+
+

@@ -7667,6 +7667,10 @@ a.bg-success:hover, a.bg-success:focus, button.bg-success:hover, button.bg-succe
     background-color: #16aaff !important
 }
 
+.bg-jaune {
+    background-color: #d9d625 !important
+}
+
 a.bg-info:hover, a.bg-info:focus, button.bg-info:hover, button.bg-info:focus {
     background-color: #0090e2 !important
 }
@@ -10992,6 +10996,10 @@ a.text-success:hover, a.text-success:focus {
     color: #16aaff !important
 }
 
+.text-jaune {
+    color: #d9d625 !important
+}
+
 a.text-info:hover, a.text-info:focus {
     color: #007fc9 !important
 }
@@ -12364,7 +12372,12 @@ a, button, .btn {
     width: 42px;
     overflow: hidden;
     position: relative;
-    transition: all 0.3s ease-in-out
+    transition: all 0.3s ease-in-out;
+
+    width: 290px;
+    border-radius: 50px;
+    background: rgba(0, 0, 0, 0.05);
+    transition: all 0.5s cubic-bezier(0, 0.105, 0.035, 1.57)
 }
 
 .search-wrapper .input-holder .search-input {
@@ -17728,6 +17741,10 @@ a.avatar-icon-wrapper:hover .avatar-icon {
 
 .card-shadow-info {
     box-shadow: 0 0.46875rem 2.1875rem rgba(22, 170, 255, 0.03), 0 0.9375rem 1.40625rem rgba(22, 170, 255, 0.03), 0 0.25rem 0.53125rem rgba(22, 170, 255, 0.05), 0 0.125rem 0.1875rem rgba(22, 170, 255, 0.03)
+}
+
+.card-shadow-jaune {
+    box-shadow: 0 0.46875rem 2.1875rem rgba(217, 214, 37, 0.03), 0 0.9375rem 1.40625rem rgba(217, 214, 37, 0.03), 0 0.25rem 0.53125rem rgba(217, 214, 37, 0.05), 0 0.125rem 0.1875rem rgba(217, 214, 37, 0.03)
 }
 
 .card-shadow-warning {

@@ -90,13 +90,13 @@
     </div>
     <div class="col-lg-7">
         <div class="main-card mb-3 card">
-            <div class="card-header bg-info">
-                <table class="table mb-0 ">
-                    <tr>
-                        <td style="color: #fff;">Liste des Départements</td>
-                        <td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initDep();">Ajouter</button></td>
-                    </tr>
-                </table>
+            <div class="card-header">
+                Liste des Départements
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-focus" (click)="operation = 'add'; initDep();" >Ajouter</button>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <table class="mb-0 table table-hover">

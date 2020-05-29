@@ -1,0 +1,174 @@
+<app-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-title>
+
+<div class="">
+
+    <div class="app-inner-layout">
+        <div class="app-inner-layout__wrapper">
+            <div class="app-inner-layout__content card">
+                <div class="card-body">
+                    <h5 class="card-title">Enregistrer les heures des machines</h5>
+                    <form [formGroup]="heurForm" id="signupForm" class="col-md-10 mx-auto"  >
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="date" [ngClass]="{'red': heurForm.controls['date'].invalid && (heurForm.controls['date'].touched)}">Date</label>
+                                        <input type="date" id="date" class="form-control form-control-sm" formControlName="date" [ngClass]="{'fred': heurForm.controls['date'].invalid && (heurForm.controls['date'].touched)}" />
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="heurForm.controls['date'].invalid && (heurForm.controls['date'].touched) ">
+                                        <span>*</span> Date invalide
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="heure" [ngClass]="{'red': heurForm.controls['heure'].invalid && (heurForm.controls['heure'].touched)}">Heure de Travail</label>
+                                        <input type="text" id="heure" class="form-control form-control-sm" formControlName="heure" [ngClass]="{'fred': heurForm.controls['heure'].invalid && (heurForm.controls['heure'].touched)}" />
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="heurForm.controls['heure'].invalid && (heurForm.controls['heure'].touched) ">
+                                        <span>*</span> Heure invalide
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div formArrayName="idMachine">
+                            <div class="form-group" *ngFor="let tc of getMachine().controls; let i = index">
+
+                                <div class="form-row">
+                                    <div class="col-md-5 field_wrapper">
+                                        <div class="position-relative form-group">
+                                            <label for="mnt{{i+1}}" [ngClass]="{'red': heurForm.controls['idMachine'].invalid && (heurForm.controls['idMachine'].touched)}">Machine N°{{i+1}}</label>
+                                            <select id="mnt{{i+1}}" class="multiselect-dropdown form-control form-control-sm"  [formControlName]="i" [ngClass]="{'fred': heurForm.controls['idMachine'].invalid && (heurForm.controls['idMachine'].touched)}">
+                                                <option *ngFor="let tec of machines" [ngValue]="tec.idMachine" >
+                                                    {{tec.nom}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div style="color: #f65656; font-style: italic;" *ngIf="heurForm.controls['idMachine'].invalid && (heurForm.controls['idMachine'].touched) ">
+                                            <span>*</span> Veuillez sélectionner une machine
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="position-relative form-group">
+                                            <label class="" style="color:transparent;">Fonction</label>
+                                            <button class="btn-transition btn btn-sm btn-shadow btn-outline-danger form-control-sm form-control" (click)="onMoveMachine(i)">-</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group ">
+                                <label>Machines</label> &nbsp;
+                                <span>
+                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddMachine()"><i class="fa fa-plus-circle"></i> Ajouter</button>
+                                </span> &nbsp;
+                                <span>
+                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-secondary " (click)="onResetMachine()"><i class="fa fa-times-circle"></i> Reset</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn-pill btn-shadow btn btn-primary" (click)="addHeure()" [disabled]="heurForm.invalid || heurForm.pristine ">
+                                <i class="fa fa-save"></i> Enregistrer
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="divider"></div>
+
+                    <div class="table-responsive">
+                        <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                            <thead>
+                            <tr>
+                                <th class="">Date</th>
+                                <th>Machine</th>
+                                <th class="">Code</th>
+                                <th class="text-center">Heures</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr style="cursor: pointer" *ngFor="let heure of heures | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; " (click)="selectedHeure = heure;">
+
+                                <td class=" text-muted">{{ heure.date  | date: 'dd/MM/y'}}</td>
+                                <td>
+                                    <div class="widget-heading">{{heure.nom}}</div>
+                                </td>
+                                <td>
+                                    <div class="widget-subheading opacity-7">{{heure.code}}</div>
+                                </td>
+                                <td class="text-left" style="white-space: nowrap;overflow: hidden;
+text-overflow: ellipsis;" >{{heure.heure}}</td>
+                                <td class="text-center">
+                                <div role="group" class="btn-group-sm btn-group">
+                                <button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>
+                                <button class="btn  btn-danger" (click)="swl()"><i class="fa fa-times"></i></button>
+                                </div>
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+                        <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="heures < 1">Aucune Heure trouvée !</p>
+                    </div>
+
+                </div>
+                <div class="d-block clearfix card-footer">
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                    <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
+                    <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
+                </div>
+            </div>
+            </div>
+            <div class="app-inner-layout__sidebar card">
+                <ul class="nav flex-column">
+                    <li class="pt-4 pl-3 pr-3 pb-3 nav-item">
+                    <button class="btn-pill btn-shadow btn btn-light btn-block">
+                        <i class="nav-link-icon fa fa-calendar-check"> </i>&nbsp;&nbsp;
+                        <span>Journée du {{(day)| date: 'dd/MM/y'}}</span>
+                    </button>
+
+                    </li>
+                    <li class="nav-item-header nav-item">
+                        Machines ayant travaillé
+                        <span class="ml-auto float-right">{{heures.length}} / {{machines.length}}</span>
+                    </li>
+                    <li class="nav-item-divider nav-item"></li>
+                    <li class="nav-item" *ngFor="let heure of heures">
+                        <button type="button" tabindex="0" class="d-flex align-items-center dropdown-item nav-link">
+                            <i class="nav-link-icon pe-7s-config"></i>
+                            <span>{{heure.nom}} <small><b>{{heure.code}}</b></small> </span>
+                            <div class="ml-auto badge badge-light float-right">
+                                {{heure.heure}} <small>h</small>
+                            </div>
+                        </button>
+                    </li>
+
+                    <li class="nav-item-divider nav-item"></li>
+                    <li class="nav-item-header nav-item">
+                            Temps Total
+                            <span class="ml-auto badge badge-light float-right text-primary">
+                                50 <small>h</small>
+                            </span>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

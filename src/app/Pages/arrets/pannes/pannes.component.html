@@ -1,10 +1,22 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
-
+<div class="d-flex flex-wrap justify-content-between">
+    <div>
+        <button type="button" class="btn btn-shadow btn-wide btn-primary">
+                                <span class="btn-icon-wrapper pr-2 opacity-7">
+                                    <i class="fa fa-plus fa-w-20"></i>
+                                </span>
+            New thread
+        </button>
+    </div>
+    <div class="col-12 col-md-3 p-0 mb-3">
+        <input type="text" class="form-control" placeholder="Search...">
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-12">
-        <div class="main-card mb-3 card ">
+        <div class="main-card mb-3 card " #content>
             <div class="card-header">
                 Liste des Pannes
                 <div class="btn-actions-pane-right">
@@ -97,7 +109,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: 7, currentPage:p} " (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
+                    <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; " (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
                         <ng-template #mymodal let-modal>
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
@@ -162,7 +174,7 @@
                                             <div class="vertical-timeline-item vertical-timeline-element">
                                                 <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
-                                                        <p><b class="text-alternate">{{pan.matOp}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
+                                                        <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -212,70 +224,78 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="text-left" >{{pan.cause}}</td>
+                        <td class="text-left" style="white-space: nowrap;overflow: hidden;
+text-overflow: ellipsis;" >{{pan.cause}}</td>
 
 
 
-                        <td class="text-center" >{{ pan.heureArret | date: 'HH:mm'}}</td>
-                        <td class="text-center" >{{pan.debutInter | date: 'HH:mm'}}</td>
-                        <td class="text-center" >{{pan.finInter | date: 'HH:mm'}}</td>
-                        <td [ngClass]="{'text-center': true, 'wtd':
-            ((
-                            ( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )
-                            )*60*24
-                            +
-                            (
-                            ( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
-                            )*60
-                            +
-                            (
-                            ( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')
-                            )) >= 25
+                        <td class="text-center" >
+                            <!--<div *ngIf="tails > 1">-->
+                                <!--<span>{{times[0].heureArret | date: 'HH:mm'}}</span>-->
+                            <!--</div>-->
+                            {{ pan.heure_arret | date: 'HH:mm'}}
+                        </td>
+                        <td class="text-center" >
+                            {{pan.debut_inter | date: 'HH:mm'}}
+
+                        </td>
+                        <td class="text-center" >
+<!--<div *ngIf="tails < 2">-->
+                                <!--<span *ngFor="let hp of ko">{{hp.finInter | date: 'HH:mm'}}</span>-->
+                            <!--</div>-->
+
+                            {{pan.fin_inter | date: 'HH:mm'}}
+                        </td>
+                        <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 25
             }">
-                            {{
-                            (
-                            ( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )
-                            )*60*24
-                            +
-                            (
-                            ( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
-                            )*60
-                            +
-                            (
-                            ( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')
-                            )
-                            }}
+                            <!--{{-->
+                            <!--(-->
+                            <!--( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )-->
+                            <!--)*60*24-->
+                            <!--+-->
+                            <!--(-->
+                            <!--( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )-->
+                            <!--)*60-->
+                            <!--+-->
+                            <!--(-->
+                            <!--( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')-->
+                            <!--)-->
+                            <!--}}-->
+
+                            {{pan.wt}}
 
                         </td>
                         <td class="text-center">
-                            {{
-                            (
-                            ( pan.finInter | date: 'dd' ) - ( pan.debutInter | date: 'dd' )
-                            )*60*24
-                            +
-                            (
-                            ( pan.finInter | date: 'HH' ) - ( pan.debutInter | date: 'HH' )
-                            )*60
-                            +
-                            (
-                            ( pan.finInter | date: 'mm') - ( pan.debutInter | date: 'mm')
-                            )
-                            }}
+                            <!--{{-->
+                            <!--(-->
+                            <!--( pan.finInter | date: 'dd' ) - ( pan.debutInter | date: 'dd' )-->
+                            <!--)*60*24-->
+                            <!--+-->
+                            <!--(-->
+                            <!--( pan.finInter | date: 'HH' ) - ( pan.debutInter | date: 'HH' )-->
+                            <!--)*60-->
+                            <!--+-->
+                            <!--(-->
+                            <!--( pan.finInter | date: 'mm') - ( pan.debutInter | date: 'mm')-->
+                            <!--)-->
+                            <!--}}-->
+                            {{pan.ttr}}
                         </td>
                         <td class="text-center">
-                            {{
-                            (
-                            ( pan.finInter | date: 'd' ) - ( pan.heureArret | date: 'd' )
-                            )*60*24
-                            +
-                            (
-                            ( pan.finInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
-                            )*60
-                            +
-                            (
-                            ( pan.finInter | date: 'mm') - ( pan.heureArret | date: 'mm')
-                            )
-                            }}
+                            <!--{{-->
+                            <!--(-->
+                            <!--( pan.finInter | date: 'd' ) - ( pan.heureArret | date: 'd' )-->
+                            <!--)*60*24-->
+                            <!--+-->
+                            <!--(-->
+                            <!--( pan.finInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )-->
+                            <!--)*60-->
+                            <!--+-->
+                            <!--(-->
+                            <!--( pan.finInter | date: 'mm') - ( pan.heureArret | date: 'mm')-->
+                            <!--)-->
+                            <!--}}-->
+                            {{pan.dt}}
                         </td>
                         <!--<td class="text-center">-->
                             <!--<div role="group" class="btn-group-sm btn-group">-->
@@ -284,13 +304,16 @@
                             <!--</div>-->
                         <!--</td>-->
                     </tr>
+
                     </tbody>
-                    <p style="color: grey; font-size: 2.2rem; text-align: center" *ngIf="pannes < 1">Aucune Panne trouvée pour ce critère de recherche!</p>
+
                 </table>
+                <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="pannes < 1">Aucune Panne trouvée !</p>
             </div>
             <div class="d-block clearfix card-footer">
                 <div class="float-left">
-                <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus "><i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;
+                <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">
+                    <i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;
                 <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>
                 </div>
                 <div class="float-right">
@@ -582,10 +605,13 @@
             <div class="tab-content">
                 <div class="tab-pane fade active show" id="tab-eg-55">
                     <div class="widget-chart p-0">
-                        <app-my-chart
-                                [type]="'line'"
-                                [data]="dataPanne"
-                        ></app-my-chart>
+                        <div style="height: 400px;">
+                            <app-my-chart
+                              [type]="'line'"
+                              [data]="dataPanne"
+                            ></app-my-chart>
+                        </div>
+
                         <div class="widget-chart-content">
                             <div class="widget-description mt-0 text-warning">
                                 <i class="fa fa-arrow-left"></i>

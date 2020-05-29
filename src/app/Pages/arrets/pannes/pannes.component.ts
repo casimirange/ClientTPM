@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {PannesService} from "../../../services/pannes/pannes.service";
 import {Pannes} from "../../../Models/pannes";
@@ -8,6 +8,7 @@ import {MachinesService} from "../../../services/machines/machines.service";
 // import  Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/src/sweetalert2.scss'
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-pannes',
@@ -15,10 +16,9 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./pannes.component.css']
 })
 export class PannesComponent implements OnInit {
-
   headings = 'Pannes';
   subheadings = 'Consultez la liste des pannes survenues';
-  icons = 'fa fa-wrench icon-gradient bg-heavy-rain';
+  icons = 'pe-7s-tools icon-gradient bg-heavy-rain';
 
   searchPanForm: FormGroup;
   selectPanForm: FormGroup;
@@ -30,7 +30,10 @@ export class PannesComponent implements OnInit {
   times: Pannes[];
   selectedPanne: Pannes;
   tail: number;
+  tails: number;
   count: number;
+
+  @ViewChild('content', {static: false}) content: ElementRef;
 
   machines: Machine[];
     closeResult: any;
@@ -53,7 +56,7 @@ export class PannesComponent implements OnInit {
   ngOnInit() {
     this.loadPannes();
     this.countAllPannes();
-    // this.loadTimePannes();
+    this.loadTimePannes();
     // this.loadTechPannes();
     // this.TodayPannes();
     this.selectedPanne = new Pannes();
@@ -86,6 +89,9 @@ export class PannesComponent implements OnInit {
     this.panneService.getAllPannes().subscribe(
         data => {
           this.pannes = data;
+            for (let pin of data){
+                this.selectedPanne.numero = pin.numero;
+            }
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -95,6 +101,7 @@ export class PannesComponent implements OnInit {
           console.log(this.pannes);
         }
     );
+
 
   }
 
@@ -140,19 +147,16 @@ export class PannesComponent implements OnInit {
   }
 
   loadTimePannes(){
+      this.panneService.getTimePannes().subscribe(
+          data => {
+              this.times = data;
+              this.tails = this.times.length;
+              for (let pin of data){
+                  this.selectedPanne.heureArret = pin.heureArret;
+              }
 
-    this.panneService.getTimePannes().subscribe(
-        data => {
-          this.times = data;
-        },
-        error => {
-          console.log('une erreur a été détectée!')
-        },
-        () => {
-          console.log('chargement des timespanes');
-          console.log(this.times);
-        }
-    );
+          }
+      );
   }
 
   loadTechPannes(){
@@ -370,6 +374,23 @@ export class PannesComponent implements OnInit {
       this.dataPanne.datasets.push(datasetNbrePanne);
 
 
+  }
+
+  makePdf(){
+      // var doc = new jsPDF();
+      // doc.addHTML(this.content.nativeElement, function () {
+      //    doc.save("yes");
+      // });
+      var doc = new jsPDF({
+          orientation: 'landscape',
+          unit: 'in',
+          format: [4, 2]
+      });
+
+      // doc.addHTML(this.content.nativeElement, function () {
+      //    doc.save("yes");
+      // });
+      doc.save(this.content.nativeElement)
   }
 
 }

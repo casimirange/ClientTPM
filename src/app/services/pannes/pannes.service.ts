@@ -19,11 +19,11 @@ export class PannesService {
     return this.http.get(API_URLS.PANNES_URL + `/all`);
   }
 
-  getTechPannes(numero: number): Observable<any>{
+  getTechPannes(numero: string): Observable<any>{
     return this.http.get(API_URLS.PANNES_URL + `/tech/${numero}`);
   }
 
-  getHeurePannes(numero: number): Observable<any>{
+  getHeurePannes(numero: string): Observable<any>{
     return this.http.get(API_URLS.PANNES_URL + `/heure/${numero}`);
   }
 
@@ -75,6 +75,10 @@ export class PannesService {
     return this.http.get(API_URLS.PANNES_URL + `/count`);
   }
 
+  getCountDepPannes(): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/countDep`);
+  }
+
   getCountTodayPannes(): Observable<any>{
     return this.http.get(API_URLS.PANNES_URL + `/countoday`);
   }
@@ -87,15 +91,15 @@ export class PannesService {
     return this.http.put(API_URLS.PANNES_URL, panne);
   }
 
-  deletePannes(numero: number): Observable<any>{
+  deletePannes(numero: string): Observable<any>{
     return this.http.delete(API_URLS.PANNES_URL + `/${numero}`);
   }
 
-  showPannes(numero: number): Observable<any>{
+  showPannes(numero: string): Observable<any>{
     return this.http.get(API_URLS.PANNES_URL + `/${numero}`);
   }
 
-  activePanne(numero: number): Observable<any>{
+  activePanne(numero: string): Observable<any>{
     return this.http.put(API_URLS.PANNES_URL+ `/${numero}`, '');
   }
 }

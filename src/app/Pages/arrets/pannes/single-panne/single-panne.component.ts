@@ -239,7 +239,7 @@ export class SinglePanneComponent implements OnInit {
 
   showPanne() {
     this.route.params.subscribe(params => {
-      this.panneService.showPannes(Number.parseInt(params['numero'])).subscribe(
+      this.panneService.showPannes(params['numero']).subscribe(
           res => {
             this.continuePanne = res;
             // headings = this.continuePanne.machine;

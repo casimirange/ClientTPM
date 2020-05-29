@@ -36,6 +36,11 @@ export class NewPanneComponent implements OnInit {
     unPan: Pannes[];
     closeResult: any;
     Tpannes: Pannes[];
+
+    wt: number;
+    ttr: number;
+    dt: number;
+
     // @ViewChild('dayPicker') datePicker: DatePickerComponent;
 
     constructor(private machineService: MachinesService,
@@ -87,11 +92,20 @@ export class NewPanneComponent implements OnInit {
         this.loadActiveTechniciens();
         this.loadUnfinishedPannes();
         this.loadTechPannes(this.panne);
-
-
     }
 
     addPanne() {
+
+        var result           = '';
+        var result1           = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
+
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < 5; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        var result2 = result+''+result1;
+        console.log('random nber '+ result2)
 
         const nm = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
 
@@ -128,9 +142,23 @@ export class NewPanneComponent implements OnInit {
             this.pn.qte = this.panForm.controls['qte'].value;
             this.pn.ref = this.panForm.controls['ref'].value;
             this.pn.etat = this.panForm.controls['etat'].value;
-            this.pn.numero = nm;
+            this.pn.numero = result2;
 
-            //
+
+            var fi = new Date(this.pn.finInter);
+            var ha = new Date(this.pn.heureArret);
+            var di = new Date(this.pn.debutInter);
+            this.wt = (di.getTime() - ha.getTime())/(1000*60);
+            this.ttr = (fi.getTime() - di.getTime())/(1000*60);
+            this.dt = (fi.getTime() - ha.getTime())/(1000*60);
+            // var dt2 = wt + ttr;
+            // console.log('wt ' + wt);
+            // console.log('ttr ' + ttr);
+            // console.log('dt ' + dt+ 'ou encore '+ dt2);
+            this.pn.wt = this.wt;
+            this.pn.ttr = this.ttr;
+            this.pn.dt = this.dt;
+
             this.panneService.addPannes(this.pn).subscribe(
                 res => {
                     if (this.panForm.controls['etat'].value == false){
