@@ -1,6 +1,9 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
+import {ChartDataSets, ChartOptions, ChartTitleOptions, ChartType} from "chart.js";
 import {BaseChartDirective, Color, Label} from "ng2-charts";
+import {TitleComponent} from "../../layout/page-title/title/title.component";
+import {TitleCasePipe} from "@angular/common";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-chart',

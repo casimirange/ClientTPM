@@ -3,7 +3,11 @@ import {DashboardService} from "../../services/dashboard/dashboard.service";
 import {Pannes} from "../../Models/pannes";
 import {DatePipe} from "@angular/common";
 import {Color} from "ng2-charts";
-// import {ApexCharts} from 'ng-apexcharts'
+import {ApexXAxis, NgApexchartsModule} from "ng-apexcharts";
+import {AlpicamService} from "../../services/alpicam/alpicam.service";
+import {DepartementsService} from "../../services/departements/departements.service";
+import {Departement} from "../../Models/departement";
+import {ApexOptions} from 'apexcharts'
 
 
 @Component({
@@ -16,6 +20,7 @@ export class StatsGlobalComponent implements OnInit {
   subheadings = 'Découvrez les données statistiques de l\'entreprise ';
   icons = 'pe-7s-graph icon-gradient bg-royal';
 
+  departements: Departement[];
   pannes: Pannes[];
   cdount: number;
   cdpannes: Pannes[];
@@ -40,6 +45,13 @@ export class StatsGlobalComponent implements OnInit {
     labels: [],
     datasets: []
   };
+
+  catP = {
+    labels: [],
+    datasets: []
+  };
+
+  dta = [];
 
   public colors: Color[] = [
     { // grey
@@ -77,19 +89,188 @@ export class StatsGlobalComponent implements OnInit {
       pointHoverBackgroundColor: '#ff4560',
       pointHoverBorderColor: 'rgba(225,69,96,0.8)'
     }
-  ]
+  ];
+  public labs = {
+    categories: []
+  };
+
+  test = {
+    datasets: []
+  };
+
+  public datas1 = {
+    categories: []
+  };
+
+  test1 = {
+    series: [],
+    labels: [],
+  };
+
+  test2 = [];
+
+  public type = {
+    height: 'auto',
+    type: "bar",
+    zoom: {
+      enabled: false
+    }
+  }
+  public pie = {
+    height: 200,
+    type: 'pie',
+    zoom: {
+      enabled: false
+    }
+  };
+  title = {
+    text: "Répartition des Types de Panne",
+    align: "left"
+  };
+  // series = [1,2,3];
+  // labels = ['2f', '4g', 'E+'];
 
   constructor(private dashboardService: DashboardService,
-              private datePipe: DatePipe,) { }
+              private datePipe: DatePipe,
+              private departementService: DepartementsService,
+              private alpicamService: AlpicamService) { }
 
   ngOnInit() {
     this.mdtAlpicam();
     this.mtbfAlpicam();
     this.radialBar();
     this.paretoAlpi();
+    this.typePanne();
+    this.loadDepartements();
   }
 
   mdtAlpicam(){
+    // const wt = {
+    //   data: [],
+    //   label: "WT",
+    //   yAxisID: 'y-axis-0',
+    //   type: 'bar',
+    //   order: 1,
+    //   stacked: true
+    // };
+    // const ttr = {
+    //   data: [],
+    //   label: "TTR",
+    //   yAxisID: 'y-axis-0',
+    //   lineChartColors: {
+    //     backgroundColor: 'rgba(255,255,255,0.2)',
+    //     borderColor: 'rgba(255,255,255,1)',
+    //     pointBackgroundColor: 'rgba(255,255,255,1)',
+    //     pointBorderColor: '#fff',
+    //     pointHoverBackgroundColor: '#fff',
+    //     pointHoverBorderColor: 'rgba(255,255,255,1)'
+    //   },
+    //   type: 'bar',
+    //   order: 1,
+    //   stacked: true
+    // };
+    //
+    // const mdt = {
+    //   data: [],
+    //   label: "MDT",
+    //   yAxisID: 'y-axis-1',
+    //   lineChartColors: {
+    //     backgroundColor: 'transparent',
+    //     borderColor: 'rgba(255,255,255,1)',
+    //     pointBackgroundColor: 'rgba(148,159,177,1)',
+    //     pointBorderColor: '#fff',
+    //     pointHoverBackgroundColor: '#fff',
+    //     pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+    //   },
+    //   type: 'line',
+    //   order: 2,
+    // };
+    //
+    // this.dashboardService.getmdtThisYearAlpi().subscribe(
+    //     data => {
+    //       this.pm = data;
+    //       this.dashboardService.getmdtByYearAlpi().subscribe(
+    //           datas => {
+    //             this.py = datas;
+    //             this.pt = this.py.concat(this.pm);
+    //             console.log('concat '+this.pt)
+    //
+    //             for (let mach of this.pt){
+    //               this.mdtByYear.labels.push(mach.date);
+    //               wt.data.push(mach.WT);
+    //               ttr.data.push(mach.MTTR);
+    //               mdt.data.push(mach.MDT);
+    //             }
+    //           },
+    //           error => {
+    //             console.log('une erreur a été détectée!')
+    //           },
+    //           () => {
+    //             console.log('years');
+    //             console.log(this.py);
+    //           }
+    //       );
+    //     },
+    //     error => {
+    //       console.log('une erreur a été détectée!')
+    //     },
+    //     () => {
+    //       console.log('months');
+    //       console.log(this.pm);
+    //     }
+    // );
+    //
+    //
+    // this.mdtByYear.datasets.push(wt);
+    // this.mdtByYear.datasets.push(ttr);
+    // this.mdtByYear.datasets.push(mdt);
+
+  }
+
+  mtbfAlpicam(){
+    const mtbf = {
+      data: [],
+      label: "MTBF",
+      yAxisID: 'y-axis-0',
+      type: 'bar',
+    };
+    const teste = {
+      data: [],
+      name: 'Nombre de Pannes'
+    };
+    const test1 = {
+      categories: []
+    };
+    const tdt = {
+      data: [],
+      label: "TDT",
+      yAxisID: 'y-axis-1',
+      lineChartColors: {
+        backgroundColor: 'rgba(255,255,255,0.2)',
+        borderColor: 'rgba(255,255,255,1)',
+        pointBackgroundColor: 'rgba(255,255,255,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(255,255,255,1)'
+      },
+      type: 'bar',
+    };
+
+    const panne = {
+      data: [],
+      label: "Pannes",
+      yAxisID: 'y-axis-1',
+      lineChartColors: {
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(255,255,255,1)',
+        pointBackgroundColor: 'rgba(148,159,177,1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+      },
+      type: 'line',
+    };
+
     const wt = {
       data: [],
       label: "WT",
@@ -131,91 +312,6 @@ export class StatsGlobalComponent implements OnInit {
       order: 2,
     };
 
-    this.dashboardService.getmdtThisYearAlpi().subscribe(
-        data => {
-          this.pm = data;
-          this.dashboardService.getmdtByYearAlpi().subscribe(
-              datas => {
-                this.py = datas;
-                this.pt = this.py.concat(this.pm);
-                console.log('concat '+this.pt)
-
-                for (let mach of this.pt){
-                  this.mdtByYear.labels.push(mach.date);
-                  wt.data.push(mach.WT);
-                  ttr.data.push(mach.MTTR);
-                  mdt.data.push(mach.MDT);
-                }
-              },
-              error => {
-                console.log('une erreur a été détectée!')
-              },
-              () => {
-                console.log('years');
-                console.log(this.py);
-              }
-          );
-        },
-        error => {
-          console.log('une erreur a été détectée!')
-        },
-        () => {
-          console.log('months');
-          console.log(this.pm);
-        }
-    );
-
-
-    this.mdtByYear.datasets.push(wt);
-    this.mdtByYear.datasets.push(ttr);
-    this.mdtByYear.datasets.push(mdt);
-
-  }
-
-  mtbfAlpicam(){
-    const mtbf = {
-      data: [],
-      label: "MTBF",
-      yAxisID: 'y-axis-0',
-      type: 'bar',
-    };
-    const teste = {
-      data: [],
-      name: 'Nombre de Pannes'
-    };
-    const test1 = {
-      categories: [] ,
-    };
-    const tdt = {
-      data: [],
-      label: "TDT",
-      yAxisID: 'y-axis-1',
-      lineChartColors: {
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        borderColor: 'rgba(255,255,255,1)',
-        pointBackgroundColor: 'rgba(255,255,255,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(255,255,255,1)'
-      },
-      type: 'bar',
-    };
-
-    const panne = {
-      data: [],
-      label: "Pannes",
-      yAxisID: 'y-axis-1',
-      lineChartColors: {
-        backgroundColor: 'transparent',
-        borderColor: 'rgba(255,255,255,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-      },
-      type: 'line',
-    };
-
     this.dashboardService.mtbfByYearAlpi().subscribe(
         data1 => {
           this.mtbfY = data1;
@@ -227,7 +323,9 @@ export class StatsGlobalComponent implements OnInit {
 
                 for (let mach of this.mtbf){
                   this.mtbfByYear.labels.push(mach.date);
-                  // test1.categories.push(mach.date);
+                  this.mdtByYear.labels.push(mach.date);
+                  test1.categories.push(mach.date);
+
                   if ((mach.AT.toString() == 'null') && (mach.nbre == 0)){
                     console.log('AT: '+mach.AT);
                     console.log('HT: '+mach.HT);
@@ -295,7 +393,15 @@ export class StatsGlobalComponent implements OnInit {
                   panne.data.push(mach.nbre);
                   tdt.data.push(mach.TDT);
                   teste.data.push(mach.nbre);
+
+                  wt.data.push(mach.WT/mach.nbre);
+                  ttr.data.push(mach.TTR/mach.nbre);
+                  mdt.data.push(mach.TDT/mach.nbre);
+
                 }
+                console.log('testons voir :' + JSON.stringify(test1));
+                this.labs = test1;
+                console.log('dépassé: '+this.labs.valueOf())
               },
               error => {
                 console.log('une erreur a été détectée!')
@@ -319,9 +425,13 @@ export class StatsGlobalComponent implements OnInit {
     this.mtbfByYear.datasets.push(mtbf);
     this.mtbfByYear.datasets.push(tdt);
     this.mtbfByYear.datasets.push(panne);
-    // this.test.datasets.push(teste);
-    // this.labs.categories.push(this.mtbfByYear.labels);
+    this.test.datasets.push(teste);
 
+    this.mdtByYear.datasets.push(wt);
+    this.mdtByYear.datasets.push(ttr);
+    this.mdtByYear.datasets.push(mdt);
+    // this.labs.categories.push(this.mtbfByYear.labels);
+    // this.labs.categories.push(test1.categories)
 
   }
 
@@ -450,5 +560,37 @@ export class StatsGlobalComponent implements OnInit {
         } )) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
+  }
+
+  typePanne(){
+    const datasetNbrePanne4 = {
+      data: [],
+    };
+    const datasetNbrePanne3 = [];
+    this.alpicamService.getTypePanneThisYear().subscribe(
+        list => list.forEach(mach => {
+          this.test1.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
+          this.catP.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
+          this.test1.series.push(mach.nbre);
+          // datasetNbrePanne4.data.push(mach.nbre);
+          this.dta.push(mach.nbre);
+        } )
+    );
+
+  }
+
+  loadDepartements() {
+    this.departementService.getDepartements().subscribe(
+        data => {
+          this.departements = data
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des départements');
+          console.log(this.departements)
+        }
+    );
   }
 }

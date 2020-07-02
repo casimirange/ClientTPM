@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DepartementsComponent } from './Pages/departements/departements.component';
@@ -71,6 +70,8 @@ import {HeuresService} from "./services/heures/heures.service";
 import {NgApexchartsModule} from "ng-apexcharts";
 import { ApexComponent } from './dashboard/apexchart/apex.component';
 import { StatsGlobalComponent } from './Pages/stats-global/stats-global.component';
+import { DoughnutChartComponent } from './dashboard/doughnut-chart/doughnut-chart.component';
+
 
 
 @NgModule({
@@ -109,6 +110,7 @@ import { StatsGlobalComponent } from './Pages/stats-global/stats-global.componen
     HeuresMachinesComponent,
     ApexComponent,
     StatsGlobalComponent,
+    DoughnutChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -129,8 +131,6 @@ import { StatsGlobalComponent } from './Pages/stats-global/stats-global.componen
     BrowserAnimationsModule,
     ChartsModule,
     NgApexchartsModule,
-
-
     // DpDatePickerModule,
     // AmazingTimePickerModule,
   ],

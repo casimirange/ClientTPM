@@ -9,8 +9,7 @@ import {ChartDataSets, ChartOptions} from "chart.js";
 import {DatePipe} from "@angular/common";
 import {Arrets} from "../../Models/arrets";
 import {ArretsService} from "../../services/arrets/arrets.service";
-import {concat, merge} from "rxjs";
-import {any} from "codelyzer/util/function";
+// import {ApexOptions} from "apexcharts";
 
 @Component({
   selector: 'app-dashboard',
@@ -350,7 +349,7 @@ export class DashboardComponent implements OnInit {
                       this.t3.forEach(list => {
                           // this.test.labs.categories.push(list.date);
                           teste2.data.push(list.nbre);
-                          this.labs.categories.push(list.date)
+                          // this.labs.categories.push(list.date)
                       })
                   },
                   error => {

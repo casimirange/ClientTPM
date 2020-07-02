@@ -33,7 +33,7 @@ export class ApexComponent implements OnInit {
 
 
 
-  @Input() char: ApexChart = {
+  @Input() chart: ApexChart = {
         height: 'auto',
         type: 'line',
         zoom: {
@@ -61,13 +61,6 @@ export class ApexComponent implements OnInit {
   @Input() responsive: ApexResponsive[];
   @Input() xaxis: ApexXAxis = {
         type: "category",
-        // labels: {
-        //   datetimeFormatter: {
-        //     year: 'yyyy',
-        //     month: 'MMM',
-        //     day: 'dd'
-        //   }
-        // },
         categories: [
             "jan",
             "fev",
@@ -96,7 +89,7 @@ export class ApexComponent implements OnInit {
   @Input() theme: ApexTheme;
   public chartOptions: Partial<ChartOptions>;
 
-  @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
+  // @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
 
   constructor() {
     // this.chartOptions = {

@@ -11,5 +11,6 @@ export class PageTitleComponent {
   @Input() heading;
   @Input() subheading;
   @Input() icon;
+  @Input() bg = 'bg-heavy-rain';
 
 }

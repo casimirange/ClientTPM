@@ -15,5 +15,8 @@ export const API_URLS = {
 
     USER_ROLE_URL: 'http://localhost:8080/api/user',
     USERS_URL: 'http://localhost:8080/crud_user',
+
+
     ROLES_URL: 'http://localhost:8080/admin/role',
+    ALPICAM_URL: 'http://localhost:8080/admin/alpicam',
 };

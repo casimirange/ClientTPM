@@ -268,90 +268,40 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12 col-lg-6">
-        <div class="mb-3 card">
-            <div class="card-header-tab card-header">
-                <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                    Fréquence d'intervention
-                </div>
-                <div class="btn-actions-pane-right text-capitalize">
-                    <button class="btn-wide btn-outline-2x btn btn-outline-focus btn-sm">View All</button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div id="bar-vertical-candle"></div>
-            </div>
-            <div class="p-0 d-block card-footer">
-                <div class="grid-menu grid-menu-2col">
-                    <div class="no-gutters row">
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                <i class="lnr-apartment text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Overview
-                            </button>
-                        </div>
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                <i class="lnr-database text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Support
-                            </button>
-                        </div>
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                <i class="lnr-printer text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Activities
-                            </button>
-                        </div>
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">
-                                <i class="lnr-store text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Marketing
-                            </button>
-                        </div>
+    <div class="col-sm-12 col-md-7">
+        <div class="row">
+
+
+            <div class="col-sm-12 col-md-6" *ngFor="let dep of departements"  >
+                <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card" [routerLink]="['/departements', dep.idDepartement]" style="cursor: pointer">
+                    <div class="widget-chat-wrapper-outer" >
+                        <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark" style="border: #f8f9fa solid 2px">
+                            <i class="lnr-apartment text-dark opacity-7 btn-icon-wrapper mb-2"> </i>
+                            {{dep.nom}}
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-12 col-lg-6">
+    <div class="col-sm-12 col-md-5">
         <div class="mb-3 card">
-            <div class="card-header-tab card-header">
-                <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                    Pareto Départements
-                </div>
-                <div class="btn-actions-pane-right text-capitalize">
-                    <button class="btn-wide btn-outline-2x btn btn-outline-primary btn-sm">View All</button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div id="chart-col-2"></div>
-            </div>
-            <div class="p-0 d-block card-footer">
-                <div class="grid-menu grid-menu-2col">
-                    <div class="no-gutters row">
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">
-                                <i class="lnr-lighter text-success opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Accounts
-                            </button>
-                        </div>
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">
-                                <i class="lnr-construction text-warning opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Contacts
-                            </button>
-                        </div>
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">
-                                <i class="lnr-bus text-info opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Products
-                            </button>
-                        </div>
-                        <div class="p-2 col-sm-6">
-                            <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">
-                                <i class="lnr-gift text-alternate opacity-7 btn-icon-wrapper mb-2"> </i>
-                                Services
-                            </button>
+            <div class="card-body pb-1">
+                <div class="widget-chart widget-chart2 text-left p-0">
+                    <div class="widget-chat-wrapper-outer" >
+                        <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0 " style="min-height: 226px; max-height: 400px; ">
+                            <app-doughnut-chart
+                                    [doughnutChartData] = "dta"
+                                    [doughnutChartLabels] = "catP.labels"
+
+                            ></app-doughnut-chart>
+                            <!--<app-chart width="auto" height="auto"-->
+                                       <!--[type]="'pie'"-->
+                                       <!--[data]="catP.datasets"-->
+                                       <!--[lineChartLabels]="catP.labels"-->
+                                       <!--[lineChartColors]="colors"-->
+                                       <!--[ChartTitleOptions]="'1 2 3 4 partez'"-->
+                            <!--&gt;</app-chart>-->
                         </div>
                     </div>
                 </div>
@@ -361,19 +311,115 @@
 </div>
 
 <div class="row">
+    <!--<div class="col-sm-12 col-lg-6">-->
+        <!--<div class="mb-3 card">-->
+            <!--<div class="card-header-tab card-header">-->
+                <!--<div class="card-header-title font-size-lg text-capitalize font-weight-normal">-->
+                    <!--Fréquence d'intervention-->
+                <!--</div>-->
+                <!--<div class="btn-actions-pane-right text-capitalize">-->
+                    <!--<button class="btn-wide btn-outline-2x btn btn-outline-focus btn-sm">View All</button>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="card-body">-->
+                <!--<div id="bar-vertical-candle"></div>-->
+            <!--</div>-->
+            <!--<div class="p-0 d-block card-footer">-->
+                <!--<div class="grid-menu grid-menu-2col">-->
+                    <!--<div class="no-gutters row">-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">-->
+                                <!--<i class="lnr-apartment text-dark opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Overview-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">-->
+                                <!--<i class="lnr-database text-dark opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Support-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">-->
+                                <!--<i class="lnr-printer text-dark opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Activities-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-dark">-->
+                                <!--<i class="lnr-store text-dark opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Marketing-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-sm-12 col-lg-6">-->
+        <!--<div class="mb-3 card">-->
+            <!--<div class="card-header-tab card-header">-->
+                <!--<div class="card-header-title font-size-lg text-capitalize font-weight-normal">-->
+                    <!--Pareto Départements-->
+                <!--</div>-->
+                <!--<div class="btn-actions-pane-right text-capitalize">-->
+                    <!--<button class="btn-wide btn-outline-2x btn btn-outline-primary btn-sm">View All</button>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="card-body">-->
+                <!--<div id="chart-col-2"></div>-->
+            <!--</div>-->
+            <!--<div class="p-0 d-block card-footer">-->
+                <!--<div class="grid-menu grid-menu-2col">-->
+                    <!--<div class="no-gutters row">-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-success">-->
+                                <!--<i class="lnr-lighter text-success opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Accounts-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">-->
+                                <!--<i class="lnr-construction text-warning opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Contacts-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-info">-->
+                                <!--<i class="lnr-bus text-info opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Products-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="p-2 col-sm-6">-->
+                            <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-alternate">-->
+                                <!--<i class="lnr-gift text-alternate opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                                <!--Services-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+<div class="row">
     <div class="col-sm-12 col-md-7 col-lg-8">
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                    Traffic
-                    Sources
+                    Fréquence d'intervention
                 </div>
                 <div class="btn-actions-pane-right text-capitalize">
                     <button class="btn btn-warning">Actions</button>
                 </div>
             </div>
             <div class="pt-0 card-body">
-                <div id="chart-combined"></div>
+                <app-apex
+                        [series] = "test.datasets"
+                        [xaxis]="labs"
+                        [chart] = "type"
+                ></app-apex>
             </div>
         </div>
     </div>
@@ -410,7 +456,7 @@
                     </div>
                 </div>
             </div>
-            <div class="p-0 card-body">
+            <div class="p-0 card-body" >
                 <div id="chart" ></div>
 
                 <div class="widget-content pt-0 w-100">

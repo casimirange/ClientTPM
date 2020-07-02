@@ -54,6 +54,7 @@ export class Pannes {
     MDT?: number;
     WT?: number;
     MTTR?: number;
+    TTR?: number;
     dep?: string;
     idDepartement?: number;
 

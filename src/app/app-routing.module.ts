@@ -43,7 +43,7 @@ const routes: Routes = [
   {path: 'operateurs', canActivate:[AuthGuardService], component: OperateursComponent },
   // {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
   {path: 'machines', canActivate:[AuthGuardService], component: MachinesComponent },
-  // {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
+  {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
   {path: 'dashboard', canActivate:[AuthGuardService], component: DashboardComponent },
   {path: 'pannes', canActivate:[AuthGuardService], component: PannesComponent },
   {path: 'arrets', canActivate:[AuthGuardService], component: ArretsComponent },

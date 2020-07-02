@@ -430,7 +430,8 @@
                                             <i [ngClass]="
             cdount < lastMonth ? 'fa fa-arrow-up' :
             cdount > lastMonth ? 'fa fa-arrow-down' : 'fa fa-arrow-right'"></i>
-                                            <span class="pl-1">{{(cdount)/(lastMonth) | percent}}</span>
+                                            <span class="pl-1" *ngIf="cdount < lastMonth">{{(((cdount)/(lastMonth))-1) *(-1) | percent}}</span>
+                                            <span class="pl-1" *ngIf="cdount >= lastMonth">{{(((cdount)/(lastMonth))-1) | percent}}</span>
                                             </span>
                                             </div>
                                         </div>
@@ -445,6 +446,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="widget-subheading">Total annuel</div>
+                                <div class="widget-subheading">Total annuel</div>
+                                <div class="widget-subheading">Total annuel</div>
+                                <div class="widget-subheading">Total annuel</div>
                             </div>
                         </li>
                     </ul>
@@ -650,26 +657,13 @@
                                     </ng-template>
                                 </li>
 
-                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="arrets < 1">Aucun Arrêt déclaré dans la journée!</p>
+                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="arrets  < 1">Aucun Arrêt déclaré dans la journée!</p>
                             </ul>
 
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="main-card mb-3 card">
-                <div class="card-body">
-                    <div class="flex-item">
-                        <div style="display: block;">
-                            <app-apex
-                            [series] = "test.datasets"
-                            [xaxis]="labs"
-                            ></app-apex>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -915,7 +909,7 @@ text-overflow: ellipsis;" >{{pan.cause}}</td>
                         </tbody>
 
                     </table>
-                    <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="(ThisWeekPannes.length | number) > 1">Aucune Panne de la semaine !</p>
+                    <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="(ThisWeekPannes) > 1">Aucune Panne de la semaine !</p>
                 </div>
                 <div class="d-block clearfix card-footer">
                     <div class="float-left">

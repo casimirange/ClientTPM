@@ -31,4 +31,8 @@ export class MachinesService {
   showMachine(id: number): Observable<any>{
     return this.http.get(API_URLS.MACHINE_URL + `/${id}`);
   }
+
+  getAllMachinesByDepartment(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/departement/${id}`);
+  }
 }

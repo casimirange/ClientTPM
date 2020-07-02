@@ -225,7 +225,7 @@
                             </div>
                         </td>
                         <td class="text-left" style="white-space: nowrap;overflow: hidden;
-text-overflow: ellipsis;" >{{pan.cause}}</td>
+text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'...' : pan.cause}}</td>
 
 
 
