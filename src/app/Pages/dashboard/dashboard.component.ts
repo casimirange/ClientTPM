@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Pannes} from "../../Models/pannes";
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {PannesService} from "../../services/pannes/pannes.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardService} from "../../services/dashboard/dashboard.service";
@@ -9,6 +9,10 @@ import {ChartDataSets, ChartOptions} from "chart.js";
 import {DatePipe} from "@angular/common";
 import {Arrets} from "../../Models/arrets";
 import {ArretsService} from "../../services/arrets/arrets.service";
+import {Departement} from "../../Models/departement";
+import {Router} from "@angular/router";
+import {Machine} from "../../Models/machines";
+import {DepartementsService} from "../../services/departements/departements.service";
 // import {ApexOptions} from "apexcharts";
 
 @Component({
@@ -22,11 +26,14 @@ export class DashboardComponent implements OnInit {
   subheadings = 'Consultez l\'actualité des évènements ';
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
+  searchPanForm: FormGroup;
   pannes: Pannes[];
   ThisWeekPannes: Pannes[];
   cpannes: Pannes[];
+  StatsTec: any[];
   Tpannes: Pannes[];
   Hpannes: Pannes[];
+  departement: Departement[];
   py: Pannes[];
   pm: Pannes[];
   pt: Pannes[];
@@ -325,8 +332,9 @@ export class DashboardComponent implements OnInit {
               private panneService: PannesService,
               private arretService: ArretsService,
               private dashboardService: DashboardService,
+              private departementService: DepartementsService,
               private datePipe: DatePipe,
-              private modalService: NgbModal  ) {
+              private modalService: NgbModal, private router: Router  ) {
       const teste2 = {
           data: [],
           name: 'Nombre de Pannes'
@@ -365,14 +373,21 @@ export class DashboardComponent implements OnInit {
 
       this.test.datasets.push(teste2);
 
+      this.createForm();
 
   }
+    createForm() {
+        this.searchPanForm = this.fb.group({
+            search: [''],
+        });
+    }
 
   ngOnInit() {
     this.selectedPanne = new Pannes();
     this.selectedArret = new Arrets();
     this.TodayPannes();
     this.LoadArrets();
+    this.loadDepartements();
     this.countAllPannes();
     this.countDepPannes();
     this.getChart();
@@ -384,10 +399,23 @@ export class DashboardComponent implements OnInit {
     this.countThisYear();
     this.ThisWeekPanne();
 
-
-
-
+    this.StatistiquesTechniciens();
   }
+
+    loadDepartements() {
+        this.departementService.getDepartements().subscribe(
+            data => {
+                this.departement = data
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des départements');
+                console.log(this.departement)
+            }
+        );
+    }
 
   TodayPannes(){
 
@@ -458,6 +486,22 @@ export class DashboardComponent implements OnInit {
             () => {
                 console.log('Total');
                 console.log(this.count);
+            }
+        );
+    }
+
+  StatistiquesTechniciens(){
+
+        this.dashboardService.statsTechniciensByMonth().subscribe(
+            data => {
+                this.StatsTec = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('Total');
+                console.log(this.StatsTec);
             }
         );
     }
@@ -997,5 +1041,23 @@ this.lastMonth = 0;
                 console.log(this.tail);
             }
         );
+    }
+
+    showDepart(d: Departement){
+        let url = btoa(d.idDepartement.toString());
+        console.log(d.idDepartement +' '+url);
+        this.router.navigateByUrl("departements/"+url);
+    }
+
+    showMachine(m: Machine){
+        let url = btoa(m.idM.toString());
+        this.modalService.dismissAll();
+        this.router.navigateByUrl("machines/"+url);
+    }
+
+    showMachines(m: Machine){
+        let url = btoa(m.idMachine.toString());
+        this.modalService.dismissAll();
+        this.router.navigateByUrl("machines/"+url);
     }
 }

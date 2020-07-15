@@ -34,4 +34,7 @@ export class DashboardService {
   mtbfThisYearAlpi(): Observable<any>{
     return this.http.get(API_URLS.DASHBOARD_URL + `/mtbfThisYear`);
   }
+  statsTechniciensByMonth(): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/techWT`);
+  }
 }

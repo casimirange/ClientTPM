@@ -1,4 +1,4 @@
-<app-title [heading]="continuePanne.numero" [subheading]="subheadings" [icon]="icons"></app-title>
+<app-title [heading]="headings +': '+ continuePanne.numero" [subheading]="subheadings" [icon]="icons"></app-title>
 
 <div class="">
 
@@ -437,7 +437,7 @@
                                                 <!--<b>{{continuePanne.idMachine}}</b>&nbsp; {{continuePanne.machine}}-->
                                             <!--</option>-->
                                         <!--</select>-->
-                                        <input type="text" [(ngModel)]="continuePanne.idMachine" formControlName="idMachine" class="form-control form-ontrol-sm" disabled>
+                                        <input type="text" [(ngModel)]="continuePanne.idM" formControlName="idMachine" class="form-control form-ontrol-sm" disabled>
                                     </div>
 
                                     <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched) ">

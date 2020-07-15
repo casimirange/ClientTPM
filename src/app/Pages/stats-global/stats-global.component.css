@@ -1,0 +1,7 @@
+tbody:nth-child(odd) {
+    background: #f7f7f7;
+}
+
+tbody:hover td[rowspan], tr:hover td {
+    background: #e0f3ff;
+}

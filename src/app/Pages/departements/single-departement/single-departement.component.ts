@@ -36,9 +36,10 @@ export class SingleDepartementComponent implements OnInit {
   selectPanForm: FormGroup;
   rangeForm: FormGroup;
   selectedDep: Departement;
+  selectedMachine: Machine;
   selectedLigne: Ligne;
   lignes: Ligne[];
-  machines: any[];
+  machines: Machine[];
   pannes: Pannes[];
   nomMaj:string;
   cpannes: Pannes[];
@@ -46,8 +47,12 @@ export class SingleDepartementComponent implements OnInit {
   Hpannes: Pannes[];
   times: Pannes[];
   selectedPanne: Pannes;
-  countThisMonthPanne: any;
-  countLastMonthPanne: any;
+  countThisMonthPanneTDT: number;
+  countThisMonthPannenbre: number;
+  countThisMonthPanneMDT: number;
+  countLastMonthPanneTDT: number;
+  countLastMonthPannenbre: number;
+  countLastMonthPanneMDT: number;
   hourThisMonth: any;
   hourLastMonth: any;
   closeResult: any;
@@ -402,19 +407,30 @@ export class SingleDepartementComponent implements OnInit {
     categories: []
   };
 
+  date_this_month: any;
+
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
                private machineService: MachinesService,
                private fb: FormBuilder,
                private modalService: NgbModal,
-               private route: ActivatedRoute) {
+               private route: ActivatedRoute,
+               private router: Router
+  ) {
     this.selectedDep = new Departement();
     this.selectedLigne = new Ligne();
     this.selectedPanne = new Pannes();
+    this.selectedMachine = new Machine();
     this.createForm();
     this.createForms();
     this.rangeForms();
+
+    const dat = new Date();
+    var today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setFullYear(today.getFullYear()-1);
+    this.date_this_month = dat;
   }
 
   createForm() {
@@ -478,11 +494,16 @@ export class SingleDepartementComponent implements OnInit {
     this.paretoTrancheuseMDTThysYear();
     this.paretoEncolleuseTDTThysYear();
     this.paretoEncolleuseMDTThysYear();
+
   }
 
   showDepartement() {
+
+
     this.route.params.subscribe(params => {
-      this.departementService.showDep(Number.parseInt(params['id'])).subscribe(
+      let url = atob(params['id']);
+      console.log('url finale: ' +url);
+      this.departementService.showDep(Number.parseInt(url)).subscribe(
           res => {
             this.selectedDep = res;
             this.nomMaj = this.selectedDep.nom.toUpperCase();
@@ -495,7 +516,8 @@ export class SingleDepartementComponent implements OnInit {
 
   ListMachines(){
     this.route.params.subscribe(params =>{
-      this.machineService.getAllMachinesByDepartment(Number.parseInt(params['id'])).subscribe(
+      let url = atob(params['id']);
+      this.machineService.getAllMachinesByDepartment(Number.parseInt(url)).subscribe(
           data => {
             this.machines = data.sort(sortBy('machine'));
             console.log("liste des lignes");
@@ -507,7 +529,8 @@ export class SingleDepartementComponent implements OnInit {
 
   showPannesDep() {
     this.route.params.subscribe(params =>{
-      this.departementService.showPannesDep(Number.parseInt(params['id'])).subscribe(
+      let url = atob(params['id']);
+      this.departementService.showPannesDep(Number.parseInt(url)).subscribe(
           data => {
             this.pannes = data;
             console.log("liste des lignes");
@@ -519,26 +542,38 @@ export class SingleDepartementComponent implements OnInit {
 
   CountMonthPannes(){
     this.route.params.subscribe(params =>{
-      this.departementService.countThisMonthPannesDep(Number.parseInt(params['id'])).subscribe(
-          data => {
-            this.countThisMonthPanne = data;
-          }
-      ),
-      this.departementService.countLastMonthPannesDep(Number.parseInt(params['id'])).subscribe(
-          data => {
-            this.countLastMonthPanne = data;
-          }
-      )
+      let url = atob(params['id']);
+      this.departementService.countThisMonthPannesDep(Number.parseInt(url)).subscribe(
+          data => data.forEach(mach => {
+            this.countThisMonthPanneTDT = mach.TDT;
+            this.countThisMonthPannenbre = mach.nbre;
+            if(mach.nbre == 0){
+              this.countThisMonthPanneMDT = 0;
+            }else{
+              this.countThisMonthPanneMDT = mach.TDT/mach.nbre;
+            }
+          }));
+      this.departementService.countLastMonthPannesDep(Number.parseInt(url)).subscribe(
+          list => list.forEach(mach => {
+            this.countLastMonthPanneTDT = mach.TDT;
+            this.countLastMonthPannenbre = mach.nbre;
+            if(mach.nbre == 0){
+              this.countLastMonthPanneMDT = 0;
+            }else{
+              this.countLastMonthPanneMDT = mach.TDT/mach.nbre;
+            }
+          }));
     });
   }
   HourPerMonth(){
     this.route.params.subscribe(params =>{
-      this.departementService.hourThisMonthDep(Number.parseInt(params['id'])).subscribe(
+      let url = atob(params['id']);
+      this.departementService.hourThisMonthDep(Number.parseInt(url)).subscribe(
           data => {
             this.hourThisMonth = data;
           }
       ),
-      this.departementService.hourLastMonthDep(Number.parseInt(params['id'])).subscribe(
+      this.departementService.hourLastMonthDep(Number.parseInt(url)).subscribe(
           data => {
             this.hourLastMonth = data;
           }
@@ -796,10 +831,11 @@ export class SingleDepartementComponent implements OnInit {
     };
 
     this.route.params.subscribe(params =>{
-    this.departementService.mtbfByYear(Number.parseInt(params['id'])).subscribe(
+      let url = atob(params['id']);
+    this.departementService.mtbfByYear(Number.parseInt(url)).subscribe(
       data1 => {
         this.mtbfY = data1;
-        this.departementService.mtbfThisYear(Number.parseInt(params['id'])).subscribe(
+        this.departementService.mtbfThisYear(Number.parseInt(url)).subscribe(
           data2 => {
             this.mtbfTY = data2;
             this.mtbf = this.mtbfY.concat(this.mtbfTY);
@@ -881,7 +917,8 @@ export class SingleDepartementComponent implements OnInit {
       type: 'bar'
     };
     this.route.params.subscribe(params => {
-      this.departementService.paretoThisYear(Number.parseInt(params['id'])).subscribe(
+      let url = atob(params['id']);
+      this.departementService.paretoThisYear(Number.parseInt(url)).subscribe(
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
           this.paretoYear.labels.push(mach.nom);
@@ -908,7 +945,8 @@ export class SingleDepartementComponent implements OnInit {
       type: 'bar'
     };
     this.route.params.subscribe(params => {
-      this.departementService.paretoThisMonth(Number.parseInt(params['id'])).subscribe(
+      let url = atob(params['id']);
+      this.departementService.paretoThisMonth(Number.parseInt(url)).subscribe(
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
           this.paretoMonth.labels.push(mach.nom);
@@ -969,10 +1007,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.ligne1ByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.ligne1ByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.L1mtbfY = data1;
-                    this.departementService.ligne1ThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.ligne1ThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.L1mtbfTY = data2;
                             this.L1mtbf = this.L1mtbfY.concat(this.L1mtbfTY);
@@ -1087,10 +1126,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.ligne2ByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.ligne2ByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.L2mtbfY = data1;
-                    this.departementService.ligne2ThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.ligne2ThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.L2mtbfTY = data2;
                             this.L2mtbf = this.L2mtbfY.concat(this.L2mtbfTY);
@@ -1205,10 +1245,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.ligne3ByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.ligne3ByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.L3mtbfY = data1;
-                    this.departementService.ligne3ThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.ligne3ThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.L3mtbfTY = data2;
                             this.L3mtbf = this.L3mtbfY.concat(this.L3mtbfTY);
@@ -1323,10 +1364,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.sechoirByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.sechoirByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.SecmtbfY = data1;
-                    this.departementService.sechoirThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.sechoirThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.SecmtbfTY = data2;
                             this.Secmtbf = this.SecmtbfY.concat(this.SecmtbfTY);
@@ -1441,10 +1483,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.ecorcageByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.ecorcageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.EcmtbfY = data1;
-                    this.departementService.ecorcageThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.ecorcageThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.EcmtbfTY = data2;
                             this.Ecmtbf = this.EcmtbfY.concat(this.EcmtbfTY);
@@ -1559,10 +1602,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.jointageByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.jointageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.JmtbfY = data1;
-                    this.departementService.jointageThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.jointageThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.JmtbfTY = data2;
                             this.Jmtbf = this.JmtbfY.concat(this.JmtbfTY);
@@ -1678,10 +1722,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.encollageBrazilByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.encollageBrazilByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.EBmtbfY = data1;
-                    this.departementService.encollageBrazilThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.encollageBrazilThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.EBmtbfTY = data2;
                             this.EBmtbf = this.EBmtbfY.concat(this.EBmtbfTY);
@@ -1796,10 +1841,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.teintureByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.teintureByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.TEmtbfY = data1;
-                    this.departementService.teintureThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.teintureThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.TEmtbfTY = data2;
                             this.TEmtbf = this.TEmtbfY.concat(this.TEmtbfTY);
@@ -1914,10 +1960,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.tranchageByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.tranchageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.TRmtbfY = data1;
-                    this.departementService.tranchageThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.tranchageThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.TRmtbfTY = data2;
                             this.TRmtbf = this.TRmtbfY.concat(this.TRmtbfTY);
@@ -2033,10 +2080,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.encollageCPByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.encollageCPByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.ECPmtbfY = data1;
-                    this.departementService.encollageCPThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.encollageCPThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.ECPmtbfTY = data2;
                             this.ECPmtbf = this.ECPmtbfY.concat(this.ECPmtbfTY);
@@ -2151,10 +2199,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.ponçageByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.ponçageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.POmtbfY = data1;
-                    this.departementService.ponçageThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.ponçageThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.POmtbfTY = data2;
                             this.POmtbf = this.POmtbfY.concat(this.POmtbfTY);
@@ -2269,10 +2318,11 @@ export class SingleDepartementComponent implements OnInit {
         };
 
         this.route.params.subscribe(params =>{
-            this.departementService.pressageByYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.pressageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
                     this.PRmtbfY = data1;
-                    this.departementService.pressageThisYear(Number.parseInt(params['id'])).subscribe(
+                    this.departementService.pressageThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.PRmtbfTY = data2;
                             this.PRmtbf = this.PRmtbfY.concat(this.PRmtbfTY);
@@ -2969,7 +3019,8 @@ export class SingleDepartementComponent implements OnInit {
             type: 'bar'
         };
         this.route.params.subscribe(params =>{
-        this.departementService.paretoEncolleuseTDTThisYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+        this.departementService.paretoEncolleuseTDTThisYear(Number.parseInt(url)).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
                 this.EncolleuseparetoTDTYear.labels.push(mach.nom.toUpperCase());
@@ -2996,7 +3047,8 @@ export class SingleDepartementComponent implements OnInit {
             type: 'bar'
         };
         this.route.params.subscribe(params =>{
-        this.departementService.paretoEncolleuseTDTThisMonth(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+        this.departementService.paretoEncolleuseTDTThisMonth(Number.parseInt(url)).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
                 this.EncolleuseparetoTDTMonth.labels.push(mach.nom.toUpperCase());
@@ -3023,7 +3075,8 @@ export class SingleDepartementComponent implements OnInit {
             type: 'bar'
         };
         this.route.params.subscribe(params => {
-            this.departementService.paretoEncolleuseMDTThisYear(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.paretoEncolleuseMDTThisYear(Number.parseInt(url)).subscribe(
                 list => list.forEach(mach => {
                     // datasetNbrePanne2.name = (mach.machine);
                     this.EncolleuseparetoMDTYear.labels.push(mach.nom.toUpperCase());
@@ -3050,7 +3103,8 @@ export class SingleDepartementComponent implements OnInit {
             type: 'bar'
         };
         this.route.params.subscribe(params => {
-            this.departementService.paretoEncolleuseMDTThisMonth(Number.parseInt(params['id'])).subscribe(
+          let url = atob(params['id']);
+            this.departementService.paretoEncolleuseMDTThisMonth(Number.parseInt(url)).subscribe(
                 list => list.forEach(mach => {
                     // datasetNbrePanne2.name = (mach.machine);
                     this.EncolleuseparetoMDTMonth.labels.push(mach.nom.toUpperCase());
@@ -3061,5 +3115,11 @@ export class SingleDepartementComponent implements OnInit {
         });
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
+    }
+
+    showMachine(m: Machine){
+      console.log('machine' + m.nom);
+      let url = btoa(m.idM.toString());
+      this.router.navigateByUrl("machines/"+url);
     }
 }

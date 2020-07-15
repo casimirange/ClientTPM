@@ -8,6 +8,7 @@ export class Machine {
     centreCout?: string;
     idLigne?: number;
     idMachine?: number;
+    idM?: number;
     code?: string;
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}

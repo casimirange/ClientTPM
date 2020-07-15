@@ -1,10 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<!--Encolleuse3Simi-->
+<tbody>
+<tr >
+    <td rowspan="2" class="text-right text-muted" style="width: 120px;"><span class="text-success">Encolleuse3Simi</span> </td>
+    <td class="text-center" >
+        {{date_last_month | date: 'MMM yyyy' | uppercase}}
+    </td>
+    <td class="text-center">{{Encolleuse3SimiLastYearNumber}}</td>
+    <td class="text-center " rowspan="2"
+        [ngClass]="
+            (Encolleuse3SimiLastYearNumber == 0 && Encolleuse3SimiThisYearNumber != 0)  ? 'bg-danger text-white font-weight-bold' :
+            Encolleuse3SimiThisYearNumber < Encolleuse3SimiLastYearNumber ? 'bg-success text-white font-weight-bold' :
+            Encolleuse3SimiThisYearNumber > Encolleuse3SimiLastYearNumber ? 'bg-danger text-white font-weight-bold' : 'bg-warning text-dark font-weight-bold'"
+    >
+        <i
+                [ngClass]="
+            (Encolleuse3SimiLastYearNumber == 0 && Encolleuse3SimiThisYearNumber != 0)  ? 'fa fa-angle-down font-weight-bold' :
+            Encolleuse3SimiThisYearNumber < Encolleuse3SimiLastYearNumber ? 'fa fa-angle-up font-weight-bold' :
+            Encolleuse3SimiThisYearNumber > Encolleuse3SimiLastYearNumber ? 'fa fa-angle-down font-weight-bold' : 'fa fa-angle-left font-weight-bold'"
+        ></i>
+        <span class="pl-1" *ngIf="Encolleuse3SimiLastYearNumber == 0 && Encolleuse3SimiThisYearNumber != 0 ">100 %</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiThisYearNumber < Encolleuse3SimiLastYearNumber">{{((Encolleuse3SimiThisYearNumber/Encolleuse3SimiLastYearNumber)-1) *(-1) | percent: '2.0-0'}}</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiThisYearNumber > Encolleuse3SimiLastYearNumber && Encolleuse3SimiLastYearNumber>0">{{((Encolleuse3SimiThisYearNumber/Encolleuse3SimiLastYearNumber)-1) | percent: '2.0-0'}}</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiLastYearNumber == Encolleuse3SimiThisYearNumber">0 %</span>
+        <!--<span class="pl-1">{{((aly.nbre) / (aty.nbre) ) | percent}}</span>-->
+    </td>
+    <td class="text-center">{{Encolleuse3SimiLastYearTDT}}</td>
+    <td class="text-center " rowspan="2"
+        [ngClass]="
+            (Encolleuse3SimiLastYearTDT == 0 && Encolleuse3SimiThisYearTDT != 0)  ? 'bg-danger text-white font-weight-bold' :
+            Encolleuse3SimiThisYearTDT < Encolleuse3SimiLastYearTDT ? 'bg-success text-white font-weight-bold' :
+            Encolleuse3SimiThisYearTDT > Encolleuse3SimiLastYearTDT ? 'bg-danger text-white font-weight-bold' : 'bg-warning text-dark font-weight-bold'"
+    >
+        <i
+                [ngClass]="
+            (Encolleuse3SimiLastYearTDT == 0 && Encolleuse3SimiThisYearTDT != 0)  ? 'fa fa-angle-down font-weight-bold' :
+            Encolleuse3SimiThisYearTDT < Encolleuse3SimiLastYearTDT ? 'fa fa-angle-up font-weight-bold' :
+            Encolleuse3SimiThisYearTDT > Encolleuse3SimiLastYearTDT ? 'fa fa-angle-down font-weight-bold' : 'fa fa-angle-left font-weight-bold'"
+        ></i>
+        <span class="pl-1" *ngIf="Encolleuse3SimiLastYearTDT == 0 && Encolleuse3SimiThisYearTDT != 0 ">100 %</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiThisYearTDT < Encolleuse3SimiLastYearTDT">{{((Encolleuse3SimiThisYearTDT/Encolleuse3SimiLastYearTDT)-1) *(-1) | percent: '2.0-0'}}</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiThisYearTDT > Encolleuse3SimiLastYearTDT  && Encolleuse3SimiLastYearTDT>0">{{((Encolleuse3SimiThisYearTDT/Encolleuse3SimiLastYearTDT)-1) | percent: '2.0-0'}}</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiLastYearTDT == Encolleuse3SimiThisYearTDT">0 %</span>
+    </td>
+    <td class="text-center">{{Encolleuse3SimiLastYearMDT ? Encolleuse3SimiLastYearMDT.toFixed(2) : 0}}</td>
+    <td class="text-center " rowspan="2"
+        [ngClass]="
+            (Encolleuse3SimiLastYearMDT == 0 && Encolleuse3SimiThisYearMDT != 0)  ? 'bg-danger text-white font-weight-bold' :
+            Encolleuse3SimiThisYearMDT < Encolleuse3SimiLastYearMDT ? 'bg-success text-white font-weight-bold' :
+            Encolleuse3SimiThisYearMDT > Encolleuse3SimiLastYearMDT ? 'bg-danger text-white font-weight-bold' : 'bg-warning text-dark font-weight-bold'"
+    >
+        <i
+                [ngClass]="
+            (Encolleuse3SimiLastYearMDT == 0 && Encolleuse3SimiThisYearMDT != 0)  ? 'fa fa-angle-down font-weight-bold' :
+            Encolleuse3SimiThisYearMDT < Encolleuse3SimiLastYearMDT ? 'fa fa-angle-up font-weight-bold' :
+            Encolleuse3SimiThisYearMDT > Encolleuse3SimiLastYearMDT ? 'fa fa-angle-down font-weight-bold' : 'fa fa-angle-left font-weight-bold'"
+        ></i>
+        <span class="pl-1" *ngIf="Encolleuse3SimiLastYearMDT == 0 && Encolleuse3SimiThisYearMDT != 0 ">100 %</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiThisYearMDT < Encolleuse3SimiLastYearMDT">{{((Encolleuse3SimiThisYearMDT/Encolleuse3SimiLastYearMDT)-1) *(-1) | percent: '2.0-0'}}</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiThisYearMDT > Encolleuse3SimiLastYearMDT && Encolleuse3SimiLastYearMDT>0">{{((Encolleuse3SimiThisYearMDT/Encolleuse3SimiLastYearMDT)-1) | percent: '2.0-0'}}</span>
+        <span class="pl-1" *ngIf="Encolleuse3SimiLastYearMDT == Encolleuse3SimiThisYearMDT">0 %</span>
+        <!--<span class="pl-1">{{(((aly.TDT) / (aly.nbre))/((aty.TDT) / (aty.nbre)))  | percent}}</span>-->
+
+    </td>
+</tr>
+<tr >
+    <td class="text-center" style="width: 120px;">
+        {{date_this_month | date: 'MMM yyyy' | uppercase}}
+    </td>
+    <td class="text-center">{{Encolleuse3SimiThisYearNumber}}</td>
+    <td class="text-center">{{Encolleuse3SimiThisYearTDT}}</td>
+    <td class="text-center">
+        <span class="pl-1">{{Encolleuse3SimiThisYearMDT ? Encolleuse3SimiThisYearMDT.toFixed(2) : 0}}</span>
+
+    </td>
+</tr>
+</tbody>

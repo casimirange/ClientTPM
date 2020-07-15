@@ -9,6 +9,7 @@ import {MachinesService} from "../../../services/machines/machines.service";
 import 'sweetalert2/src/sweetalert2.scss'
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import * as jsPDF from 'jspdf';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-pannes',
@@ -46,6 +47,7 @@ export class PannesComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private machineService: MachinesService,
+              private router: Router,
               private modalService: NgbModal  ) {
       this.createForm();
       this.createForms();
@@ -217,7 +219,7 @@ export class PannesComponent implements OnInit {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('panne aujourd\'hui');
+          console.log('panne hier');
           console.log(this.pannes);
         }
     );
@@ -233,7 +235,7 @@ export class PannesComponent implements OnInit {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('panne aujourd\'hui');
+          console.log('panne cette semaine');
           console.log(this.pannes);
         }
     );
@@ -393,4 +395,44 @@ export class PannesComponent implements OnInit {
       doc.save(this.content.nativeElement)
   }
 
+  findSso($event){
+      if (this.selectPanForm.controls['periode'].value == 'hp'){
+          this.HierPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'ttesp'){
+          this.loadPannes();
+          this.countAllPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'tp'){
+          this.TodayPannes();
+          this.countTodayPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'twp'){
+          this.ThisWeekPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'lwp'){
+          this.LastWeekPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'tmp'){
+          this.ThisMonthPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'lmp'){
+          this.LastMonthPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'typ'){
+          this.ThisYearPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'lyp'){
+          this.LastYearPannes();
+      }
+      if (this.selectPanForm.controls['periode'].value == 'pp'){
+          this.open(document.getElementById("#search"));
+      }
+  }
+
+    showMachine(m: Machine){
+        console.log('machine' + m.nom);
+        let url = btoa(m.idM.toString());
+        this.router.navigateByUrl("machines/"+url);
+    }
 }

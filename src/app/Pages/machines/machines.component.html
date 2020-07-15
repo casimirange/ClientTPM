@@ -174,7 +174,7 @@
                         <td>{{lign.label}}</td>
                         <td>
                             <div class="widget-content-right widget-content-actions">
-                                <a [routerLink]="['/machines', lign.idMachine]">
+                                <a (click)="showMachine(lign)">
                                     <button class="border-0 btn-transition btn btn-outline-success">
                                         <i class="fa fa-eye"></i>
                                     </button>

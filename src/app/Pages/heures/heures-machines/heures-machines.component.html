@@ -148,7 +148,7 @@ text-overflow: ellipsis;" >{{heure.heure}}</td>
                         <span class="ml-auto float-right">{{heures.length}} / {{machines.length}}</span>
                     </li>
                     <li class="nav-item-divider nav-item"></li>
-                    <li class="nav-item" *ngFor="let heure of heures">
+                    <li class="nav-item" *ngFor="let heure of heures | paginate:{itemsPerPage: 10, currentPage:p};">
                         <button type="button" tabindex="0" class="d-flex align-items-center dropdown-item nav-link">
                             <i class="nav-link-icon pe-7s-config"></i>
                             <span>{{heure.nom}} <small><b>{{heure.code}}</b></small> </span>
@@ -159,6 +159,22 @@ text-overflow: ellipsis;" >{{heure.heure}}</td>
                     </li>
 
                     <li class="nav-item-divider nav-item"></li>
+                    <li>
+                        <div class="float-right">
+                            <ul class="pagination pagination-sm mb-0">
+                                <li>
+                                    <pagination-controls (pageChange)="p=$event"
+                                                         autoHide = "true"
+                                                         responsive = "true"
+                                                         previousLabel = "Précédent"
+                                                         nextLabel = "Suivant">
+                                    </pagination-controls>
+                                </li>
+                            </ul>
+                            <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
+                            <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
+                        </div>
+                    </li>
                     <li class="nav-item-header nav-item">
                             Temps Total
                             <span class="ml-auto badge badge-light float-right text-primary">

@@ -1,7 +1,7 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 <div class="row">
-    <div class="col-md-6 col-lg-3"  style="cursor: pointer;" *ngFor="let cdp of cdpannes" [routerLink]="['/departements', cdp.idDepartement]">
+    <div class="col-md-6 col-lg-3"  style="cursor: pointer;" *ngFor="let cdp of cdpannes" (click)="showDepart(cdp)" >
         <div class="mb-3 widget-chart widget-chart2 text-left card" [ngClass]="
             cdp.dep == 'Scierie' ? 'card-shadow-danger' :
             cdp.dep == 'Brazil' ? 'card-shadow-jaune' :
@@ -23,7 +23,7 @@
             cdp.dep == 'Scierie' ? 'bg-danger' :
             cdp.dep == 'Brazil' ? 'bg-jaune' :
             cdp.dep == 'Placage' ? 'bg-success' :
-            cdp.dep == 'Contreplaqué' ? 'bg-warning' : 'bg-focus'" role="progressbar" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width: ((cdp.nbre)/(cdount)) | percent}"></div>
+            cdp.dep == 'Contreplaqué' ? 'bg-warning' : 'bg-focus'" role="progressbar" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width: ((cdp.nbre)/(cdount)) | percent: '2.0-0'}"></div>
                             </div>
                         </div>
                     </div>
@@ -46,38 +46,38 @@
                         <h5 class="menu-header-title text-capitalize text-primary">Suivi Journalier</h5>
                     </div>
                     <div class="btn-actions-pane-right text-capitalize">
-                        <div class="btn-group dropdown">
-                            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-wide mr-1 dropdown-toggle btn btn-outline-focus btn-sm">Options</button>
-                            <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-lg rm-pointers dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-menu-header">
-                                    <div class="dropdown-menu-header-inner bg-primary">
-                                        <div class="menu-header-image" style="background-image: url('assets/images/dropdown-header/abstract2.jpg');"></div>
-                                        <div class="menu-header-content">
-                                            <div><h5 class="menu-header-title">Settings</h5><h6 class="menu-header-subtitle">Example Dropdown Menu</h6></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="scroll-area-xs">
-                                    <div class="scrollbar-container">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item-header nav-item">Activity</li>
-                                            <li class="nav-item"><a href="javascript:void(0);" class="nav-link">Chat
-                                                <div class="ml-auto badge badge-pill badge-info">8</div>
-                                            </a></li>
-                                            <li class="nav-item"><a href="javascript:void(0);" class="nav-link">Recover Password</a></li>
-                                            <li class="nav-item-header nav-item">My Account</li>
-                                            <li class="nav-item"><a href="javascript:void(0);" class="nav-link">Settings
-                                                <div class="ml-auto badge badge-success">New</div>
-                                            </a></li>
-                                            <li class="nav-item"><a href="javascript:void(0);" class="nav-link">Messages
-                                                <div class="ml-auto badge badge-warning">512</div>
-                                            </a></li>
-                                            <li class="nav-item"><a href="javascript:void(0);" class="nav-link">Logs</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!--<div class="btn-group dropdown">-->
+                            <!--<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-wide mr-1 dropdown-toggle btn btn-outline-focus btn-sm">Options</button>-->
+                            <!--<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-lg rm-pointers dropdown-menu dropdown-menu-right">-->
+                                <!--<div class="dropdown-menu-header">-->
+                                    <!--<div class="dropdown-menu-header-inner bg-primary">-->
+                                        <!--<div class="menu-header-image" style="background-image: url('assets/images/dropdown-header/abstract2.jpg');"></div>-->
+                                        <!--<div class="menu-header-content">-->
+                                            <!--<div><h5 class="menu-header-title">Settings</h5><h6 class="menu-header-subtitle">Example Dropdown Menu</h6></div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="scroll-area-xs">-->
+                                    <!--<div class="scrollbar-container">-->
+                                        <!--<ul class="nav flex-column">-->
+                                            <!--<li class="nav-item-header nav-item">Activity</li>-->
+                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Chat-->
+                                                <!--<div class="ml-auto badge badge-pill badge-info">8</div>-->
+                                            <!--</a></li>-->
+                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Recover Password</a></li>-->
+                                            <!--<li class="nav-item-header nav-item">My Account</li>-->
+                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Settings-->
+                                                <!--<div class="ml-auto badge badge-success">New</div>-->
+                                            <!--</a></li>-->
+                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Messages-->
+                                                <!--<div class="ml-auto badge badge-warning">512</div>-->
+                                            <!--</a></li>-->
+                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Logs</a></li>-->
+                                        <!--</ul>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
                 <div class="card-body p-2">
@@ -118,9 +118,7 @@
                         <div>
                             <div role="group" class="btn-group-lg btn-group nav">
                                 <button type="button" data-toggle="tab" href="#tab-content-income" class="btn-pill pl-3 active btn btn-focus">Pannes</button>
-                                <button type="button" data-toggle="tab" href="#tab-content-expenses-wt" class="btn-pill pr-3  btn btn-focus">Waiting Time</button>
-                                <button type="button" data-toggle="tab" href="#tab-content-expenses-ttr" class="btn-pill pr-3  btn btn-focus">Time To Repair </button>
-                                <button type="button" data-toggle="tab" href="#tab-content-expenses-dt" class="btn-pill pr-3  btn btn-focus">Down Time</button>
+                                <button type="button" data-toggle="tab" href="#tab-content-expenses-wt" class="btn-pill pr-3  btn btn-focus">Rapport Techniciens</button>
                             </div>
                         </div>
                     </div>
@@ -143,7 +141,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr *ngFor="let pan of cpannes">
+                                            <tr *ngFor="let pan of cpannes | paginate:{itemsPerPage: 7, currentPage:page}; ">
                                                 <td class="text-left text-muted" style="width: 80px;">{{pan.machine}}</td>
                                                 <td class="text-center"><div class="badge badge-warning text-dark ">{{pan.code}}</div></td>
                                                 <td class="text-center">
@@ -173,31 +171,18 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <!--<div class="col-sm-12 col-md-6 mt-3" *ngFor="let cdp of cdpannes">-->
-                                    <!--<div class="card-border mb-sm-3 mb-md-0 border-light no-shadow card">-->
-                                        <!--<div class="widget-content">-->
-                                            <!--<div class="widget-content-outer">-->
-                                                <!--<div class="widget-content-wrapper">-->
-                                                    <!--<div class="widget-content-left">-->
-                                                        <!--<div class="widget-heading">{{cdp.dep}}</div>-->
-                                                    <!--</div>-->
-                                                    <!--<div class="widget-content-right">-->
-                                                        <!--<div class="widget-numbers line-height-1 text-primary"><span>{{cdp.nbre}}</span></div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div class="widget-progress-wrapper mt-1">-->
-                                                    <!--<div class="progress-bar-xs progress">-->
-                                                        <!--<div class="progress-bar bg-success" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width: ((cdp.nbre)/(cdount)) | percent}"></div>-->
-                                                    <!--</div>-->
-                                                    <!--<div class="progress-sub-label">-->
-                                                        <!--<div class="sub-label-left">Taux de panne sur l'ensemble</div>-->
-                                                        <!--<div class="sub-label-right">{{ ((cdp.nbre)/(cdount)) | percent: '2.0-0'}}</div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
+                                <div class="float-right">
+                                    <ul class="pagination pagination-sm mb-0 mt-1 pull-right">
+                                        <li>
+                                            <pagination-controls (pageChange)="page=$event"
+                                                                 autoHide = "true"
+                                                                 responsive = "true"
+                                                                 previousLabel = "Précédent"
+                                                                 nextLabel = "Suivant">
+                                            </pagination-controls>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tab-content-expenses-wt" role="tabpanel">
@@ -209,40 +194,42 @@
                                         <table class="align-middle text-truncate mb-0 table table-borderless table-hover">
                                             <thead>
                                             <tr>
-                                                <th class="text-left">Machine</th>
-                                                <th class="text-center">Code</th>
-                                                <th class="text-center">WT</th>
+                                                <th class="text-left">Nom</th>
+                                                <th class="text-center">Mat.</th>
+                                                <th class="text-center">Fonction</th>
+                                                <th class="text-center">Inter.</th>
+                                                <th class="text-center">TWT</th>
+                                                <th class="text-center">MWT</th>
                                                 <th class="text-center">Représentation</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr *ngFor="let pan of cpannes">
-                                                <td class="text-left text-muted" style="width: 80px;">{{pan.machine}}</td>
-                                                <td class="text-center"><div class="badge badge-warning text-dark ">{{pan.code}}</div></td>
+                                            <tr *ngFor="let st of StatsTec | paginate:{itemsPerPage: 10, currentPage: pgs}; ">
+                                                <td class="text-left text-muted" style="width: 80px;">{{st.tec | uppercase}}</td>
+                                                <td class="text-center"><div class="badge badge-warning text-dark ">{{st.Matricule}}</div></td>
+                                                <td class="text-center text-capitalize text-primary">{{st.Fonction}}</td>
                                                 <td class="text-center">
-                                                    <div class="badge badge-pill badge-danger">{{(
-                                                        ( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )
-                                                        )*60*24
-                                                        +
-                                                        (
-                                                        ( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
-                                                        )*60
-                                                        +
-                                                        (
-                                                        ( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')
-                                                        )}}</div>
+                                                    <div class="badge badge-focus text-white ">
+                                                        {{st.nbre}}
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="badge badge-pill badge-alternate">{{st.WT}}</div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="badge badge-pill badge-danger">{{(st.WT/st.nbre) | number: '2.0-0'}}</div>
                                                 </td>
                                                 <td class="text-center" style="width: 200px;">
                                                     <div class="widget-content p-0">
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left pr-2">
-                                                                    <div class="widget-numbers fsize-1 text-danger">{{(pan.nbre)/(count) | percent: '2.0-0'}}</div>
+                                                                    <div class="widget-numbers fsize-1 text-danger">{{(st.nbre)/(StatsTec.length) | percent: '2.0-0'}}</div>
                                                                 </div>
                                                                 <div class="widget-content-right w-100">
                                                                     <div class="progress-bar-xs progress">
                                                                         <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0"
-                                                                             aria-valuemax="100" [ngStyle]="{width: ((pan.nbre)/(count)) | percent}" ></div>
+                                                                             aria-valuemax="100" [ngStyle]="{width: ((st.nbre)/(StatsTec.length)) | percent}" ></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -254,116 +241,18 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-content-expenses-ttr" role="tabpanel">
-                            <h5 class="menu-header-title">Temps de Réparation</h5>
-                            <h6 class="menu-header-subtitle opacity-6">Rapport sur les temps de réparation</h6>
-                            <div class="mt-3 row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="table-responsive">
-                                        <table class="align-middle text-truncate mb-0 table table-borderless table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-left">Machine</th>
-                                                <th class="text-center">Code</th>
-                                                <th class="text-center">WT</th>
-                                                <th class="text-center">Représentation</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr *ngFor="let pan of cpannes">
-                                                <td class="text-left text-muted" style="width: 80px;">{{pan.machine}}</td>
-                                                <td class="text-center"><div class="badge badge-warning text-dark ">{{pan.code}}</div></td>
-                                                <td class="text-center">
-                                                    <div class="badge badge-pill badge-danger">{{(
-                                                        ( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )
-                                                        )*60*24
-                                                        +
-                                                        (
-                                                        ( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
-                                                        )*60
-                                                        +
-                                                        (
-                                                        ( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')
-                                                        )}}</div>
-                                                </td>
-                                                <td class="text-center" style="width: 200px;">
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-outer">
-                                                            <div class="widget-content-wrapper">
-                                                                <div class="widget-content-left pr-2">
-                                                                    <div class="widget-numbers fsize-1 text-danger">{{(pan.nbre)/(count) | percent: '2.0-0'}}</div>
-                                                                </div>
-                                                                <div class="widget-content-right w-100">
-                                                                    <div class="progress-bar-xs progress">
-                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0"
-                                                                             aria-valuemax="100" [ngStyle]="{width: ((pan.nbre)/(count)) | percent}" ></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-content-expenses-dt" role="tabpanel">
-                            <h5 class="menu-header-title">Temps d'arrêt</h5>
-                            <h6 class="menu-header-subtitle opacity-6">Rapport sur les temps d'arrivée des techniciens</h6>
-                            <div class="mt-3 row">
-                                <div class="col-sm-12 col-md-12">
-                                    <div class="table-responsive">
-                                        <table class="align-middle text-truncate mb-0 table table-borderless table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th class="text-left">Machine</th>
-                                                <th class="text-center">Code</th>
-                                                <th class="text-center">WT</th>
-                                                <th class="text-center">Représentation</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr *ngFor="let pan of cpannes">
-                                                <td class="text-left text-muted" style="width: 80px;">{{pan.machine}}</td>
-                                                <td class="text-center"><div class="badge badge-warning text-dark ">{{pan.code}}</div></td>
-                                                <td class="text-center">
-                                                    <div class="badge badge-pill badge-danger">{{(
-                                                        ( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )
-                                                        )*60*24
-                                                        +
-                                                        (
-                                                        ( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )
-                                                        )*60
-                                                        +
-                                                        (
-                                                        ( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')
-                                                        )}}</div>
-                                                </td>
-                                                <td class="text-center" style="width: 200px;">
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-outer">
-                                                            <div class="widget-content-wrapper">
-                                                                <div class="widget-content-left pr-2">
-                                                                    <div class="widget-numbers fsize-1 text-danger">{{(pan.nbre)/(count) | percent: '2.0-0'}}</div>
-                                                                </div>
-                                                                <div class="widget-content-right w-100">
-                                                                    <div class="progress-bar-xs progress">
-                                                                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0"
-                                                                             aria-valuemax="100" [ngStyle]="{width: ((pan.nbre)/(count)) | percent}" ></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                <div class="row">
+                                    <div class="float-right">
+                                        <ul class="pagination pagination-sm mb-0">
+                                            <li>
+                                                <pagination-controls (pageChange)="pgs=$event"
+                                                                     autoHide = "true"
+                                                                     responsive = "true"
+                                                                     previousLabel = "Précédent"
+                                                                     nextLabel = "Suivant">
+                                                </pagination-controls>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -428,10 +317,11 @@
             cdount > lastMonth ? 'text-danger' : 'text-warning'"
                                                 >
                                             <i [ngClass]="
-            cdount < lastMonth ? 'fa fa-arrow-up' :
-            cdount > lastMonth ? 'fa fa-arrow-down' : 'fa fa-arrow-right'"></i>
+            cdount < lastMonth ? 'fa fa-arrow-down' :
+            cdount > lastMonth ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+                                            <span class="pl-1" *ngIf="cdount == 0 || lastMonth == 0">100 %</span>
                                             <span class="pl-1" *ngIf="cdount < lastMonth">{{(((cdount)/(lastMonth))-1) *(-1) | percent}}</span>
-                                            <span class="pl-1" *ngIf="cdount >= lastMonth">{{(((cdount)/(lastMonth))-1) | percent}}</span>
+                                            <span class="pl-1" *ngIf="cdount >= lastMonth && lastMonth != 0">{{(((cdount)/(lastMonth))-1) | percent}}</span>
                                             </span>
                                             </div>
                                         </div>
@@ -448,10 +338,9 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="widget-subheading">Total annuel</div>
-                                <div class="widget-subheading">Total annuel</div>
-                                <div class="widget-subheading">Total annuel</div>
-                                <div class="widget-subheading">Total annuel</div>
+                                <div class="widget-subheading text-capitalize text-center col-md-3" *ngFor=" let dp of departement" (click)="showDepart(dp)" style="cursor: pointer; width: auto;">
+                                    <span class="mb-2 mr-2 border-0 btn-transition btn btn-outline-secondary">{{dp.nom}}</span>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -466,23 +355,41 @@
                     <!--</div>-->
                 </div>
             </div>
+
+
             <div class="main-card mb-3 card">
                 <div class="card-body">
-                    <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Pannes Journalieres
-                        <button routerLink="/pannes" class="btn btn-sm btn-outline-primary float-right" >
-                        <i class="fa fa-eye"></i> Voir plus...</button>
-                    </h6>
-
-                    <!--<div class="border-light scroll-area-sm card">-->
-                    <!--<div class="scrollbar-container">-->
-                    <div class="scroll-area-sm">
+                    <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Liste des Pannes de la Journée</h6>
+                    <div class="border-light card-border scroll-area-sm card">
                         <div class="scrollbar-container">
-                            <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column" *ngIf="pannes">
-                                <div class="vertical-timeline-item vertical-timeline-element" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: 7, currentPage:p} " (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: 7, currentPage:p} " style="cursor: pointer;" (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <!--<div class="widget-content-left mr-3">-->
+                                            <!--<img width="38" class="rounded-circle" src="assets/images/avatars/1.jpg" alt="">-->
+                                            <!--</div>-->
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">{{pan.machine}} <span class="text-danger pl-2">{{pan.heure_arret | date: 'HH:mm'}}</span></div>
+                                                <div class="widget-subheading mt-1 opacity-10">
+                                                    <div class="badge badge-pill badge-focus text-warning">{{pan.code}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="fsize-2 text-dark">
+                                                    <small class="opacity-5 pr-1">{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'...' : pan.cause}}</small>
+
+                                                    <small class="text-primary pl-2">
+                                                        {{pan.heureArret | date: 'HH:mm'}}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <ng-template #mymodal let-modal>
                                         <div class="modal-header">
                                             <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
-                                            <div class="close vertical-timeline-element-content bounce-in" >
+                                            <div style="cursor: pointer" class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)">
                                                 <span class="timeline-title"><b>{{pan.machine}}</b></span>
                                                 <p>{{pan.code}}</p>
                                             </div>
@@ -543,7 +450,7 @@
                                                         <div class="vertical-timeline-item vertical-timeline-element">
                                                             <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
                                                                 <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
-                                                                    <p><b class="text-alternate">{{pan.matOp}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
+                                                                    <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -570,32 +477,25 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <div class="pull-left">
-                                                <b>{{ pan.date  | date: 'dd/MM/y'}}</b>
+                                        <div class="d-block clearfix card-footer ">
+                                            <div class="float-left">
+                                                <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                             </div>
-                                            <button class="btn btn-primary" type="button" (click)="modal.close('save click')">Fermer</button>
+                                            <div class="float-right">
+                                                <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
+                                            </div>
                                         </div>
                                     </ng-template>
+                                </li>
 
-                                    <div><span class="vertical-timeline-element-icon bounce-in"><i class="badge badge-dot badge-dot-xl badge-success"> </i></span>
-                                        <div class="vertical-timeline-element-content bounce-in">
-                                            <h4 class="timeline-title">{{pan.machine}} <div class="badge badge-pill badge-focus text-warning">{{pan.code}}</div></h4>
-                                            <p>{{pan.cause}}</p>
-                                            <span class="vertical-timeline-element-date">
-                                                        {{ pan.heureArret | date: 'HH:mm'}}
-                                                    </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="pannes < 1">Aucune panne déclarée dans la journée!</p>
+                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="pannes < 1">Aucune panne déclarée dans la journée!</p>
+                            </ul>
+
                         </div>
                     </div>
-                    <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
+
             <div class="main-card mb-3 card">
                 <div class="card-body">
                     <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Liste des Machines en Arrêt</h6>
@@ -616,7 +516,7 @@
                                             </div>
                                             <div class="widget-content-right">
                                                 <div class="fsize-2 text-dark">
-                                                    <small class="opacity-5 pr-1">{{arret.cause}}</small>
+                                                    <small class="opacity-5 pr-1">{{ arret.cause.length > 20 ? arret.cause.substr(0, 20)+'...' : arret.cause}}</small>
 
                                                     <small class="text-primary pl-2">
                                                         {{arret.debutArret | date: 'HH:mm'}}
@@ -628,7 +528,7 @@
                                     <ng-template #mymodal let-modal >
                                         <div class="modal-header">
                                             <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Arret N°:</b> {{arret.numero}}</h6>
-                                            <div class="close vertical-timeline-element-content bounce-in" >
+                                            <div style="cursor: pointer" class="close vertical-timeline-element-content bounce-in" (click)="showMachines(arret)" >
                                                 <span class="timeline-title"><b>{{arret.machine}}</b></span>
                                                 <p>{{arret.code}}</p>
                                             </div>
@@ -648,7 +548,7 @@
                                         </div>
                                         <div class="d-block clearfix card-footer ">
                                             <div class="float-left">
-                                                <b class="pull-left">{{ arret.date  | date: 'dd/MM/y'}}</b>
+                                                <b class="pull-left">{{ arret.date  | date: 'dd MMM y'}}</b>
                                             </div>
                                             <div class="float-right">
                                                 <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
@@ -682,7 +582,7 @@
                     </div>
                     <div class="btn-actions-pane-right">
                         <div role="group" class="btn-group-sm btn-group">
-                            Total :&nbsp;<span class="text-danger"> {{ThisWeekPannes.length}} pannes</span>
+                            Total :&nbsp;<span class="text-danger"> {{ThisWeekPannes.length| number}} pannes</span>
                         </div>
                     </div>
                     <div class="btn-actions-pane-right">
@@ -714,7 +614,7 @@
                             <ng-template #mymodal let-modal>
                                 <div class="modal-header">
                                     <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
-                                    <div class="close vertical-timeline-element-content bounce-in" >
+                                    <div style="cursor: pointer" class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)">
                                         <span class="timeline-title"><b>{{pan.machine}}</b></span>
                                         <p>{{pan.code}}</p>
                                     </div>
@@ -802,11 +702,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <div class="pull-left">
-                                        <b>{{ pan.date  | date: 'dd/MM/y'}}</b>
+                                <div class="d-block clearfix card-footer ">
+                                    <div class="float-left">
+                                        <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                     </div>
-                                    <button class="btn btn-primary" type="button" (click)="modal.close('save click')">Fermer</button>
+                                    <div class="float-right">
+                                        <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
+                                    </div>
                                 </div>
                             </ng-template>
                             <td class="text-center text-muted">{{ pan.date  | date: 'dd/MM/y'}}</td>
@@ -826,7 +728,7 @@
                                 </div>
                             </td>
                             <td class="text-left" style="white-space: nowrap;overflow: hidden;
-text-overflow: ellipsis;" >{{pan.cause}}</td>
+text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'...' : pan.cause}}</td>
 
 
 
@@ -847,7 +749,7 @@ text-overflow: ellipsis;" >{{pan.cause}}</td>
 
                                 {{pan.fin_inter | date: 'HH:mm'}}
                             </td>
-                            <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 25
+                            <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20
             }">
                                 <!--{{-->
                                 <!--(-->
@@ -909,14 +811,14 @@ text-overflow: ellipsis;" >{{pan.cause}}</td>
                         </tbody>
 
                     </table>
-                    <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="(ThisWeekPannes) > 1">Aucune Panne de la semaine !</p>
+                    <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="(ThisWeekPannes) > 1">Aucune Panne dans la semaine !</p>
                 </div>
                 <div class="d-block clearfix card-footer">
-                    <div class="float-left">
-                        <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">
-                            <i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;
-                        <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>
-                    </div>
+                    <!--<div class="float-left">-->
+                        <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">-->
+                            <!--<i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;-->
+                        <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>-->
+                    <!--</div>-->
                     <div class="float-right">
                         <ul class="pagination pagination-sm mb-0">
                             <li>
@@ -936,69 +838,69 @@ text-overflow: ellipsis;" >{{pan.cause}}</td>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12 col-lg-6">
-            <div class="card mb-3 widget-chart bg-arielle-smile card-border">
-                <div class="widget-chart-content text-white">
-                    <div class="icon-wrapper rounded-circle">
-                        <div class="icon-wrapper-bg bg-white opacity-7"></div>
-                        <i class="lnr-graduation-hat text-info"></i>
-                    </div>
-                    <div class="widget-numbers">{{TDT}} Min</div>
-                    <div class="widget-subheading">Total Down Time</div>
-                    <div class="widget-description text-white">
-                        <i class="fa fa-arrow-right"></i>
-                        <span class="pl-1">175.5%</span>
-                    </div>
-                </div>
-                <div class="widget-chart-wrapper chart-wrapper-relative">
-                    <div class="flex-item">
-                        <div style="display: block; height: auto;">
-                            <app-chart
-                                    [type]="'bar'"
-                                    [data]="mdtByYear.datasets"
-                                    [lineChartLabels]="mdtByYear.labels"
-                                    [lineChartColors]="colors"
-                            ></app-chart>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!--<div class="row">-->
+        <!--<div class="col-md-12 col-lg-6">-->
+            <!--<div class="card mb-3 widget-chart bg-arielle-smile card-border">-->
+                <!--<div class="widget-chart-content text-white">-->
+                    <!--<div class="icon-wrapper rounded-circle">-->
+                        <!--<div class="icon-wrapper-bg bg-white opacity-7"></div>-->
+                        <!--<i class="lnr-graduation-hat text-info"></i>-->
+                    <!--</div>-->
+                    <!--<div class="widget-numbers">{{TDT}} Min</div>-->
+                    <!--<div class="widget-subheading">Total Down Time</div>-->
+                    <!--<div class="widget-description text-white">-->
+                        <!--<i class="fa fa-arrow-right"></i>-->
+                        <!--<span class="pl-1">175.5%</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="widget-chart-wrapper chart-wrapper-relative">-->
+                    <!--<div class="flex-item">-->
+                        <!--<div style="display: block; height: auto;">-->
+                            <!--<app-chart-->
+                                    <!--[type]="'bar'"-->
+                                    <!--[data]="mdtByYear.datasets"-->
+                                    <!--[lineChartLabels]="mdtByYear.labels"-->
+                                    <!--[lineChartColors]="colors"-->
+                            <!--&gt;</app-chart>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
-        <div class="col-md-12 col-lg-6">
-            <div class="card mb-3 widget-chart bg-strong-bliss card-border">
-                <div class="widget-chart-content text-white">
-                    <div class="icon-wrapper rounded">
-                        <div class="icon-wrapper-bg bg-white opacity-4"></div>
-                        <i class="lnr-graduation-hat text-white"></i>
-                    </div>
-                    <div class="widget-numbers">1.5M</div>
-                    <div class="widget-subheading">Bugs Fixed</div>
-                    <div class="widget-description text-white">
-                        Down by
-                        <span class="text-white pl-1 pr-1 opacity-8">
-                                                    <i class="fa fa-angle-down"></i>
-                                                    <span class="pl-1">54.1%</span>
-                                                </span>
-                        from 30 days ago
-                    </div>
-                </div>
-                <div class="widget-chart-wrapper chart-wrapper-relative">
-                    <div class="flex-item">
-                        <div style="display: block; height: auto;">
-                            <app-chart
-                                    [type]="'bar'"
-                                    [data]="mtbfByYear.datasets"
-                                    [lineChartLabels]="mtbfByYear.labels"
-                                    [lineChartColors]="colors"
-                            ></app-chart>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <!--<div class="col-md-12 col-lg-6">-->
+            <!--<div class="card mb-3 widget-chart bg-strong-bliss card-border">-->
+                <!--<div class="widget-chart-content text-white">-->
+                    <!--<div class="icon-wrapper rounded">-->
+                        <!--<div class="icon-wrapper-bg bg-white opacity-4"></div>-->
+                        <!--<i class="lnr-graduation-hat text-white"></i>-->
+                    <!--</div>-->
+                    <!--<div class="widget-numbers">1.5M</div>-->
+                    <!--<div class="widget-subheading">Bugs Fixed</div>-->
+                    <!--<div class="widget-description text-white">-->
+                        <!--Down by-->
+                        <!--<span class="text-white pl-1 pr-1 opacity-8">-->
+                                                    <!--<i class="fa fa-angle-down"></i>-->
+                                                    <!--<span class="pl-1">54.1%</span>-->
+                                                <!--</span>-->
+                        <!--from 30 days ago-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="widget-chart-wrapper chart-wrapper-relative">-->
+                    <!--<div class="flex-item">-->
+                        <!--<div style="display: block; height: auto;">-->
+                            <!--<app-chart-->
+                                    <!--[type]="'bar'"-->
+                                    <!--[data]="mtbfByYear.datasets"-->
+                                    <!--[lineChartLabels]="mtbfByYear.labels"-->
+                                    <!--[lineChartColors]="colors"-->
+                            <!--&gt;</app-chart>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
 
 

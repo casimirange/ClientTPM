@@ -7,6 +7,7 @@ import {Machine} from "../../Models/machines";
 import * as _ from 'lodash';
 import {forEachComment} from "tslint";
 import {variable} from "@angular/compiler/src/output/output_ast";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-machines',
@@ -32,6 +33,7 @@ export class MachinesComponent implements OnInit {
   newligne: Ligne;
 
   constructor(private fb: FormBuilder, private ligneService: LignesService,
+              private router: Router,
               private machineService: MachinesService)
       {
         this.createForm();
@@ -165,6 +167,11 @@ export class MachinesComponent implements OnInit {
           this.loadMachines();
         }
     );
+  }
+
+  showMachine(m: Machine){
+    let url = btoa(m.idMachine.toString());
+    this.router.navigateByUrl("machines/"+url);
   }
 
 }

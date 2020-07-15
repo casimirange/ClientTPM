@@ -3,3 +3,17 @@
     top: 50%;
     transform: translateY(-50%);
 }
+
+.wtd{
+    color: #f65656;
+}
+.wtw{
+    color: #ffc107;
+}
+.wts{
+    color: #0ba360;
+}
+
+.bg-w{
+    background: #f4f0ab;
+}
