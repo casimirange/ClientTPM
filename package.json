@@ -39,7 +39,7 @@
     "jquery": "^3.5.0",
     "jquery-confirm": "^3.3.4",
     "jspdf": "^1.5.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "ng-apexcharts": "^1.2.1",
     "ng2-charts": "^2.3.0",
     "ng2-search-filter": "^0.5.1",
