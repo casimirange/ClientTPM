@@ -16,6 +16,10 @@ export class DepartementsService {
     return this.http.get(API_URLS.DEPARTEMENT_URL);
   }
 
+  getDashboard(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/dashboard/${id}`);
+  }
+
   addDep(departement: Departement): Observable<any>{
     return this.http.post(API_URLS.DEPARTEMENT_URL, departement);
   }

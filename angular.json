@@ -24,16 +24,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-//              "node_modules/bootstrap-select/dist/css/bootstrap-select.css",
-//              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/font-awesome/css/font-awesome.css"
-
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/jqwidgets-ng/jqwidgets/styles/jqx.light.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-//              "node_modules/bootstrap/dist/js/bootstrap.min.js",
-//              "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/apexcharts/dist/apexcharts.js",
               "node_modules/sweetalert2/dist/sweetalert2.js"
             ]
@@ -99,7 +95,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -136,6 +132,9 @@
   "schematics": {
     "@scematics/angular:component": {
       "styleext": "css"
+    },
+    "@schematics/angular:component": {
+      "styleext": "scss"
     }
   }
 }

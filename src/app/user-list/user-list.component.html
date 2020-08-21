@@ -1,0 +1,20 @@
+<table class="table table-responsive">
+    <tr>
+        <th>date</th>
+        <th>machine</th>
+        <th>cause</th>
+        <th>WT</th>
+        <th>TTR</th>
+        <th>TDT</th>
+    </tr>
+    <tbody>
+    <tr *ngFor="let pan of filteredUsers | filter: searchByKeyword: 'name'">
+        <td>{{ pan.date  | date: 'dd/MM/y'}}</td>
+        <td>{{ pan.machine}}</td>
+        <td>{{ pan.cause}}</td>
+        <td>{{ pan.wt}}</td>
+        <td>{{ pan.ttr}}</td>
+        <td>{{ pan.dt}}</td>
+    </tr>
+    </tbody>
+</table>

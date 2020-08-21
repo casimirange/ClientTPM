@@ -6,75 +6,339 @@
 " [bg]="bg"></app-page-title>
 
 <div class="row">
-    <div class="col-md-3">
-        <div class="card mb-3 widget-chart widget-chart2 bg-focus text-left">
-            <div class="widget-chart-content text-white">
-                <div class="widget-chart-flex">
-                    <div class="widget-title">Total Down Time</div>
-                    <div class="widget-subtitle text-warning">Mois Passé</div>
-                </div>
-                <div class="widget-chart-flex">
-                    <div class="widget-numbers">{{countThisMonthPanneTDT }}
-                        <small>min</small>
-                    </div>
-                    <div class="widget-description ml-auto text-warning">
-                        <span class="pr-1">{{countLastMonthPanneTDT }}</span>
-                        <small>min</small>
+    <!--<div class="col-md-3">-->
+        <!--<div class="card mb-3 widget-chart widget-chart2 bg-focus text-left">-->
+            <!--<div class="widget-chart-content text-white">-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-title">Total Down Time</div>-->
+                    <!--<div class="widget-subtitle text-warning">Mois Passé</div>-->
+                <!--</div>-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-numbers">{{countThisMonthPanneTDT }}-->
+                        <!--<small>min</small>-->
+                    <!--</div>-->
+                    <!--<div class="widget-description ml-auto text-warning">-->
+                        <!--<span class="pr-1">{{countLastMonthPanneTDT }}</span>-->
+                        <!--<small>min</small>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-3">-->
+        <!--<div class="card mb-3 widget-chart widget-chart2 bg-vicious-stance text-left">-->
+            <!--<div class="widget-chart-content text-white">-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-title">Mean Down Time</div>-->
+                    <!--<div class="widget-subtitle text-success">Mois Passé</div>-->
+                <!--</div>-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-numbers text-warning">-->
+                        <!--{{countThisMonthPanneMDT ? countThisMonthPanneMDT : 0 }} <small>min</small>-->
+                    <!--</div>-->
+                    <!--<div class="widget-description ml-auto text-success">-->
+                        <!--<span class="pl-1">{{countLastMonthPanneMDT ? countLastMonthPanneMDT : 0}}</span>-->
+                        <!--<small> min</small>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-3">-->
+        <!--<div class="card mb-3 widget-chart widget-chart2 bg-night-sky text-left">-->
+            <!--<div class="widget-chart-content text-white">-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-title">Nombre de Pannes</div>-->
+                    <!--<div class="widget-subtitle text-white">Mois Passé</div>-->
+                <!--</div>-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-numbers text-white">{{countThisMonthPannenbre ? countThisMonthPannenbre : 0}} </div>-->
+                    <!--<div class="widget-description ml-auto text-success">-->
+                        <!--<span class="pr-1">{{countLastMonthPannenbre ? countLastMonthPannenbre : 0}}</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-3">-->
+        <!--<div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">-->
+            <!--<div class="widget-chart-content text-white">-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-title opacity-6">Heures Travaillées</div>-->
+                    <!--<div class="widget-subtitle text-white">Mois Passé</div>-->
+                <!--</div>-->
+                <!--<div class="widget-chart-flex">-->
+                    <!--<div class="widget-numbers text-white" >{{hourThisMonth ? hourThisMonth.heure : 0}} h</div>-->
+                    <!--<div class="widget-description ml-auto text-success">-->
+                        <!--<span class="pr-1">{{hourLastMonth ? hourLastMonth.heure : 0}} h</span></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+<div class="row" id="element-pannes">
+    <div class="col-md-6 col-lg-6 col-xl-6">
+        <div class="main-card mb-3 card" id="pdf2">
+            <div class="card-body">
+                <h6 class="text-alternate text-uppercase font-size-md opacity-7 mb-3 font-weight-bold">Total des Pannes Mensuel</h6>
+                <ul class="list-group list-group-flush">
+                    <li class="p-0 list-group-item">
+                        <div class="row">
+                            <div class="center-elem col-md-7">
+                                <div class="center-elem w-100">
+                                    <div id="chart" >
+                                        <apx-chart
+                                                [series]="chartOptions.series"
+                                                [chart]="chartOptions.chart"
+                                                [plotOptions]="chartOptions.plotOptions"
+                                                [labels]="chartOptions.labels"
+                                                [stroke]="chartOptions.stroke"
+                                                [fill]="chartOptions.fill">
+                                        </apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPannenbre ? countLastMonthPannenbre : 0}}</span></div>
+                                        <div class="widget-description text-focus">
+                                            {{(countThisMonthPannenbre < countLastMonthPannenbre) ? 'En baisse de' : (countThisMonthPannenbre > countLastMonthPannenbre) ? 'En Hausse de': ''}}
+                                            <span class="pl-1"
+                                                  [ngClass]="
+            countThisMonthPannenbre < countLastMonthPannenbre ? 'text-success' :
+            countThisMonthPannenbre > countLastMonthPannenbre ? 'text-danger' : 'text-warning'"
+                                            >
+                                            <i [ngClass]="
+            countThisMonthPannenbre < countLastMonthPannenbre ? 'fa fa-arrow-down' :
+            countThisMonthPannenbre > countLastMonthPannenbre ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+                                                <!--<span class="pl-1" *ngIf="countThisMonthPannenbre == 0 && countLastMonthPannenbre !=0 || countLastMonthPannenbre == 0">100 %</span>-->
+                                            <span class="pl-1" *ngIf="countThisMonthPannenbre < countLastMonthPannenbre">{{(((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) *(-1) | percent}}</span>
+                                            <span class="pl-1" *ngIf="countThisMonthPannenbre >= countLastMonthPannenbre && countLastMonthPannenbre != 0">{{(((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) | percent}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider mt-0 mb-0 mr-2"></div>
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-numbers-sm mt-0 text-primary" >
+                                            <span>{{depPanneThisYear}}</span>
+                                        </div>
+                                        <div class="widget-subheading">Pannes Annuelle</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-6 col-xl-6">
+        <div class="main-card mb-3 card" id="pdf2">
+            <div class="card-body">
+                <h6 class="text-danger text-uppercase font-size-md opacity-7 mb-3 font-weight-bold">Total Down Time</h6>
+                <ul class="list-group list-group-flush">
+                    <li class="p-0 list-group-item">
+                        <div class="row">
+                            <div class="center-elem col-md-6">
+                                <div class="center-elem w-100">
+                                    <div id="chart" >
+                                        <apx-chart
+                                                [series]="TDTOptions.series"
+                                                [chart]="TDTOptions.chart"
+                                                [plotOptions]="TDTOptions.plotOptions"
+                                                [labels]="TDTOptions.labels"
+                                                [stroke]="TDTOptions.stroke"
+                                                [fill]="TDTOptions.fill">
+                                        </apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-subheading">Mois Dernier </div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneTDT ? countLastMonthPanneTDT.toString().slice(0, -2) : 0}} min</span></div>
+                                        <div class="widget-description text-focus">
+                                            {{((countThisMonthPanneTDT - countLastMonthPanneTDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneTDT - countLastMonthPanneTDT) > 0) ? 'En Hausse de': ''}}
+                                            <span class="pl-1"
+                                                  [ngClass]="
+            (countThisMonthPanneTDT - countLastMonthPanneTDT) < 0 ? 'text-success' :
+            (countThisMonthPanneTDT - countLastMonthPanneTDT ) > 0 ? 'text-danger' : 'text-warning'"
+                                            >
+                                            <i [ngClass]="
+            (countThisMonthPanneTDT - countLastMonthPanneTDT) < 0 ? 'fa fa-arrow-down' :
+            (countThisMonthPanneTDT - countLastMonthPanneTDT ) > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+                                                <!--<span class="pl-1" *ngIf="countThisMonthPanneTDT == 0 && countLastMonthPanneTDT !=0 || countLastMonthPanneTDT == 0">100 %</span>-->
+                                            <span class="pl-1" *ngIf="(countThisMonthPanneTDT - countLastMonthPanneTDT) < 0">{{(((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) *(-1) | percent}}</span>
+                                            <span class="pl-1" *ngIf="(countThisMonthPanneTDT - countLastMonthPanneTDT)>=0 && countLastMonthPanneTDT != 0">{{(((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) | percent}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider mt-0 mb-0 mr-2"></div>
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-numbers-sm mt-0 text-primary" >
+                                            <span>{{depTDTThisYear}} min</span>
+                                        </div>
+                                        <div class="widget-subheading">TDT annuel</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-6 col-xl-6">
+        <div class="main-card mb-3 card" id="pdf2">
+            <div class="card-body">
+                <h6 class="text-warning text-uppercase font-size-md opacity-7 mb-3 font-weight-bold">Mean Down Time</h6>
+                <ul class="list-group list-group-flush">
+                    <li class="p-0 list-group-item">
+                        <div class="row">
+                            <div class="center-elem col-md-6">
+                                <div class="center-elem w-100">
+                                    <div id="chart" >
+                                        <apx-chart
+                                                [series]="MDTOptions.series"
+                                                [chart]="MDTOptions.chart"
+                                                [plotOptions]="MDTOptions.plotOptions"
+                                                [labels]="MDTOptions.labels"
+                                                [stroke]="MDTOptions.stroke"
+                                                [fill]="MDTOptions.fill">
+                                        </apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneMDT ? countLastMonthPanneMDT.toFixed(0) : 0}} min</span></div>
+                                        <div class="widget-description text-focus">
+                                            {{((countThisMonthPanneMDT - countLastMonthPanneMDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneMDT - countLastMonthPanneMDT) > 0) ? 'En Hausse de': ''}}
+                                            <span class="pl-1"
+                                                  [ngClass]="
+            (countThisMonthPanneMDT - countLastMonthPanneMDT) < 0 ? 'text-success' :
+            (countThisMonthPanneMDT - countLastMonthPanneMDT ) > 0 ? 'text-danger' : 'text-warning'"
+                                            >
+                                            <i [ngClass]="
+            (countThisMonthPanneMDT - countLastMonthPanneMDT) < 0 ? 'fa fa-arrow-down' :
+            (countThisMonthPanneMDT - countLastMonthPanneMDT ) > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+                                                <!--<span class="pl-1" *ngIf="countThisMonthPanneMDT == 0 && countLastMonthPanneMDT !=0 || countLastMonthPanneMDT == 0">100 %</span>-->
+                                            <span class="pl-1" *ngIf="(countThisMonthPanneMDT - countLastMonthPanneMDT) < 0">{{(((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) *(-1) | percent}}</span>
+                                            <span class="pl-1" *ngIf="(countThisMonthPanneMDT - countLastMonthPanneMDT)>=0 && countLastMonthPanneMDT != 0">{{(((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) | percent}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider mt-0 mb-0 mr-2"></div>
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-numbers-sm mt-0 text-primary" >
+                                            <span>{{depMDTThisYear}} min</span>
+                                        </div>
+                                        <div class="widget-subheading">MDT annuel</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-6 col-xl-6">
+        <div class="main-card mb-3 card" id="pdf2">
+            <div class="card-body">
+                <h6 class="text-success text-uppercase font-size-md opacity-7 mb-3 font-weight-bold">Total des Heures Travaillées</h6>
+                <ul class="list-group list-group-flush">
+                    <li class="p-0 list-group-item">
+                        <div class="row">
+                            <div class="center-elem col-md-6">
+                                <div class="center-elem w-100">
+                                    <div id="chart" >
+                                        <apx-chart
+                                                [series]="HOUROptions.series"
+                                                [chart]="HOUROptions.chart"
+                                                [plotOptions]="HOUROptions.plotOptions"
+                                                [labels]="HOUROptions.labels"
+                                                [stroke]="HOUROptions.stroke"
+                                                [fill]="HOUROptions.fill">
+                                        </apx-chart>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{hourLastMonth ? hourLastMonth.heure : 0}} h</span></div>
+                                        <div class="widget-description text-focus">
+                                            {{(hourThisMonth.heure < hourLastMonth.heure) ? 'En baisse de' : (hourThisMonth.heure > hourLastMonth.heure) ? 'En Hausse de': ''}}
+                                            <span class="pl-1"
+                                                  [ngClass]="
+           (hourThisMonth.heure - hourLastMonth.heure) > 0 ? 'text-success' :
+           (hourThisMonth.heure - hourLastMonth.heure) < 0 ? 'text-danger' : 'text-warning'"
+                                            >
+                                            <i [ngClass]="
+            (hourThisMonth.heure - hourLastMonth.heure) < 0 ? 'fa fa-arrow-down' :
+            (hourThisMonth.heure - hourLastMonth.heure) > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+                                                <!--<span class="pl-1" *ngIf="hourThisMonth.heure == 0 && hourLastMonth.heure !=0 || hourLastMonth.heure == 0">100 %</span>-->
+                                            <span class="pl-1" *ngIf="(hourThisMonth.heure - hourLastMonth.heure) < 0">{{(((hourThisMonth.heure)/(hourLastMonth.heure))-1) *(-1) | percent}}</span>
+                                            <span class="pl-1" *ngIf="(hourThisMonth.heure - hourLastMonth.heure) > 0 && hourLastMonth.heure != 0">{{(((hourThisMonth.heure)/(hourLastMonth.heure))-1) | percent}}</span>
+                                            <span class="pl-1" *ngIf="(hourLastMonth.heure | number) < 1">100 %</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider mt-0 mb-0 mr-2"></div>
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-numbers-sm mt-0 text-primary" >
+                                            <span>{{depHourThisYear}} h</span>
+                                        </div>
+                                        <div class="widget-subheading">Heures annuelle</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-lg-12 col-xl-12">
+    <div class="main-card mb-3 card">
+        <div class="rm-border card-header">
+            <div>
+                <h5 class="menu-header-title text-capitalize text-primary">Suivi Journalier</h5>
+            </div>
+        </div>
+        <div class="card-body p-2" id="pdf1">
+            <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
+                <div style="height: auto" >
+                    <div class="flex-item">
+                        <div style="display: block; height: auto;">
+                            <app-chart
+                                    [type]="'line'"
+                                    [data]="datas.datasets"
+                                    [lineChartLabels]="datas.labels"
+                            ></app-chart>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card mb-3 widget-chart widget-chart2 bg-vicious-stance text-left">
-            <div class="widget-chart-content text-white">
-                <div class="widget-chart-flex">
-                    <div class="widget-title">Mean Down Time</div>
-                    <div class="widget-subtitle text-success">Mois Passé</div>
-                </div>
-                <div class="widget-chart-flex">
-                    <div class="widget-numbers text-warning">
-                        {{countThisMonthPanneMDT ? countThisMonthPanneMDT.toFixed(1) : 0 }} <small>min</small>
-                    </div>
-                    <div class="widget-description ml-auto text-success">
-                        <span class="pl-1">{{countLastMonthPanneMDT ? countLastMonthPanneMDT.toFixed(1) : 0}}</span>
-                        <small> min</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card mb-3 widget-chart widget-chart2 bg-night-sky text-left">
-            <div class="widget-chart-content text-white">
-                <div class="widget-chart-flex">
-                    <div class="widget-title">Nombre de Pannes</div>
-                    <div class="widget-subtitle text-white">Mois Passé</div>
-                </div>
-                <div class="widget-chart-flex">
-                    <div class="widget-numbers text-white">{{countThisMonthPannenbre ? countThisMonthPannenbre : 0}} </div>
-                    <div class="widget-description ml-auto text-success">
-                        <span class="pr-1">{{countLastMonthPannenbre ? countLastMonthPannenbre : 0}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card mb-3 widget-chart widget-chart2 bg-asteroid text-left">
-            <div class="widget-chart-content text-white">
-                <div class="widget-chart-flex">
-                    <div class="widget-title opacity-6">Heures Travaillées</div>
-                    <div class="widget-subtitle text-white">Mois Passé</div>
-                </div>
-                <div class="widget-chart-flex">
-                    <div class="widget-numbers text-white">{{hourThisMonth ? hourThisMonth.heure : 0}} h</div>
-                    <div class="widget-description ml-auto text-success">
-                        <span class="pr-1">{{hourLastMonth ? hourLastMonth.heure : 0}} h</span></div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 </div>
 
 <div class="row">

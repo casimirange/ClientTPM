@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service';
 
@@ -37,11 +37,11 @@ import {MachinesService} from "./services/machines/machines.service";
 import { AgGridModule } from 'ag-grid-angular';
 import {NgxPaginationModule} from "ngx-pagination";
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
-import { LoginComponent } from './Pages/auth/login/login.component';
-import {XhrInterceptor} from "./xhr.interceptor";
-import { UserComponent } from './Pages/user/user.component';
+// import { LoginComponent } from './Pages/auth/login/login.component';
+// import {XhrInterceptor} from "./xhr.interceptor";
+// import { UserComponent } from './Pages/users/users.component';
 import {StoreModule} from "@ngrx/store";
-import {principalReducer} from "./Models/principal.reducer";
+// import {principalReducer} from "./Models/principal.reducer";
 import {AuthService} from "./services/auth/auth.service";
 import {UserService} from "./services/user/user.service";
 import {DepartementResolver} from "./Pages/departements/departement.resolver";
@@ -50,7 +50,7 @@ import {RoleService} from "./services/role/role.service";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { PaddingLayoutComponent } from './layout/base-layout/padding-layout/padding-layout.component';
 import { TitleComponent } from './layout/page-title/title/title.component';
-import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
+// import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {ChartModule} from "angular2-chartjs";
@@ -62,7 +62,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DashboardService} from "./services/dashboard/dashboard.service";
 import {ChartsModule} from "ng2-charts";
 import { ChartComponent } from './dashboard/chart/chart.component';
-import {DatePipe} from "@angular/common";
 import {ArretsService} from "./services/arrets/arrets.service";
 import { ArretsComponent } from './Pages/arrets/arrets/arrets.component';
 import { HeuresMachinesComponent } from './Pages/heures/heures-machines/heures-machines.component';
@@ -71,6 +70,27 @@ import {NgApexchartsModule} from "ng-apexcharts";
 import { ApexComponent } from './dashboard/apexchart/apex.component';
 import { StatsGlobalComponent } from './Pages/stats-global/stats-global.component';
 import { DoughnutChartComponent } from './dashboard/doughnut-chart/doughnut-chart.component';
+import {AuthInterceptor, httpInterceptorProviders} from "./services/auth/auth-interceptor";
+// import { RegisterComponent } from './Pages/auth/register/register.component';
+// import { HomeComponent } from './Pages/home/home/homes.component';
+import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
+import {TokenStorageService} from "./services/auth/token storage/token-storage.service";
+import {AdminComponent} from "./admin/admin.component";
+import {PmComponent} from "./pm/pm.component";
+import {LoginComponent} from "./logins/logins.component";
+import {HomeComponent} from "./home/home.component";
+import {RegisterComponent} from "./register/register.component";
+import {UserComponent} from "./users/user.component";
+import { PdfComponent } from './pdfMake/pdf/pdf.component';
+import {jqxGridModule} from "jqwidgets-ng/jqxgrid";
+// import { FilterPipe } from './filter.pipe';
+import { SearchComponent } from './search/search/search.component';
+import { UserListComponent } from './user-list/user-list.component';
+import {DatePipe} from "@angular/common";
+import { RadialBarComponent } from './dashboard/radial-bar/radial-bar.component';
+// import {ClientSideRowModel} from "ag-grid";
+// import {NgScrollbarModule} from "ngx-scrollbar";
+// import {IgxGridModule} from "igniteui-angular";
 
 
 
@@ -99,8 +119,8 @@ import { DoughnutChartComponent } from './dashboard/doughnut-chart/doughnut-char
     SingleOperateurComponent,
     OperateursComponent,
     AuthLayoutComponent,
-    LoginComponent,
-    UserComponent,
+    // LoginComponent,
+    // UserComponent,
     PaddingLayoutComponent,
     TitleComponent,
     MyChartComponent,
@@ -111,16 +131,29 @@ import { DoughnutChartComponent } from './dashboard/doughnut-chart/doughnut-char
     ApexComponent,
     StatsGlobalComponent,
     DoughnutChartComponent,
+    // RegisterComponent,
+    LoginComponent,
+    UserComponent,
+    RegisterComponent,
+    HomeComponent,
+    AdminComponent,
+    PmComponent,
+    PdfComponent,
+    // FilterPipe,
+    SearchComponent,
+    UserListComponent,
+    RadialBarComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     LoadingBarRouterModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     AgGridModule.withComponents([]),
     NgxPaginationModule,
-    StoreModule.forRoot({principal: principalReducer}),
+    // StoreModule.forRoot({principal: principalReducer}),
     SweetAlert2Module.forRoot(),
     NgbModule,
     Ng2SearchPipeModule,
@@ -131,10 +164,18 @@ import { DoughnutChartComponent } from './dashboard/doughnut-chart/doughnut-char
     BrowserAnimationsModule,
     ChartsModule,
     NgApexchartsModule,
+    jqxGridModule,
+    // IgxGridModule
+    // NgScrollbarModule
     // DpDatePickerModule,
     // AmazingTimePickerModule,
   ],
   providers: [
+    // {
+    // provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true
+    // },
     DepartementMockService,
     DepartementsService,
     DepartementResolver,
@@ -142,7 +183,7 @@ import { DoughnutChartComponent } from './dashboard/doughnut-chart/doughnut-char
     TechniciensService,
     OperateursService,
     MachinesService,
-    {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
+    // {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
     CookieService,
     AuthService,
     UserService,
@@ -152,7 +193,10 @@ import { DoughnutChartComponent } from './dashboard/doughnut-chart/doughnut-char
     DatePipe,
     ArretsService,
     HeuresService,
-  // SweetAlert2LoaderService
+    // AuthInterceptor,
+    // TokenStorageService
+    httpInterceptorProviders,
+  // SweetAlert2LoaderService,
   ],
   bootstrap: [
     AppComponent,

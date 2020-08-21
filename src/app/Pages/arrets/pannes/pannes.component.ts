@@ -8,8 +8,13 @@ import {MachinesService} from "../../../services/machines/machines.service";
 // import  Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/src/sweetalert2.scss'
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import * as jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 import {Router} from "@angular/router";
+
+import  * as html2canvas from "html2canvas";
+import * as html2pdf from 'html2pdf.js';
+// import {content} from "html2canvas/dist/types/src/css";
+// import {content} from "html2canvas/dist/types/css";
 
 @Component({
   selector: 'app-pannes',
@@ -23,18 +28,24 @@ export class PannesComponent implements OnInit {
 
   searchPanForm: FormGroup;
   selectPanForm: FormGroup;
+  pageForm: FormGroup;
   rangeForm: FormGroup;
   pannes: Pannes[];
   cpannes: Pannes[];
   Tpannes: Pannes[];
+  Opannes: Pannes[];
+  Detailspannes: Pannes[];
+  Outilpannes: Pannes[];
   Hpannes: Pannes[];
   times: Pannes[];
   selectedPanne: Pannes;
   tail: number;
   tails: number;
   count: number;
+  ranger: string = "false";
+  pages: number = 10;
 
-  @ViewChild('content', {static: false}) content: ElementRef;
+  @ViewChild('htmlData', {static: false}) htmlData: ElementRef;
 
   machines: Machine[];
     closeResult: any;
@@ -44,6 +55,8 @@ export class PannesComponent implements OnInit {
       datasets: []
   };
 
+
+
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private machineService: MachinesService,
@@ -52,6 +65,7 @@ export class PannesComponent implements OnInit {
       this.createForm();
       this.createForms();
       this.rangeForms();
+      this.pageForms();
 
   }
 
@@ -67,6 +81,81 @@ export class PannesComponent implements OnInit {
     // this.wt();
   }
 
+  onExport(){
+
+      // var data = document.getElementById('element-pannes');
+      //
+      // html2canvas(data).then(canvas => {
+      //    var imgWidth = 186;
+      //    var pageHeight = 295;
+      //    var imgHeight = canvas.height * imgWidth/canvas.width;
+      //    // var imgHeight = 400;
+      //    // var heightLeft = imgHeight;
+      //
+      //    const contentDataURL = canvas.toDataURL('image/png');
+      //    let pdf = new jsPDF('p', 'mm', 'a4'); //orientation(portrait, landscape), unité(cm, mm, m...), format(A0, A2, A3, A4, A5...)
+      //    var position  = 10;
+      //    // pdf.text('ceci est du texte');
+      //
+      //    pdf.addImage(contentDataURL, 'PNG', 12, position, imgWidth, imgHeight);
+      //
+      //
+      //    pdf.save('BI Alpicams');
+      // });
+
+      html2pdf(html2canvas, {
+          margin: 10,
+          filename: "my.pdf",
+          image: {type: 'jpeg', quality: 1},
+          html2canvas: {dpi: 72, letterRendering: true},
+          jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'},
+          pdfCallback: pdfCallback
+      })
+
+      function pdfCallback(pdfObject) {
+          var number_of_pages = pdfObject.internal.getNumberOfPages();
+          var pdf_pages = pdfObject.internal.pages
+          var myFooter = "Footer info"
+          for (var i = 1; i < pdf_pages.length; i++) {
+              // We are telling our pdfObject that we are now working on this page
+              pdfObject.setPage(i)
+              // The 10,200 value is only for A4 landscape. You need to define your own for other page sizes
+              pdfObject.text(myFooter, 10, 200);
+              pdfObject.text("my header text", 10, 10);
+          }
+      }
+
+      // const options = {
+      //     filename: 'BI Alpicam',
+      //     image: {type: 'jpeg'},
+      //     html2canvas: {},
+      //     jsPDF: {orientation: 'landscape'}
+      // };
+      //
+      // const content: Element = document.getElementById('element-pannes');
+      //
+      // html2pdf().from(content).set(options).save();
+  }
+
+
+
+    public openPDF():void {
+        let DATA = this.htmlData.nativeElement;
+        let doc = new jsPDF('p','pt', 'a4');
+
+        let handleElement = {
+            '#element-pannes':function(element,renderer){
+                return true;
+            }
+        };
+        doc.fromHTML(DATA.innerHTML,15,15,{
+            'width': 200,
+            'elementHandlers': handleElement
+        });
+
+        doc.open('angular-demo.pdf');
+    }
+
     createForm() {
         this.searchPanForm = this.fb.group({
             search: [''],
@@ -76,6 +165,12 @@ export class PannesComponent implements OnInit {
     createForms() {
         this.selectPanForm = this.fb.group({
             periode: ['']
+        });
+    }
+
+    pageForms() {
+        this.pageForm = this.fb.group({
+            page: ['']
         });
     }
 
@@ -173,6 +268,45 @@ export class PannesComponent implements OnInit {
         () => {
           console.log('chargement des pannes Techniques');
           console.log(this.Tpannes);
+        }
+    );
+
+    this.panneService.getOpPannes(this.selectedPanne.numero).subscribe(
+        data => {
+          this.Opannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des pannes Techniques');
+          console.log(this.Opannes);
+        }
+    );
+
+    this.panneService.getDetailsPannes(this.selectedPanne.numero).subscribe(
+        data => {
+          this.Detailspannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des pannes Techniques');
+          console.log(this.Detailspannes);
+        }
+    );
+
+    this.panneService.getOutilsPannes(this.selectedPanne.numero).subscribe(
+        data => {
+          this.Outilpannes = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des outils');
+          console.log(this.Outilpannes);
         }
     );
 
@@ -351,6 +485,15 @@ export class PannesComponent implements OnInit {
       );
   }
 
+  modal(content){
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) =>{
+          this.closeResult = `Closed with: ${result}`;
+      }, (reason) =>{
+
+          }
+      );
+  }
+
   getChart(){
 
       const datasetNbrePanne = {
@@ -382,17 +525,17 @@ export class PannesComponent implements OnInit {
       // var doc = new jsPDF();
       // doc.addHTML(this.content.nativeElement, function () {
       //    doc.save("yes");
+      // // });
+      // var doc = new jsPDF({
+      //     orientation: 'landscape',
+      //     unit: 'in',
+      //     format: [4, 2]
       // });
-      var doc = new jsPDF({
-          orientation: 'landscape',
-          unit: 'in',
-          format: [4, 2]
-      });
-
-      // doc.addHTML(this.content.nativeElement, function () {
-      //    doc.save("yes");
-      // });
-      doc.save(this.content.nativeElement)
+      //
+      // // doc.addHTML(this.content.nativeElement, function () {
+      // //    doc.save("yes");
+      // // });
+      // doc.save(this.content.nativeElement)
   }
 
   findSso($event){
@@ -426,7 +569,28 @@ export class PannesComponent implements OnInit {
           this.LastYearPannes();
       }
       if (this.selectPanForm.controls['periode'].value == 'pp'){
-          this.open(document.getElementById("#search"));
+          this.ranger = "true";
+      }
+      else {
+          this.ranger = "false";
+      }
+  }
+
+  paginate($event){
+      if (this.pageForm.controls['page'].value == '10'){
+          this.pages = 10;
+      }
+      if (this.pageForm.controls['page'].value == '25'){
+          this.pages = 25;
+      }
+      if (this.pageForm.controls['page'].value == '50'){
+          this.pages = 50;
+      }
+      if (this.pageForm.controls['page'].value == '100'){
+          this.pages = 100;
+      }
+      if (this.pageForm.controls['page'].value == '1000'){
+          this.pages = 1000;
       }
   }
 

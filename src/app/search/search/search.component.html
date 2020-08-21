@@ -1,0 +1,53 @@
+<form novalidate
+      [formGroup]="form">
+    <h3>Group Filter</h3>
+    <div class="row">
+        <div class="col-md-3">
+            <input type="text"
+                   formControlName="firstName"
+                   class="form-control"
+                   placeholder="First Name"
+            />
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   formControlName="lastName"
+                   class="form-control"
+                   placeholder="Last Name"
+            />
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   formControlName="Job Title"
+                   class="form-control"
+                   placeholder="Job Title"
+            />
+        </div>
+        <div class="col-md-3 col-sm-3">
+            <select class="form-control"
+                    formControlName="gender">
+                <option value="">Gender</option>
+                <option value="M">male</option>
+                <option value="F">female</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   formControlName="agefrom"
+                   class="form-control"
+                   placeholder="age from"
+            />
+        </div>
+        <div class="col-md-3">
+            <input type="text"
+                   formControlName="ageto"
+                   class="form-control"
+                   placeholder="age to"
+            />
+        </div>
+        <div class="col-md-3 col-sm-3">
+            <button class="btn btn-primary"
+                    (click)="search(form.value)">Search</button>
+        </div>
+    </div>
+</form>

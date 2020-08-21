@@ -67,9 +67,13 @@
                                                                  alt="">
                                                         </div>
                                                         <div class="widget-content-left">
-                                                            <div class="widget-heading">{{selectedUser.prenom}} {{selectedUser.nom}}
+                                                            <div class="widget-heading">
+                                                                <!--{{selectedUser.prenom}} {{selectedUser.nom}}-->
+                                                                {{info.username}}
                                                             </div>
-                                                            <div class="widget-subheading opacity-8">{{selectedUser.fonction}}
+                                                            <div class="widget-subheading opacity-8">
+                                                                <!--{{selectedUser.fonction}}-->
+                                                                {{info.authorities}}
                                                             </div>
                                                         </div>
                                                         <div class="widget-content-right mr-2">
@@ -151,10 +155,12 @@
                         </div>
                         <div class="widget-content-left  ml-3 header-user-info">
                             <div class="widget-heading">
-                                {{selectedUser.prenom}} {{selectedUser.nom}}
+                                <!--{{selectedUser.prenom}} {{selectedUser.nom}}-->
+                                {{info.username}}
                             </div>
                             <div class="widget-subheading">
-                                {{selectedUser.fonction}}
+                                <!--{{selectedUser.fonction}}-->
+                                {{info.authorities}}
                             </div>
                         </div>
                         <!--<div class="widget-content-right header-user-info ml-3">-->

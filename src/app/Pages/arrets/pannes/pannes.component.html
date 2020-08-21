@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="main-card mb-3 card " #content>
+        <div class="main-card mb-3 card " id="htmlData" #htmlData>
             <div class="card-header">
                 Liste des Pannes
                 <div class="btn-actions-pane-right">
@@ -19,20 +19,20 @@
                         <form [formGroup]="selectPanForm">
                             <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
 
-                                <option value="ttesp" (click)="loadPannes(); countAllPannes()" selected>Toutes les pannes</option>
-                                <option value="tp" (click)="TodayPannes(); countTodayPannes()">Aujourd'hui</option>
-                                <option value="hp" (click)="HierPannes()">Hier</option>
-                                <option value="twp" (click)="ThisWeekPannes()">Cette Semaine</option>
-                                <option value="lwp" (click)="LastWeekPannes()">Semaine Dernière</option>
-                                <option value="tmp" (click)="ThisMonthPannes()">Ce mois</option>
-                                <option value="lmp" (click)="LastMonthPannes()">Mois Dernier</option>
-                                <option value="typ" (click)="ThisYearPannes()">Cette Année</option>
-                                <option value="lyp" (click)="LastYearPannes()">Année Dernière</option>
-                                <option value="pp"  (click)="open(search);">Personaliser la recherche</option>
+                                <option value="ttesp" selected>Toutes les pannes</option>
+                                <option value="tp" >Aujourd'hui</option>
+                                <option value="hp" >Hier</option>
+                                <option value="twp" >Cette Semaine</option>
+                                <option value="lwp" >Semaine Dernière</option>
+                                <option value="tmp" >Ce mois</option>
+                                <option value="lmp" >Mois Dernier</option>
+                                <option value="typ" >Cette Année</option>
+                                <option value="lyp" >Année Dernière</option>
+                                <option value="pp"  >Personaliser la recherche</option>
                             </select>
                         </form>
 
-                        <ng-template #search let-modal >
+                        <ng-template #range let-modal >
                             <div class="modal-body">
                                 <div class="form-group">
                                     <form [formGroup]="rangeForm">
@@ -57,30 +57,31 @@
                     </div>
                 </div>
                 <div class="btn-actions-pane-right">
-                    <div role="group" class="btn-group-sm btn-group">
-                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
-                        <button routerLink="/new-panne" class="btn btn-primary" >
-                            <i class="fa fa-plus"></i> Nouvelle Panne</button>
+                    <div *ngIf="ranger == 'true'" role="group" class="btn-group-sm btn-group">
+                        <div >
+                            <form [formGroup]="rangeForm">
+                                <div class="form-row">
+
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!--<swal #deleteSwals-->
-                  <!--title="Nouvel Utilisateur"-->
-                  <!--text= "soumettre"-->
-                  <!--type="info"-->
-                  <!--[showCancelButton]="true"-->
-
-                  <!--[swalOptions]="{-->
-                    <!--confirmButtonText: 'Supprimer',-->
-                    <!--cancelButtonText: 'Annuler',-->
-                    <!--confirmButtonColor: '#3085d6',-->
-                    <!--cancelButtonColor: '#d33'-->
-                    <!--}">-->
-            <!--</swal>-->
-
-            <div class="table-responsive">
-                <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+            <div class="table-responsive" >
+                <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
                     <thead>
                     <tr>
                         <th class="text-center">Date</th>
@@ -95,8 +96,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; " (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
-                        <ng-template #mymodal let-modal>
+                    <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; " (click)="(pan.cont == false && pan.etat == true) ? modal(extendPanne) : open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
+                        <ng-template #mymodal let-modal >
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
                                 <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)" >
@@ -109,29 +110,29 @@
                                     <div class="row" *ngIf="tail < 2">
                                         <div class="col-md-4 col-xl-4 ">
                                             <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                            <p *ngFor="let hp of Hpannes">{{hp.heureArret | date: 'HH:mm'}}</p>
+                                            <p *ngFor="let hp of Hpannes">{{hp.heure_arret | date: 'HH:mm'}}</p>
                                         </div>
                                         <div class="col-md-4 col-xl-4 text-center">
                                             <span class="timeline-title"><b>Début Inter</b></span>
-                                            <p *ngFor="let hp of Hpannes;">{{hp.debutInter | date: 'HH:mm'}}</p>
+                                            <p *ngFor="let hp of Hpannes;">{{hp.debut_inter | date: 'HH:mm'}}</p>
                                         </div>
                                         <div class="col-md-4 col-xl-4 text-right">
                                             <span class="timeline-title"><b>Fin Inter</b></span>
-                                            <p *ngFor="let hp of Hpannes">{{hp.finInter | date: 'HH:mm'}}</p>
+                                            <p *ngFor="let hp of Hpannes">{{hp.fin_inter | date: 'HH:mm'}}</p>
                                         </div>
                                     </div>
                                     <div class="row" *ngIf="tail > 1">
                                         <div class="col-md-4 col-xl-4 ">
                                             <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                            <p >{{Hpannes[0].heureArret | date: 'HH:mm'}}</p>
+                                            <p >{{Hpannes[0].heure_arret | date: 'HH:mm'}}</p>
                                         </div>
                                         <div class="col-md-4 col-xl-4 text-center">
                                             <span class="timeline-title"><b>Début Inter</b></span>
-                                            <p >{{Hpannes[0].debutInter | date: 'HH:mm'}}</p>
+                                            <p >{{Hpannes[0].debut_inter | date: 'HH:mm'}}</p>
                                         </div>
                                         <div class="col-md-4 col-xl-4 text-right">
                                             <span class="timeline-title"><b>Fin Inter</b></span>
-                                            <p >{{Hpannes[1].finInter | date: 'HH:mm'}}</p>
+                                            <p >{{Hpannes[1].fin_inter | date: 'HH:mm'}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -160,15 +161,18 @@
                                             <div class="vertical-timeline-item vertical-timeline-element">
                                                 <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
-                                                        <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
+                                                        <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp;
+                                                            <span class="text-capitalize">{{pan.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{pan.nomOP}}</span>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="vertical-timeline-item vertical-timeline-element">
                                                 <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
-                                                        <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp; {{pt.preTec}} {{pt.nomTec}}
-                                                        <span class="float-right">
+                                                        <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                            <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span class="text-uppercase">{{pt.nomTec}}</span>
+                                                        <span class="float-right text-capitalize">
                                                            {{pt.fonction}}
                                                         </span>
                                                         </p>
@@ -196,13 +200,201 @@
                                 </div>
                             </div>
                         </ng-template>
+
+                        <ng-template #extendPanne let-modal >
+                            <div class="modal-header">
+                                <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)" >
+                                    <span class="timeline-title"><b>{{pan.machine}}</b></span>
+                                    <p>{{pan.code}}</p>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-xl-6" style="border-right: groove red 1px">
+                                        <div class="tabs-animation">
+                                            <div class="row" >
+                                                <div class="col-md-4 col-xl-4 ">
+                                                    <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                    <p >{{Hpannes[0].heure_arret | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-center">
+                                                    <span class="timeline-title"><b>Début Inter</b></span>
+                                                    <p >{{Hpannes[0].debut_inter | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-right">
+                                                    <span class="timeline-title"><b>Fin Inter</b></span>
+                                                    <p >{{Hpannes[0].fin_inter | date: 'HH:mm'}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="scroll-area-lg">
+                                            <div class="scrollbar-container">
+                                                <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                <p>{{Detailspannes[0].description}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                <p>{{Detailspannes[0].cause}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                <p>{{Detailspannes[0].details}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 1">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                <p *ngFor="let pt of Tpannes">
+                                                                    <span *ngIf="pt.quart == 1">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                </p>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="Outilpannes[0].outil" class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in">
+                                                                <h4 class="timeline-title">Outils utilisés</h4>
+                                                                <p><b>{{Outilpannes[0].qte}}</b> {{Outilpannes[0].outil}}: <b class="text-dark">{{Outilpannes[0].ref}}</b></p>                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-6">
+                                        <div class="tabs-animation">
+                                            <div class="row" >
+                                                <div class="col-md-4 col-xl-4 ">
+                                                    <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                    <p >{{Hpannes[1].heure_arret | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-center">
+                                                    <span class="timeline-title"><b>Début Inter</b></span>
+                                                    <p >{{Hpannes[1].debut_inter | date: 'HH:mm'}}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xl-4 text-right">
+                                                    <span class="timeline-title"><b>Fin Inter</b></span>
+                                                    <p >{{Hpannes[1].fin_inter | date: 'HH:mm'}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="scroll-area-lg">
+                                            <div class="scrollbar-container">
+                                                <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                <p>{{Detailspannes[1].description}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                <p>{{Detailspannes[1].cause}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                <p>{{Detailspannes[1].details}}</p></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 2">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                <p *ngFor="let pt of Tpannes" >
+                                                                    <span *ngIf="pt.quart == 2">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                </p>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="Outilpannes[1].outil" class="vertical-timeline-item vertical-timeline-element">
+                                                        <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                            <div class="vertical-timeline-element-content bounce-in">
+                                                                <h4 class="timeline-title">Outils utilisés</h4>
+                                                                <p>
+
+                                                                    <b>{{Outilpannes[1].qte}}</b> {{Outilpannes[1].outil}}:
+                                                                    <b class="text-dark float-right">{{Outilpannes[1].ref}}</b>
+                                                                </p>                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="d-block clearfix card-footer ">
+                                <div class="float-left">
+                                    <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
+                                </div>
+                                <div class="float-right">
+                                    <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
+                                </div>
+                            </div>
+                        </ng-template>
                         <td class="text-center text-muted">{{ pan.date  | date: 'dd/MM/y'}}</td>
                         <td>
                             <div class="widget-content p-0">
                                 <div class="widget-content-wrapper">
                                     <div class="widget-content-left mr-3">
                                         <div class="widget-content-left">
-                                            <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
+                                            <!--<img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">-->
+                                            <button class="btn-icon btn-icon-only btn btn-link btn-sm">
+                                                <!--<i class="pe-7s-settings btn-icon-wrapper font-size-xlg"> </i>-->
+                                                <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
+                                                <span *ngIf="pan.cont == false && pan.etat == true" class="badge badge-abs badge-primary badge-dot badge-dot-sm"> Not</span>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="widget-content-left flex2">
@@ -296,14 +488,25 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                     </tbody>
 
                 </table>
-                <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="pannes < 1">Aucune Panne trouvée !</p>
+                <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="!pannes">Aucune Panne trouvée !</p>
             </div>
             <div class="d-block clearfix card-footer">
-                <!--<div class="float-left">-->
-                <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">-->
+                <div class="float-left">
+                <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="onExport()">-->
                     <!--<i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;-->
-                <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>-->
-                <!--</div>-->
+                    <form [formGroup]="pageForm">
+                        <span style="display: inline-block">Afficher</span>&nbsp;
+                        <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
+
+                            <option value="10" aria-selected="true" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                        </select></span>&nbsp;
+                        <span style="display: inline-block">données</span>
+                    </form>
+                </div>
                 <div class="float-right">
                     <ul class="pagination pagination-sm mb-0">
                         <li>

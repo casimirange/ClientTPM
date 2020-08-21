@@ -41,8 +41,8 @@
                         Tableau de bord
                     </a>
                 </li>
-                <li class="app-sidebar__heading">Statistiques</li>
-                <li>
+                <li *ngIf="authority === 'admin'" class="app-sidebar__heading">Statistiques</li>
+                <li *ngIf="authority === 'admin'">
                     <a routerLinkActive="mm-active" routerLink="/statistiques/alpicam">
                         <i class="metismenu-icon pe-7s-graph3"></i>
                         Alpicam
@@ -68,14 +68,14 @@
                         </i>Toutes les Pannes
                     </a>
                 </li>
-                <li class="app-sidebar__heading">Administration</li>
-                <li>
+                <li *ngIf="authority === 'admin'" class="app-sidebar__heading">Administration</li>
+                <li *ngIf="authority === 'admin'">
                     <a routerLinkActive="mm-active" routerLink="/utilisateurs">
                         <i class="metismenu-icon pe-7s-door-lock"></i>
                         Droits d'accès
                     </a>
                 </li>
-                <li routerLinkActive="mm-active">
+                <li *ngIf="authority === 'admin'" routerLinkActive="mm-active">
                     <a href="#">
                         <i class="metismenu-icon pe-7s-settings"></i>
                         Configuration
@@ -83,25 +83,25 @@
                     </a>
                     <ul>
                         <li>
-                            <a routerLinkActive="mm-active" routerLink="/departements" *ngIf="hasRoleUser()">
+                            <a routerLinkActive="mm-active" routerLink="/departements" >
                                 <i class="metismenu-icon">
                                 </i>Départements
                             </a>
                         </li>
                         <li>
-                            <a routerLinkActive="mm-active" routerLink="/lignes" *ngIf="hasRoleAdmin()">
+                            <a routerLinkActive="mm-active" routerLink="/lignes" >
                                 <i class="metismenu-icon">
                                 </i>Lignes
                             </a>
                         </li>
                         <li>
-                            <a routerLinkActive="mm-active" routerLink="/machines" *ngIf="hasRoleUser()">
+                            <a routerLinkActive="mm-active" routerLink="/machines" >
                                 <i class="metismenu-icon">
                                 </i>Machines
                             </a>
                         </li>
                         <li>
-                            <a routerLinkActive="mm-active" routerLink="/operateurs" *ngIf="hasRoleSuperAdmin()">
+                            <a routerLinkActive="mm-active" routerLink="/operateurs" >
                                 <i class="metismenu-icon">
                                 </i>Opérateurs
                             </a>

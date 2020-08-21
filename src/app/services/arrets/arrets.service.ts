@@ -15,6 +15,10 @@ export class ArretsService {
     return this.http.get(API_URLS.ARRETS_URL + `/all`);
   }
 
+  getTodayArret(): Observable<any>{
+    return this.http.get(API_URLS.ARRETS_URL + `/today`);
+  }
+
   postArret(arret: Arrets ): Observable<any>{
     return this.http.post(API_URLS.ARRETS_URL, arret);
   }

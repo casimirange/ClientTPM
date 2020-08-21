@@ -17,6 +17,9 @@ export class ArretsComponent implements OnInit {
   icons = 'fa fa-clock fa-spin icon-gradient bg-mixed-hopes';
 
   arretForm: FormGroup;
+  rangeForm: FormGroup;
+  searchPanForm: FormGroup;
+  selectPanForm: FormGroup;
 
   operation: string = 'add';
 
@@ -35,6 +38,9 @@ export class ArretsComponent implements OnInit {
               private fb: FormBuilder,
               private machineService: MachinesService,) {
     this.createForm();
+    this.createForm1();
+    this.createForms();
+    this.rangeForms();
     this.arr = new Arrets();
     var tim = new Date();
     this.today = tim;
@@ -47,7 +53,6 @@ export class ArretsComponent implements OnInit {
       date: ['', [Validators.required]],
       debut: ['', [Validators.required]],
       fin: [''],
-      etat: ['', [Validators.required]]
     });
   }
 
@@ -57,6 +62,24 @@ export class ArretsComponent implements OnInit {
     this.selectedArret = new Arrets();
     this.newArret = new Arrets();
 
+  }
+  rangeForms() {
+    this.rangeForm = this.fb.group({
+      date1: [''],
+      date2: ['']
+    });
+  }
+
+  createForm1() {
+    this.searchPanForm = this.fb.group({
+      search: [''],
+    });
+  }
+
+  createForms() {
+    this.selectPanForm = this.fb.group({
+      periode: ['']
+    });
   }
 
   loadMachines() {
@@ -108,7 +131,7 @@ export class ArretsComponent implements OnInit {
     this.arr.date = this.arretForm.controls['date'].value;
     this.arr.cause = this.arretForm.controls['cause'].value;
     this.arr.numero = result2;
-    this.arr.etat = this.arretForm.controls['etat'].value;
+    // this.arr.etat = this.arretForm.controls['etat'].value;
     this.arr.debutArret = this.arretForm.controls['debut'].value;
     this.arr.finArret = this.arretForm.controls['fin'].value;
     this.arr.idMachine = this.arretForm.controls['machine'].value;

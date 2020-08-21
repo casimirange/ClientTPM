@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Pannes} from "../../Models/pannes";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {PannesService} from "../../services/pannes/pannes.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardService} from "../../services/dashboard/dashboard.service";
 import {BaseChartDirective, Color, Label} from "ng2-charts";
-import {ChartDataSets, ChartOptions} from "chart.js";
+// import {ChartDataSets, ChartOptions} from "chart.js";
 import {DatePipe} from "@angular/common";
 import {Arrets} from "../../Models/arrets";
 import {ArretsService} from "../../services/arrets/arrets.service";
@@ -13,14 +13,37 @@ import {Departement} from "../../Models/departement";
 import {Router} from "@angular/router";
 import {Machine} from "../../Models/machines";
 import {DepartementsService} from "../../services/departements/departements.service";
-// import {ApexOptions} from "apexcharts";
+// import {AgGridAngular, AgGridModule} from "ag-grid-angular"
+// import { AllCommunityModules } from 'ag-grid-community/dist/ag-grid-community';
+import {
+    ApexChart, ApexFill, ApexNonAxisChartSeries, ApexPlotOptions, ApexStroke, ChartComponent
+} from "ng-apexcharts";
+import {UserService} from "../../services/user/user.service";
+import * as jsPDF from 'jspdf';
+import  * as html2canvas from "html2canvas";
+
+export type ChartOptions = {
+    series: ApexNonAxisChartSeries;
+    chart: ApexChart;
+    labels: string[];
+    plotOptions: ApexPlotOptions;
+    fill: ApexFill;
+    stroke: ApexStroke;
+};
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  // encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
+    // @ViewChild("chart", { static: true }) chart: ChartComponent;
+    public chartOptions: Partial<any>;
+
+    board: string;
+    errorMessage: string;
+    series = [];
 
   headings = 'Tableau de Bord';
   subheadings = 'Consultez l\'actualité des évènements ';
@@ -29,6 +52,7 @@ export class DashboardComponent implements OnInit {
   searchPanForm: FormGroup;
   pannes: Pannes[];
   ThisWeekPannes: Pannes[];
+  countPannes: number;
   cpannes: Pannes[];
   StatsTec: any[];
   Tpannes: Pannes[];
@@ -94,56 +118,9 @@ export class DashboardComponent implements OnInit {
         categories: []
     };
 
-    donutChartData = [
-        {
-            label: 'Liverpool FC',
-            value: 5,
-            color: 'rgba(255, 20, 178, 0.4)',
-        },
-        {
-            label: 'FC Bayern München',
-            value: 5,
-            color: 'blue',
-        },
-    ];
 
-  // view: any[] = [600, 400];
-  view: any[] ;
-  // options pour le graphique
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  YAxisLabel = 'N° Pannes';
-  showYAxisLabel = true;
-  XAxisLabel = 'Machines';
-  timeline = true;
-
-  //pie
-  showLabels = true;
   type: string = "bar";
 
-  //data
-  public single = [{
-
-      name: "China",
-      value: 124
-
-      // {
-      //     name: "hum",
-      //     value: 74,
-      // },
-  }];
-
-    slideConfig6 = {
-        className: 'center',
-        infinite: true,
-        slidesToShow: 1,
-        speed: 500,
-        adaptiveHeight: true,
-        dots: true,
-    };
 
     public datasets = [
         {
@@ -156,47 +133,6 @@ export class DashboardComponent implements OnInit {
         }
     ];
 
-    public datasets2 = [
-        {
-            label: 'My First dataset',
-            data: [46, 55, 59, 80, 81, 38, 65, 59, 80],
-            datalabels: {
-                display: false,
-            },
-
-        }
-    ];
-
-    public datasets3 = [
-        {
-            label: 'My First dataset',
-            data: [65, 59, 80, 81, 55, 38, 59, 80, 46],
-            datalabels: {
-                display: false,
-            },
-
-        }
-    ];
-    public lineChartColors: Color[] = [
-        { // dark grey
-            backgroundColor: 'rgba(247, 185, 36, 0.2)',
-            borderColor: '#f7b924',
-            borderCapStyle: 'round',
-            borderDash: [],
-            borderWidth: 4,
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'round',
-            pointBorderColor: '#f7b924',
-            pointBackgroundColor: '#fff',
-            pointHoverBorderWidth: 4,
-            pointRadius: 6,
-            pointBorderWidth: 5,
-            pointHoverRadius: 8,
-            pointHitRadius: 10,
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#f7b924',
-        },
-    ];
 
     public colors: Color[] = [
         { // grey
@@ -236,50 +172,6 @@ export class DashboardComponent implements OnInit {
         }
     ]
 
-    public lineChartColors2: Color[] = [
-        { // dark grey
-            backgroundColor: 'rgba(48, 177, 255, 0.2)',
-            borderColor: '#30b1ff',
-            borderCapStyle: 'round',
-            borderDash: [],
-            borderWidth: 4,
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'round',
-            pointBorderColor: '#30b1ff',
-            pointBackgroundColor: '#ffffff',
-            pointHoverBorderWidth: 4,
-            pointRadius: 6,
-            pointBorderWidth: 5,
-            pointHoverRadius: 8,
-            pointHitRadius: 10,
-            pointHoverBackgroundColor: '#ffffff',
-            pointHoverBorderColor: '#30b1ff',
-        },
-    ];
-
-    public lineChartColors3: Color[] = [
-        { // dark grey
-            backgroundColor: 'rgba(86, 196, 121, 0.2)',
-            borderColor: '#56c479',
-            borderCapStyle: 'round',
-            borderDash: [],
-            borderWidth: 4,
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'round',
-            pointBorderColor: '#56c479',
-            pointBackgroundColor: '#fff',
-            pointHoverBorderWidth: 4,
-            pointRadius: 6,
-            pointBorderWidth: 5,
-            pointHoverRadius: 8,
-            pointHitRadius: 10,
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#56c479',
-        },
-    ];
-
-    public labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'];
-
     public options = {
         layout: {
             padding: {
@@ -315,67 +207,186 @@ export class DashboardComponent implements OnInit {
         maintainAspectRatio: false
     };
 
-    public chart= {
-        height: 'auto',
-        type: "",
-        zoom: {
-            enabled: false
-        }
-    }
 
     public labs = {
         type: "category",
         categories: [],
     };
+    contentDataURL: any;
+    contentDataURL1: any;
+
+    imgHeight: any
+    imgHeight1: any
 
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private arretService: ArretsService,
               private dashboardService: DashboardService,
               private departementService: DepartementsService,
+              private userService: UserService,
               private datePipe: DatePipe,
               private modalService: NgbModal, private router: Router  ) {
-      const teste2 = {
-          data: [],
-          name: 'Nombre de Pannes'
-      };
-      this.dashboardService.mtbfByYearAlpi().subscribe(
-          data1 => {
-              this.t1 = data1;
-              this.dashboardService.mtbfThisYearAlpi().subscribe(
-                  data2 => {
-                      this.t2 = data2;
-                      this.t3 = this.t1.concat(this.t2);
 
-                      // for (let mach of this.mtbf){
-                      //
-                      //     console.log(mach.date)
-                      //
-                      //     teste2.data.push(mach.HT);
-                      // }
-
-                      this.t3.forEach(list => {
-                          // this.test.labs.categories.push(list.date);
-                          teste2.data.push(list.nbre);
-                          // this.labs.categories.push(list.date)
-                      })
-                  },
-                  error => {
-                      console.log('une erreur a été détectée!')
-                  },
-                  () => {
-                      console.log('years');
-                      console.log(this.py);
-                  }
-              );
-          }
-      ) ;
-
-      this.test.datasets.push(teste2);
 
       this.createForm();
 
+      this.dashboardService.getCountDepPannes().subscribe(
+
+          data => {
+              this.cdpannes = data;
+              console.log('nbre : ' +this.cdpannes.length);
+              console.log('nbre total: '+ this.cdpannes);
+
+              var x = 0;
+              for (let pin of this.cdpannes){
+                  x = x + pin.nbre;
+              }
+
+              this.series.push(x);
+
+              // var options = {
+              // this.chartOptions = {
+              //     chart: {
+              //         height: 200,
+              //         type: "radialBar",
+              //     },
+              //
+              //     series: [x],
+              //
+              //     plotOptions: {
+              //         radialBar: {
+              //             hollow: {
+              //                 margin: 0,
+              //                 size: "70%",
+              //                 background: "#293450",
+              //                 dropShadow: {
+              //                     enabled: true,
+              //                     top: 0,
+              //                     left: 0,
+              //                     blur: 3,
+              //                     opacity: 0.5
+              //                 }
+              //             },
+              //             track: {
+              //                 dropShadow: {
+              //                     enabled: true,
+              //                     top: 2,
+              //                     left: 0,
+              //                     blur: 4,
+              //                     opacity: 0.15
+              //                 }
+              //             },
+              //             dataLabels: {
+              //                 name: {
+              //                     offsetY: -10,
+              //                     color: "#fff",
+              //                     fontSize: "13px"
+              //                 },
+              //                 value: {
+              //                     color: "#fff",
+              //                     fontSize: "30px",
+              //                     show: true,
+              //                     formatter: function (val) {
+              //                         return val;
+              //                     }
+              //                 }
+              //             }
+              //         }
+              //     },
+              //     fill: {
+              //         type: "gradient",
+              //         gradient: {
+              //             shade: "dark",
+              //             type: "horizontal",
+              //             gradientToColors: ["#ABE5A1"],
+              //             stops: [0, 100]
+              //         }
+              //     },
+              //     stroke: {
+              //         lineCap: "round"
+              //     },
+              //     labels: ["Total Pannes"]
+              // };
+
+              // var chart = new ApexCharts(document.querySelector("#chart"), options);
+              //
+              // chart.render();
+
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('Total');
+              console.log(this.cdount);
+          }
+      );
+
+      this.chartOptions = {
+          chart: {
+              height: 200,
+              type: "radialBar",
+          },
+
+          series: [this.series],
+
+          plotOptions: {
+              radialBar: {
+                  hollow: {
+                      margin: 0,
+                      size: "70%",
+                      background: "#293450",
+                      dropShadow: {
+                          enabled: true,
+                          top: 0,
+                          left: 0,
+                          blur: 3,
+                          opacity: 0.5
+                      }
+                  },
+                  track: {
+                      dropShadow: {
+                          enabled: true,
+                          top: 2,
+                          left: 0,
+                          blur: 4,
+                          opacity: 0.15
+                      }
+                  },
+                  dataLabels: {
+                      name: {
+                          offsetY: -10,
+                          color: "#fff",
+                          fontSize: "13px"
+                      },
+                      value: {
+                          color: "#fff",
+                          fontSize: "30px",
+                          show: true,
+                          formatter: function (val) {
+                              return val;
+                          }
+                      }
+                  }
+              }
+          },
+          fill: {
+              type: "gradient",
+              gradient: {
+                  shade: "dark",
+                  type: "horizontal",
+                  gradientToColors: ["#ABE5A1"],
+                  stops: [0, 100]
+              }
+          },
+          stroke: {
+              lineCap: "round"
+          },
+          labels: ["Total Pannes"]
+      };
+
   }
+
     createForm() {
         this.searchPanForm = this.fb.group({
             search: [''],
@@ -383,6 +394,16 @@ export class DashboardComponent implements OnInit {
     }
 
   ngOnInit() {
+
+      this.userService.getUserBoard().subscribe(
+          data => {
+              this.board = data;
+          },
+          error => {
+              this.errorMessage = `${error.status}: ${JSON.parse(error.error).message}`;
+          }
+      );
+
     this.selectedPanne = new Pannes();
     this.selectedArret = new Arrets();
     this.TodayPannes();
@@ -402,6 +423,42 @@ export class DashboardComponent implements OnInit {
     this.StatistiquesTechniciens();
   }
 
+    onExport() {
+
+        // var data = document.getElementById('element-pannes');
+        // var pdf1 = document.getElementById('pdf1');
+        // var pdf2 = document.getElementById('pdf2');
+        //
+        // // const pdf = new jsPDF('p', 'mm', 'a4');
+        // // // pdf.title("titre du document");
+        // // pdf.text('premier texte avant l\'image');
+        // let pdfExport = new jsPDF('p', 'mm', 'a4'); //orientation(portrait, landscape), unité(cm, mm, m...), format(A0, A2, A3, A4, A5...)
+        // var position = 10;
+        //
+        // html2canvas(pdf1).then(canvas => {
+        //     let imgWidth = 150;
+        //     var pageHeight = 295;
+        //     this.imgHeight = canvas.height * imgWidth / canvas.width;
+        //     // var heightLeft = imgHeight;
+        //
+        //     this.contentDataURL = canvas.toDataURL('image/png');
+        //     // pdfExport.save('BI Alpicam');
+        // });
+        // html2canvas(pdf2).then(canvas => {
+        //     let imgWidth = 150;
+        //     var pageHeight = 295;
+        //     this.imgHeight1 = canvas.height * imgWidth / canvas.width;
+        //     // var heightLeft = imgHeight;
+        //
+        //     this.contentDataURL1 = canvas.toDataURL('image/png');
+        //     // pdfExport.save('BI Alpicam');
+        // });
+        // pdfExport.text('premier texte avant l\'image', 25,20);
+        // pdfExport.addImage(this.contentDataURL, 'PNG', 20,22, 150,150);
+        // // pdfExport.text('deuxième texte avant l\'image', 25,this.imgHeight+5);
+        // // pdfExport.addImage(this.contentDataURL1, 'PNG', 25, this.imgHeight+10, 150, this.imgHeight1);
+        // pdfExport.save('BI Alpicam Stats2');
+    }
     loadDepartements() {
         this.departementService.getDepartements().subscribe(
             data => {
@@ -435,7 +492,7 @@ export class DashboardComponent implements OnInit {
 
   LoadArrets(){
 
-        this.arretService.getAllArrets().subscribe(
+        this.arretService.getTodayArret().subscribe(
             data => {
                 this.arrets = data;
             },
@@ -558,25 +615,25 @@ export class DashboardComponent implements OnInit {
 
   getChart2(){
 
-        const datasetNbrePanne2 = {
-            label: 'Pannes',
-            data: [],
-            datalabels: {
-                display: false,
-            }
-        };
-
-        this.panneService.getCountPannes().subscribe(
-            list => list.forEach(mach => {
-                // datasetNbrePanne2.name = (mach.machine);
-                this.labels = (mach.machine);
-                datasetNbrePanne2.data = (mach.nbre);
-            } ) );
-
-        // this.lineChartData.push(datasetNbrePanne2);
-        // this.donnees.value = datasetNbrePanne2.value;
-        // this.don.push(this.donnees);
-        this.datasets.push(datasetNbrePanne2);
+        // const datasetNbrePanne2 = {
+        //     label: 'Pannes',
+        //     data: [],
+        //     datalabels: {
+        //         display: false,
+        //     }
+        // };
+        //
+        // this.panneService.getCountPannes().subscribe(
+        //     list => list.forEach(mach => {
+        //         // datasetNbrePanne2.name = (mach.machine);
+        //         this.labels = (mach.machine);
+        //         datasetNbrePanne2.data = (mach.nbre);
+        //     } ) );
+        //
+        // // this.lineChartData.push(datasetNbrePanne2);
+        // // this.donnees.value = datasetNbrePanne2.value;
+        // // this.don.push(this.donnees);
+        // this.datasets.push(datasetNbrePanne2);
 
 
     }
@@ -585,7 +642,9 @@ export class DashboardComponent implements OnInit {
     const datasetNbrePanne3 = {
         data: [],
         label: "Panne",
-        yAxisID: 'y-axis-0'
+        yAxisID: 'y-axis-0',
+        backgroundColor: 'red',
+        borderColor: '#0692fb',
     };
     const datasetNbrePanne4 = {
         data: [],
@@ -886,91 +945,98 @@ export class DashboardComponent implements OnInit {
 
     radialBar(){
 
-        this.dashboardService.getCountDepPannes().subscribe(
 
-            data => {
-                this.cdpannes = data;
-                var x = 0;
-                for (let pin of this.cdpannes){
-                    x = x + pin.nbre;
-                }
-                var options = {
-                    chart: {
-                        height: 200,
-                        type: "radialBar",
-                    },
+    this.dashboardService.getCountDepPannes().subscribe(
 
-                    series: [x],
-                    colors: ["#20E647"],
-                    plotOptions: {
-                        radialBar: {
-                            hollow: {
-                                margin: 0,
-                                size: "70%",
-                                background: "#293450",
-                                dropShadow: {
-                                    enabled: true,
-                                    top: 0,
-                                    left: 0,
-                                    blur: 3,
-                                    opacity: 0.5
-                                }
-                            },
-                            track: {
-                                dropShadow: {
-                                    enabled: true,
-                                    top: 2,
-                                    left: 0,
-                                    blur: 4,
-                                    opacity: 0.15
-                                }
-                            },
-                            dataLabels: {
-                                name: {
-                                    offsetY: -10,
-                                    color: "#fff",
-                                    fontSize: "13px"
-                                },
-                                value: {
-                                    color: "#fff",
-                                    fontSize: "30px",
-                                    show: true,
-                                    formatter: function (val) {
-                                        return val;
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    fill: {
-                        type: "gradient",
-                        gradient: {
-                            shade: "dark",
-                            type: "vertical",
-                            gradientToColors: ["#87D4F9"],
-                            stops: [0, 100]
-                        }
-                    },
-                    stroke: {
-                        lineCap: "round"
-                    },
-                    labels: ["Total Pannes"]
-                };
+        data => {
+            this.cdpannes = data;
+            console.log('nbre : ' +this.cdpannes.length);
+            console.log('nbre total: '+ this.cdpannes);
 
-                var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-                chart.render();
-
-            },
-            error => {
-                console.log('une erreur a été détectée!')
-            },
-            () => {
-                console.log('Total');
-                console.log(this.cdount);
+            var x = 0;
+            for (let pin of this.cdpannes){
+                x = x + pin.nbre;
             }
-        );
 
+            // this.series.push(x);
+
+            // var options = {
+            // this.chartOptions = {
+            //     chart: {
+            //         height: 200,
+            //         type: "radialBar",
+            //     },
+            //
+            //     series: [x],
+            //
+            //     plotOptions: {
+            //         radialBar: {
+            //             hollow: {
+            //                 margin: 0,
+            //                 size: "70%",
+            //                 background: "#293450",
+            //                 dropShadow: {
+            //                     enabled: true,
+            //                     top: 0,
+            //                     left: 0,
+            //                     blur: 3,
+            //                     opacity: 0.5
+            //                 }
+            //             },
+            //             track: {
+            //                 dropShadow: {
+            //                     enabled: true,
+            //                     top: 2,
+            //                     left: 0,
+            //                     blur: 4,
+            //                     opacity: 0.15
+            //                 }
+            //             },
+            //             dataLabels: {
+            //                 name: {
+            //                     offsetY: -10,
+            //                     color: "#fff",
+            //                     fontSize: "13px"
+            //                 },
+            //                 value: {
+            //                     color: "#fff",
+            //                     fontSize: "30px",
+            //                     show: true,
+            //                     formatter: function (val) {
+            //                         return val;
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     },
+            //     fill: {
+            //         type: "gradient",
+            //         gradient: {
+            //             shade: "dark",
+            //             type: "horizontal",
+            //             gradientToColors: ["#ABE5A1"],
+            //             stops: [0, 100]
+            //         }
+            //     },
+            //     stroke: {
+            //         lineCap: "round"
+            //     },
+            //     labels: ["Total Pannes"]
+            // };
+
+            // var chart = new ApexCharts(document.querySelector("#chart"), options);
+            //
+            // chart.render();
+
+        },
+        error => {
+            console.log('une erreur a été détectée!')
+        },
+        () => {
+            console.log('Total');
+            console.log(this.cdount);
+        }
+    );
 
 
 
@@ -978,28 +1044,31 @@ export class DashboardComponent implements OnInit {
 
 
     countThisYear(){
-        this.dashboardService.CountThisYear().subscribe(
-            data => {
-                this.nbreThisYear = data;
+    this.dashboardService.CountThisYear().subscribe(
+        data => {
+            this.nbreThisYear = data;
         }
-        );
+    );
 
-        this.dashboardService.CountPastMonth().subscribe(
-            datas => {
-                this.nbreLastMonth = datas;
-this.lastMonth = 0;
-                for (let mach of this.nbreLastMonth){
-                    this.lastMonth = this.lastMonth + mach.nbre;
-                }
+    this.dashboardService.CountPastMonth().subscribe(
+        datas => {
+            this.nbreLastMonth = datas;
+            this.lastMonth = 0;
+            for (let mach of this.nbreLastMonth){
+                this.lastMonth = this.lastMonth + mach.nbre;
             }
-        )
-    }
+        }
+    )
+}
+
 
     ThisWeekPanne(){
 
         this.panneService.getThisWeekPannes().subscribe(
             data => {
                 this.ThisWeekPannes = data;
+                this.countPannes = this.ThisWeekPannes.length;
+                // this.rowData = data;
             },
             error => {
                 console.log('une erreur a été détectée!')

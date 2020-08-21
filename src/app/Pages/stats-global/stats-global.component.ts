@@ -7,7 +7,7 @@ import {ApexXAxis, NgApexchartsModule} from "ng-apexcharts";
 import {AlpicamService} from "../../services/alpicam/alpicam.service";
 import {DepartementsService} from "../../services/departements/departements.service";
 import {Departement} from "../../Models/departement";
-import {ApexOptions} from 'apexcharts'
+// import {ApexOptions} from 'apexcharts'
 import {Router} from "@angular/router";
 
 
@@ -111,12 +111,32 @@ export class StatsGlobalComponent implements OnInit {
   test2 = [];
 
   public type = {
-    height: 'auto',
-    type: "bar",
+    height: '500',
+    type: "line",
     zoom: {
       enabled: false
     }
-  }
+  };
+
+  // public yaxis = [
+  //   // {
+  //   //   axisBorder:{
+  //   //     show: true,
+  //   //     color: "#008FFB"
+  //   //   },
+  //   //   labels: {
+  //   //     style: {
+  //   //       color: "#008FFB"
+  //   //     }
+  //   //   },
+  //   //   title: {
+  //   //     text: "Nombre de pannes",
+  //   //     style: {
+  //   //       color: "#008FFB"
+  //   //     }
+  //   //   }
+  //   // }
+  // ];
   public pie = {
     height: 200,
     type: 'pie',
@@ -806,7 +826,18 @@ export class StatsGlobalComponent implements OnInit {
     };
     const teste = {
       data: [],
+      type: 'line',
       name: 'Nombre de Pannes'
+    };
+    const teste1 = {
+      data: [],
+      type: 'column',
+      name: 'TDT'
+    };
+    const teste2 = {
+      data: [],
+      type: 'column',
+      name: 'MTBF'
     };
     const test1 = {
       categories: []
@@ -955,6 +986,7 @@ export class StatsGlobalComponent implements OnInit {
 
                     var mt = z / a;
                     mtbf.data.push(Math.trunc(mt));
+                    teste2.data.push(Math.trunc(mt));
                   }
 
 
@@ -963,6 +995,8 @@ export class StatsGlobalComponent implements OnInit {
                   panne.data.push(mach.nbre);
                   tdt.data.push(mach.TDT);
                   teste.data.push(mach.nbre);
+                  teste1.data.push(mach.TDT);
+                  // teste2.data.push(mtbf);
 
                   wt.data.push(mach.WT/mach.nbre);
                   ttr.data.push(mach.TTR/mach.nbre);
@@ -995,6 +1029,8 @@ export class StatsGlobalComponent implements OnInit {
     this.mtbfByYear.datasets.push(mtbf);
     this.mtbfByYear.datasets.push(tdt);
     this.mtbfByYear.datasets.push(panne);
+    this.test.datasets.push(teste2);
+    this.test.datasets.push(teste1);
     this.test.datasets.push(teste);
 
     this.mdtByYear.datasets.push(wt);

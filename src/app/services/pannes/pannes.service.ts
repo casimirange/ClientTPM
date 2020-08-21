@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {API_URLS} from "../../configs/api.url.configs";
 import {Pannes} from "../../Models/pannes";
 
@@ -8,6 +8,9 @@ import {Pannes} from "../../Models/pannes";
   providedIn: 'root'
 })
 export class PannesService {
+
+  setGroupFilter$ = new Subject<any>();
+  getGroupFilter = this.setGroupFilter$.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -17,6 +20,18 @@ export class PannesService {
 
   getAllPannes(): Observable<any>{
     return this.http.get(API_URLS.PANNES_URL + `/all`);
+  }
+
+  getOpPannes(numero: string): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/operateur/${numero}`);
+  }
+
+  getDetailsPannes(numero: string): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/details/${numero}`);
+  }
+
+  getOutilsPannes(numero: string): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/outils/${numero}`);
   }
 
   getTechPannes(numero: string): Observable<any>{

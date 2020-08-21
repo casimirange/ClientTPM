@@ -1,25 +1,32 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 <div class="row">
-    <div class="col-lg-5">
+    <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 {{operation == 'add' ? 'Nouvel Arrêt' :
                 operation == 'edit' ? 'Modifier l\'Arrêt' :
                 operation == 'remove' ? 'Supprimer l\'arrêt' : ''}}
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-focus" (click)="operation = 'add'; initArret();" >Ajouter</button>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div *ngIf="operation == 'add' || operation == 'edit'">
                     <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="arretForm">
-
-                        <div class="position-relative form-group">
-                            <label for="date" [ngClass]="{'red': arretForm.controls['date'].invalid && (arretForm.controls['date'].touched)}">Date</label>
-                            <input type="date" id="date" class="form-control form-control-sm" formControlName="date" [ngClass]="{'fred': arretForm.controls['date'].invalid && (arretForm.controls['date'].touched)}" [(ngModel)]="selectedArret.date" />
-                        </div>
-                        <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['date'].invalid && (arretForm.controls['date'].touched) ">
-                            <span>*</span> Date invalide
-                        </div>
-
+                        <div class="row">
+                            <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="date" [ngClass]="{'red': arretForm.controls['date'].invalid && (arretForm.controls['date'].touched)}">Date</label>
+                                <input type="date" id="date" class="form-control form-control-sm" formControlName="date" [ngClass]="{'fred': arretForm.controls['date'].invalid && (arretForm.controls['date'].touched)}" [(ngModel)]="selectedArret.date" />
+                            </div>
+                            <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['date'].invalid && (arretForm.controls['date'].touched) ">
+                                <span>*</span> Date invalide
+                            </div>
+                    </div>
+                            <div class="col-md-6">
                         <div class="form-group">
                             <div class="">
                                 <div class="position-relative">
@@ -35,17 +42,11 @@
                         <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched) ">
                             <span>*</span> Veuillez sélectionner la machine en arrêt!
                         </div>
-
-                        <div class="form-group">
-                            <label for="cause" [ngClass]="{'red': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}">Motif de l'arrêt</label>
-                            <div>
-                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="cause..." formControlName="cause" [ngClass]="{'fred': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}" [(ngModel)]="selectedArret.cause"></textarea>
-                            </div>
-                            <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched) ">
-                                <span>*</span> Minimum 5 caractères sont requis
-                            </div>
+                </div>
                         </div>
 
+                        <div class="row">
+                        <div class="col-md-6">
                         <div class="form-group">
                                 <div class="">
                                     <div class="position-relative form-group">
@@ -57,27 +58,9 @@
                                     </div>
                                 </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="machine" class="">La panne a t-elle été réparée?</label>
-                            <div class="">
-
-                                <div class="position-relative form-check-inline">
-                                    <div class="custom-radio custom-control position-relative form-group">
-                                        <input type="radio" id="exampleCustomRadio1" name="etat" class="custom-control-input" value="true" formControlName="etat"  required [(ngModel)]="selectedArret.etat">
-                                        <label class="custom-control-label" for="exampleCustomRadio1">Arrêt terminée</label>
-                                    </div>
-                                </div>
-                                <div class="position-relative form-check-inline">
-                                    <div class="custom-radio custom-control position-relative form-group">
-                                        <input type="radio" id="exampleCustomRadio2" name="etat" class="custom-control-input" value="false" formControlName="etat" required [(ngModel)]="selectedArret.etat">
-                                        <label class="custom-control-label" for="exampleCustomRadio2">Arrêt en cours... </label>
-
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
+                        <div class="col-md-6">
                         <div class="form-group">
                             <div class="">
                                 <div class="position-relative">
@@ -89,6 +72,41 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
+                        </div>
+
+                        <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="cause" [ngClass]="{'red': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}">Motif de l'arrêt</label>
+                                <div>
+                                    <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="cause..." formControlName="cause" [ngClass]="{'fred': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}" [(ngModel)]="selectedArret.cause"></textarea>
+                                </div>
+                                <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched) ">
+                                    <span>*</span> Minimum 5 caractères sont requis
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="machine" class="">La panne a t-elle été réparée?</label>-->
+                            <!--<div class="">-->
+
+                                <!--<div class="position-relative form-check-inline">-->
+                                    <!--<div class="custom-radio custom-control position-relative form-group">-->
+                                        <!--<input type="radio" id="exampleCustomRadio1" name="etat" class="custom-control-input" value="true" formControlName="etat"  required [(ngModel)]="selectedArret.etat">-->
+                                        <!--<label class="custom-control-label" for="exampleCustomRadio1">Arrêt terminée</label>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="position-relative form-check-inline">-->
+                                    <!--<div class="custom-radio custom-control position-relative form-group">-->
+                                        <!--<input type="radio" id="exampleCustomRadio2" name="etat" class="custom-control-input" value="false" formControlName="etat" required [(ngModel)]="selectedArret.etat">-->
+                                        <!--<label class="custom-control-label" for="exampleCustomRadio2">Arrêt en cours... </label>-->
+
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" (click)="operation == 'add' ? addArret() : updateArret()  " >
@@ -103,13 +121,81 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-7">
+    <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Liste des Arrêts
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
-                        <button class="btn btn-focus" (click)="operation = 'add'; initArret();" >Ajouter</button>
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="searchPanForm">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="selectPanForm">
+                            <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
+
+                                <option value="ttesp" selected>Toutes les pannes</option>
+                                <option value="tp" >Aujourd'hui</option>
+                                <option value="hp" >Hier</option>
+                                <option value="twp" >Cette Semaine</option>
+                                <option value="lwp" >Semaine Dernière</option>
+                                <option value="tmp" >Ce mois</option>
+                                <option value="lmp" >Mois Dernier</option>
+                                <option value="typ" >Cette Année</option>
+                                <option value="lyp" >Année Dernière</option>
+                                <option value="pp"  >Personaliser la recherche</option>
+                            </select>
+                        </form>
+
+                        <ng-template #range let-modal >
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <form [formGroup]="rangeForm">
+                                        <div class="form-row">
+
+                                            <div class="col-md-5">
+                                                <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div *ngIf="ranger == 'true'" role="group" class="btn-group-sm btn-group">
+                        <div >
+                            <form [formGroup]="rangeForm">
+                                <div class="form-row">
+
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

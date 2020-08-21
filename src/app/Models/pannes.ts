@@ -21,6 +21,8 @@ export class Pannes {
     fin_inter?: Date;
     numero?: string;
     etat?: boolean;
+    cont?: boolean;
+    quart?: number;
 
 
 

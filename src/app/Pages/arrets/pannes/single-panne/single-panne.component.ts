@@ -104,6 +104,8 @@ export class SinglePanneComponent implements OnInit {
       this.pn.ref = this.suitePanForm.controls['ref'].value;
       this.pn.etat = true;
       this.pn.numero = this.suitePanForm.controls['numero'].value;
+      this.pn.cont = false;
+      this.pn.quart = 2;
 
       this.panneService.activePanne(this.pn.numero).subscribe(
           res => {

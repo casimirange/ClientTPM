@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from "@ngrx/store";
-import {PrincipalState} from "../../Models/principal.state";
-import {Principal} from "../../Models/principal";
+// import {PrincipalState} from "../../Models/principal.state";
+// import {Principal} from "../../Models/principal";
+import {TokenStorageService} from "../../auth/token-storage.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -10,47 +11,31 @@ import {Principal} from "../../Models/principal";
 })
 export class SidebarComponent implements OnInit {
 
-  private principal: Principal;
+  private roles: string[];
+  private authority: string;
 
-  hasRole: boolean;
-  constructor(private store: Store<PrincipalState>) { }
+  constructor(private tokenStorage: TokenStorageService) { }
 
   ngOnInit() {
-    this.store.select('principal').subscribe(principal => {
-      console.log('princ');
-      console.log(principal);
-      this.principal = principal;
-    })
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      this.roles.every(role => {
+        if (role === 'ROLE_ADMIN') {
+          this.authority = 'admin';
+          return false;
+        } else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        } else if (role === 'ROLE_PM') {
+          this.authority = 'pm';
+          return false;
+        } else if (role === 'ROLE_RESPONSABLE') {
+          this.authority = 'responsable';
+          return false;
+        }
+        this.authority = 'user';
+        return true;
+      });
+    }
   }
-
-  hasRoleUser(){
-    let hasRole: boolean = false;
-    this.principal.authorities.forEach(item =>{
-      if(item.authority === 'ROLE_USER'){
-        hasRole = true;
-      }
-    });
-    return hasRole;
-  }
-
-  hasRoleAdmin(){
-    let hasRole: boolean = false;
-    this.principal.authorities.forEach(item =>{
-      if(item.authority === 'ROLE_ADMIN'){
-        hasRole = true;
-      }
-    });
-    return hasRole;
-  }
-
-  hasRoleSuperAdmin(){
-    let hasRole: boolean = false;
-    this.principal.authorities.forEach(item =>{
-      if(item.authority === 'ROLE_SUPER_ADMIN'){
-        hasRole = true;
-      }
-    });
-    return hasRole;
-  }
-
 }

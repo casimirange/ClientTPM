@@ -13,16 +13,16 @@ import {_Left} from "@angular/cdk/scrolling";
 import {ChartOptions} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
 
-// export type ChartOptions = {
-//   series: ApexAxisChartSeries;
-//   chart: ApexChart;
-//   xaxis: ApexXAxis;
-//   dataLabels: ApexDataLabels;
-//   grid: ApexGrid;
-//   stroke: ApexStroke;
-//   title: ApexTitleSubtitle;
-//   plotOptions: ApexPlotOptions;
-// };
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+  plotOptions: ApexPlotOptions;
+};
 
 @Component({
   selector: 'app-apex',
@@ -36,9 +36,10 @@ export class ApexComponent implements OnInit {
   @Input() chart: ApexChart = {
         height: 'auto',
         type: 'line',
+        stacked: false,
         zoom: {
           enabled: false
-        }
+        },
       };
   @Input() annotations: ApexAnnotations;
   @Input() colors: string[] = ['#f3f3f3', 'transparent'];
@@ -47,9 +48,13 @@ export class ApexComponent implements OnInit {
     };
   @Input() series: ApexAxisChartSeries  = [{
             name: "desktop",
+            type: "line",
             data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
           }];
-  @Input() stroke: ApexStroke;
+  @Input() stroke: ApexStroke={
+      width: [1, 1, 4],
+      curve: "smooth"
+  };
   @Input() labels: string[];
   @Input() legend: ApexLegend = {
     show: true,
@@ -73,7 +78,76 @@ export class ApexComponent implements OnInit {
             "sep",
         ]
       };
-  @Input() yaxis: ApexYAxis | ApexYAxis[];
+  @Input() yaxis: ApexYAxis | ApexYAxis[]= [
+      {
+          seriesName: "MTBF",
+          axisTicks: {
+              show: true
+          },
+          axisBorder: {
+              show: true,
+              color: "#008FFB"
+          },
+          labels: {
+              style: {
+                  color: "#008FFB"
+              }
+          },
+          title: {
+              text: "Mean Time Between Failure",
+              style: {
+                  color: "#008FFB"
+              }
+          },
+          tooltip: {
+              enabled: true
+          }
+      },
+      {
+          seriesName: "TDT",
+          opposite: true,
+          axisTicks: {
+              show: true
+          },
+          axisBorder: {
+              show: true,
+              color: "#00E396"
+          },
+          labels: {
+              style: {
+                  color: "#00E396"
+              }
+          },
+          title: {
+              text: "Total Down Time (min)",
+              style: {
+                  color: "#00E396"
+              }
+          }
+      },
+      {
+          seriesName: "Nombre de Pannes",
+          opposite: true,
+          axisTicks: {
+              show: true
+          },
+          axisBorder: {
+              show: true,
+              color: "#FEB019"
+          },
+          labels: {
+              style: {
+                  color: "#FEB019"
+              }
+          },
+          title: {
+              text: "Nombre de Pannes",
+              style: {
+                  color: "#FEB019"
+              }
+          }
+      }
+  ];
   @Input() grid: ApexGrid = {
         row: {
           colors: ['#f3f3f3', 'transparent'],
@@ -82,8 +156,9 @@ export class ApexComponent implements OnInit {
       };
   @Input() states: ApexStates;
   @Input() title: ApexTitleSubtitle = {
-        text: "Graph de test",
-        align: "left"
+        text: "MTBF",
+        align: "left",
+        offsetX: 110
       };
   @Input() subtitle: ApexTitleSubtitle;
   @Input() theme: ApexTheme;

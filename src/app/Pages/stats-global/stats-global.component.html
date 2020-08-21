@@ -122,14 +122,21 @@
         <div class="tab-pane fade" id="tab-minimal-3">
             <div class="card-body p-2">
                 <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
-                    <div style="height: auto">
-                            <app-chart
-                                    [type]="'bar'"
-                                    [data]="datas.datasets"
-                                    [lineChartLabels]="datas.labels"
-                            ></app-chart>
 
-                    </div>
+                            <!--<app-chart-->
+                                    <!--[type]="'bar'"-->
+                                    <!--[data]="datas.datasets"-->
+                                    <!--[lineChartLabels]="datas.labels"-->
+                            <!--&gt;</app-chart>-->
+
+                        <app-apex
+                                [series] = "test.datasets"
+                                [xaxis]="labs"
+                                [chart] = "type"
+
+                        ></app-apex>
+
+
                 </div>
             </div>
             <div class="border-top bg-light card-header">
@@ -419,6 +426,7 @@
                         [series] = "test.datasets"
                         [xaxis]="labs"
                         [chart] = "type"
+
                 ></app-apex>
             </div>
         </div>

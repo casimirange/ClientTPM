@@ -16,9 +16,9 @@ import {SingleMachineComponent} from "./Pages/machines/single-machine/single-mac
 import {OperateursComponent} from "./Pages/operateurs/operateurs.component";
 import {SingleOperateurComponent} from "./Pages/operateurs/single-operateur/single-operateur.component";
 import {BaseLayoutComponent} from "./layout/base-layout/base-layout.component";
-import {LoginComponent} from "./Pages/auth/login/login.component";
+// import {LoginComponent} from "./Pages/auth/logins/logins.component";
 import {AuthLayoutComponent} from "./layout/auth-layout/auth-layout.component";
-import {UserComponent} from "./Pages/user/user.component";
+ import {UserComponent} from "./users/user.component";
 import {PaddingLayoutComponent} from "./layout/base-layout/padding-layout/padding-layout.component";
 import {AuthGuardService} from "./services/auth-guard/auth-guard.service";
 import {SinglePanneComponent} from "./Pages/arrets/pannes/single-panne/single-panne.component";
@@ -27,14 +27,54 @@ import {ArretsComponent} from "./Pages/arrets/arrets/arrets.component";
 import {HeuresMachinesComponent} from "./Pages/heures/heures-machines/heures-machines.component";
 import {StatsGlobalComponent} from "./Pages/stats-global/stats-global.component";
 
+import {PmComponent} from "./pm/pm.component";
+import {AdminComponent} from "./admin/admin.component";
+import {RegisterComponent} from "./register/register.component";
+
+import {LoginComponent} from "./logins/logins.component";
+import {HomeComponent} from "./home/home.component";
+import {RadialBarComponent} from "./dashboard/radial-bar/radial-bar.component";
+import {ApexComponent} from "./dashboard/apexchart/apex.component";
 
 const routes: Routes = [
+
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'user',
+    component: UserComponent
+  },
+  {
+    path: 'pm',
+    component: PmComponent
+  },
+  {
+    path: 'admin',
+    component: AdminComponent
+  },
+  {
+    path: 'auth/login',
+    component: LoginComponent
+  },
+  {
+    path: 'chart',
+    component: RadialBarComponent
+  },
+  {
+    path: 'signup',
+    component: RegisterComponent
+  },
+
+
   {
     path: '',
     component: BaseLayoutComponent,
     children: [
 
   {path: 'departements', canActivate:[AuthGuardService], component: DepartementsComponent },
+  // {path: 'homes', component: HomeComponent, canActivate:[AuthGuardService] },
   {path: 'departements/:id', canActivate:[AuthGuardService], component: SingleDepartementComponent },
   {path: 'lignes', canActivate:[AuthGuardService], component: LignesComponent },
   // {path: 'lignes/:id', canActivate:[AuthGuardService], component: SingleLigneComponent },
@@ -44,7 +84,7 @@ const routes: Routes = [
   // {path: 'operateurs/:id', canActivate:[AuthGuardService], component: SingleOperateurComponent },
   {path: 'machines', canActivate:[AuthGuardService], component: MachinesComponent },
   {path: 'machines/:id', canActivate:[AuthGuardService], component: SingleMachineComponent },
-  {path: 'dashboard', canActivate:[AuthGuardService], component: DashboardComponent },
+  {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuardService] },
   {path: 'pannes', canActivate:[AuthGuardService], component: PannesComponent },
   {path: 'arrets', canActivate:[AuthGuardService], component: ArretsComponent },
   {path: 'utilisateurs', canActivate:[AuthGuardService], component: UserComponent },
@@ -57,7 +97,7 @@ const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
 
-  {path: 'login', component: LoginComponent },
+  // {path: 'logins', component: LoginComponent },
   {path: 'erreur', component: Erreur404Component }
 
     ]
@@ -72,7 +112,7 @@ const routes: Routes = [
   {path: 'tempsMachine', canActivate:[AuthGuardService], component: HeuresMachinesComponent },
     ]
   },
-  {path: '', redirectTo: 'pannes', pathMatch: 'full'},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   {path: '**', redirectTo: '/erreur'}
 ];
 

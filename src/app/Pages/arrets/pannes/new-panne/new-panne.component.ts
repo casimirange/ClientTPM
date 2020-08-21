@@ -143,6 +143,8 @@ export class NewPanneComponent implements OnInit {
             this.pn.ref = this.panForm.controls['ref'].value;
             this.pn.etat = this.panForm.controls['etat'].value;
             this.pn.numero = result2;
+            this.pn.cont = this.panForm.controls['etat'].value;
+            this.pn.quart = 1;
 
 
             var fi = new Date(this.pn.finInter);

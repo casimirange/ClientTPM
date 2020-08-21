@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DepartementsService} from "../../../services/departements/departements.service";
 import {Departement} from "../../../Models/departement";
 import {Route} from "@angular/compiler/src/core";
 import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from "@angular/router";
-import {formatNumber} from "@angular/common";
+import {DatePipe, formatNumber} from "@angular/common";
 import {__param} from "tslib";
 import {LignesService} from "../../../services/lignes/lignes.service";
 import {Ligne} from "../../../Models/lignes";
@@ -15,6 +15,9 @@ import {PannesService} from "../../../services/pannes/pannes.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from 'lodash';
 import {sortBy} from "sort-by-typescript";
+import {DashboardService} from "../../../services/dashboard/dashboard.service";
+import {ChartComponent} from "ng-apexcharts";
+import {angularClassDecoratorKeys} from "codelyzer/util/utils";
 
 
 @Component({
@@ -23,6 +26,12 @@ import {sortBy} from "sort-by-typescript";
   styleUrls: ['./single-departement.component.css']
 })
 export class SingleDepartementComponent implements OnInit {
+
+  @ViewChild("chart", {static: false}) chart: ChartComponent;
+  public chartOptions: Partial<any>;
+  public TDTOptions: Partial<any>;
+  public MDTOptions: Partial<any>;
+  public HOUROptions: Partial<any>;
 
   heading = "dep";
   subheading = 'Gérez les départements dans l\'application';
@@ -409,6 +418,21 @@ export class SingleDepartementComponent implements OnInit {
 
   date_this_month: any;
 
+  datas = {
+    labels: [],
+    datasets: []
+  };
+  private cdpannes: any[];
+
+  nbreThisYear: Pannes[];
+  depPanneThisYear: number;
+  depTDTThisYear: number;
+  depMDTThisYear: number;
+  depHourThisYear: number;
+  nbreLastMonth: Pannes[];
+  lastMonth: number;
+  cdount: number;
+
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
@@ -416,6 +440,8 @@ export class SingleDepartementComponent implements OnInit {
                private fb: FormBuilder,
                private modalService: NgbModal,
                private route: ActivatedRoute,
+               private dashboardService: DashboardService,
+               private datePipe: DatePipe,
                private router: Router
   ) {
     this.selectedDep = new Departement();
@@ -431,6 +457,8 @@ export class SingleDepartementComponent implements OnInit {
     var tomorrow = new Date();
     tomorrow.setFullYear(today.getFullYear()-1);
     this.date_this_month = dat;
+
+
   }
 
   createForm() {
@@ -495,6 +523,59 @@ export class SingleDepartementComponent implements OnInit {
     this.paretoEncolleuseTDTThysYear();
     this.paretoEncolleuseMDTThysYear();
 
+    // dashboard dep
+    this.getChart3();
+    this.countThisYear();
+  }
+
+  getChart3(){
+
+        const datasetNbrePanne3 = {
+          data: [],
+          label: "Panne",
+          yAxisID: 'y-axis-0',
+          backgroundColor: 'red',
+          borderColor: '#0692fb',
+        };
+        const datasetNbrePanne4 = {
+          data: [],
+          label: "Total Down Time",
+          yAxisID: 'y-axis-1',
+          type: 'line'
+        };
+      this.route.params.subscribe(params => {
+        let url = atob(params['id']);
+        this.departementService.getDashboard(Number.parseInt(url)).subscribe(
+            list => list.forEach(mach => {
+              // datasetNbrePanne2.name = (mach.machine);
+              this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+              datasetNbrePanne3.data.push(mach.nbre);
+              datasetNbrePanne4.data.push(mach.dt);
+              console.log('nombres : ' + mach.nbre)
+
+            }));
+      });
+      this.datas.datasets.push(datasetNbrePanne3);
+      this.datas.datasets.push(datasetNbrePanne4);
+
+  }
+
+  countThisYear(){
+    this.dashboardService.CountThisYear().subscribe(
+        data => {
+          this.nbreThisYear = data;
+        }
+    );
+
+    this.dashboardService.CountPastMonth().subscribe(
+        data => {
+          this.nbreLastMonth = data;
+          this.lastMonth = 0;
+          for (let mach of this.nbreLastMonth){
+            this.lastMonth = this.lastMonth + mach.nbre;
+          }
+        }
+    )
   }
 
   showDepartement() {
@@ -542,7 +623,7 @@ export class SingleDepartementComponent implements OnInit {
 
   CountMonthPannes(){
     this.route.params.subscribe(params =>{
-      let url = atob(params['id']);
+      let url = atob(params['id']);const t = 1000;
       this.departementService.countThisMonthPannesDep(Number.parseInt(url)).subscribe(
           data => data.forEach(mach => {
             this.countThisMonthPanneTDT = mach.TDT;
@@ -552,6 +633,201 @@ export class SingleDepartementComponent implements OnInit {
             }else{
               this.countThisMonthPanneMDT = mach.TDT/mach.nbre;
             }
+
+            // var options = {
+            this.chartOptions = {
+              chart: {
+                height: 200,
+                type: "radialBar",
+              },
+
+              series: [mach.nbre],
+
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    margin: 0,
+                    size: "70%",
+                    background: "#293450",
+                    dropShadow: {
+                      enabled: true,
+                      top: 0,
+                      left: 0,
+                      blur: 3,
+                      opacity: 0.5
+                    }
+                  },
+                  track: {
+                    dropShadow: {
+                      enabled: true,
+                      top: 2,
+                      left: 0,
+                      blur: 4,
+                      opacity: 0.15
+                    }
+                  },
+                  dataLabels: {
+                    name: {
+                      offsetY: -10,
+                      color: "#fff",
+                      fontSize: "13px"
+                    },
+                    value: {
+                      color: "#fff",
+                      fontSize: "30px",
+                      show: true,
+                      formatter: function (val) {
+                        return val;
+                      }
+                    }
+                  }
+                }
+              },
+              fill: {
+                type: "gradient",
+                gradient: {
+                  shade: "dark",
+                  type: "horizontal",
+                  gradientToColors: ["#e3a1e5"],
+                  stops: [0, 100]
+                }
+              },
+              stroke: {
+                lineCap: "round"
+              },
+              labels: [mach.nbre > 1 ? "Total Pannes" : "Total Panne"]
+            };
+            // var options = {
+            this.TDTOptions = {
+              chart: {
+                height: 200,
+                type: "radialBar",
+              },
+
+              series: [this.countThisMonthPanneTDT],
+
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    margin: 0,
+                    size: "70%",
+                    background: "#293450",
+                    dropShadow: {
+                      enabled: true,
+                      top: 0,
+                      left: 0,
+                      blur: 3,
+                      opacity: 0.5
+                    }
+                  },
+                  track: {
+                    dropShadow: {
+                      enabled: true,
+                      top: 2,
+                      left: 0,
+                      blur: 4,
+                      opacity: 0.15
+                    }
+                  },
+                  dataLabels: {
+                    name: {
+                      offsetY: -10,
+                      color: "#fff",
+                      fontSize: "20px"
+                    },
+                    value: {
+                      color: "#fff",
+                      fontSize: this.countThisMonthPanneTDT >= 10000 ? "25px" : this.countThisMonthPanneTDT >= 1000 ? "28px" : "30px",
+                      show: true,
+                      formatter: function (val) {
+                        return val + " min";
+                      }
+                    }
+                  }
+                }
+              },
+              fill: {
+                type: "gradient",
+                gradient: {
+                  shade: "dark",
+                  type: "horizontal",
+                  gradientToColors: ["#f65656"],
+                  stops: [0, 100]
+                }
+              },
+              stroke: {
+                lineCap: "round"
+              },
+              labels: ["TDT"]
+            };
+            // var options = {
+            this.MDTOptions = {
+              chart: {
+                height: 200,
+                type: "radialBar",
+              },
+
+              series: [this.countThisMonthPanneMDT.toFixed(0)],
+
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    margin: 0,
+                    size: "70%",
+                    background: "#293450",
+                    dropShadow: {
+                      enabled: true,
+                      top: 0,
+                      left: 0,
+                      blur: 3,
+                      opacity: 0.5
+                    }
+                  },
+                  track: {
+                    // background: "#e5a1b2",
+                    dropShadow: {
+                      enabled: true,
+                      top: 2,
+                      left: 0,
+                      blur: 4,
+                      opacity: 0.15
+                    }
+                  },
+                  dataLabels: {
+                    name: {
+                      offsetY: -10,
+                      color: "#fff",
+                      fontSize: "13px"
+                    },
+                    value: {
+                      color: "#fff",
+                      fontSize: "30px",
+                      show: true,
+                      formatter: function (val) {
+                        return val+" min";
+                      }
+                    }
+                  }
+                }
+              },
+              fill: {
+                type: "gradient",
+                // colors: "transparent",
+                gradient: {
+                  shade: "dark",
+                  type: "vertical",
+                  // inverseColors: true,
+                  // gradientToColors: ["#e5d4a1"],
+                  gradientToColors: ["#f9ce66"],
+                  stops: [0, 100]
+                }
+              },
+              stroke: {
+                lineCap: "round",
+              },
+              labels: ["MDT"]
+            };
+
           }));
       this.departementService.countLastMonthPannesDep(Number.parseInt(url)).subscribe(
           list => list.forEach(mach => {
@@ -570,12 +846,75 @@ export class SingleDepartementComponent implements OnInit {
       let url = atob(params['id']);
       this.departementService.hourThisMonthDep(Number.parseInt(url)).subscribe(
           data => {
-            this.hourThisMonth = data;
+            this.hourThisMonth = data ? data : 0;
+            // var options = {
+            this.HOUROptions = {
+              chart: {
+                height: 200,
+                type: "radialBar",
+              },
+
+              series: [this.hourThisMonth ? this.hourThisMonth.heure : 0],
+
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    margin: 0,
+                    size: "70%",
+                    background: "#293450",
+                    dropShadow: {
+                      enabled: true,
+                      top: 0,
+                      left: 0,
+                      blur: 3,
+                      opacity: 0.5
+                    }
+                  },
+                  track: {
+                    dropShadow: {
+                      enabled: true,
+                      top: 2,
+                      left: 0,
+                      blur: 4,
+                      opacity: 0.15
+                    }
+                  },
+                  dataLabels: {
+                    name: {
+                      offsetY: -10,
+                      color: "#fff",
+                      fontSize: "13px"
+                    },
+                    value: {
+                      color: "#fff",
+                      fontSize: this.hourThisMonth.heure >= 10000 ? "25px" : this.hourThisMonth.heure >= 1000 ? "28px" : "30px",
+                      show: true,
+                      formatter: function (val) {
+                        return val+" h";
+                      }
+                    }
+                  }
+                }
+              },
+              fill: {
+                type: "gradient",
+                gradient: {
+                  shade: "dark",
+                  type: "horizontal",
+                  gradientToColors: ["#abe5a1"],
+                  stops: [0, 100]
+                }
+              },
+              stroke: {
+                lineCap: "round"
+              },
+              labels: ["Total Heures"]
+            };
           }
       ),
       this.departementService.hourLastMonthDep(Number.parseInt(url)).subscribe(
           data => {
-            this.hourLastMonth = data;
+            this.hourLastMonth = data ? data : 0;
           }
       )
     });
@@ -835,6 +1174,12 @@ export class SingleDepartementComponent implements OnInit {
     this.departementService.mtbfByYear(Number.parseInt(url)).subscribe(
       data1 => {
         this.mtbfY = data1;
+        for (let x of this.mtbfY){
+          this.depPanneThisYear = x.nbre;
+          this.depTDTThisYear= x.TDT;
+          this.depMDTThisYear = Number.parseInt(x.TDT / x.nbre);
+          this.depHourThisYear = x.HT;
+        }
         this.departementService.mtbfThisYear(Number.parseInt(url)).subscribe(
           data2 => {
             this.mtbfTY = data2;
