@@ -9,6 +9,7 @@ import {DepartementsService} from "../../services/departements/departements.serv
 import {Departement} from "../../Models/departement";
 // import {ApexOptions} from 'apexcharts'
 import {Router} from "@angular/router";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 
 @Component({
@@ -21,6 +22,7 @@ export class StatsGlobalComponent implements OnInit {
   subheadings = 'Découvrez les données statistiques de l\'entreprise ';
   icons = 'pe-7s-graph icon-gradient bg-royal';
 
+  dashPanForm: FormGroup;
   departements: Departement[];
   pannes: Pannes[];
   cdount: number;
@@ -31,6 +33,7 @@ export class StatsGlobalComponent implements OnInit {
   mtbfY: Pannes[];
   mtbfTY: Pannes[];
   mtbf: Pannes[];
+  stats: any[];
 
   mdtByYear = {
     labels: [],
@@ -54,10 +57,19 @@ export class StatsGlobalComponent implements OnInit {
 
   dta = [];
 
-  public colors: Color[] = [
-    { // grey
-      backgroundColor: 'rgba(20, 143, 222, 0.2)',
-      borderColor: '#148fde',
+  public colorsMTBF: Color[] = [
+    { // vert MTBF
+      backgroundColor: 'rgba(146, 208, 80, 0.7)',
+      borderColor: '#000',
+      borderWidth: 1,
+      pointBackgroundColor: 'rgba(146, 208, 80, 1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(146, 208, 80, 1)'
+    },
+    { // bleu TDT
+      backgroundColor: 'rgba(91, 155, 213, 0.7)',
+      borderColor: '#000',
       borderCapStyle: 'round',
       borderDash: [],
       borderWidth: 1,
@@ -65,30 +77,80 @@ export class StatsGlobalComponent implements OnInit {
       borderJoinStyle: 'round',
       pointBorderColor: '#148fde',
       pointBackgroundColor: '#fff',
-      pointHoverBorderWidth: 4,
-      pointRadius: 6,
-      pointBorderWidth: 5,
-      pointHoverRadius: 8,
-      pointHitRadius: 10,
+      // pointHoverBorderWidth: 4,
+      // pointRadius: 6,
+      // pointBorderWidth: 5,
+      // pointHoverRadius: 8,
+      // pointHitRadius: 10,
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: '#148fde',
     },
-    { // dark grey
-      backgroundColor: 'rgba(0, 227, 150,0.2   )',
-      borderColor: 'rgba(0, 227, 150,1)',
-      borderWidth: 1,
-      pointBackgroundColor: 'rgba(0, 227, 150,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(0, 227, 150,1)'
-    },
-    { // red
+    { // red Failiure
       backgroundColor: 'transparent',
       borderColor: '#ff4560',
       pointBackgroundColor: 'rgba(225,69,96,1)',
-      pointBorderColor: '#ff4560',
-      pointHoverBackgroundColor: '#ff4560',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(225,69,96,0.8)'
+    }
+  ];
+
+  public colorsMDT: Color[] = [
+    { // vert MTBF
+      backgroundColor: 'rgba(237, 125, 49, 0.7)',
+      borderColor: '#000',
+      borderWidth: 1,
+      pointBackgroundColor: 'rgba(237, 125, 49, 1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(237, 125, 49, 1)'
+    },
+    { // bleu TDT
+      backgroundColor: 'rgba(91, 155, 213, 0.7)',
+      borderColor: '#000',
+      borderCapStyle: 'round',
+      borderDash: [],
+      borderWidth: 1,
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'round',
+      pointBorderColor: '#148fde',
+      pointBackgroundColor: '#fff',
+      // pointHoverBorderWidth: 4,
+      // pointRadius: 6,
+      // pointBorderWidth: 5,
+      // pointHoverRadius: 8,
+      // pointHitRadius: 10,
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: '#148fde',
+    },
+    { // red Failiure
+      backgroundColor: 'rgba(77,83,96,0.2)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    }
+  ];
+
+  public colorsPARETO: Color[] = [
+
+    { // red Failiure
+      backgroundColor: 'rgba(225,69,96,0.2)',
+      borderColor: '#ff4560',
+      pointBackgroundColor: 'rgba(225,69,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(225,69,96,0.8)'
+    },
+    { // vert MTBF
+      backgroundColor: 'rgba(0,142,249,0.4)',
+      borderColor: 'rgba(0,142,249,1)',
+      borderWidth: 2,
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
     }
   ];
   public labs = {
@@ -521,6 +583,7 @@ export class StatsGlobalComponent implements OnInit {
   series: any[];
   date_last_month: any;
   date_this_month: any;
+  date_this_months: any;
   // labels = ['2f', '4g', 'E+'];
 
 
@@ -573,19 +636,38 @@ export class StatsGlobalComponent implements OnInit {
   MassEZ4ThisYearDate: string;
   MassAThisYearDate: string;
   MassBThisYearDate: string;
+  private rangeForm: FormGroup;
+  private ranges: string = 'false';
 
   constructor(private dashboardService: DashboardService,
               private datePipe: DatePipe,
               private router: Router,
+              private fb: FormBuilder,
               private departementService: DepartementsService,
-              private alpicamService: AlpicamService) { }
+              private alpicamService: AlpicamService) {
+    this.dashForm();
+    this.rangeForms();
+  }
+
+  dashForm() {
+    this.dashPanForm = this.fb.group({
+      dashPeriode: [''],
+    });
+  }
+
+  rangeForms() {
+    this.rangeForm = this.fb.group({
+      date1: [''],
+      date2: ['']
+    });
+  }
 
   ngOnInit() {
     this.mdtAlpicam();
     this.mtbfAlpicam();
     this.radialBar();
-    this.paretoAlpi();
-    this.typePanne();
+    this.paretoAlpiThisMonth();
+    this.typePanneThisMonth();
     this.loadDepartements();
     this.alpiStats();
     this.alpiStats2();
@@ -731,6 +813,9 @@ export class StatsGlobalComponent implements OnInit {
     tomorrow.setFullYear(today.getFullYear()-1);
     this.date_this_month = dat;
     this.date_last_month = tomorrow;
+    this.date_this_months = this.datePipe.transform(dat, 'MMMM yyyy');
+
+    this.statsPanne();
 
   }
 
@@ -846,14 +931,6 @@ export class StatsGlobalComponent implements OnInit {
       data: [],
       label: "TDT",
       yAxisID: 'y-axis-1',
-      lineChartColors: {
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        borderColor: 'rgba(255,255,255,1)',
-        pointBackgroundColor: 'rgba(255,255,255,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(255,255,255,1)'
-      },
       type: 'bar',
     };
 
@@ -861,14 +938,6 @@ export class StatsGlobalComponent implements OnInit {
       data: [],
       label: "Pannes",
       yAxisID: 'y-axis-1',
-      lineChartColors: {
-        backgroundColor: 'transparent',
-        borderColor: 'rgba(255,255,255,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-      },
       type: 'line',
     };
 
@@ -884,14 +953,6 @@ export class StatsGlobalComponent implements OnInit {
       data: [],
       label: "TTR",
       yAxisID: 'y-axis-0',
-      lineChartColors: {
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        borderColor: 'rgba(255,255,255,1)',
-        pointBackgroundColor: 'rgba(255,255,255,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(255,255,255,1)'
-      },
       type: 'bar',
       order: 1,
       stacked: true
@@ -901,14 +962,6 @@ export class StatsGlobalComponent implements OnInit {
       data: [],
       label: "MDT",
       yAxisID: 'y-axis-1',
-      lineChartColors: {
-        backgroundColor: 'transparent',
-        borderColor: 'rgba(255,255,255,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-      },
       type: 'line',
       order: 2,
     };
@@ -998,14 +1051,14 @@ export class StatsGlobalComponent implements OnInit {
                   teste1.data.push(mach.TDT);
                   // teste2.data.push(mtbf);
 
-                  wt.data.push(mach.WT/mach.nbre);
-                  ttr.data.push(mach.TTR/mach.nbre);
-                  mdt.data.push(mach.TDT/mach.nbre);
+                  wt.data.push(Math.trunc(mach.WT/mach.nbre));
+                  ttr.data.push(Math.trunc(mach.TTR/mach.nbre));
+                  mdt.data.push(Math.trunc(mach.TDT/mach.nbre));
 
                 }
                 console.log('testons voir :' + JSON.stringify(test1));
-                this.labs = test1;
-                console.log('dépassé: '+this.labs.valueOf())
+                // this.labs = test1;
+                // console.log('dépassé: '+this.labs.valueOf())
               },
               error => {
                 console.log('une erreur a été détectée!')
@@ -1029,9 +1082,9 @@ export class StatsGlobalComponent implements OnInit {
     this.mtbfByYear.datasets.push(mtbf);
     this.mtbfByYear.datasets.push(tdt);
     this.mtbfByYear.datasets.push(panne);
-    this.test.datasets.push(teste2);
-    this.test.datasets.push(teste1);
-    this.test.datasets.push(teste);
+    // this.test.datasets.push(teste2);
+    // this.test.datasets.push(teste1);
+    // this.test.datasets.push(teste);
 
     this.mdtByYear.datasets.push(wt);
     this.mdtByYear.datasets.push(ttr);
@@ -1042,143 +1095,231 @@ export class StatsGlobalComponent implements OnInit {
   }
 
   radialBar(){
-
-    this.dashboardService.getCountDepPannes().subscribe(
-
-        data => {
-          this.cdpannes = data;
-          var x = 0;
-          for (let pin of this.cdpannes){
-            x = x + pin.nbre;
-          }
-          var options = {
-            chart: {
-              height: 350,
-              type: "radialBar",
-              toolbar: {
-                show: true
-              }
-            },
-
-            series: [x],
-
-            plotOptions: {
-              radialBar: {
-                startAngle: -135,
-                endAngle: 225,
-                hollow: {
-                  margin: 0,
-                  size: "70%",
-                  background: "#fff",
-                  position: 'front',
-                  dropShadow: {
-                    enabled: true,
-                    top: 3,
-                    left: 0,
-                    blur: 4,
-                    opacity: 0.24
-                  }
-                },
-                track: {
-                  background: '#fff',
-                  strokeWidth: '67%',
-                  margin: 0,
-                  dropShadow: {
-                    enabled: true,
-                    top: -3,
-                    left: 0,
-                    blur: 4,
-                    opacity: 0.35
-                  }
-                },
-                dataLabels: {
-                  show: true,
-                  name: {
-                    offsetY: -10,
-                    color: "#888",
-                    fontSize: "17px"
-                  },
-                  value: {
-                    color: "#111",
-                    fontSize: "36px",
-                    show: true,
-                    formatter: function (val) {
-                      return val;
-                    }
-                  }
-                }
-              }
-            },
-            fill: {
-              type: "gradient",
-              gradient: {
-                shade: "dark",
-                type: "horizontal",
-                shadeIntensity: 0.5,
-                gradientToColors: ["#ABE5A1"],
-                stops: [0, 100],
-                inverseColors: true,
-                opacityFrom: 1,
-                opacityTo: 1,
-              }
-            },
-            stroke: {
-              lineCap: "round"
-            },
-            labels: ["Total Pannes"]
-          };
-
-          var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-          chart.render();
-
-        },
-        error => {
-          console.log('une erreur a été détectée!')
-        },
-        () => {
-          console.log('Total');
-          console.log(this.cdount);
-        }
-    );
+    //
+    // this.dashboardService.getCountDepPannes().subscribe(
+    //
+    //     data => {
+    //       this.cdpannes = data;
+    //       var x = 0;
+    //       for (let pin of this.cdpannes){
+    //         x = x + pin.nbre;
+    //       }
+    //       var options = {
+    //         chart: {
+    //           height: 350,
+    //           type: "radialBar",
+    //           toolbar: {
+    //             show: true
+    //           }
+    //         },
+    //
+    //         series: [x],
+    //
+    //         plotOptions: {
+    //           radialBar: {
+    //             startAngle: -135,
+    //             endAngle: 225,
+    //             hollow: {
+    //               margin: 0,
+    //               size: "70%",
+    //               background: "#fff",
+    //               position: 'front',
+    //               dropShadow: {
+    //                 enabled: true,
+    //                 top: 3,
+    //                 left: 0,
+    //                 blur: 4,
+    //                 opacity: 0.24
+    //               }
+    //             },
+    //             track: {
+    //               background: '#fff',
+    //               strokeWidth: '67%',
+    //               margin: 0,
+    //               dropShadow: {
+    //                 enabled: true,
+    //                 top: -3,
+    //                 left: 0,
+    //                 blur: 4,
+    //                 opacity: 0.35
+    //               }
+    //             },
+    //             dataLabels: {
+    //               show: true,
+    //               name: {
+    //                 offsetY: -10,
+    //                 color: "#888",
+    //                 fontSize: "17px"
+    //               },
+    //               value: {
+    //                 color: "#111",
+    //                 fontSize: "36px",
+    //                 show: true,
+    //                 formatter: function (val) {
+    //                   return val;
+    //                 }
+    //               }
+    //             }
+    //           }
+    //         },
+    //         fill: {
+    //           type: "gradient",
+    //           gradient: {
+    //             shade: "dark",
+    //             type: "horizontal",
+    //             shadeIntensity: 0.5,
+    //             gradientToColors: ["#ABE5A1"],
+    //             stops: [0, 100],
+    //             inverseColors: true,
+    //             opacityFrom: 1,
+    //             opacityTo: 1,
+    //           }
+    //         },
+    //         stroke: {
+    //           lineCap: "round"
+    //         },
+    //         labels: ["Total Pannes"]
+    //       };
+    //
+    //       var chart = new ApexCharts(document.querySelector("#chart"), options);
+    //
+    //       chart.render();
+    //
+    //     },
+    //     error => {
+    //       console.log('une erreur a été détectée!')
+    //     },
+    //     () => {
+    //       console.log('Total');
+    //       console.log(this.cdount);
+    //     }
+    // );
   }
 
-  paretoAlpi(){
+  paretoAlpiRange(){
     const datasetNbrePanne3 = {
       data: [],
       label: "Panne",
       yAxisID: 'y-axis-0',
-      type: 'bar'
+      type: 'line'
     };
     const datasetNbrePanne4 = {
       data: [],
       label: "Total Down Time",
       yAxisID: 'y-axis-1',
-      type: 'line'
+      type: 'bar'
     };
-    this.dashboardService.getCountPerDayPannes().subscribe(
+    this.datas.labels = [];
+    this.datas.datasets = [];
+    const d1 = this.rangeForm.controls['date1'].value;
+    const d2 = this.rangeForm.controls['date2'].value;
+    this.alpicamService.paretoAlpiRange(d1, d2).subscribe(
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
-          this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+          this.datas.labels.push(mach.nom);
           datasetNbrePanne3.data.push(mach.nbre);
-          datasetNbrePanne4.data.push(mach.dt);
+          datasetNbrePanne4.data.push(mach.TDT);
 
         } )) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
   }
 
-  typePanne(){
+  paretoAlpiThisMonth(){
+    const datasetNbrePanne3 = {
+      data: [],
+      label: "Panne",
+      yAxisID: 'y-axis-0',
+      type: 'line'
+    };
     const datasetNbrePanne4 = {
       data: [],
+      label: "Total Down Time",
+      yAxisID: 'y-axis-1',
+      type: 'bar'
     };
-    const datasetNbrePanne3 = [];
-    this.alpicamService.getTypePanneThisYear().subscribe(
+    this.datas.labels = [];
+    this.datas.datasets = [];
+    this.alpicamService.paretoAlpiThisMonth().subscribe(
         list => list.forEach(mach => {
-          this.test1.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
+          // datasetNbrePanne2.name = (mach.machine);
+          this.datas.labels.push(mach.nom);
+          datasetNbrePanne3.data.push(mach.nbre);
+          datasetNbrePanne4.data.push(mach.TDT);
+
+        } )) ;
+    this.datas.datasets.push(datasetNbrePanne3);
+    this.datas.datasets.push(datasetNbrePanne4);
+  }
+
+  paretoAlpiLastMonth(){
+    const datasetNbrePanne3 = {
+      data: [],
+      label: "Panne",
+      yAxisID: 'y-axis-0',
+      type: 'line'
+    };
+    const datasetNbrePanne4 = {
+      data: [],
+      label: "Total Down Time",
+      yAxisID: 'y-axis-1',
+      type: 'bar'
+    };
+    this.datas.labels = [];
+    this.datas.datasets = [];
+    this.alpicamService.paretoAlpiLastMonth().subscribe(
+        list => list.forEach(mach => {
+          // datasetNbrePanne2.name = (mach.machine);
+          this.datas.labels.push(mach.nom);
+          datasetNbrePanne3.data.push(mach.nbre);
+          datasetNbrePanne4.data.push(mach.TDT);
+
+        } )) ;
+    this.datas.datasets.push(datasetNbrePanne3);
+    this.datas.datasets.push(datasetNbrePanne4);
+  }
+
+  statsPanne(){
+    this.alpicamService.getRecapPanne().subscribe(
+        list => {
+          this.stats = list;
+        }
+    );
+  }
+
+  typePanneThisMonth(){
+    this.catP.labels = [];
+    this.dta = [];
+    this.alpicamService.getTypePanneThisMonth().subscribe(
+        list => list.forEach(mach => {
           this.catP.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
-          this.test1.series.push(mach.nbre);
-          // datasetNbrePanne4.data.push(mach.nbre);
+          this.dta.push(mach.nbre);
+        } )
+    );
+
+  }
+
+  typePanneLastMonth(){
+    this.catP.labels = [];
+    this.dta = [];
+    this.alpicamService.getTypePanneLastMonth().subscribe(
+        list => list.forEach(mach => {
+          this.catP.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
+          this.dta.push(mach.nbre);
+        } )
+    );
+
+  }
+
+  typePanneRange(){
+    this.catP.labels = [];
+    this.dta = [];
+    const d1 = this.rangeForm.controls['date1'].value;
+    const d2 = this.rangeForm.controls['date2'].value;
+    this.date_this_months = d1 +' au '+ d2;
+    this.alpicamService.getTypePanneRange(d1, d2).subscribe(
+        list => list.forEach(mach => {
+          this.catP.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
           this.dta.push(mach.nbre);
         } )
     );
@@ -2073,11 +2214,13 @@ export class StatsGlobalComponent implements OnInit {
             this.MassEZ1LastYearDate = datas[0].date;
             this.MassEZ1LastYearNumber = mach.nbre;
             this.MassEZ1LastYearTDT = mach.TDT;
-            if (mach.nbre == 0) {
-              this.MassEZ1LastYearMDT = 0;
-            } else {
-              this.MagBobine3LastYearMDT = mach.TDT / mach.nbre;
-            }
+            this.MassEZ1LastYearMDT = (this.MassEZ1LastYearNumber < 1) ? 0 : (mach.TDT/mach.nbre);
+
+            // if (mach.nbre == 0) {
+            //   this.MassEZ1LastYearMDT = 0;
+            // } else {
+            //   this.MassEZ1LastYearTDT = mach.TDT / mach.nbre;
+            // }
           }
         }
     );
@@ -2824,5 +2967,28 @@ export class StatsGlobalComponent implements OnInit {
     let url = btoa(d.idDepartement.toString());
     console.log(d.idDepartement +' '+url);
     this.router.navigateByUrl("departements/"+url);
+  }
+
+  suiviJournalier($event){
+    if (this.dashPanForm.controls['dashPeriode'].value == 'tmp'){
+      const dat = new Date();
+      this.date_this_months = this.datePipe.transform(dat, 'MMMM yyyy');
+      this.paretoAlpiThisMonth();
+      this.typePanneThisMonth();
+    }
+    if (this.dashPanForm.controls['dashPeriode'].value == 'lmp'){
+      const dat = new Date();
+      const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM yyyy');
+      console.log('last Month: '+ dat1);
+      this.date_this_months = dat1;
+      this.paretoAlpiLastMonth();
+      this.typePanneLastMonth();
+    }
+    if (this.dashPanForm.controls['dashPeriode'].value == 'pp'){
+      this.ranges = "true";
+    }
+    else {
+      this.ranges = "false";
+    }
   }
 }

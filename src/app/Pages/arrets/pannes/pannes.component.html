@@ -18,8 +18,8 @@
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                         <form [formGroup]="selectPanForm">
                             <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
-
-                                <option value="ttesp" selected>Toutes les pannes</option>
+                                <option value="" selected disabled hidden>Toutes les pannes</option>
+                                <option value="ttesp">Toutes les pannes</option>
                                 <option value="tp" >Aujourd'hui</option>
                                 <option value="hp" >Hier</option>
                                 <option value="twp" >Cette Semaine</option>
@@ -85,7 +85,7 @@
                     <thead>
                     <tr>
                         <th class="text-center">Date</th>
-                        <th>Machine</th>
+                        <th class="">Machine</th>
                         <th class="">Cause</th>
                         <th class="text-center">Arrêt</th>
                         <th class="text-center">Début Inter</th>
@@ -93,6 +93,7 @@
                         <th class="text-center">WT (min)</th>
                         <th class="text-center">TTR (min)</th>
                         <th class="text-center">DT (min)</th>
+                        <!--<th class="text-center">Actions</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -100,7 +101,7 @@
                         <ng-template #mymodal let-modal >
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
-                                <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)" >
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
                                     <span class="timeline-title"><b>{{pan.machine}}</b></span>
                                     <p>{{pan.code}}</p>
                                 </div>
@@ -196,7 +197,10 @@
                                     <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                 </div>
                                 <div class="float-right">
-                                    <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
+                                        <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </ng-template>
@@ -204,14 +208,14 @@
                         <ng-template #extendPanne let-modal >
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
-                                <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)" >
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
                                     <span class="timeline-title"><b>{{pan.machine}}</b></span>
                                     <p>{{pan.code}}</p>
                                 </div>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
-                                    <div class="col-md-6 col-lg-6 col-xl-6" style="border-right: groove red 1px">
+                                    <div class="col-md-6 col-lg-6 col-xl-6" style="border-right: groove #0b5885 1px">
                                         <div class="tabs-animation">
                                             <div class="row" >
                                                 <div class="col-md-4 col-xl-4 ">
@@ -393,7 +397,7 @@
                                             <button class="btn-icon btn-icon-only btn btn-link btn-sm">
                                                 <!--<i class="pe-7s-settings btn-icon-wrapper font-size-xlg"> </i>-->
                                                 <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
-                                                <span *ngIf="pan.cont == false && pan.etat == true" class="badge badge-abs badge-primary badge-dot badge-dot-sm"> Not</span>
+                                                <span *ngIf="pan.cont == false && pan.etat == true" class="badge badge-abs badge-danger badge-dot badge-dot-sm"> Not</span>
                                             </button>
                                         </div>
                                     </div>
@@ -426,57 +430,9 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
 
                             {{pan.fin_inter | date: 'HH:mm'}}
                         </td>
-                        <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20
-            }">
-                            <!--{{-->
-                            <!--(-->
-                            <!--( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )-->
-                            <!--)*60*24-->
-                            <!--+-->
-                            <!--(-->
-                            <!--( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )-->
-                            <!--)*60-->
-                            <!--+-->
-                            <!--(-->
-                            <!--( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')-->
-                            <!--)-->
-                            <!--}}-->
-
-                            {{pan.wt}}
-
-                        </td>
-                        <td class="text-center">
-                            <!--{{-->
-                            <!--(-->
-                            <!--( pan.finInter | date: 'dd' ) - ( pan.debutInter | date: 'dd' )-->
-                            <!--)*60*24-->
-                            <!--+-->
-                            <!--(-->
-                            <!--( pan.finInter | date: 'HH' ) - ( pan.debutInter | date: 'HH' )-->
-                            <!--)*60-->
-                            <!--+-->
-                            <!--(-->
-                            <!--( pan.finInter | date: 'mm') - ( pan.debutInter | date: 'mm')-->
-                            <!--)-->
-                            <!--}}-->
-                            {{pan.ttr}}
-                        </td>
-                        <td class="text-center">
-                            <!--{{-->
-                            <!--(-->
-                            <!--( pan.finInter | date: 'd' ) - ( pan.heureArret | date: 'd' )-->
-                            <!--)*60*24-->
-                            <!--+-->
-                            <!--(-->
-                            <!--( pan.finInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )-->
-                            <!--)*60-->
-                            <!--+-->
-                            <!--(-->
-                            <!--( pan.finInter | date: 'mm') - ( pan.heureArret | date: 'mm')-->
-                            <!--)-->
-                            <!--}}-->
-                            {{pan.dt}}
-                        </td>
+                        <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20}">{{pan.wt}} </td>
+                        <td class="text-center">{{pan.ttr}}</td>
+                        <td class="text-center">{{pan.dt}}</td>
                         <!--<td class="text-center">-->
                             <!--<div role="group" class="btn-group-sm btn-group">-->
                                 <!--<button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>-->
@@ -498,7 +454,8 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                         <span style="display: inline-block">Afficher</span>&nbsp;
                         <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
 
-                            <option value="10" aria-selected="true" selected>10</option>
+                            <option value="" selected disabled hidden>10</option>
+                            <option value="10">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
                             <option value="100">100</option>

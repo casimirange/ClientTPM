@@ -35,6 +35,7 @@ import {LoginComponent} from "./logins/logins.component";
 import {HomeComponent} from "./home/home.component";
 import {RadialBarComponent} from "./dashboard/radial-bar/radial-bar.component";
 import {ApexComponent} from "./dashboard/apexchart/apex.component";
+import {EditPanneComponent} from "./Pages/arrets/pannes/edit-panne/edit-panne.component";
 
 const routes: Routes = [
 
@@ -109,6 +110,7 @@ const routes: Routes = [
 
   {path: 'new-panne', canActivate:[AuthGuardService], component: NewPanneComponent },
   {path: 'new-panne/:numero', canActivate:[AuthGuardService], component: SinglePanneComponent },
+  {path: 'pannes/panne/edit/:numero', canActivate:[AuthGuardService], component: EditPanneComponent },
   {path: 'tempsMachine', canActivate:[AuthGuardService], component: HeuresMachinesComponent },
     ]
   },

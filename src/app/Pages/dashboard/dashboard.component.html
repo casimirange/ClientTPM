@@ -1,7 +1,7 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
-<div class="row">
-    <div class="col-md-6 col-lg-3"  style="cursor: pointer;" *ngFor="let cdp of cdpannes" (click)="showDepart(cdp)" >
+<div class="row" *ngIf="cdpannes">
+    <div class="col-md-6 "  style="cursor: pointer;" *ngFor="let cdp of cdpannes" (click)="showDepart(cdp)" [ngClass]="cdpannes.length == 4 ? 'col-lg-3' : cdpannes.length == 3 ? 'col-lg-4' : cdpannes.length == 2 ? 'col-lg-6' : 'col-lg-3'">
         <div class="mb-3 widget-chart widget-chart2 text-left card" [ngClass]="
             cdp.dep == 'Scierie' ? 'card-shadow-danger' :
             cdp.dep == 'Brazil' ? 'card-shadow-jaune' :
@@ -47,46 +47,49 @@
     <!--</div>-->
 <!--</div>-->
 <div class="tabs-animation">
-    <div class="row" id="element-pannes">
+    <div class="row" >
         <div class="col-md-12 col-lg-6 col-xl-7">
             <div class="main-card mb-3 card">
                 <div class="rm-border card-header">
                     <div>
                         <h5 class="menu-header-title text-capitalize text-primary">Suivi Journalier</h5>
                     </div>
-                    <div class="btn-actions-pane-right text-capitalize">
-                        <!--<div class="btn-group dropdown">-->
-                            <!--<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-wide mr-1 dropdown-toggle btn btn-outline-focus btn-sm">Options</button>-->
-                            <!--<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-lg rm-pointers dropdown-menu dropdown-menu-right">-->
-                                <!--<div class="dropdown-menu-header">-->
-                                    <!--<div class="dropdown-menu-header-inner bg-primary">-->
-                                        <!--<div class="menu-header-image" style="background-image: url('assets/images/dropdown-header/abstract2.jpg');"></div>-->
-                                        <!--<div class="menu-header-content">-->
-                                            <!--<div><h5 class="menu-header-title">Settings</h5><h6 class="menu-header-subtitle">Example Dropdown Menu</h6></div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="scroll-area-xs">-->
-                                    <!--<div class="scrollbar-container">-->
-                                        <!--<ul class="nav flex-column">-->
-                                            <!--<li class="nav-item-header nav-item">Activity</li>-->
-                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Chat-->
-                                                <!--<div class="ml-auto badge badge-pill badge-info">8</div>-->
-                                            <!--</a></li>-->
-                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Recover Password</a></li>-->
-                                            <!--<li class="nav-item-header nav-item">My Account</li>-->
-                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Settings-->
-                                                <!--<div class="ml-auto badge badge-success">New</div>-->
-                                            <!--</a></li>-->
-                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Messages-->
-                                                <!--<div class="ml-auto badge badge-warning">512</div>-->
-                                            <!--</a></li>-->
-                                            <!--<li class="nav-item"><a href="javascript:void(0);" class="nav-link">Logs</a></li>-->
-                                        <!--</ul>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
+                    <div class="btn-actions-pane-right">
+                        <div role="group" class="btn-group-sm btn-group">
+                            <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                            <form [formGroup]="dashPanForm">
+                                <select (change)="suiviJournalier($event.target.value)" name="" formControlName="dashPeriode" class="form-control form-control-sm">
+                                    <option value="" selected disabled hidden>30 Derniers Jours</option>
+                                    <option value="l30d" >30 Derniers Jours</option>
+                                    <option value="tmp" >Ce mois</option>
+                                    <option value="lmp" >Mois Dernier</option>
+                                    <option value="pp"  >Personaliser la recherche</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div *ngIf="ranger == 'true'" class="btn-actions-pane-right mr-2">
+                    <div  role="group" class="btn-group-sm btn-group">
+                        <div >
+                            <form [formGroup]="rangeForm">
+                                <div class="form-row">
+
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); countAllRangePannes(); StatistiquesTechniciensRange(); rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body p-2" id="pdf1">
@@ -127,7 +130,7 @@
                         <div>
                             <div role="group" class="btn-group-lg btn-group nav">
                                 <button type="button" data-toggle="tab" href="#tab-content-income" class="btn-pill pl-3 active btn btn-focus">Pannes</button>
-                                <button type="button" data-toggle="tab" href="#tab-content-expenses-wt" class="btn-pill pr-3  btn btn-focus">Rapport Techniciens</button>
+                                <button type="button" data-toggle="tab" href="#tab-content-expenses-wt" class="btn-pill pr-3  btn btn-focus">Maintenance</button>
                             </div>
                         </div>
                     </div>
@@ -135,7 +138,15 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div class="tab-pane active fade show" id="tab-content-income" role="tabpanel">
-                            <h5 class="menu-header-title">Pannes</h5>
+                            <h5 class="menu-header-title">Pannes
+                                <div class="menu-header-title float-right ">
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <form [formGroup]="searchPanForm">
+                                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="pann" formControlName="search">
+                                        </form>
+                                    </div>
+                                </div>
+                            </h5>
                             <h6 class="menu-header-subtitle opacity-6">Classement des pannes par machine</h6>
                             <div class="mt-3 row">
                                 <div class="col-sm-12 col-md-12">
@@ -154,8 +165,8 @@
                                             </thead>
 
                                             <tbody>
-                                            <tr *ngFor="let pan of cpannes ">
-                                                <td class="text-left text-muted" style="width: 80px;">{{pan.machine}}</td>
+                                            <tr *ngFor="let pan of cpannes | filter: pann">
+                                                <td class="text-left text-muted" style="width: 80px;">{{pan.machine | uppercase}}</td>
                                                 <td class="text-center"><div class="badge badge-warning text-dark ">{{pan.code}}</div></td>
                                                 <td class="text-center">
                                                     <div class="badge badge-pill badge-danger">{{pan.nbre}}</div>
@@ -185,24 +196,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="float-right">
-                                    <ul class="pagination pagination-sm mb-0 mt-1 pull-right">
-                                        <li>
-                                            <pagination-controls (pageChange)="page=$event"
-                                                                 autoHide = "true"
-                                                                 responsive = "true"
-                                                                 previousLabel = "Précédent"
-                                                                 nextLabel = "Suivant">
-                                            </pagination-controls>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                         <div class="tab-pane fade" id="tab-content-expenses-wt" role="tabpanel">
-                            <h5 class="menu-header-title">Temps d'attente</h5>
+                            <h5 class="menu-header-title">Temps d'attente
+                                <div class="menu-header-title float-right ">
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                                        <form [formGroup]="searchPanForm">
+                                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="tech" formControlName="search">
+                                        </form>
+                                    </div>
+                                </div>
+                            </h5>
                             <h6 class="menu-header-subtitle opacity-6">Rapport sur les temps d'arrivée des techniciens</h6>
+
                             <div class="mt-3 row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="table-responsive">
@@ -212,19 +219,19 @@
                                             <thead>
                                             <tr>
                                                 <th class="text-left">Nom</th>
-                                                <th class="text-center">Mat.</th>
+                                                <th class="text-center">Matricule</th>
                                                 <th class="text-center">Fonction</th>
-                                                <th class="text-center">Inter.</th>
-                                                <th class="text-center">TWT</th>
-                                                <th class="text-center">MWT</th>
-                                                <th class="text-center">Représentation</th>
+                                                <th class="text-center">Intervention</th>
+                                                <th class="text-center">TWT (min)</th>
+                                                <th class="text-center">MWT (min)</th>
+                                                <!--<th class="text-center">Représentation</th>-->
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr *ngFor="let st of StatsTec">
+                                            <tr *ngFor="let st of StatsTec | filter: tech">
                                                 <td class="text-left text-muted" style="width: 80px;">{{st.tec | uppercase}}</td>
                                                 <td class="text-center"><div class="badge badge-warning text-dark ">{{st.Matricule}}</div></td>
-                                                <td class="text-center text-capitalize text-primary">{{st.Fonction}}</td>
+                                                <td class="text-left text-capitalize text-primary">&nbsp;{{st.Fonction}}</td>
                                                 <td class="text-center">
                                                     <div class="badge badge-focus text-white ">
                                                         {{st.nbre}}
@@ -234,45 +241,31 @@
                                                     <div class="badge badge-pill badge-alternate">{{st.WT}}</div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <div class="badge badge-pill badge-danger">{{st.WT}}</div>
+                                                    <div class="badge badge-pill badge-danger">{{st.MWT}}</div>
                                                     <!--<div class="badge badge-pill badge-danger">{{(st.WT/st.nbre).toFixed(2) }}</div>-->
                                                 </td>
-                                                <td class="text-center" style="width: 200px;">
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-outer">
-                                                            <div class="widget-content-wrapper">
-                                                                <div class="widget-content-left pr-2">
-                                                                    <!--<div class="widget-numbers fsize-1 text-danger">{{(st.nbre)/(StatsTec | number) | percent: '2.0-0'}}</div>-->
-                                                                </div>
-                                                                <div class="widget-content-right w-100">
-                                                                    <div class="progress-bar-xs progress">
-                                                                        <!--<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0"-->
-                                                                             <!--aria-valuemax="100" [ngStyle]="{width: ((st.nbre)/(StatsTec.length)) | percent}" ></div>-->
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <!--<td class="text-center" style="width: 200px;">-->
+                                                    <!--<div class="widget-content p-0">-->
+                                                        <!--<div class="widget-content-outer">-->
+                                                            <!--<div class="widget-content-wrapper">-->
+                                                                <!--<div class="widget-content-left pr-2">-->
+                                                                    <!--&lt;!&ndash;<div class="widget-numbers fsize-1 text-danger">{{(st.nbre)/(StatsTec | number) | percent: '2.0-0'}}</div>&ndash;&gt;-->
+                                                                <!--</div>-->
+                                                                <!--<div class="widget-content-right w-100">-->
+                                                                    <!--<div class="progress-bar-xs progress">-->
+                                                                        <!--&lt;!&ndash;<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0"&ndash;&gt;-->
+                                                                             <!--&lt;!&ndash;aria-valuemax="100" [ngStyle]="{width: ((st.nbre)/(StatsTec.length)) | percent}" ></div>&ndash;&gt;-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</td>-->
                                             </tr>
                                             </tbody>
                                         </table>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="float-right">
-                                        <!--<ul class="pagination pagination-sm mb-0">-->
-                                            <!--<li>-->
-                                                <!--<pagination-controls (pageChange)="pgs=$event"-->
-                                                                     <!--autoHide = "true"-->
-                                                                     <!--responsive = "true"-->
-                                                                     <!--previousLabel = "Précédent"-->
-                                                                     <!--nextLabel = "Suivant">-->
-                                                <!--</pagination-controls>-->
-                                            <!--</li>-->
-                                        <!--</ul>-->
                                     </div>
                                 </div>
                             </div>
@@ -571,10 +564,210 @@
     </div>
 
     <div class="row">
+        <!--<div class="col-md-12">-->
+            <!--<div class="main-card mb-3 card " #content>-->
+                <!--<div class="card-header">-->
+                    <!--Récapitulatif des Pannes de la Semaine-->
+                    <!--<div class="btn-actions-pane-right">-->
+                        <!--<div role="group" class="btn-group-sm btn-group">-->
+                            <!--&lt;!&ndash;<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>&ndash;&gt;-->
+                            <!--<form [formGroup]="searchPanForm">-->
+                                <!--<input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="btn-actions-pane-right">-->
+                        <!--<div role="group" class="btn-group-sm btn-group">-->
+                            <!--Total :&nbsp;<span class="text-danger"> {{countPannes }} pannes</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="btn-actions-pane-right">-->
+                        <!--<div role="group" class="btn-group-sm btn-group">-->
+                            <!--&lt;!&ndash;<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>&ndash;&gt;-->
+                            <!--<button routerLink="/pannes" class="btn btn-primary" >-->
+                                <!--<i class="fa fa-eye"></i> Voir plus...</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="table-responsive">-->
+                    <!--<table class="align-middle mb-0 table table-sm table-borderless table-hover">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th class="text-center">Date</th>-->
+                            <!--<th>Machine</th>-->
+                            <!--<th class="">Cause</th>-->
+                            <!--<th class="text-center">Arrêt</th>-->
+                            <!--<th class="text-center">Début Inter</th>-->
+                            <!--<th class="text-center">Fin Inter</th>-->
+                            <!--<th class="text-center">WT (min)</th>-->
+                            <!--<th class="text-center">TTR (min)</th>-->
+                            <!--<th class="text-center">DT (min)</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr style="cursor: pointer" *ngFor="let pan of ThisWeekPannes | filter: term " (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >-->
+                            <!--<ng-template #mymodal let-modal>-->
+                                <!--<div class="modal-header">-->
+                                    <!--<h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>-->
+                                    <!--<div style="cursor: pointer" class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)">-->
+                                        <!--<span class="timeline-title"><b>{{pan.machine}}</b></span>-->
+                                        <!--<p>{{pan.code}}</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="modal-body">-->
+                                    <!--<div class="tabs-animation">-->
+                                        <!--<div class="row" *ngIf="tail < 2">-->
+                                            <!--<div class="col-md-4 col-xl-4 ">-->
+                                                <!--<span class="timeline-title"><b>Heure Arrêt</b></span>-->
+                                                <!--<p *ngFor="let hp of Hpannes">{{hp.heureArret | date: 'HH:mm'}}</p>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-4 col-xl-4 text-center">-->
+                                                <!--<span class="timeline-title"><b>Début Inter</b></span>-->
+                                                <!--<p *ngFor="let hp of Hpannes;">{{hp.debutInter | date: 'HH:mm'}}</p>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-4 col-xl-4 text-right">-->
+                                                <!--<span class="timeline-title"><b>Fin Inter</b></span>-->
+                                                <!--<p *ngFor="let hp of Hpannes">{{hp.finInter | date: 'HH:mm'}}</p>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="row" *ngIf="tail > 1">-->
+                                            <!--<div class="col-md-4 col-xl-4 ">-->
+                                                <!--<span class="timeline-title"><b>Heure Arrêt</b></span>-->
+                                                <!--<p >{{Hpannes[0].heureArret | date: 'HH:mm'}}</p>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-4 col-xl-4 text-center">-->
+                                                <!--<span class="timeline-title"><b>Début Inter</b></span>-->
+                                                <!--<p >{{Hpannes[0].debutInter | date: 'HH:mm'}}</p>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-md-4 col-xl-4 text-right">-->
+                                                <!--<span class="timeline-title"><b>Fin Inter</b></span>-->
+                                                <!--<p >{{Hpannes[1].finInter | date: 'HH:mm'}}</p>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+                                    <!--<div class="scroll-area-lg">-->
+                                        <!--<div class="scrollbar-container">-->
+                                            <!--<div class="vertical-time-icons vertical-timeline vertical-timeline&#45;&#45;animate vertical-timeline&#45;&#45;one-column">-->
+                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
+                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>-->
+                                                            <!--<p>{{pan.description}}</p></div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
+                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>-->
+                                                            <!--<p>{{pan.cause}}</p></div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
+                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>-->
+                                                            <!--<p>{{pan.details}}</p></div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>-->
+                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>-->
+                                                            <!--<p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>-->
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
+                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>-->
+                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>-->
+                                                            <!--<p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp; {{pt.preTec}} {{pt.nomTec}}-->
+                                                                <!--<span class="float-right">-->
+                                                           <!--{{pt.fonction}}-->
+                                                        <!--</span>-->
+                                                            <!--</p>-->
+
+                                                        <!--</div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                                <!--<div *ngIf="pan.outil" class="vertical-timeline-item vertical-timeline-element">-->
+                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>-->
+                                                        <!--<div class="vertical-timeline-element-content bounce-in">-->
+                                                            <!--<h4 class="timeline-title">Outils utilisés</h4>-->
+                                                            <!--<p><b>{{pan.qte}}</b> {{pan.outil}}: <b class="text-dark">{{pan.ref}}</b></p>                                                           </div>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="d-block clearfix card-footer ">-->
+                                    <!--<div class="float-left">-->
+                                        <!--<b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>-->
+                                    <!--</div>-->
+                                    <!--<div class="float-right">-->
+                                        <!--<button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</ng-template>-->
+                            <!--<td class="text-center text-muted">{{ pan.date  | date: 'dd/MM/y'}}</td>-->
+                            <!--<td>-->
+                                <!--<div class="widget-content p-0">-->
+                                    <!--<div class="widget-content-wrapper">-->
+                                        <!--<div class="widget-content-left mr-3">-->
+                                            <!--<div class="widget-content-left">-->
+                                                <!--<img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="widget-content-left flex2">-->
+                                            <!--<div class="widget-heading">{{pan.machine}}</div>-->
+                                            <!--<div class="widget-subheading opacity-7">{{pan.code}}</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</td>-->
+                            <!--<td class="text-left" style="white-space: nowrap;overflow: hidden;-->
+<!--text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'...' : pan.cause}}</td>-->
+                            <!--<td class="text-center" >{{ pan.heure_arret | date: 'HH:mm'}}</td>-->
+                            <!--<td class="text-center" >{{pan.debut_inter | date: 'HH:mm'}}</td>-->
+                            <!--<td class="text-center" >{{pan.fin_inter | date: 'HH:mm'}}</td>-->
+                            <!--<td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20}">{{pan.wt}}</td>-->
+                            <!--<td class="text-center">{{pan.ttr}}</td>-->
+                            <!--<td class="text-center">{{pan.dt}}</td>-->
+                        <!--</tr>-->
+
+                        <!--</tbody>-->
+
+                    <!--</table>-->
+                    <!--<p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne dans la semaine !</p>-->
+                <!--</div>-->
+                <!--<div class="d-block clearfix card-footer">-->
+                    <!--&lt;!&ndash;<div class="float-left">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;&ndash;&gt;-->
+                        <!--&lt;!&ndash;<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div class="float-right">-->
+                        <!--&lt;!&ndash;<ul class="pagination pagination-sm mb-0">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<pagination-controls (pageChange)="p=$event"&ndash;&gt;-->
+                                                     <!--&lt;!&ndash;autoHide = "true"&ndash;&gt;-->
+                                                     <!--&lt;!&ndash;responsive = "true"&ndash;&gt;-->
+                                                     <!--&lt;!&ndash;previousLabel = "Précédent"&ndash;&gt;-->
+                                                     <!--&lt;!&ndash;nextLabel = "Suivant">&ndash;&gt;-->
+                                <!--&lt;!&ndash;</pagination-controls>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<button class="btn-wide btn btn-link btn-sm">View All</button>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+
+    <div class="row">
         <div class="col-md-12">
-            <div class="main-card mb-3 card " #content>
+            <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
-                    Récapitulatif des Pannes de la Semaine
+                    Pannes de la Semaine (Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)
                     <div class="btn-actions-pane-right">
                         <div role="group" class="btn-group-sm btn-group">
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
@@ -585,20 +778,73 @@
                     </div>
                     <div class="btn-actions-pane-right">
                         <div role="group" class="btn-group-sm btn-group">
-                            Total :&nbsp;<span class="text-danger"> {{countPannes }} pannes</span>
+                            <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                            <form [formGroup]="selectPanForm">
+                                <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
+                                    <option value="" selected disabled hidden>Cette Semaine</option>
+                                    <option value="ttesp">Toutes les pannes</option>
+                                    <option value="tp" >Aujourd'hui</option>
+                                    <option value="hp" >Hier</option>
+                                    <option value="twp" >Cette Semaine</option>
+                                    <option value="lwp" >Semaine Dernière</option>
+                                    <option value="tmp" >Ce mois</option>
+                                    <option value="lmp" >Mois Dernier</option>
+                                    <option value="typ" >Cette Année</option>
+                                    <option value="lyp" >Année Dernière</option>
+                                    <option value="pp"  >Personaliser la recherche</option>
+                                </select>
+                            </form>
+
+                            <ng-template #range let-modal >
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <form [formGroup]="rangeForm">
+                                            <div class="form-row">
+
+                                                <div class="col-md-5">
+                                                    <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </div>
                     </div>
                     <div class="btn-actions-pane-right">
-                        <div role="group" class="btn-group-sm btn-group">
-                            <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
-                            <button routerLink="/pannes" class="btn btn-primary" >
-                                <i class="fa fa-eye"></i> Voir plus...</button>
+                        <div *ngIf="ranges == 'true'" role="group" class="btn-group-sm btn-group">
+                            <div >
+                                <form [formGroup]="rangeForm">
+                                    <div class="form-row">
+
+                                        <div class="col-md-5">
+                                            <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover" id="element-pannes">
                         <thead>
                         <tr>
                             <th class="text-center">Date</th>
@@ -610,14 +856,15 @@
                             <th class="text-center">WT (min)</th>
                             <th class="text-center">TTR (min)</th>
                             <th class="text-center">DT (min)</th>
+                            <!--<th class="text-center">Actions</th>-->
                         </tr>
                         </thead>
                         <tbody>
-                        <tr style="cursor: pointer" *ngFor="let pan of ThisWeekPannes | filter: term " (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
-                            <ng-template #mymodal let-modal>
+                        <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; " (click)="(pan.cont == false && pan.etat == true) ? modal(extendPanne) : open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
+                            <ng-template #mymodal let-modal >
                                 <div class="modal-header">
                                     <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
-                                    <div style="cursor: pointer" class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)">
+                                    <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
                                         <span class="timeline-title"><b>{{pan.machine}}</b></span>
                                         <p>{{pan.code}}</p>
                                     </div>
@@ -627,29 +874,29 @@
                                         <div class="row" *ngIf="tail < 2">
                                             <div class="col-md-4 col-xl-4 ">
                                                 <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                                <p *ngFor="let hp of Hpannes">{{hp.heureArret | date: 'HH:mm'}}</p>
+                                                <p *ngFor="let hp of Hpannes">{{hp.heure_arret | date: 'HH:mm'}}</p>
                                             </div>
                                             <div class="col-md-4 col-xl-4 text-center">
                                                 <span class="timeline-title"><b>Début Inter</b></span>
-                                                <p *ngFor="let hp of Hpannes;">{{hp.debutInter | date: 'HH:mm'}}</p>
+                                                <p *ngFor="let hp of Hpannes;">{{hp.debut_inter | date: 'HH:mm'}}</p>
                                             </div>
                                             <div class="col-md-4 col-xl-4 text-right">
                                                 <span class="timeline-title"><b>Fin Inter</b></span>
-                                                <p *ngFor="let hp of Hpannes">{{hp.finInter | date: 'HH:mm'}}</p>
+                                                <p *ngFor="let hp of Hpannes">{{hp.fin_inter | date: 'HH:mm'}}</p>
                                             </div>
                                         </div>
                                         <div class="row" *ngIf="tail > 1">
                                             <div class="col-md-4 col-xl-4 ">
                                                 <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                                <p >{{Hpannes[0].heureArret | date: 'HH:mm'}}</p>
+                                                <p >{{Hpannes[0].heure_arret | date: 'HH:mm'}}</p>
                                             </div>
                                             <div class="col-md-4 col-xl-4 text-center">
                                                 <span class="timeline-title"><b>Début Inter</b></span>
-                                                <p >{{Hpannes[0].debutInter | date: 'HH:mm'}}</p>
+                                                <p >{{Hpannes[0].debut_inter | date: 'HH:mm'}}</p>
                                             </div>
                                             <div class="col-md-4 col-xl-4 text-right">
                                                 <span class="timeline-title"><b>Fin Inter</b></span>
-                                                <p >{{Hpannes[1].finInter | date: 'HH:mm'}}</p>
+                                                <p >{{Hpannes[1].fin_inter | date: 'HH:mm'}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -678,15 +925,18 @@
                                                 <div class="vertical-timeline-item vertical-timeline-element">
                                                     <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
                                                         <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
-                                                            <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
+                                                            <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp;
+                                                                <span class="text-capitalize">{{pan.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{pan.nomOP}}</span>
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="vertical-timeline-item vertical-timeline-element">
                                                     <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
                                                         <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
-                                                            <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp; {{pt.preTec}} {{pt.nomTec}}
-                                                                <span class="float-right">
+                                                            <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span class="text-uppercase">{{pt.nomTec}}</span>
+                                                                <span class="float-right text-capitalize">
                                                            {{pt.fonction}}
                                                         </span>
                                                             </p>
@@ -710,6 +960,192 @@
                                         <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                     </div>
                                     <div class="float-right">
+                                        <div role="group" class="btn-group-sm btn-group">
+                                            <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
+                                            <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                            <ng-template #extendPanne let-modal >
+                                <div class="modal-header">
+                                    <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
+                                    <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
+                                        <span class="timeline-title"><b>{{pan.machine}}</b></span>
+                                        <p>{{pan.code}}</p>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6 col-xl-6" style="border-right: groove #0b5885 1px">
+                                            <div class="tabs-animation">
+                                                <div class="row" >
+                                                    <div class="col-md-4 col-xl-4 ">
+                                                        <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                        <p >{{Hpannes[0].heure_arret | date: 'HH:mm'}}</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-4 text-center">
+                                                        <span class="timeline-title"><b>Début Inter</b></span>
+                                                        <p >{{Hpannes[0].debut_inter | date: 'HH:mm'}}</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-4 text-right">
+                                                        <span class="timeline-title"><b>Fin Inter</b></span>
+                                                        <p >{{Hpannes[0].fin_inter | date: 'HH:mm'}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="scroll-area-lg">
+                                                <div class="scrollbar-container">
+                                                    <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                    <p>{{Detailspannes[0].description}}</p></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                    <p>{{Detailspannes[0].cause}}</p></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                    <p>{{Detailspannes[0].details}}</p></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                    <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 1">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                    <p *ngFor="let pt of Tpannes">
+                                                                    <span *ngIf="pt.quart == 1">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                    </p>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="Outilpannes[0].outil" class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in">
+                                                                    <h4 class="timeline-title">Outils utilisés</h4>
+                                                                    <p><b>{{Outilpannes[0].qte}}</b> {{Outilpannes[0].outil}}: <b class="text-dark">{{Outilpannes[0].ref}}</b></p>                                                           </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6 col-xl-6">
+                                            <div class="tabs-animation">
+                                                <div class="row" >
+                                                    <div class="col-md-4 col-xl-4 ">
+                                                        <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                        <p >{{Hpannes[1].heure_arret | date: 'HH:mm'}}</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-4 text-center">
+                                                        <span class="timeline-title"><b>Début Inter</b></span>
+                                                        <p >{{Hpannes[1].debut_inter | date: 'HH:mm'}}</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-xl-4 text-right">
+                                                        <span class="timeline-title"><b>Fin Inter</b></span>
+                                                        <p >{{Hpannes[1].fin_inter | date: 'HH:mm'}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="scroll-area-lg">
+                                                <div class="scrollbar-container">
+                                                    <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                    <p>{{Detailspannes[1].description}}</p></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                    <p>{{Detailspannes[1].cause}}</p></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                    <p>{{Detailspannes[1].details}}</p></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                    <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 2">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                    <p *ngFor="let pt of Tpannes" >
+                                                                    <span *ngIf="pt.quart == 2">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                    </p>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="Outilpannes[1].outil" class="vertical-timeline-item vertical-timeline-element">
+                                                            <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                                <div class="vertical-timeline-element-content bounce-in">
+                                                                    <h4 class="timeline-title">Outils utilisés</h4>
+                                                                    <p>
+
+                                                                        <b>{{Outilpannes[1].qte}}</b> {{Outilpannes[1].outil}}:
+                                                                        <b class="text-dark float-right">{{Outilpannes[1].ref}}</b>
+                                                                    </p>                                                           </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="d-block clearfix card-footer ">
+                                    <div class="float-left">
+                                        <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
+                                    </div>
+                                    <div class="float-right">
                                         <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
                                     </div>
                                 </div>
@@ -720,7 +1156,12 @@
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left mr-3">
                                             <div class="widget-content-left">
-                                                <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
+                                                <!--<img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">-->
+                                                <button class="btn-icon btn-icon-only btn btn-link btn-sm">
+                                                    <!--<i class="pe-7s-settings btn-icon-wrapper font-size-xlg"> </i>-->
+                                                    <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
+                                                    <span *ngIf="pan.cont == false && pan.etat == true" class="badge badge-abs badge-danger badge-dot badge-dot-sm"> Not</span>
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="widget-content-left flex2">
@@ -752,57 +1193,9 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
 
                                 {{pan.fin_inter | date: 'HH:mm'}}
                             </td>
-                            <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20
-            }">
-                                <!--{{-->
-                                <!--(-->
-                                <!--( pan.debutInter | date: 'dd' ) - ( pan.heureArret | date: 'dd' )-->
-                                <!--)*60*24-->
-                                <!--+-->
-                                <!--(-->
-                                <!--( pan.debutInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )-->
-                                <!--)*60-->
-                                <!--+-->
-                                <!--(-->
-                                <!--( pan.debutInter | date: 'mm') - ( pan.heureArret | date: 'mm')-->
-                                <!--)-->
-                                <!--}}-->
-
-                                {{pan.wt}}
-
-                            </td>
-                            <td class="text-center">
-                                <!--{{-->
-                                <!--(-->
-                                <!--( pan.finInter | date: 'dd' ) - ( pan.debutInter | date: 'dd' )-->
-                                <!--)*60*24-->
-                                <!--+-->
-                                <!--(-->
-                                <!--( pan.finInter | date: 'HH' ) - ( pan.debutInter | date: 'HH' )-->
-                                <!--)*60-->
-                                <!--+-->
-                                <!--(-->
-                                <!--( pan.finInter | date: 'mm') - ( pan.debutInter | date: 'mm')-->
-                                <!--)-->
-                                <!--}}-->
-                                {{pan.ttr}}
-                            </td>
-                            <td class="text-center">
-                                <!--{{-->
-                                <!--(-->
-                                <!--( pan.finInter | date: 'd' ) - ( pan.heureArret | date: 'd' )-->
-                                <!--)*60*24-->
-                                <!--+-->
-                                <!--(-->
-                                <!--( pan.finInter | date: 'HH' ) - ( pan.heureArret | date: 'HH' )-->
-                                <!--)*60-->
-                                <!--+-->
-                                <!--(-->
-                                <!--( pan.finInter | date: 'mm') - ( pan.heureArret | date: 'mm')-->
-                                <!--)-->
-                                <!--}}-->
-                                {{pan.dt}}
-                            </td>
+                            <td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20}">{{pan.wt}} </td>
+                            <td class="text-center">{{pan.ttr}}</td>
+                            <td class="text-center">{{pan.dt}}</td>
                             <!--<td class="text-center">-->
                             <!--<div role="group" class="btn-group-sm btn-group">-->
                             <!--<button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>-->
@@ -814,25 +1207,37 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                         </tbody>
 
                     </table>
-                    <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="(ThisWeekPannes) > 1">Aucune Panne dans la semaine !</p>
+                    <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne trouvée !</p>
                 </div>
                 <div class="d-block clearfix card-footer">
-                    <!--<div class="float-left">-->
-                        <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">-->
-                            <!--<i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;-->
-                        <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>-->
-                    <!--</div>-->
+                    <div class="float-left">
+                        <!--<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="onExport()">-->
+                        <!--<i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;-->
+                        <form [formGroup]="pageForm">
+                            <span style="display: inline-block">Afficher</span>&nbsp;
+                            <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
+
+                            <option value="" selected disabled hidden>10</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                        </select></span>&nbsp;
+                            <span style="display: inline-block">données</span>
+                        </form>
+                    </div>
                     <div class="float-right">
-                        <!--<ul class="pagination pagination-sm mb-0">-->
-                            <!--<li>-->
-                                <!--<pagination-controls (pageChange)="p=$event"-->
-                                                     <!--autoHide = "true"-->
-                                                     <!--responsive = "true"-->
-                                                     <!--previousLabel = "Précédent"-->
-                                                     <!--nextLabel = "Suivant">-->
-                                <!--</pagination-controls>-->
-                            <!--</li>-->
-                        <!--</ul>-->
+                        <ul class="pagination pagination-sm mb-0">
+                            <li>
+                                <pagination-controls (pageChange)="p=$event"
+                                                     autoHide = "true"
+                                                     responsive = "true"
+                                                     previousLabel = "Précédent"
+                                                     nextLabel = "Suivant">
+                                </pagination-controls>
+                            </li>
+                        </ul>
                         <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
                         <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
                     </div>
@@ -841,81 +1246,8 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
         </div>
     </div>
 
-
-    <!--<div class="row">-->
-        <!--<div class="col-md-12 col-lg-6">-->
-            <!--<div class="card mb-3 widget-chart bg-arielle-smile card-border">-->
-                <!--<div class="widget-chart-content text-white">-->
-                    <!--<div class="icon-wrapper rounded-circle">-->
-                        <!--<div class="icon-wrapper-bg bg-white opacity-7"></div>-->
-                        <!--<i class="lnr-graduation-hat text-info"></i>-->
-                    <!--</div>-->
-                    <!--<div class="widget-numbers">{{TDT}} Min</div>-->
-                    <!--<div class="widget-subheading">Total Down Time</div>-->
-                    <!--<div class="widget-description text-white">-->
-                        <!--<i class="fa fa-arrow-right"></i>-->
-                        <!--<span class="pl-1">175.5%</span>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="widget-chart-wrapper chart-wrapper-relative">-->
-                    <!--<div class="flex-item">-->
-                        <!--<div style="display: block; height: auto;">-->
-                            <!--<app-chart-->
-                                    <!--[type]="'bar'"-->
-                                    <!--[data]="mdtByYear.datasets"-->
-                                    <!--[lineChartLabels]="mdtByYear.labels"-->
-                                    <!--[lineChartColors]="colors"-->
-                            <!--&gt;</app-chart>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="col-md-12 col-lg-6">-->
-            <!--<div class="card mb-3 widget-chart bg-strong-bliss card-border">-->
-                <!--<div class="widget-chart-content text-white">-->
-                    <!--<div class="icon-wrapper rounded">-->
-                        <!--<div class="icon-wrapper-bg bg-white opacity-4"></div>-->
-                        <!--<i class="lnr-graduation-hat text-white"></i>-->
-                    <!--</div>-->
-                    <!--<div class="widget-numbers">1.5M</div>-->
-                    <!--<div class="widget-subheading">Bugs Fixed</div>-->
-                    <!--<div class="widget-description text-white">-->
-                        <!--Down by-->
-                        <!--<span class="text-white pl-1 pr-1 opacity-8">-->
-                                                    <!--<i class="fa fa-angle-down"></i>-->
-                                                    <!--<span class="pl-1">54.1%</span>-->
-                                                <!--</span>-->
-                        <!--from 30 days ago-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="widget-chart-wrapper chart-wrapper-relative">-->
-                    <!--<div class="flex-item">-->
-                        <!--<div style="display: block; height: auto;">-->
-                            <!--<app-chart-->
-                                    <!--[type]="'bar'"-->
-                                    <!--[data]="mtbfByYear.datasets"-->
-                                    <!--[lineChartLabels]="mtbfByYear.labels"-->
-                                    <!--[lineChartColors]="colors"-->
-                            <!--&gt;</app-chart>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>
 
-
-
-<!--<div style="text-align: center">-->
-    <!--<igx-grid [data]="ThisWeekPannes" width="600px" height="400px" style="margin: auto" [allowFiltering]="true">-->
-        <!--<igx-column field="date" dataType="string"></igx-column>-->
-        <!--<igx-column field="cause" dataType="string"></igx-column>-->
-        <!--<igx-column field="WT" dataType="string"></igx-column>-->
-    <!--</igx-grid>-->
-<!--</div>-->
 
 
 

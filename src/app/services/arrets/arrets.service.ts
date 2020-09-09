@@ -19,6 +19,14 @@ export class ArretsService {
     return this.http.get(API_URLS.ARRETS_URL + `/today`);
   }
 
+  getArretTypeThisMonth(): Observable<any>{
+    return this.http.get(API_URLS.ARRETS_URL + `/typeThisMonth`);
+  }
+
+  getArretTypeLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.ARRETS_URL + `/typeLastMonth`);
+  }
+
   postArret(arret: Arrets ): Observable<any>{
     return this.http.post(API_URLS.ARRETS_URL, arret);
   }

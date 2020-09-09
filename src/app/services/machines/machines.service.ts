@@ -40,6 +40,42 @@ export class MachinesService {
     return this.http.get(API_URLS.MACHINE_URL + `/pannes/${id}`);
   }
 
+  getTodayPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/today/${id}`);
+  }
+
+  getHierPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/hier/${id}`);
+  }
+
+  getThisWeekPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/csem/${id}`);
+  }
+
+  getLastWeekPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/semp/${id}`);
+  }
+
+  getThisMonthPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/thisMonth/${id}`);
+  }
+
+  getLastMonthPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/lastMonth/${id}`);
+  }
+
+  getThisYearPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/thisYear/${id}`);
+  }
+
+  getLastYearPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/lastYear/${id}`);
+  }
+
+  getRangeDatePannes(id: number, d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL + `/Date_range/${id}?debut=${d1}&fin=${d2}`);
+  }
+
   hourThisMonthDep(id: number): Observable<any>{
     return this.http.get(API_URLS.MACHINE_URL + `/hour/ThisMonth/${id}`);
   }

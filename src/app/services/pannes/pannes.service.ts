@@ -86,8 +86,16 @@ export class PannesService {
     return this.http.get(API_URLS.PANNES_URL + `/unfinished`);
   }
 
-  getCountPannes(): Observable<any>{
-    return this.http.get(API_URLS.PANNES_URL + `/count`);
+  getCountThisPannes(): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/countThisMonth`);
+  }
+
+  getCountLastPannes(): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/countLastMonth`);
+  }
+
+  getCountRangePannes(d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.PANNES_URL + `/countRangeMonth?debut=${d1}&fin=${d2}`);
   }
 
   getCountDepPannes(): Observable<any>{

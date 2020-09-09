@@ -5,6 +5,8 @@ import {ActivatedRoute} from "@angular/router";
 import {Pannes} from "../../../Models/pannes";
 import {PannesService} from "../../../services/pannes/pannes.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Color} from "ng2-charts";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-single-machine',
@@ -19,9 +21,18 @@ export class SingleMachineComponent implements OnInit {
 
   selectedMachine: Machine;
   selectedPanne: Pannes;
+  searchPanForm: FormGroup;
+  selectPanForm: FormGroup;
+  rangeForm: FormGroup;
+  pageForm: FormGroup;
   pannes: Pannes[];
   Tpannes: Pannes[];
   Hpannes: Pannes[];
+  ranger:string = "false";
+  pages:number = 7;
+  Opannes: Pannes[];
+  Detailspannes: Pannes[];
+  Outilpannes: Pannes[];
   public url: any;
   tail: number;
   closeResult: any;
@@ -46,12 +57,93 @@ export class SingleMachineComponent implements OnInit {
     datasets: []
   };
 
+    public colorsMTBF: Color[] = [
+        { // vert MTBF
+            backgroundColor: 'rgba(146, 208, 80, 0.7)',
+            borderColor: '#000',
+            borderWidth: 1,
+            pointBackgroundColor: 'rgba(146, 208, 80, 1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(146, 208, 80, 1)'
+        },
+        { // bleu TDT
+            backgroundColor: 'rgba(91, 155, 213, 0.7)',
+            borderColor: '#000',
+            borderCapStyle: 'round',
+            borderDash: [],
+            borderWidth: 1,
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'round',
+            pointBorderColor: '#148fde',
+            pointBackgroundColor: '#fff',
+            // pointHoverBorderWidth: 4,
+            // pointRadius: 6,
+            // pointBorderWidth: 5,
+            // pointHoverRadius: 8,
+            // pointHitRadius: 10,
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#148fde',
+        },
+        { // red Failiure
+            backgroundColor: 'transparent',
+            borderColor: '#ff4560',
+            pointBackgroundColor: 'rgba(225,69,96,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(225,69,96,0.8)'
+        }
+    ];
+
+    public colorsMDT: Color[] = [
+        { // vert MTBF
+            backgroundColor: 'rgba(237, 125, 49, 0.7)',
+            borderColor: '#000',
+            borderWidth: 1,
+            pointBackgroundColor: 'rgba(237, 125, 49, 1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(237, 125, 49, 1)'
+        },
+        { // bleu TDT
+            backgroundColor: 'rgba(91, 155, 213, 0.7)',
+            borderColor: '#000',
+            borderCapStyle: 'round',
+            borderDash: [],
+            borderWidth: 1,
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'round',
+            pointBorderColor: '#148fde',
+            pointBackgroundColor: '#fff',
+            // pointHoverBorderWidth: 4,
+            // pointRadius: 6,
+            // pointBorderWidth: 5,
+            // pointHoverRadius: 8,
+            // pointHitRadius: 10,
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#148fde',
+        },
+        { // red Failiure
+            backgroundColor: 'rgba(77,83,96,0.2)',
+            borderColor: 'rgba(77,83,96,1)',
+            pointBackgroundColor: 'rgba(77,83,96,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(77,83,96,1)'
+        }
+    ];
+
   constructor(private machineService: MachinesService,
               private panneService: PannesService,
               private modalService: NgbModal,
+              private fb: FormBuilder,
               private route: ActivatedRoute) {
     this.selectedMachine = new Machine;
     this.selectedPanne = new Pannes();
+      this.createForm();
+      this.createForms();
+      this.rangeForms();
+      this.pageForms();
   }
 
   ngOnInit() {
@@ -63,6 +155,31 @@ export class SingleMachineComponent implements OnInit {
     this.HourPerMonth();
     this.mtbfAlpicam();
   }
+
+    createForm() {
+        this.searchPanForm = this.fb.group({
+            search: [''],
+        });
+    }
+
+    createForms() {
+        this.selectPanForm = this.fb.group({
+            periode: ['']
+        });
+    }
+
+    pageForms() {
+        this.pageForm = this.fb.group({
+            page: ['']
+        });
+    }
+
+    rangeForms() {
+        this.rangeForm = this.fb.group({
+            date1: [''],
+            date2: ['']
+        });
+    }
 
   showMachine() {
       this.machineService.showMachine(Number.parseInt(this.url)).subscribe(
@@ -79,47 +196,253 @@ export class SingleMachineComponent implements OnInit {
         }
     )
   }
+    loadTechPannes(){
 
-  loadTechPannes(){
+        this.panneService.getTechPannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Tpannes = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des pannes Techniques');
+                console.log(this.Tpannes);
+            }
+        );
 
-    this.panneService.getTechPannes(this.selectedPanne.numero).subscribe(
-        data => {
-          this.Tpannes = data;
-        },
-        error => {
-          console.log('une erreur a été détectée!')
-        },
-        () => {
-          console.log('chargement des pannes Techniques');
-          console.log(this.Tpannes);
-        }
-    );
+        this.panneService.getOpPannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Opannes = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des pannes Techniques');
+                console.log(this.Opannes);
+            }
+        );
 
-    this.panneService.getHeurePannes(this.selectedPanne.numero).subscribe(
-        data => {
-          this.Hpannes = data;
-          this.tail = this.Hpannes.length;
-        },
-        error => {
-          console.log('une erreur a été détectée!')
-        },
-        () => {
-          console.log('chargement des heures');
-          console.log(this.Hpannes);
-          console.log('longueur');
-          console.log(this.tail);
-        }
-    );
-  }
+        this.panneService.getDetailsPannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Detailspannes = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des pannes Techniques');
+                console.log(this.Detailspannes);
+            }
+        );
 
-  open(content){
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
-          this.closeResult = `Closed with: ${result}`;
-        }, (reason) =>{
+        this.panneService.getOutilsPannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Outilpannes = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des outils');
+                console.log(this.Outilpannes);
+            }
+        );
 
-        }
-    );
-  }
+        this.panneService.getHeurePannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Hpannes = data;
+                this.tail = this.Hpannes.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des heures');
+                console.log(this.Hpannes);
+                console.log('longueur');
+                console.log(this.tail);
+            }
+        );
+    }
+
+    TodayPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getTodayPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne aujourd\'hui');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    HierPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getHierPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne hier');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    ThisWeekPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getThisWeekPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne cette semaine');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    LastWeekPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getLastWeekPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne aujourd\'hui');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    LastMonthPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getLastMonthPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne aujourd\'hui');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    ThisMonthPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getThisMonthPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne aujourd\'hui');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    LastYearPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getLastYearPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne aujourd\'hui');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    ThisYearPannes(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            this.machineService.getThisYearPannes(Number.parseInt(url)).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne aujourd\'hui');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    rangeDate(){
+        this.route.params.subscribe(params =>{
+            let url = atob(params['id']);
+            console.log('rien');
+            const d1 = this.rangeForm.controls['date1'].value;
+            const d2 = this.rangeForm.controls['date2'].value;
+
+            console.log(d1 + ' et '+ d2);
+
+            this.machineService.getRangeDatePannes(Number.parseInt(url), d1, d2).subscribe(
+                data => {
+                    this.pannes = data;
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('panne aujourd\'hui');
+                    console.log(this.pannes);
+                }
+            );})
+    }
+
+    open(content){
+        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
+                this.closeResult = `Closed with: ${result}`;
+            }, (reason) =>{
+
+            }
+        );
+    }
+
+    modal(content){
+        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) =>{
+                this.closeResult = `Closed with: ${result}`;
+            }, (reason) =>{
+
+            }
+        );
+    }
 
   HourPerMonth(){
     this.route.params.subscribe(params =>{
@@ -178,7 +501,7 @@ export class SingleMachineComponent implements OnInit {
     const panne = {
       data: [],
       label: "Pannes",
-      yAxisID: 'y-axis-1',
+      yAxisID: 'y-axis-0',
       type: 'line',
     };
 
@@ -254,4 +577,60 @@ export class SingleMachineComponent implements OnInit {
     // this.labs.categories.push(test1.categories)
 
   }
+
+    findSso($event){
+        if (this.selectPanForm.controls['periode'].value == 'hp'){
+            this.HierPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'ttesp'){
+            this.historiquePannes();
+            // this.countAllPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'tp'){
+            this.TodayPannes();
+            // this.countTodayPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'twp'){
+            this.ThisWeekPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'lwp'){
+            this.LastWeekPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'tmp'){
+            this.ThisMonthPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'lmp'){
+            this.LastMonthPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'typ'){
+            this.ThisYearPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'lyp'){
+            this.LastYearPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'pp'){
+            this.ranger = "true";
+        }
+        else {
+            this.ranger = "false";
+        }
+    }
+
+    paginate($event){
+        if (this.pageForm.controls['page'].value == '10'){
+            this.pages = 10;
+        }
+        if (this.pageForm.controls['page'].value == '25'){
+            this.pages = 25;
+        }
+        if (this.pageForm.controls['page'].value == '50'){
+            this.pages = 50;
+        }
+        if (this.pageForm.controls['page'].value == '100'){
+            this.pages = 100;
+        }
+        if (this.pageForm.controls['page'].value == '1000'){
+            this.pages = 1000;
+        }
+    }
 }

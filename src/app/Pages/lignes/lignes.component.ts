@@ -45,7 +45,7 @@ export class LignesComponent implements OnInit {
     createForm() {
         this.ligneForm = this.fb.group({
             nomL: ['', [Validators.required, Validators.minLength(4)]],
-            depL: [''],
+            depL: ['', Validators.required],
         });
     }
 
@@ -53,10 +53,6 @@ export class LignesComponent implements OnInit {
         this.loadLignes();
         this.loadDeps();
         this.initLigne();
-
-        // var reslt = {
-        //     dp: this.deps.join
-        // }
     }
 
     loadLignes() {
@@ -103,6 +99,7 @@ export class LignesComponent implements OnInit {
         this.newdep = this.deps[indexDep];
         this.ligneModel.idDepartement = this.newdep.idDepartement;
         this.ligneModel.nomLigne = this.ligneForm.controls['nomL'].value;
+
         console.log("index", indexDep);
         console.log("model", this.ligneModel);
         //dès qu'on crée la ligne on affiche immédiatement la liste
@@ -128,9 +125,12 @@ export class LignesComponent implements OnInit {
         this.newdep = this.deps[indexDep];
         this.ligneModel.idDepartement = this.newdep.idDepartement;
         this.ligneModel.nomLigne = this.ligneForm.controls['nomL'].value;
+        this.ligneModel.idLigne= this.selectedLigne.idLigne;
         console.log("index", indexDep);
-        console.log("model", this.ligneModel);
-        this.ligneService.updateLigne(this.selectedLigne).subscribe(
+        console.log("models", this.ligneModel);
+        console.log("idLigne", this.selectedLigne.idLigne);
+        console.log("nom", this.selectedLigne.nomLigne);
+        this.ligneService.updateLigne(this.ligneModel).subscribe(
             res => {
                 this.initLigne();
                 this.loadLignes();

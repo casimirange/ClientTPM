@@ -26,6 +26,9 @@ export class LoginComponent implements OnInit {
     password: ''
   };
 
+  // private roles: string[];
+  private authority: string;
+
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService,
               private fb: FormBuilder,private router: Router,) { }
 
@@ -110,6 +113,29 @@ export class LoginComponent implements OnInit {
 
   reloadPage() {
     // window.location.reload();
-    this.router.navigateByUrl('/dashboard')
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      this.roles.every(role => {
+        if (role === 'ROLE_ADMIN') {
+          this.authority = 'admin';
+          this.router.navigateByUrl('/machines')
+          return false;
+        } else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          this.router.navigateByUrl('/dashboard')
+          return false;
+        } else if (role === 'ROLE_PM') {
+          this.authority = 'pm';
+          return false;
+        } else if (role === 'ROLE_RESPONSABLE') {
+          this.authority = 'responsable';
+          return false;
+        }
+        this.authority = 'user';
+        this.router.navigateByUrl('/pannes')
+        return true;
+      });
+    }
+    // this.router.navigateByUrl('/dashboard')
   }
 }

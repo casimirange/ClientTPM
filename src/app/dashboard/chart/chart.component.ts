@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ChartDataSets, ChartOptions, ChartTitleOptions, ChartType} from "chart.js";
 import {BaseChartDirective, Color, Label} from "ng2-charts";
 import {TitleComponent} from "../../layout/page-title/title/title.component";
@@ -113,10 +113,19 @@ export class ChartComponent implements OnInit {
   public type: ChartType = "line";
   // public lineChartPlugins = [pluginAnnotations];
 
-  @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
+  @ViewChild(BaseChartDirective, { static: true }) charts: BaseChartDirective;
+  // @ViewChild("myC", { static: true }) canvas: ElementRef;
   constructor() { }
 
   ngOnInit() {
+    // let gradient = this.charts.nativeElement.getContext('2d').createLinearGradient(0,0,0, 200);
+    // gradient.addColorStop(0, 'green');
+    // gradient.addColorStop(1, 'red');
+    // this.lineChartColors = [
+    //   {
+    //     backgroundColor: gradient
+    //   }
+    // ]
   }
 
 }

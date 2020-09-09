@@ -32,10 +32,13 @@
                             <div class="">
                                 <div class="position-relative">
                                     <label for="liste" class="">Département</label>
-                                    <select id="liste"  class="multiselect-dropdown form-control form-control-sm"
-                                            formControlName="depL" >
-                                 <option   *ngFor="let dep of deps" [ngValue]="dep.id"  >{{dep.nom}}</option>
+                                    <select id="liste"  class=" form-control form-control-sm"
+                                            formControlName="depL" [(ngModel)]="selectedLigne.nomDep">
+
+                                 <option   *ngFor="let dep of deps" [ngValue]="dep.idDepartement"  >{{dep.nom}}</option>
                                     </select>
+
+                                    {{selectedLigne.nomDep}} {{selectedLigne.idDepartement}}
 
                                     <!--<select name="" id="" class="selectpicker form-control" data-live-search="true">-->
                                         <!--<option value="">1</option>-->
@@ -135,13 +138,15 @@
                     <thead>
                     <tr>
                         <th>Départements</th>
+                        <th>Id</th>
                         <th>Lignes</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr class="widget-content" *ngFor="let lign of lignes | paginate:{itemsPerPage: 7, currentPage:p}">
-                        <td scope="row" >{{ lign.nom }}</td>
+                        <td scope="row" >{{ lign.nomDep }}</td>
+                        <td>{{lign.idLigne}}</td>
                         <td>{{lign.nomLigne}}</td>
                         <td>
                             <div class="widget-content-right widget-content-actions">

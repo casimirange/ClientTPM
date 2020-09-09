@@ -43,7 +43,7 @@ export class PannesComponent implements OnInit {
   tails: number;
   count: number;
   ranger: string = "false";
-  pages: number = 10;
+  pages: number = 7;
 
   @ViewChild('htmlData', {static: false}) htmlData: ElementRef;
 
@@ -204,7 +204,7 @@ export class PannesComponent implements OnInit {
 
   countAllPannes(){
 
-      this.panneService.getCountPannes().subscribe(
+      this.panneService.getCountThisPannes().subscribe(
           data => {
               this.cpannes = data;
               this.count = 0;
@@ -510,7 +510,7 @@ export class PannesComponent implements OnInit {
           borderColor: '#0692fb',
       };
 
-      this.panneService.getCountPannes().subscribe(
+      this.panneService.getCountThisPannes().subscribe(
           list => list.forEach(mach => {
               this.dataPanne.labels.push(mach.machine);
               datasetNbrePanne.data.push(mach.nbre);
@@ -519,23 +519,6 @@ export class PannesComponent implements OnInit {
       this.dataPanne.datasets.push(datasetNbrePanne);
 
 
-  }
-
-  makePdf(){
-      // var doc = new jsPDF();
-      // doc.addHTML(this.content.nativeElement, function () {
-      //    doc.save("yes");
-      // // });
-      // var doc = new jsPDF({
-      //     orientation: 'landscape',
-      //     unit: 'in',
-      //     format: [4, 2]
-      // });
-      //
-      // // doc.addHTML(this.content.nativeElement, function () {
-      // //    doc.save("yes");
-      // // });
-      // doc.save(this.content.nativeElement)
   }
 
   findSso($event){
@@ -596,6 +579,7 @@ export class PannesComponent implements OnInit {
 
     showMachine(m: Machine){
         console.log('machine' + m.nom);
+        this.modalService.dismissAll();
         let url = btoa(m.idM.toString());
         this.router.navigateByUrl("machines/"+url);
     }

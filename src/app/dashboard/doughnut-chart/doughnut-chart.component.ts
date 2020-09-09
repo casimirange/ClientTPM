@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {BaseChartDirective, Color, Label, MultiDataSet, SingleDataSet} from "ng2-charts";
-import {ChartType} from "chart.js";
+import {ChartOptions, ChartType} from "chart.js";
 
 @Component({
   selector: 'app-doughnut-chart',
@@ -17,6 +17,10 @@ export class DoughnutChartComponent implements OnInit {
   ];
   @Input()
   doughnutChartType: ChartType = 'doughnut';
+  @Input()
+  doughnutChartOption: ChartOptions = {
+    legend: { position: 'right' }
+  };
 
   @Input()
   public lineChartColors: Color[] = [

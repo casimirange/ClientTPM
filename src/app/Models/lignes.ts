@@ -5,7 +5,9 @@ import {Departement} from "../Models/departement";
 
 export class Ligne {
     nomLigne?: string;
+    nomDep?: string;
     idDepartement?: number;
+    idDep?: number;
     idLigne?: number;
     nom?: string;
     constructor( ) {}

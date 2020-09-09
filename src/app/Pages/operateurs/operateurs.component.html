@@ -126,15 +126,21 @@
     <div class="col-lg-7">
         <div class="main-card mb-3 card">
             <div class="card-header">
-                <table class="table mb-0 ">
-                    <tr>
-                        <td>Liste des Opérateurs</td>
-                        <td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initLigne();">Ajouter</button></td>
-                    </tr>
-                </table>
+                Liste des Opérateurs
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="searchPanForm">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <button class="btn btn-secondary float-right" (click)="operation = 'add'; initLigne();">Ajouter</button>
+                </div>
             </div>
             <div class="card-body">
-                <table class="mb-0 table table-hover">
+                <table class="align-middle mb-0 table table-sm table-borderless table-hover">
                     <thead>
                     <tr>
                         <th>Matricule</th>
@@ -144,13 +150,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let op of operateurs">
-                        <th scope="row" >{{ op.matricule}}</th>
-                        <td>{{op.nom}}</td>
-                        <td>{{op.prenom}}</td>
+                    <tr class="widget-content" *ngFor="let op of operateurs | filter: term | paginate:{itemsPerPage: 5, currentPage:p}; ">
+                        <th scope="row" >{{ op.matOP}}</th>
+                        <td>{{op.nomOP}}</td>
+                        <td>{{op.prenomOP}}</td>
                         <td>
                             <div class="">
-                                <a [routerLink]="['/techniciens', op.matricule]">
+                                <a [routerLink]="['/techniciens', op.matOP]">
                                     <button class="border-0 btn btn-outline-success">
                                         <i class="fa fa-eye"></i>
                                     </button>
@@ -183,7 +189,7 @@
                                                                             <div class="swal2-success-circular-line-right"
                                                                                  style="background-color: rgb(255, 255, 255);"></div>
                                                                         </div>
-                                                                        <div class="results-subtitle">{{selectedOp.nom}}</div>
+                                                                        <div class="results-subtitle">{{selectedOp.nomOP}}</div>
                                                                         <div class="results-title">Confirmez-vous la suppression de cet Opérateur ?</div>
                                                                     </div>
                                                                 </div>
@@ -193,7 +199,7 @@
                                                     <ul class="nav flex-column">
                                                         <li class="nav-item-divider nav-item"></li>
                                                         <li class="nav-item-btn text-center nav-item">
-                                                            <button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedOp.matricule" (click)="deleteOperateur(); operation = 'ok'">Supprimer
+                                                            <button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedOp.matOP" (click)="deleteOperateur(); operation = 'ok'">Supprimer
                                                             </button>
                                                             &nbsp;&nbsp;
                                                             <button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm" data-dismiss="modal" (click)="showModal=false; operation = 'add'">Annuler
@@ -239,6 +245,22 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                    <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
+                    <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
+                </div>
             </div>
         </div>
     </div>

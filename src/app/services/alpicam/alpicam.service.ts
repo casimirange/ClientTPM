@@ -10,8 +10,32 @@ export class AlpicamService {
 
   constructor(private http: HttpClient) { }
 
-  getTypePanneThisYear(): Observable<any>{
-    return this.http.get(API_URLS.ALPICAM_URL + `/typePanneThisYear`);
+  getTypePanneThisMonth(): Observable<any>{
+    return this.http.get(API_URLS.ALPICAM_URL + `/typePanneThisMonth`);
+  }
+
+  getTypePanneLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.ALPICAM_URL + `/typePanneLastMonth`);
+  }
+
+  getTypePanneRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.ALPICAM_URL + `/typePanneRange?debut=${d1}&fin=${d2}`);
+  }
+
+  getRecapPanne(): Observable<any>{
+    return this.http.get(API_URLS.ALPICAM_URL + `/recapPanne`);
+  }
+
+  paretoAlpiThisMonth(): Observable<any>{
+    return this.http.get(API_URLS.ALPICAM_URL + `/paretoAlpiThisMonth`);
+  }
+
+  paretoAlpiLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.ALPICAM_URL + `/paretoAlpiLastMonth`);
+  }
+
+  paretoAlpiRange(d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.ALPICAM_URL + `/paretoAlpiRange?debut=${d1}&fin=${d2}`);
   }
 
   alpiThisYear(): Observable<any>{

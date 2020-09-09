@@ -20,6 +20,18 @@ export class DepartementsService {
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/dashboard/${id}`);
   }
 
+  getDashboardRange(id: number, d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/dashboardRange/${id}?debut=${d1}&fin=${d2}`);
+  }
+
+  getDashboardThisMonth(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/dashboardThisMonth/${id}`);
+  }
+
+  getDashboardLastMonth(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/dashboardLastMonth/${id}`);
+  }
+
   addDep(departement: Departement): Observable<any>{
     return this.http.post(API_URLS.DEPARTEMENT_URL, departement);
   }
@@ -38,6 +50,42 @@ export class DepartementsService {
 
   showPannesDep(id: number): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/pannes/${id}`);
+  }
+
+  getTodayPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/today/${id}`);
+  }
+
+  getHierPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/hier/${id}`);
+  }
+
+  getThisWeekPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/csem/${id}`);
+  }
+
+  getLastWeekPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/semp/${id}`);
+  }
+
+  getThisMonthPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/thisMonth/${id}`);
+  }
+
+  getLastMonthPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/lastMonth/${id}`);
+  }
+
+  getThisYearPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/thisYear/${id}`);
+  }
+
+  getLastYearPannes(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/lastYear/${id}`);
+  }
+
+  getRangeDatePannes(id: number, d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/Date_range/${id}?debut=${d1}&fin=${d2}`);
   }
 
   countThisMonthPannesDep(id: number): Observable<any>{
@@ -64,12 +112,16 @@ export class DepartementsService {
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/mtbfThisYear/${id}`);
   }
 
-  paretoThisYear(id: number): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDepYear/${id}`);
+  paretoDepRange(id: number, d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDepRange/${id}?debut=${d1}&fin=${d2}`);
   }
 
   paretoThisMonth(id: number): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDepThisMonth/${id}`);
+  }
+
+  paretoLastMonth(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDepLastMonth/${id}`);
   }
 
   ligne1ThisYear(id: number): Observable<any>{
@@ -168,116 +220,172 @@ export class DepartementsService {
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/jointageMtbfByYear/${id}`);
   }
 
-  paretoDerouleuseTDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseTDTThisYear`);
+  paretoDerouleuseTDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseTDTRange?debut=${d1}&fin=${d2}`);
   }
 
   paretoDerouleuseTDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseTDTThisMonth`);
   }
 
-  paretoDerouleuseMDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseMDTThisYear`);
+  paretoDerouleuseTDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseTDTLastMonth`);
+  }
+
+  paretoDerouleuseMDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseMDTRange?debut=${d1}&fin=${d2}`);
   }
 
   paretoDerouleuseMDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseMDTThisMonth`);
   }
 
-  paretoBobineuseTDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseTDTThisYear`);
+  paretoDerouleuseMDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoDerouleuseMDTLastMonth`);
+  }
+
+  paretoBobineuseTDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseTDTRange?debut=${d1}&fin=${d2}`);
   }
 
   paretoBobineuseTDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseTDTThisMonth`);
   }
 
-  paretoBobineuseMDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseMDTThisYear`);
+  paretoBobineuseTDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseTDTLastMonth`);
+  }
+
+  paretoBobineuseMDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseMDTRange?debut=${d1}&fin=${d2}`);
   }
 
   paretoBobineuseMDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseMDTThisMonth`);
   }
 
-  paretoMagasinBobineTDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineTDTThisYear`);
+  paretoBobineuseMDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoBobineuseMDTLastMonth`);
+  }
+
+  paretoMagasinBobineTDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineTDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoMagasinBobineTDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineTDTLastMonth`);
   }
 
   paretoMagasinBobineTDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineTDTThisMonth`);
   }
 
-  paretoMagasinBobineMDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineMDTThisYear`);
+  paretoMagasinBobineMDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineMDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoMagasinBobineMDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineMDTLastMonth`);
   }
 
   paretoMagasinBobineMDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMagasinBobineMDTThisMonth`);
   }
 
-  paretoMassicotTDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotTDTThisYear`);
+  paretoMassicotTDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotTDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoMassicotTDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotTDTLastMonth`);
   }
 
   paretoMassicotTDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotTDTThisMonth`);
   }
 
-  paretoMassicotMDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotMDTThisYear`);
+  paretoMassicotMDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotMDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoMassicotMDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotMDTLastMonth`);
   }
 
   paretoMassicotMDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoMassicotMDTThisMonth`);
   }
 
-  paretoSechoirTDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirTDTThisYear`);
+  paretoSechoirTDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirTDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoSechoirTDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirTDTLastMonth`);
   }
 
   paretoSechoirTDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirTDTThisMonth`);
   }
 
-  paretoSechoirMDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirMDTThisYear`);
+  paretoSechoirMDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirMDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoSechoirMDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirMDTLastMonth`);
   }
 
   paretoSechoirMDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoSechoirMDTThisMonth`);
   }
 
-  paretoTrancheuseTDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseTDTThisYear`);
+  paretoTrancheuseTDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseTDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoTrancheuseTDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseTDTLastMonth`);
   }
 
   paretoTrancheuseTDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseTDTThisMonth`);
   }
 
-  paretoTrancheuseMDTThisYear(): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseMDTThisYear`);
+  paretoTrancheuseMDTRange(d1:Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseMDTRange?debut=${d1}&fin=${d2}`);
+  }
+
+  paretoTrancheuseMDTLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseMDTLastMonth`);
   }
 
   paretoTrancheuseMDTThisMonth(): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoTrancheuseMDTThisMonth`);
   }
 
-  paretoEncolleuseTDTThisYear(id: number): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseTDTThisYear/${id}`);
+  paretoEncolleuseTDTRange(id: number, d1:Date, d2:Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseTDTRange/${id}?debut=${d1}&fin=${d2}`);
   }
 
   paretoEncolleuseTDTThisMonth(id: number): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseTDTThisMonth/${id}`);
   }
 
-  paretoEncolleuseMDTThisYear(id: number): Observable<any>{
-    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseMDTThisYear/${id}`);
+  paretoEncolleuseTDTLastMonth(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseTDTLastMonth/${id}`);
+  }
+
+  paretoEncolleuseMDTRange(id: number, d1:Date, d2:Date): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseMDTRange/${id}?debut=${d1}&fin=${d2}`);
   }
 
   paretoEncolleuseMDTThisMonth(id: number): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseMDTThisMonth/${id}`);
+  }
+
+  paretoEncolleuseMDTLastMonth(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseMDTLastMonth/${id}`);
   }
 
 }

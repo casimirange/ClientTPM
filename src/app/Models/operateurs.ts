@@ -6,8 +6,12 @@ import {Pannes} from "./pannes";
 export class Operateur {
     nom?: string;
     prenom?: string;
+    nomOP?: string;
+    prenomOP?: string;
     idOperateur?: number;
+    idOP?: number;
     matricule?: number;
+    matOP?: number;
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}
 }

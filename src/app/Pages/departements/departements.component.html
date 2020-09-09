@@ -33,7 +33,8 @@
                             <div class="">
                                 <div class="position-relative">
                                     <label for="cc" class="">Centre de coût</label>
-                                    <select id="cc" class="multiselect-dropdown form-control"
+                                    <!--<select id="cc" class="multiselect-dropdown form-control"-->
+                                    <select id="cc" class="form-control-sm form-control"
                                             formControlName="centre_cout" [(ngModel)]="selectedDep.centre_cout">
                                         <!--<option value="" disabled>Choix du centre de coût</option>-->
                                         <option *ngFor="let ccs of centres" [value]="ccs">{{ccs}}</option>

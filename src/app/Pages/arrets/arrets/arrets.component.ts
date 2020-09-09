@@ -5,6 +5,7 @@ import {ArretsService} from "../../../services/arrets/arrets.service";
 import {MachinesService} from "../../../services/machines/machines.service";
 import {Machine} from "../../../Models/machines";
 import DateTimeFormat = Intl.DateTimeFormat;
+import {Color} from "ng2-charts";
 
 @Component({
   selector: 'app-arrets',
@@ -20,6 +21,7 @@ export class ArretsComponent implements OnInit {
   rangeForm: FormGroup;
   searchPanForm: FormGroup;
   selectPanForm: FormGroup;
+  pageForm: FormGroup;
 
   operation: string = 'add';
 
@@ -31,8 +33,21 @@ export class ArretsComponent implements OnInit {
   newArret: Arrets;
   arr: Arrets;
   machines: Machine[];
-
+  pages: number = 7;
   today: Date;
+  typeArret = {
+    labels: [],
+    nbre: [],
+    tdt: []
+  };
+
+    public lineChartColors: Color[] = [
+        { // red
+            backgroundColor: ['#008ffb', '#00e396', '#feb019', '#ff4560', '#775dd0', '#dad9dd'],
+            borderColor: ['#008ffb', '#00e396', '#feb019', '#ff4560', '#775dd0', '#dad9dd'],
+        },
+
+    ];
 
   constructor(private arretService: ArretsService,
               private fb: FormBuilder,
@@ -40,8 +55,10 @@ export class ArretsComponent implements OnInit {
     this.createForm();
     this.createForm1();
     this.createForms();
+    this.pageForms();
     this.rangeForms();
     this.arr = new Arrets();
+    // this.selectedArret = new Arrets();
     var tim = new Date();
     this.today = tim;
   }
@@ -53,13 +70,16 @@ export class ArretsComponent implements OnInit {
       date: ['', [Validators.required]],
       debut: ['', [Validators.required]],
       fin: [''],
+      pic1: [''],
+      // numero: [''],
     });
   }
 
   ngOnInit() {
     this.loadMachines();
     this.LoadArrets();
-    this.selectedArret = new Arrets();
+    this.initArret();
+    this.typeArretThisMonth();
     this.newArret = new Arrets();
 
   }
@@ -79,6 +99,12 @@ export class ArretsComponent implements OnInit {
   createForms() {
     this.selectPanForm = this.fb.group({
       periode: ['']
+    });
+  }
+
+  pageForms() {
+    this.pageForm = this.fb.group({
+      page: ['']
     });
   }
 
@@ -114,12 +140,26 @@ export class ArretsComponent implements OnInit {
     );
   }
 
+    typeArretThisMonth(){
+        this.typeArret.labels = [];
+        this.typeArret.nbre = [];
+        this.typeArret.tdt = [];
+        this.arretService.getArretTypeThisMonth().subscribe(
+            list => list.forEach(mach => {
+                this.typeArret.labels.push(mach.type.toUpperCase());
+                this.typeArret.nbre.push(mach.nbre);
+                this.typeArret.tdt.push(mach.TDT);
+            })
+        );
+
+    }
+
   addArret() {
     const a = this.arretForm.value;
     console.log('formulaire 1 '+ a);
 
     var result           = '';
-    var result1           = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
+    var result1          = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
     for ( var i = 0; i < 8; i++ ) {
@@ -128,26 +168,18 @@ export class ArretsComponent implements OnInit {
     var result2 = result;
     console.log('random nber '+ result2)
 
-    this.arr.date = this.arretForm.controls['date'].value;
-    this.arr.cause = this.arretForm.controls['cause'].value;
-    this.arr.numero = result2;
+    this.newArret.date = this.arretForm.controls['date'].value;
+    this.newArret.cause = this.arretForm.controls['pic1'].value != 'divers' ? this.arretForm.controls['pic1'].value : this.arretForm.controls['cause'].value;
+    this.newArret.numero = result2;
     // this.arr.etat = this.arretForm.controls['etat'].value;
-    this.arr.debutArret = this.arretForm.controls['debut'].value;
-    this.arr.finArret = this.arretForm.controls['fin'].value;
-    this.arr.idMachine = this.arretForm.controls['machine'].value;
-
-    // console.log('arret est: '+ this.arr.date);
-    // console.log('arret est: '+ this.arr.cause);
-    // console.log('arret est: '+ this.arr.numero);
-    // console.log('arret est: '+ this.arr.etat);
-    // console.log('arret est: '+ this.arr.debutArret);
-    // console.log('arret est: '+ this.arr.finArret);
-    // console.log('arret est: '+ this.arr.idMachine);
-    // console.log('\n au final: '+ this.arr);
+    this.newArret.debutArret = this.arretForm.controls['debut'].value;
+    this.newArret.finArret = this.arretForm.controls['fin'].value;
+    this.newArret.idMachine = this.arretForm.controls['machine'].value;
+    console.log('\n au final: '+ this.newArret);
     // console.log('2 au final: \n'+ this.arretForm.value);
 
     //dès qu'on crée le département on affiche immédiatement la liste
-    this.arretService.postArret(this.arr).subscribe(
+    this.arretService.postArret(this.newArret).subscribe(
         res => {
           this.initArret();
           this.LoadArrets();
@@ -158,7 +190,18 @@ export class ArretsComponent implements OnInit {
   }
 
   updateArret() {
-    this.arretService.putArret(this.selectedArret).subscribe(
+      const a = this.arretForm.value;
+      this.arr.date = this.selectedArret.date;
+      this.arr.cause = this.selectedArret.cause;
+      this.arr.numero = this.selectedArret.numero;
+      this.arr.debutArret = this.selectedArret.debutArret;
+      this.arr.finArret = this.selectedArret.finArret;
+      this.arr.idMachine = this.selectedArret.idMachine;
+      this.arr.idArret = this.selectedArret.idArret;
+      console.log('modif Arrêt :' + a);
+      console.log('modif Arrêt2 :' + this.selectedArret.idMachine);
+      console.log('modif Arrêt3 :' + this.arr.idArret);
+    this.arretService.putArret(this.arr).subscribe(
         res => {
           this.initArret();
           this.LoadArrets();
@@ -199,12 +242,69 @@ export class ArretsComponent implements OnInit {
   }
 
   deleteArret() {
-    this.arretService.deleteArret(this.newArret.idArret).subscribe(
+
+    this.arretService.deleteArret(this.selectedArret.idArret).subscribe(
         res => {
-          this.selectedArret = new Arrets();
+          this.initArret()
           this.LoadArrets();
         }
     );
   }
+
+    // findSso($event){
+    //     if (this.selectPanForm.controls['periode'].value == 'hp'){
+    //         this.HierPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'ttesp'){
+    //         this.loadPannes();
+    //         this.countAllPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'tp'){
+    //         this.TodayPannes();
+    //         this.countTodayPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'twp'){
+    //         this.ThisWeekPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'lwp'){
+    //         this.LastWeekPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'tmp'){
+    //         this.ThisMonthPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'lmp'){
+    //         this.LastMonthPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'typ'){
+    //         this.ThisYearPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'lyp'){
+    //         this.LastYearPannes();
+    //     }
+    //     if (this.selectPanForm.controls['periode'].value == 'pp'){
+    //         this.ranger = "true";
+    //     }
+    //     else {
+    //         this.ranger = "false";
+    //     }
+    // }
+
+    paginate($event){
+        if (this.pageForm.controls['page'].value == '10'){
+            this.pages = 10;
+        }
+        if (this.pageForm.controls['page'].value == '25'){
+            this.pages = 25;
+        }
+        if (this.pageForm.controls['page'].value == '50'){
+            this.pages = 50;
+        }
+        if (this.pageForm.controls['page'].value == '100'){
+            this.pages = 100;
+        }
+        if (this.pageForm.controls['page'].value == '1000'){
+            this.pages = 1000;
+        }
+    }
 
 }

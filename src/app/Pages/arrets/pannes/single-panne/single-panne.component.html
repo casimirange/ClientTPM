@@ -450,8 +450,8 @@
                                         <label for="op" [ngClass]="{'red': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">Opérateur de Production</label>
 
                                         <select id="op" class="multiselect-dropdown form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]="selo" [ngClass]="{'fred': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">
-                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOperateur" (select)="selop = op">
-                                                {{op.nom}} &nbsp; {{op.prenom}}
+                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOP" (select)="selop = op">
+                                                {{op.nomOP}} &nbsp; {{op.prenomOP}}
                                             </option>
                                         </select>
                                     </div>

@@ -13,6 +13,15 @@ export class DashboardService {
   getCountPerDayPannes(): Observable<any>{
     return this.http.get(API_URLS.DASHBOARD_URL + `/`);
   }
+  getCountRangePannes(d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/date_range?debut=${d1}&fin=${d2}`);
+  }
+  getCountDashLastPannes(): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/dashLastMonth`);
+  }
+  getCountDashThisPannes(): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/dashThisMonth`);
+  }
   getCountDepPannes(): Observable<any>{
     return this.http.get(API_URLS.DASHBOARD_URL + `/count`);
   }
@@ -36,5 +45,11 @@ export class DashboardService {
   }
   statsTechniciensByMonth(): Observable<any>{
     return this.http.get(API_URLS.DASHBOARD_URL + `/techWT`);
+  }
+  statsTechniciensLastMonth(): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/techWTLastMonth`);
+  }
+  statsTechniciensRange(d1: Date, d2: Date): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/techWTRange?debut=${d1}&fin=${d2}`);
   }
 }

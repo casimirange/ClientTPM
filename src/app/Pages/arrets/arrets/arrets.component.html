@@ -79,34 +79,58 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="cause" [ngClass]="{'red': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}">Motif de l'arrêt</label>
-                                <div>
+                                <div class="form-row">
+
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio7" name="pic1" class="custom-control-input" formControlName="pic1" value="Délestage" [(ngModel)]="piece"  >
+                                        <label class="custom-control-label" for="exampleCustomRadio7">Délestage</label>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio8" name="pic1" class="custom-control-input" formControlName="pic1" value="Bourrage" [(ngModel)]="piece"  >
+                                        <label class="custom-control-label" for="exampleCustomRadio8">Bourrage</label>
+                                    </div>
+                                </div>
+                                <div class="e col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio9" name="pic1" class="custom-control-input" formControlName="pic1" value="Manque de Bobine" [(ngModel)]="piece" >
+                                        <label class="custom-control-label" for="exampleCustomRadio9">Manque de Bobine </label>
+
+                                    </div>
+                                </div>
+
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadiofi" name="pic1" class="custom-control-input" formControlName="pic1" value="Manque de Personnel" [(ngModel)]="piece"  >
+                                        <label class="custom-control-label" for="exampleCustomRadiofi">Manque de Personnel</label>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadioMachine" name="pic1" class="custom-control-input" formControlName="pic1" value="Manque de Matériel" [(ngModel)]="piece"  >
+                                        <label class="custom-control-label" for="exampleCustomRadioMachine">Manque de Matériel</label>
+                                    </div>
+                                </div>
+                                <div class="e col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadioOp" name="pic1" class="custom-control-input" formControlName="pic1" value="divers" [(ngModel)]="piece" >
+                                        <label class="custom-control-label" for="exampleCustomRadioOp">Divers </label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                                <div *ngIf="piece == 'divers'">
                                     <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="cause..." formControlName="cause" [ngClass]="{'fred': arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched)}" [(ngModel)]="selectedArret.cause"></textarea>
                                 </div>
-                                <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['cause'].invalid && (arretForm.controls['cause'].touched) ">
+                                <div style="color: #f65656; font-style: italic;" *ngIf="piece == 'divers' && (arretForm.controls['cause'].touched) ">
                                     <span>*</span> Minimum 5 caractères sont requis
                                 </div>
                             </div>
                         </div>
                         </div>
-                        <!--<div class="form-group">-->
-                            <!--<label for="machine" class="">La panne a t-elle été réparée?</label>-->
-                            <!--<div class="">-->
-
-                                <!--<div class="position-relative form-check-inline">-->
-                                    <!--<div class="custom-radio custom-control position-relative form-group">-->
-                                        <!--<input type="radio" id="exampleCustomRadio1" name="etat" class="custom-control-input" value="true" formControlName="etat"  required [(ngModel)]="selectedArret.etat">-->
-                                        <!--<label class="custom-control-label" for="exampleCustomRadio1">Arrêt terminée</label>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="position-relative form-check-inline">-->
-                                    <!--<div class="custom-radio custom-control position-relative form-group">-->
-                                        <!--<input type="radio" id="exampleCustomRadio2" name="etat" class="custom-control-input" value="false" formControlName="etat" required [(ngModel)]="selectedArret.etat">-->
-                                        <!--<label class="custom-control-label" for="exampleCustomRadio2">Arrêt en cours... </label>-->
-
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" (click)="operation == 'add' ? addArret() : updateArret()  " >
@@ -208,25 +232,22 @@
                         <th>Motif</th>
                         <th>Debut</th>
                         <th>Fin</th>
+                        <th class="text-center">DT (min)</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let arret of arrets | paginate:{itemsPerPage: 7, currentPage:p}">
+                    <tr class="widget-content" *ngFor="let arret of arrets | filter : term | paginate:{itemsPerPage: pages, currentPage:p}">
                         <td>{{ arret.date  | date: 'dd/MM/y'}}</td>
                         <td>{{arret.machine}}</td>
                         <td>{{arret.cause}}</td>
-                        <td>{{arret.debutArret | date: 'HH:mm'}}</td>
-                        <td>
-                            <div [ngClass]="
-            arret.etat == false ? 'badge badge-warning' : ''">
-                            {{arret.etat == false ? 'en cours...' :
-                            (arret.finArret | date: 'HH:mm')}}</div>
-                        </td>
+                        <td>{{arret.debut_arret | date: 'HH:mm'}}</td>
+                        <td>{{arret.fin_arret | date: 'HH:mm'}}</td>
+                        <td class="text-center" [ngClass]="{'text-danger': arret.DT >= 60}">{{arret.DT}}</td>
                         <td class="text-center">
                             <div role="group" class="btn-group-sm btn-group">
                                 <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedArret = arret;"><i class="fa fa-pencil"></i></button>
-                                <button class="btn  btn-danger" (click)="newArret= arret ;swl(arret)" ><i class="fa fa-times"></i></button>
+                                <button class="btn  btn-danger" (click)="selectedArret = arret ;swl(arret)" ><i class="fa fa-times"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -235,9 +256,19 @@
             </div>
             <div class="d-block clearfix card-footer">
                 <div class="float-left">
-                    <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">
-                        <i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;
-                    <button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>
+                    <form [formGroup]="pageForm">
+                        <span style="display: inline-block">Afficher</span>&nbsp;
+                        <span style="display: inline-block">
+                            <select (change)="paginate($event.target.value)" formControlName="page" class="form-control form-control-sm">
+                                <option value="10" aria-selected="true" selected>10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="1000">1000</option>
+                            </select>
+                        </span>&nbsp;
+                        <span style="display: inline-block">données</span>
+                    </form>
                 </div>
                 <div class="float-right">
                     <ul class="pagination pagination-sm mb-0">
@@ -250,8 +281,6 @@
                             </pagination-controls>
                         </li>
                     </ul>
-                    <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
-                    <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
                 </div>
             </div>
         </div>
@@ -259,138 +288,36 @@
 </div>
 
 <div class="row">
-    <!--<div class="col-lg-6">-->
-        <!--<div class="main-card mb-3 card">-->
-            <!--<div class="card-header">-->
-                <!--<table class="table mb-0 ">-->
-                    <!--<tr>-->
-                        <!--<td>Liste des Techniciens Actifs</td>-->
-                    <!--</tr>-->
-                <!--</table>-->
-            <!--</div>-->
-            <!--<div class="card-body">-->
-                <!--<table class="mb-0 table table-hover">-->
-                    <!--<thead>-->
-                    <!--<tr>-->
-                        <!--<th>Matricule</th>-->
-                        <!--<th>Nom</th>-->
-                        <!--<th>Prénom</th>-->
-                        <!--<th>Fonction</th>-->
-                        <!--<th>Etat</th>-->
-                        <!--<th>Actions</th>-->
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
-                    <!--<tr class="widget-content" *ngFor="let atech of ActiveTec | paginate:{itemsPerPage: 10, currentPage:p}">-->
-                        <!--<th scope="row" >{{ atech.matricule}}</th>-->
-                        <!--<td>{{atech.nom}}</td>-->
-                        <!--<td>{{atech.prenom}}</td>-->
-                        <!--<td>{{atech.fonction}}</td>-->
-                        <!--<td>-->
-                            <!--<div [ngClass]="-->
-            <!--atech.etat == true ? 'badge badge-success' : 'badge badge-focus'">{{atech.etat}}</div>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                            <!--<div class="">-->
-                                <!--<a [routerLink]="['/techniciens', atech.idTechnicien]">-->
-                                    <!--<button class="border-0 btn btn-outline-success">-->
-                                        <!--<i class="fa fa-eye"></i>-->
-                                    <!--</button>-->
-                                <!--</a>-->
-                                <!--<button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = atech;">-->
-                                    <!--<i class="fa fa-pencil"></i>-->
-                                <!--</button>-->
-                                <!--<button class="border-0 btn btn-outline-danger" (click)="selectedTech = atech; swl(atech)" >-->
-                                    <!--<i class="fa fa-times"></i>-->
-                                <!--</button>-->
-                            <!--</div>-->
-                        <!--</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-                <!--<div class="float-right">-->
-                    <!--<ul class="pagination pagination-sm mb-0">-->
-                        <!--<li>-->
-                            <!--<pagination-controls (pageChange)="p=$event"-->
-                                                 <!--autoHide = "true"-->
-                                                 <!--responsive = "true"-->
-                                                 <!--previousLabel = "Précédent"-->
-                                                 <!--nextLabel = "Suivant">-->
-                            <!--</pagination-controls>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="col-lg-6">-->
-        <!--<div class="main-card mb-3 card">-->
-            <!--<div class="card-header">-->
-                <!--<table class="table mb-0 ">-->
-                    <!--<tr>-->
-                        <!--<td>Liste des Techniciens Désactivés</td>-->
-                    <!--</tr>-->
-                <!--</table>-->
-            <!--</div>-->
-            <!--<div class="card-body">-->
-                <!--<table class="mb-0 table table-hover">-->
-                    <!--<thead>-->
-                    <!--<tr>-->
-                        <!--<th>Matricule</th>-->
-                        <!--<th>Nom</th>-->
-                        <!--<th>Prénom</th>-->
-                        <!--<th>Fonction</th>-->
-                        <!--<th>Etat</th>-->
-                        <!--<th>Actions</th>-->
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
-                    <!--<tr class="widget-content" *ngFor="let dtech of DesactiveTec | paginate:{itemsPerPage: 10, currentPage:p}">-->
-                        <!--<th scope="row" >{{ dtech.matricule}}</th>-->
-                        <!--<td>{{dtech.nom}}</td>-->
-                        <!--<td>{{dtech.prenom}}</td>-->
-                        <!--<td>{{dtech.fonction}}</td>-->
-                        <!--<td>-->
-                            <!--<div [ngClass]="-->
-            <!--dtech.etat == true ? 'badge badge-success' : 'badge badge-focus'">{{dtech.etat}}</div>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                            <!--<div class="">-->
-                                <!--<a [routerLink]="['/techniciens', dtech.idTechnicien]">-->
-                                    <!--<button class="border-0 btn btn-outline-success">-->
-                                        <!--<i class="fa fa-eye"></i>-->
-                                    <!--</button>-->
-                                <!--</a>-->
-                                <!--<button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedTech = dtech;">-->
-                                    <!--<i class="fa fa-pencil"></i>-->
-                                <!--</button>-->
-                                <!--&lt;!&ndash;<button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedTech = tech; showModal=true" data-toggle="modal" data-target="exampleModal">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<i class="fa fa-pencil"></i>&ndash;&gt;-->
-                                <!--&lt;!&ndash;</button>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<input type="checkbox" checked data-toggle="toggle" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger" data-size="mini" >&ndash;&gt;-->
-                                <!--<button class="border-0 btn btn-outline-danger" (click)="selectedTech = dtech; swl(dtech)" >-->
-                                    <!--<i class="fa fa-times"></i>-->
-                                <!--</button>-->
-                            <!--</div>-->
-                        <!--</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-                <!--<div class="float-right">-->
-                    <!--<ul class="pagination pagination-sm mb-0">-->
-                        <!--<li>-->
-                            <!--<pagination-controls (pageChange)="p=$event"-->
-                                                 <!--autoHide = "true"-->
-                                                 <!--responsive = "true"-->
-                                                 <!--previousLabel = "Précédent"-->
-                                                 <!--nextLabel = "Suivant">-->
-                            <!--</pagination-controls>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Répartition par type d'arrêt
+            </div>
+            <div class="card-body">
+                <app-doughnut-chart *ngIf="typeArret.nbre"
+                                    [doughnutChartData] = "typeArret.nbre"
+                                    [doughnutChartLabels] = "typeArret.labels"
+                                    [lineChartColors]="lineChartColors"
+                ></app-doughnut-chart>
+                <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Perte de production par type d'arrêt (minutes)
+            </div>
+            <div class="card-body">
+                <app-doughnut-chart *ngIf="typeArret.nbre"
+                                    [doughnutChartData] = "typeArret.tdt"
+                                    [doughnutChartLabels] = "typeArret.labels"
+                                    [lineChartColors]="lineChartColors"
+                ></app-doughnut-chart>
+                <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 

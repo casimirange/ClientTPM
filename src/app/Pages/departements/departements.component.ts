@@ -83,16 +83,17 @@ export class DepartementsComponent implements OnInit {
     }
 
     addDepartement() {
-        const d = this.depForm.value;
-        console.log(d);
-        var liste, texte;
-        liste = document.getElementById("cc");
-        texte = liste.options[liste.selectedIndex].text;
-        console.log("centre_de_cout:"+texte );
-        this.newDep.nom = this.depForm.controls['nom'].value;
-        this.newDep.responsable = this.depForm.controls['responsable'].value;
-        this.newDep.centre_cout = texte;
-        console.log("model",this.newDep);
+        this.newDep = this.depForm.value;
+        // const d = this.depForm.value;
+        // console.log(d);
+        // var liste, texte;
+        // liste = document.getElementById("cc");
+        // texte = liste.options[liste.selectedIndex].text;
+        // console.log("centre_de_cout:"+texte );
+        // this.newDep.nom = this.depForm.controls['nom'].value;
+        // this.newDep.responsable = this.depForm.controls['responsable'].value;
+        // this.newDep.centre_cout = texte;
+        // console.log("model",this.newDep);
 
         //dès qu'on crée le département on affiche immédiatement la liste
         this.departementService.addDep(this.newDep).subscribe(
@@ -104,14 +105,14 @@ export class DepartementsComponent implements OnInit {
     }
 
     updateDepartement() {
-        var liste, texte;
-        liste = document.getElementById("cc");
-        texte = liste.options[liste.selectedIndex].text;
-        console.log("centre_de_cout:"+texte );
-        this.selectedDep.nom = this.depForm.controls['nom'].value;
-        this.selectedDep.responsable = this.depForm.controls['responsable'].value;
-        this.selectedDep.centre_cout = texte;
-        console.log("model",this.newDep);
+        // var liste, texte;
+        // liste = document.getElementById("cc");
+        // texte = liste.options[liste.selectedIndex].text;
+        // console.log("centre_de_cout:"+texte );
+        // this.selectedDep.nom = this.depForm.controls['nom'].value;
+        // this.selectedDep.responsable = this.depForm.controls['responsable'].value;
+        // this.selectedDep.centre_cout = texte;
+        // console.log("model",this.newDep);
         this.departementService.updateDep(this.selectedDep).subscribe(
             res => {
                 this.initDep();

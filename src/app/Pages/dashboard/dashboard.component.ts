@@ -40,7 +40,9 @@ export type ChartOptions = {
 export class DashboardComponent implements OnInit {
     // @ViewChild("chart", { static: true }) chart: ChartComponent;
     public chartOptions: Partial<any>;
-
+    ranger: string = "false";
+    ranges: string = "false";
+    pages: number = 7;
     board: string;
     errorMessage: string;
     series = [];
@@ -50,10 +52,14 @@ export class DashboardComponent implements OnInit {
   icons = 'fa fa-desktop icon-gradient bg-royal';
 
   searchPanForm: FormGroup;
+  dashPanForm: FormGroup;
+  selectPanForm: FormGroup;
+  pageForm: FormGroup;
+  rangeForm: FormGroup;
   pannes: Pannes[];
-  ThisWeekPannes: Pannes[];
+  // ThisWeekPannes: Pannes[];
   countPannes: number;
-  cpannes: Pannes[];
+  cpannes: any[] = [];
   StatsTec: any[];
   Tpannes: Pannes[];
   Hpannes: Pannes[];
@@ -69,10 +75,14 @@ export class DashboardComponent implements OnInit {
   mtbf: Pannes[];
   arrets: Arrets[];
   cdpannes: Pannes[];
+  Opannes: Pannes[];
+  Detailspannes: Pannes[];
+  Outilpannes: Pannes[];
   times: Pannes[];
   selectedPanne: Pannes;
   selectedArret: Arrets;
   tail: number;
+  tails: number;
   count: number;
   cdount: number;
   tount: number;
@@ -229,6 +239,11 @@ export class DashboardComponent implements OnInit {
 
 
       this.createForm();
+      this.createForms();
+      this.dashForm();
+      this.rangeForms();
+      this.pageForms();
+
 
       this.dashboardService.getCountDepPannes().subscribe(
 
@@ -318,7 +333,7 @@ export class DashboardComponent implements OnInit {
           },
           () => {
               console.log('Total');
-              console.log(this.cdount);
+              // console.log(this.cdount);
           }
       );
 
@@ -387,9 +402,34 @@ export class DashboardComponent implements OnInit {
 
   }
 
+    createForms() {
+        this.selectPanForm = this.fb.group({
+            periode: ['']
+        });
+    }
+
+    pageForms() {
+        this.pageForm = this.fb.group({
+            page: ['']
+        });
+    }
+
     createForm() {
         this.searchPanForm = this.fb.group({
             search: [''],
+        });
+    }
+
+    rangeForms() {
+        this.rangeForm = this.fb.group({
+            date1: [''],
+            date2: ['']
+        });
+    }
+
+    dashForm() {
+        this.dashPanForm = this.fb.group({
+            dashPeriode: [''],
         });
     }
 
@@ -412,53 +452,18 @@ export class DashboardComponent implements OnInit {
     this.countAllPannes();
     this.countDepPannes();
     this.getChart();
+    this.loadTimePannes();
     // this.getChart2();
-    this.getChart3();
-    this.mdtAlpicam();
-    this.mtbfAlpicam();
+    this.last30days();
     this.radialBar();
     this.countThisYear();
-    this.ThisWeekPanne();
+    // this.ThisWeekPanne();
+    this.ThisWeekPannes();
+
 
     this.StatistiquesTechniciens();
   }
 
-    onExport() {
-
-        // var data = document.getElementById('element-pannes');
-        // var pdf1 = document.getElementById('pdf1');
-        // var pdf2 = document.getElementById('pdf2');
-        //
-        // // const pdf = new jsPDF('p', 'mm', 'a4');
-        // // // pdf.title("titre du document");
-        // // pdf.text('premier texte avant l\'image');
-        // let pdfExport = new jsPDF('p', 'mm', 'a4'); //orientation(portrait, landscape), unité(cm, mm, m...), format(A0, A2, A3, A4, A5...)
-        // var position = 10;
-        //
-        // html2canvas(pdf1).then(canvas => {
-        //     let imgWidth = 150;
-        //     var pageHeight = 295;
-        //     this.imgHeight = canvas.height * imgWidth / canvas.width;
-        //     // var heightLeft = imgHeight;
-        //
-        //     this.contentDataURL = canvas.toDataURL('image/png');
-        //     // pdfExport.save('BI Alpicam');
-        // });
-        // html2canvas(pdf2).then(canvas => {
-        //     let imgWidth = 150;
-        //     var pageHeight = 295;
-        //     this.imgHeight1 = canvas.height * imgWidth / canvas.width;
-        //     // var heightLeft = imgHeight;
-        //
-        //     this.contentDataURL1 = canvas.toDataURL('image/png');
-        //     // pdfExport.save('BI Alpicam');
-        // });
-        // pdfExport.text('premier texte avant l\'image', 25,20);
-        // pdfExport.addImage(this.contentDataURL, 'PNG', 20,22, 150,150);
-        // // pdfExport.text('deuxième texte avant l\'image', 25,this.imgHeight+5);
-        // // pdfExport.addImage(this.contentDataURL1, 'PNG', 25, this.imgHeight+10, 150, this.imgHeight1);
-        // pdfExport.save('BI Alpicam Stats2');
-    }
     loadDepartements() {
         this.departementService.getDepartements().subscribe(
             data => {
@@ -474,22 +479,6 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-  TodayPannes(){
-
-    this.panneService.getTodayPannes().subscribe(
-        data => {
-          this.pannes = data;
-        },
-        error => {
-          console.log('une erreur a été détectée!')
-        },
-        () => {
-          console.log('panne aujourd\'hui');
-          console.log(this.pannes);
-        }
-    );
-  }
-
   LoadArrets(){
 
         this.arretService.getTodayArret().subscribe(
@@ -504,35 +493,16 @@ export class DashboardComponent implements OnInit {
                 console.log(this.arrets);
             }
         );
-}
-
-  countTodayPannes(){
-
-    this.panneService.getCountTodayPannes().subscribe(
-        data => {
-          this.cpannes = data;
-          this.count = 0;
-          for (let pin of this.cpannes){
-            this.count = this.count + pin.nbre;
-          }
-        },
-        error => {
-          console.log('une erreur a été détectée!')
-        },
-        () => {
-          console.log('Total');
-          console.log(this.count);
-        }
-    );
   }
 
   countAllPannes(){
 
-        this.panneService.getCountPannes().subscribe(
+      this.cpannes = [];
+        this.panneService.getCountThisPannes().subscribe(
             data => {
                 this.cpannes = data;
                 this.count = 0;
-                for (let pin of this.cpannes){
+                for (let pin of data){
                     this.count = this.count + pin.nbre;
                 }
 
@@ -543,13 +513,96 @@ export class DashboardComponent implements OnInit {
             () => {
                 console.log('Total');
                 console.log(this.count);
+                console.log('machines totales');
+                console.log(this.cpannes);
             }
         );
     }
 
+  countAllLastMonthPannes(){
+      this.cpannes = [];
+        this.panneService.getCountLastPannes().subscribe(
+            data => {
+                this.cpannes = data;
+                this.count = 0;
+                for (let pin of data){
+                    this.count = this.count + pin.nbre;
+                }
+
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('Total');
+                console.log(this.count);
+                console.log('machines totales');
+                console.log(this.cpannes);
+            }
+        );
+    }
+
+  countAllRangePannes(){
+      this.cpannes = [];
+      const d1 = this.rangeForm.controls['date1'].value;
+      const d2 = this.rangeForm.controls['date2'].value;
+        this.panneService.getCountRangePannes(d1, d2).subscribe(
+            data => {
+                this.cpannes = data;
+                this.count = 0;
+                for (let pin of data){
+                    this.count = this.count + pin.nbre;
+                }
+
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('Total');
+                console.log(this.count);
+                console.log('machines totales');
+                console.log(this.cpannes);
+            }
+      );
+  }
+
   StatistiquesTechniciens(){
 
         this.dashboardService.statsTechniciensByMonth().subscribe(
+            data => {
+                this.StatsTec = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('Total');
+                console.log(this.StatsTec);
+            }
+        );
+    }
+
+  StatistiquesTechniciensLastMonth(){
+
+        this.dashboardService.statsTechniciensLastMonth().subscribe(
+            data => {
+                this.StatsTec = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('Total');
+                console.log(this.StatsTec);
+            }
+        );
+    }
+
+  StatistiquesTechniciensRange(){
+      const d1 = this.rangeForm.controls['date1'].value;
+      const d2 = this.rangeForm.controls['date2'].value;
+        this.dashboardService.statsTechniciensRange(d1, d2).subscribe(
             data => {
                 this.StatsTec = data;
             },
@@ -613,32 +666,9 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  getChart2(){
-
-        // const datasetNbrePanne2 = {
-        //     label: 'Pannes',
-        //     data: [],
-        //     datalabels: {
-        //         display: false,
-        //     }
-        // };
-        //
-        // this.panneService.getCountPannes().subscribe(
-        //     list => list.forEach(mach => {
-        //         // datasetNbrePanne2.name = (mach.machine);
-        //         this.labels = (mach.machine);
-        //         datasetNbrePanne2.data = (mach.nbre);
-        //     } ) );
-        //
-        // // this.lineChartData.push(datasetNbrePanne2);
-        // // this.donnees.value = datasetNbrePanne2.value;
-        // // this.don.push(this.donnees);
-        // this.datasets.push(datasetNbrePanne2);
-
-
-    }
-
-  getChart3(){
+  last30days(){
+      this.datas.labels = [];
+      this.datas.datasets = [];
     const datasetNbrePanne3 = {
         data: [],
         label: "Panne",
@@ -664,277 +694,107 @@ export class DashboardComponent implements OnInit {
     this.datas.datasets.push(datasetNbrePanne4);
     }
 
-  mdtAlpicam(){
-    const wt = {
+    dashLastMonth(){
+      this.datas.labels = [];
+      this.datas.datasets = [];
+    const datasetNbrePanne3 = {
         data: [],
-        label: "WT",
+        label: "Panne",
         yAxisID: 'y-axis-0',
-        type: 'bar',
-        order: 1,
-        stacked: true
+        backgroundColor: 'red',
+        borderColor: '#0692fb',
     };
-    const ttr = {
+    const datasetNbrePanne4 = {
         data: [],
-        label: "TTR",
-        yAxisID: 'y-axis-0',
-        lineChartColors: {
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            borderColor: 'rgba(255,255,255,1)',
-            pointBackgroundColor: 'rgba(255,255,255,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(255,255,255,1)'
-        },
-        type: 'bar',
-        order: 1,
-        stacked: true
-    };
-
-    const mdt = {
-        data: [],
-        label: "MDT",
+        label: "Total Down Time",
         yAxisID: 'y-axis-1',
-        lineChartColors: {
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(255,255,255,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-        },
-        type: 'line',
-        order: 2,
+        type: 'line'
     };
-    // this.dashboardService.getmdtThisYearAlpi().subscribe(
-    //     list => list.forEach(mach => {
-    //         this.TDT += this.TDT + mach.TDT;
-    //         // datasetNbrePanne2.name = (mach.machine);
-    //         this.mdtByYear.labels.push(this.datePipe.transform(mach.date, 'MMM'));
-    //         wt.data.push(mach.WT);
-    //         ttr.data.push(mach.MTTR);
-    //         mdt.data.push(mach.MDT);
-    //
-    //     } )) ;
+    this.dashboardService.getCountDashLastPannes().subscribe(
+        list => list.forEach(mach => {
+            // datasetNbrePanne2.name = (mach.machine);
+            this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+            datasetNbrePanne3.data.push(mach.nbre);
+            datasetNbrePanne4.data.push(mach.dt);
 
-
-    //
-    //   this.all = fromArray(this.years, this.month);
-    //   array3.forEach(mach => {
-    //               this.mdtByYear.labels.push(mach.date);
-    //               wt.data.push(mach.WT);
-    //               ttr.data.push(mach.MTTR);
-    //               mdt.data.push(mach.MDT);
-    //
-    //           } );
-
-      // for (let mach of array3){
-      //     this.mdtByYear.labels.push(mach.date);
-      //     wt.data.push(mach.WT);
-      //     ttr.data.push(mach.MTTR);
-      //     mdt.data.push(mach.MDT);
-      // }
-
-      // this.mdtByYear.datasets.push(wt);
-      // this.mdtByYear.datasets.push(ttr);
-      // this.mdtByYear.datasets.push(mdt);
-
-      this.dashboardService.getmdtThisYearAlpi().subscribe(
-          data => {
-              this.pm = data;
-              this.dashboardService.getmdtByYearAlpi().subscribe(
-                  datas => {
-                      this.py = datas;
-                      this.pt = this.py.concat(this.pm);
-                      console.log('concat '+this.pt)
-
-                      for (let mach of this.pt){
-                              this.mdtByYear.labels.push(mach.date);
-                              wt.data.push(mach.WT);
-                              ttr.data.push(mach.MTTR);
-                              mdt.data.push(mach.MDT);
-                          }
-                  },
-                  error => {
-                      console.log('une erreur a été détectée!')
-                  },
-                  () => {
-                      console.log('years');
-                      console.log(this.py);
-                  }
-              );
-            },
-            error => {
-                console.log('une erreur a été détectée!')
-            },
-            () => {
-                console.log('months');
-                console.log(this.pm);
-            }
-        );
-
-
-      this.mdtByYear.datasets.push(wt);
-      this.mdtByYear.datasets.push(ttr);
-      this.mdtByYear.datasets.push(mdt);
-
+        } )) ;
+    this.datas.datasets.push(datasetNbrePanne3);
+    this.datas.datasets.push(datasetNbrePanne4);
     }
 
-  mtbfAlpicam(){
-    const mtbf = {
-        data: [],
-        label: "MTBF",
-        yAxisID: 'y-axis-0',
-        type: 'bar',
-    };
-    const teste = {
-        data: [],
-        name: 'Nombre de Pannes'
-    };
-    const test1 = {
-        categories: [] ,
-    };
-    const tdt = {
-        data: [],
-        label: "TDT",
-        yAxisID: 'y-axis-1',
-        lineChartColors: {
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            borderColor: 'rgba(255,255,255,1)',
-            pointBackgroundColor: 'rgba(255,255,255,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(255,255,255,1)'
-        },
-        type: 'bar',
-    };
+    dashThisMonth(){
+        this.datas.labels = [];
+        this.datas.datasets = [];
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Panne",
+            yAxisID: 'y-axis-0',
+            backgroundColor: 'red',
+            borderColor: '#0692fb',
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        this.dashboardService.getCountDashThisPannes().subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.dt);
 
-    const panne = {
-        data: [],
-        label: "Pannes",
-        yAxisID: 'y-axis-1',
-        lineChartColors: {
-            backgroundColor: 'transparent',
-            borderColor: 'rgba(255,255,255,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-        },
-        type: 'line',
-    };
+            } )) ;
+        this.datas.datasets.push(datasetNbrePanne3);
+        this.datas.datasets.push(datasetNbrePanne4);
+    }
 
-      this.dashboardService.mtbfByYearAlpi().subscribe(
-          data1 => {
-          this.mtbfY = data1;
-          this.dashboardService.mtbfThisYearAlpi().subscribe(
-              data2 => {
-                  this.mtbfTY = data2;
-                  this.mtbf = this.mtbfY.concat(this.mtbfTY);
-                  console.log('concat '+this.mtbf)
+    dashRange(){
+        this.datas.labels = [];
+        this.datas.datasets = [];
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Panne",
+            yAxisID: 'y-axis-0',
+            backgroundColor: 'red',
+            borderColor: '#0692fb',
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        console.log('rien');
+        const d1 = this.rangeForm.controls['date1'].value;
+        const d2 = this.rangeForm.controls['date2'].value;
 
-                  for (let mach of this.mtbf){
-                      this.mtbfByYear.labels.push(mach.date);
-                      // test1.categories.push(mach.date);
-                      if ((mach.AT.toString() == 'null') && (mach.nbre == 0)){
-                          console.log('AT: '+mach.AT);
-                          console.log('HT: '+mach.HT);
-                          console.log('TDT: '+mach.TDT);
-                          mach.TDT = 0;
-                          mach.AT = 0;
-                          mach.nbre = 0;
-                          console.log('AT après: '+mach.AT);
-                          console.log('HT après: '+mach.HT);
-                          console.log('TDT après: '+mach.TDT);
-                          var z = mach.HT;
-                          console.log('Mois et Time: '+ mach.date +' '+z);
+        console.log(d1 + ' et '+ d2);
+        this.dashboardService.getCountRangePannes(d1, d2).subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.dt);
 
-                          mtbf.data.push(Math.trunc(z));
-                      }
-                      else if(mach.AT.toString() == 'null'){
-
-                          var y = mach.TDT/60;
-
-
-                          var z = mach.HT - y;
-
-
-                          var a = Number.parseInt(mach.nbre.toString()) + 1 ;
-
-
-                          var mt = z / a;
-
-
-                          var x = (mach.HT-y )/(Number.parseInt(mach.nbre.toString())+1);
-
-                          mtbf.data.push(Math.trunc(mt));
-                      }
-                      else if(mach.TDT.toString() == 'null'){
-                          mach.TDT = 0;
-                          var y = mach.AT/60;
-
-                          var z = mach.HT - y;
-
-
-                          var a = Number.parseInt(mach.nbre.toString()) + 1 ;
-
-
-                          var mt = z / a;
-
-
-                          mtbf.data.push(Math.trunc(mt));
-                      }
-                      else {
-                          var x = mach.AT/60;
-                          var y = mach.TDT/60;
-                          var z = mach.HT - (x+y);
-
-
-                          var a = Number.parseInt(mach.nbre.toString()) + 1 ;
-
-
-                          var mt = z / a;
-                          mtbf.data.push(Math.trunc(mt));
-                      }
-
-
-
-                      // mtbf.data.push(((mach.HT)-((Number.parseInt(mach.AT)/60)+(mach.TDT/60)))/(mach.nbre+1));
-                      panne.data.push(mach.nbre);
-                      tdt.data.push(mach.TDT);
-                      teste.data.push(mach.nbre);
-                  }
-              },
-              error => {
-                  console.log('une erreur a été détectée!')
-              },
-              () => {
-                  console.log('years');
-                  console.log(this.py);
-              }
-          );
-      },
-          error => {
-              console.log('une erreur a été détectée!')
-          },
-          () => {
-              console.log('months');
-              console.log(this.pm);
-          }
-      ) ;
-
-
-      this.mtbfByYear.datasets.push(mtbf);
-      this.mtbfByYear.datasets.push(tdt);
-      this.mtbfByYear.datasets.push(panne);
-      // this.test.datasets.push(teste);
-      this.labs.categories.push(this.mtbfByYear.labels);
-
-
+            } )) ;
+        this.datas.datasets.push(datasetNbrePanne3);
+        this.datas.datasets.push(datasetNbrePanne4);
     }
 
     //modal
     open(content){
         this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
+                this.closeResult = `Closed with: ${result}`;
+            }, (reason) =>{
+
+            }
+        );
+    }
+
+    modal(content){
+        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'}).result.then((result) =>{
                 this.closeResult = `Closed with: ${result}`;
             }, (reason) =>{
 
@@ -1062,20 +922,55 @@ export class DashboardComponent implements OnInit {
 }
 
 
-    ThisWeekPanne(){
+    loadPannes(){
 
-        this.panneService.getThisWeekPannes().subscribe(
+        this.panneService.getAllPannes().subscribe(
             data => {
-                this.ThisWeekPannes = data;
-                this.countPannes = this.ThisWeekPannes.length;
-                // this.rowData = data;
+                this.pannes = data;
+                this.countPannes = data.length;
+                for (let pin of data){
+                    this.selectedPanne.numero = pin.numero;
+                }
             },
             error => {
                 console.log('une erreur a été détectée!')
             },
             () => {
-                console.log('panne cette semaine');
-                console.log(this.ThisWeekPannes);
+                console.log('chargement des pannes');
+                console.log(this.pannes);
+            }
+        );
+
+
+    }
+
+//     ThisWeekPanne(){
+//
+//     this.panneService.getThisWeekPannes().subscribe(
+//         data => {
+//             this.ThisWeekPannes = data;
+//             this.countPannes = data.length;
+//             // this.rowData = data;
+//         },
+//         error => {
+//             console.log('une erreur a été détectée!')
+//         },
+//         () => {
+//             console.log('panne cette semaine');
+//             console.log(this.ThisWeekPannes);
+//         }
+//     );
+// }
+
+    loadTimePannes(){
+        this.panneService.getTimePannes().subscribe(
+            data => {
+                this.times = data;
+                this.tails = this.times.length;
+                for (let pin of data){
+                    this.selectedPanne.heureArret = pin.heureArret;
+                }
+
             }
         );
     }
@@ -1092,6 +987,45 @@ export class DashboardComponent implements OnInit {
             () => {
                 console.log('chargement des pannes Techniques');
                 console.log(this.Tpannes);
+            }
+        );
+
+        this.panneService.getOpPannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Opannes = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des pannes Techniques');
+                console.log(this.Opannes);
+            }
+        );
+
+        this.panneService.getDetailsPannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Detailspannes = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des pannes Techniques');
+                console.log(this.Detailspannes);
+            }
+        );
+
+        this.panneService.getOutilsPannes(this.selectedPanne.numero).subscribe(
+            data => {
+                this.Outilpannes = data;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('chargement des outils');
+                console.log(this.Outilpannes);
             }
         );
 
@@ -1112,6 +1046,164 @@ export class DashboardComponent implements OnInit {
         );
     }
 
+    TodayPannes(){
+
+        this.panneService.getTodayPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    HierPannes(){
+
+        this.panneService.getHierPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne hier');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    ThisWeekPannes(){
+
+        this.panneService.getThisWeekPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne cette semaine');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    LastWeekPannes(){
+
+        this.panneService.getLastWeekPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    LastMonthPannes(){
+
+        this.panneService.getLastMonthPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    ThisMonthPannes(){
+
+        this.panneService.getThisMonthPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    LastYearPannes(){
+
+        this.panneService.getLastYearPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    ThisYearPannes(){
+
+        this.panneService.getThisYearPannes().subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
+    rangeDate(){
+        console.log('rien');
+        const d1 = this.rangeForm.controls['date1'].value;
+        const d2 = this.rangeForm.controls['date2'].value;
+
+        console.log(d1 + ' et '+ d2);
+
+        this.panneService.getRangeDatePannes(d1, d2).subscribe(
+            data => {
+                this.pannes = data;
+                this.countPannes = data.length;
+            },
+            error => {
+                console.log('une erreur a été détectée!')
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
     showDepart(d: Departement){
         let url = btoa(d.idDepartement.toString());
         console.log(d.idDepartement +' '+url);
@@ -1128,5 +1220,83 @@ export class DashboardComponent implements OnInit {
         let url = btoa(m.idMachine.toString());
         this.modalService.dismissAll();
         this.router.navigateByUrl("machines/"+url);
+    }
+
+    suiviJournalier($event){
+        if (this.dashPanForm.controls['dashPeriode'].value == 'l30d'){
+            this.last30days();
+        }
+        if (this.dashPanForm.controls['dashPeriode'].value == 'tmp'){
+            this.dashThisMonth();
+            this.countAllPannes()
+            this.StatistiquesTechniciens();
+            this.ThisMonthPannes();
+        }
+        if (this.dashPanForm.controls['dashPeriode'].value == 'lmp'){
+            this.dashLastMonth();
+            this.countAllLastMonthPannes();
+            this.StatistiquesTechniciensLastMonth();
+            this.LastMonthPannes();
+        }
+        if (this.dashPanForm.controls['dashPeriode'].value == 'pp'){
+            this.ranger = "true";
+        }
+        else {
+            this.ranger = "false";
+        }
+    }
+
+    findSso($event){
+        if (this.selectPanForm.controls['periode'].value == 'hp'){
+            this.HierPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'ttesp'){
+            this.loadPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'tp'){
+            this.TodayPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'twp'){
+            this.ThisWeekPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'lwp'){
+            this.LastWeekPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'tmp'){
+            this.ThisMonthPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'lmp'){
+            this.LastMonthPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'typ'){
+            this.ThisYearPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'lyp'){
+            this.LastYearPannes();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'pp'){
+            this.ranges = "true";
+        }
+        else {
+            this.ranges = "false";
+        }
+    }
+
+    paginate($event){
+        if (this.pageForm.controls['page'].value == '10'){
+            this.pages = 10;
+        }
+        if (this.pageForm.controls['page'].value == '25'){
+            this.pages = 25;
+        }
+        if (this.pageForm.controls['page'].value == '50'){
+            this.pages = 50;
+        }
+        if (this.pageForm.controls['page'].value == '100'){
+            this.pages = 100;
+        }
+        if (this.pageForm.controls['page'].value == '1000'){
+            this.pages = 1000;
+        }
     }
 }

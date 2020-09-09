@@ -13,7 +13,7 @@
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
                                         <label for="date" [ngClass]="{'red': panForm.controls['dateP'].invalid && (panForm.controls['dateP'].touched)}">Date</label>
-                                        <input type="date" id="date" class="form-control form-control-sm" formControlName="dateP" [ngClass]="{'fred': panForm.controls['dateP'].invalid && (panForm.controls['dateP'].touched)}" />
+                                        <input type="date" id="date" class="form-control form-control-sm" formControlName="dateP" [ngClass]="{'fred': panForm.controls['dateP'].invalid && (panForm.controls['dateP'].touched)}" [(ngModel)]="dat"/>
                                     </div>
                                     <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['dateP'].invalid && (panForm.controls['dateP'].touched) ">
                                         <span>*</span> Date invalide
@@ -27,7 +27,7 @@
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="ha" [ngClass]="{'red': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched)}">Heure d'arrêt</label>
-                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" [(ngModel)]="ha" [ngClass]="{'fred': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched)}" />
+                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" min="{{dat}}" [(ngModel)]="ha" [ngClass]="{'fred': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched)}" />
                                     </div>
                                     <div style="color: #f65656; font-style: italic;" *ngIf="panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) ">
                                         <span>*</span> Date et heure invalide
@@ -627,8 +627,8 @@
                                         <label for="op" [ngClass]="{'red': panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched)}">Opérateur de Production</label>
 
                                         <select id="op" class="multiselect-dropdown form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]="selo" [ngClass]="{'fred': panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched)}">
-                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOperateur" (select)="selop = op">
-                                                {{op.nom}} &nbsp; {{op.prenom}}
+                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOP" (select)="selop = op">
+                                                {{op.nomOP}} &nbsp; {{op.prenomOP}}
                                             </option>
                                         </select>
                                     </div>

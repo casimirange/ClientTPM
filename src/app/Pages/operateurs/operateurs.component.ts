@@ -15,6 +15,8 @@ export class OperateursComponent implements OnInit {
   icons = 'fa fa-user icon-gradient bg-mixed-hopes';
 
   opForm: FormGroup;
+  searchPanForm: FormGroup;
+
 
   operation: string = 'add';
 
@@ -24,6 +26,7 @@ export class OperateursComponent implements OnInit {
 
   constructor(private opService: OperateursService, private fb: FormBuilder) {
     this.createForm();
+    this.searchForm();
   }
 
   createForm() {
@@ -31,6 +34,12 @@ export class OperateursComponent implements OnInit {
       nom: ['', [Validators.required]],
       prenom: ['', [Validators.required]],
       matricule: ['', [Validators.required]]
+    });
+  }
+
+  searchForm() {
+    this.searchPanForm = this.fb.group({
+      search: ['', [Validators.required]],
     });
   }
 
@@ -84,7 +93,7 @@ export class OperateursComponent implements OnInit {
   }
 
   deleteOperateur() {
-    this.opService.deleteOp(this.selectedOp.matricule).subscribe(
+    this.opService.deleteOp(this.selectedOp.matOP).subscribe(
         res => {
           this.selectedOp= new Operateur();
           this.loadOperateurs();
