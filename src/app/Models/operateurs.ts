@@ -12,6 +12,8 @@ export class Operateur {
     idOP?: number;
     matricule?: number;
     matOP?: number;
+    etat: boolean;
+    localisation: string;
     constructor( ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}
 }

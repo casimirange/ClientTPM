@@ -105,7 +105,7 @@
                                         <div class="widget-subheading">Mois Dernier</div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPannenbre ? countLastMonthPannenbre : 0}}</span></div>
                                         <div class="widget-description text-focus">
-                                            {{(countThisMonthPannenbre < countLastMonthPannenbre) ? 'En baisse de' : (countThisMonthPannenbre > countLastMonthPannenbre) ? 'En Hausse de': ''}}
+                                            {{(countThisMonthPannenbre < countLastMonthPannenbre) ? 'En baisse de' : (countThisMonthPannenbre > countLastMonthPannenbre) ? 'En Hausse de': 'Constant'}}
                                             <span class="pl-1"
                                                   [ngClass]="
             countThisMonthPannenbre < countLastMonthPannenbre ? 'text-success' :
@@ -115,8 +115,16 @@
             countThisMonthPannenbre < countLastMonthPannenbre ? 'fa fa-arrow-down' :
             countThisMonthPannenbre > countLastMonthPannenbre ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
                                                 <!--<span class="pl-1" *ngIf="countThisMonthPannenbre == 0 && countLastMonthPannenbre !=0 || countLastMonthPannenbre == 0">100 %</span>-->
-                                            <span class="pl-1" *ngIf="countThisMonthPannenbre < countLastMonthPannenbre">{{(((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) *(-1) | percent}}</span>
-                                            <span class="pl-1" *ngIf="countThisMonthPannenbre >= countLastMonthPannenbre && countLastMonthPannenbre != 0">{{(((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) | percent}}</span>
+                                            <!--<span class="pl-1" *ngIf="countThisMonthPannenbre < countLastMonthPannenbre">{{(((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) *(-1) | percent}}</span>-->
+                                            <!--<span class="pl-1" *ngIf="countThisMonthPannenbre >= countLastMonthPannenbre && countLastMonthPannenbre != 0">{{(((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) | percent}}</span>-->
+
+                                                <span class="pl-1">{{(countThisMonthPannenbre - countLastMonthPannenbre) < 0 ?
+                                                ((((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) *(-1) | percent) :
+                                                ((countThisMonthPannenbre - countLastMonthPannenbre) >= 0 && countLastMonthPannenbre != 0) ?
+                                                ((((countThisMonthPannenbre)/(countLastMonthPannenbre))-1) | percent ) :
+                                                ((countThisMonthPannenbre == 0 && countLastMonthPannenbre != 0) || (countThisMonthPannenbre !=0 && countLastMonthPannenbre ==0)) ?
+                                                '100 %' : '0 %'
+                                                }}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -164,7 +172,7 @@
                                         <div class="widget-subheading">Mois Dernier </div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneTDT ? countLastMonthPanneTDT.toString().slice(0, -2) : 0}} min</span></div>
                                         <div class="widget-description text-focus">
-                                            {{((countThisMonthPanneTDT - countLastMonthPanneTDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneTDT - countLastMonthPanneTDT) > 0) ? 'En Hausse de': ''}}
+                                            {{((countThisMonthPanneTDT - countLastMonthPanneTDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneTDT - countLastMonthPanneTDT) > 0) ? 'En Hausse de': 'Constant'}}
                                             <span class="pl-1"
                                                   [ngClass]="
             (countThisMonthPanneTDT - countLastMonthPanneTDT) < 0 ? 'text-success' :
@@ -174,8 +182,16 @@
             (countThisMonthPanneTDT - countLastMonthPanneTDT) < 0 ? 'fa fa-arrow-down' :
             (countThisMonthPanneTDT - countLastMonthPanneTDT ) > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
                                                 <!--<span class="pl-1" *ngIf="countThisMonthPanneTDT == 0 && countLastMonthPanneTDT !=0 || countLastMonthPanneTDT == 0">100 %</span>-->
-                                            <span class="pl-1" *ngIf="(countThisMonthPanneTDT - countLastMonthPanneTDT) < 0">{{(((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) *(-1) | percent}}</span>
-                                            <span class="pl-1" *ngIf="(countThisMonthPanneTDT - countLastMonthPanneTDT)>=0 && countLastMonthPanneTDT != 0">{{(((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) | percent}}</span>
+                                            <!--<span class="pl-1" *ngIf="(countThisMonthPanneTDT - countLastMonthPanneTDT) < 0">{{(((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) *(-1) | percent}}</span>-->
+                                            <!--<span class="pl-1" *ngIf="(countThisMonthPanneTDT - countLastMonthPanneTDT)>=0 && countLastMonthPanneTDT != 0">{{(((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) | percent}}</span>-->
+
+                                                <span class="pl-1">{{(countThisMonthPanneTDT - countLastMonthPanneTDT) < 0 ?
+                                                ((((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) *(-1) | percent) :
+                                                ((countThisMonthPanneTDT - countLastMonthPanneTDT) >= 0 && countLastMonthPanneTDT != 0) ?
+                                                ((((countThisMonthPanneTDT)/(countLastMonthPanneTDT))-1) | percent ) :
+                                                ((countThisMonthPanneTDT == 0 && countLastMonthPanneTDT != 0) || (countThisMonthPanneTDT !=0 && countLastMonthPanneTDT ==0)) ?
+                                                '100 %' : '0 %'
+                                                }}</span>
                                             </span>
                                         </div>
                                     </div>
@@ -223,7 +239,7 @@
                                         <div class="widget-subheading">Mois Dernier</div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneMDT ? countLastMonthPanneMDT : 0}} min</span></div>
                                         <div class="widget-description text-focus">
-                                            {{((countThisMonthPanneMDT - countLastMonthPanneMDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneMDT - countLastMonthPanneMDT) > 0) ? 'En Hausse de': ''}}
+                                            {{((countThisMonthPanneMDT - countLastMonthPanneMDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneMDT - countLastMonthPanneMDT) > 0) ? 'En Hausse de': 'Constant'}}
                                             <span class="pl-1"
                                                   [ngClass]="
             (countThisMonthPanneMDT - countLastMonthPanneMDT) < 0 ? 'text-success' :
@@ -233,9 +249,19 @@
             (countThisMonthPanneMDT - countLastMonthPanneMDT) < 0 ? 'fa fa-arrow-down' :
             (countThisMonthPanneMDT - countLastMonthPanneMDT ) > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
                                                 <!--<span class="pl-1" *ngIf="countThisMonthPanneMDT == 0 && countLastMonthPanneMDT !=0 || countLastMonthPanneMDT == 0">100 %</span>-->
-                                            <span class="pl-1" *ngIf="(countThisMonthPanneMDT - countLastMonthPanneMDT) < 0">{{(((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) *(-1) | percent}}</span>
-                                            <span class="pl-1" *ngIf="(countThisMonthPanneMDT - countLastMonthPanneMDT)>=0 && countLastMonthPanneMDT != 0">{{(((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) | percent}}</span>
+                                            <!--<span class="pl-1" *ngIf="(countThisMonthPanneMDT - countLastMonthPanneMDT) < 0">{{(((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) *(-1) | percent}}</span>-->
+                                            <!--<span class="pl-1" *ngIf="(countThisMonthPanneMDT - countLastMonthPanneMDT)>=0 && countLastMonthPanneMDT != 0">{{(((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) | percent}}</span>-->
+
+                                                <span class="pl-1">{{(countThisMonthPanneMDT - countLastMonthPanneMDT) < 0 ?
+                                                ((((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) *(-1) | percent) :
+                                                ((countThisMonthPanneMDT - countLastMonthPanneMDT) >= 0 && countLastMonthPanneMDT != 0) ?
+                                                ((((countThisMonthPanneMDT)/(countLastMonthPanneMDT))-1) | percent ) :
+                                                ((countThisMonthPanneMDT == 0 && countLastMonthPanneMDT != 0) || (countThisMonthPanneMDT !=0 && countLastMonthPanneMDT ==0)) ?
+                                                '100 %' : '0 %'
+                                                }}</span>
                                             </span>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -258,7 +284,7 @@
     <div class="col-md-6 col-lg-6 col-xl-6">
         <div class="main-card mb-3 card" >
             <div class="card-body">
-                <h6 class="text-success text-uppercase font-size-md opacity-7 mb-3 font-weight-bold">Total des Heures Travaillées</h6>
+                <h6 class="text-success text-uppercase font-size-md opacity-7 mb-3 font-weight-bold">Total des Heures Programmées</h6>
                 <ul class="list-group list-group-flush">
                     <li class="p-0 list-group-item">
                         <div class="row">
@@ -280,27 +306,27 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-subheading">Mois Dernier</div>
-                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{hourLastMonth ? hourLastMonth.heure : 0}} h</span></div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{hourLastMonth ? hourLastMonth : 0}} h</span></div>
                                         <div class="widget-description text-focus">
-                                            {{(hourThisMonth.heure < hourLastMonth.heure) ? 'En baisse de' : (hourThisMonth.heure > hourLastMonth.heure) ? 'En Hausse de': ''}}
+                                            {{(hourThisMonth < hourLastMonth) ? 'En baisse de' : (hourThisMonth > hourLastMonth) ? 'En Hausse de': 'Constant'}}
                                             <span class="pl-1"
                                                   [ngClass]="
-           (hourThisMonth.heure - hourLastMonth.heure) > 0 ? 'text-success' :
-           (hourThisMonth.heure - hourLastMonth.heure) < 0 ? 'text-danger' : 'text-warning'"
+           (hourThisMonth - hourLastMonth) > 0 ? 'text-success' :
+           (hourThisMonth - hourLastMonth) < 0 ? 'text-danger' : 'text-warning'"
                                             >
                                             <i [ngClass]="
-            (hourThisMonth.heure - hourLastMonth.heure) < 0 ? 'fa fa-arrow-down' :
-            (hourThisMonth.heure - hourLastMonth.heure) > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+            (hourThisMonth - hourLastMonth) < 0 ? 'fa fa-arrow-down' :
+            (hourThisMonth - hourLastMonth) > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
                                                 <!--<span class="pl-1" *ngIf="hourThisMonth.heure == 0 && hourLastMonth.heure !=0 || hourLastMonth.heure == 0">100 %</span>-->
                                             <!--<span class="pl-1" *ngIf="(hourThisMonth.heure - hourLastMonth.heure) < 0">{{(((hourThisMonth.heure)/(hourLastMonth.heure))-1) *(-1) | percent}}</span>-->
                                             <!--<span class="pl-1" *ngIf="(hourThisMonth.heure - hourLastMonth.heure) >= 0 && hourLastMonth.heure != 0">{{(((hourThisMonth.heure)/(hourLastMonth.heure))-1) | percent}}</span>-->
                                             <!--<span class="pl-1" *ngIf="(hourThisMonth.heure && hourLastMonth.heure) == 0">100 %</span>-->
 
-                                            <span class="pl-1">{{(hourThisMonth.heure - hourLastMonth.heure) < 0 ?
-                                                ((((hourThisMonth.heure)/(hourLastMonth.heure))-1) *(-1) | percent) :
-                                                ((hourThisMonth.heure - hourLastMonth.heure) >= 0 && hourLastMonth.heure != 0) ?
-                                                ((((hourThisMonth.heure)/(hourLastMonth.heure))-1) | percent ) :
-                                                ((hourThisMonth.heure == 0 && hourLastMonth.heure != 0) || (hourThisMonth.heure !=0 && hourLastMonth.heure ==0)) ?
+                                            <span class="pl-1">{{(hourThisMonth - hourLastMonth) < 0 ?
+                                                ((((hourThisMonth)/(hourLastMonth))-1) *(-1) | percent) :
+                                                ((hourThisMonth - hourLastMonth) >= 0 && hourLastMonth != 0) ?
+                                                ((((hourThisMonth)/(hourLastMonth))-1) | percent ) :
+                                                ((hourThisMonth == 0 && hourLastMonth != 0) || (hourThisMonth !=0 && hourLastMonth ==0)) ?
                                                 '100 %' : '0 %'
                                                 }}</span>
                                             </span>

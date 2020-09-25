@@ -148,7 +148,7 @@ text-orientation: mixed; float: left; width: auto;">Répartition par Types de Pa
                             <app-doughnut-chart *ngIf="dta"
                                     [doughnutChartData] = "dta"
                                     [doughnutChartLabels] = "catP.labels"
-
+                                    [doughnutChartType]="'doughnut'"
                             ></app-doughnut-chart>
                             <p style="font-size: 0.8em" *ngIf="dta.length == 0">Aucune panne!!</p>
                             <!--<app-chart width="auto" height="auto"-->

@@ -227,6 +227,7 @@ export class DashboardComponent implements OnInit {
 
     imgHeight: any
     imgHeight1: any
+    private todatpannes: Pannes[];
 
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
@@ -250,7 +251,8 @@ export class DashboardComponent implements OnInit {
           data => {
               this.cdpannes = data;
               console.log('nbre : ' +this.cdpannes.length);
-              console.log('nbre total: '+ this.cdpannes);
+              console.log('nbre total: ');
+              console.log(this.cdpannes);
 
               var x = 0;
               for (let pin of this.cdpannes){
@@ -258,74 +260,6 @@ export class DashboardComponent implements OnInit {
               }
 
               this.series.push(x);
-
-              // var options = {
-              // this.chartOptions = {
-              //     chart: {
-              //         height: 200,
-              //         type: "radialBar",
-              //     },
-              //
-              //     series: [x],
-              //
-              //     plotOptions: {
-              //         radialBar: {
-              //             hollow: {
-              //                 margin: 0,
-              //                 size: "70%",
-              //                 background: "#293450",
-              //                 dropShadow: {
-              //                     enabled: true,
-              //                     top: 0,
-              //                     left: 0,
-              //                     blur: 3,
-              //                     opacity: 0.5
-              //                 }
-              //             },
-              //             track: {
-              //                 dropShadow: {
-              //                     enabled: true,
-              //                     top: 2,
-              //                     left: 0,
-              //                     blur: 4,
-              //                     opacity: 0.15
-              //                 }
-              //             },
-              //             dataLabels: {
-              //                 name: {
-              //                     offsetY: -10,
-              //                     color: "#fff",
-              //                     fontSize: "13px"
-              //                 },
-              //                 value: {
-              //                     color: "#fff",
-              //                     fontSize: "30px",
-              //                     show: true,
-              //                     formatter: function (val) {
-              //                         return val;
-              //                     }
-              //                 }
-              //             }
-              //         }
-              //     },
-              //     fill: {
-              //         type: "gradient",
-              //         gradient: {
-              //             shade: "dark",
-              //             type: "horizontal",
-              //             gradientToColors: ["#ABE5A1"],
-              //             stops: [0, 100]
-              //         }
-              //     },
-              //     stroke: {
-              //         lineCap: "round"
-              //     },
-              //     labels: ["Total Pannes"]
-              // };
-
-              // var chart = new ApexCharts(document.querySelector("#chart"), options);
-              //
-              // chart.render();
 
           },
           error => {
@@ -481,18 +415,18 @@ export class DashboardComponent implements OnInit {
 
   LoadArrets(){
 
-        this.arretService.getTodayArret().subscribe(
-            data => {
-                this.arrets = data;
-            },
-            error => {
-                console.log('une erreur a été détectée!')
-            },
-            () => {
-                console.log('toutes les Arrets');
-                console.log(this.arrets);
-            }
-        );
+      this.arretService.getTodayArret().subscribe(
+          data => {
+              this.arrets = data;
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('toutes les Arrets');
+              console.log(this.arrets);
+          }
+      );
   }
 
   countAllPannes(){
@@ -811,7 +745,7 @@ export class DashboardComponent implements OnInit {
         data => {
             this.cdpannes = data;
             console.log('nbre : ' +this.cdpannes.length);
-            console.log('nbre total: '+ this.cdpannes);
+            console.log('nbre total: \n'+ this.cdpannes);
 
             var x = 0;
             for (let pin of this.cdpannes){
@@ -1051,6 +985,7 @@ export class DashboardComponent implements OnInit {
         this.panneService.getTodayPannes().subscribe(
             data => {
                 this.pannes = data;
+                this.todatpannes = data;
                 this.countPannes = data.length;
             },
             error => {

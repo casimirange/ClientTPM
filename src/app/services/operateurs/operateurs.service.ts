@@ -30,4 +30,15 @@ export class OperateursService {
   showTech(id: number): Observable<any>{
     return this.http.get(API_URLS.OPERATEUR_URL + `/${id}`);
   }
+  getActiveOperateurs(): Observable<any>{
+    return this.http.get(API_URLS.OPERATEUR_URL+ `/active`);
+  }
+
+  getDesactiveOperateurs(): Observable<any>{
+    return this.http.get(API_URLS.OPERATEUR_URL+ `/desactive`);
+  }
+
+  activeOp(matricule: number): Observable<any>{
+    return this.http.put(API_URLS.OPERATEUR_URL+ `/${matricule}`, '');
+  }
 }

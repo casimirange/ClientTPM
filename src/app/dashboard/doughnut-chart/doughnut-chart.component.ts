@@ -16,7 +16,8 @@ export class DoughnutChartComponent implements OnInit {
     [55, 25, 20]
   ];
   @Input()
-  doughnutChartType: ChartType = 'doughnut';
+  doughnutChartType: ChartType = 'pie';
+  // doughnutChartType: ChartType = 'doughnut';
   @Input()
   doughnutChartOption: ChartOptions = {
     legend: { position: 'right' }
@@ -25,8 +26,8 @@ export class DoughnutChartComponent implements OnInit {
   @Input()
   public lineChartColors: Color[] = [
     { // red
-      backgroundColor: ['rgba(0,117,53,1)', 'rgba(145,211,26, 1)', 'rgba(106,162,127, 1)'],
-      borderColor: ['rgba(0,117,53,1)', 'rgba(145,211,26, 1)', '#6aa27f'],
+      backgroundColor: ['rgba(0,117,53,1)', 'rgba(145,211,26, 1)', 'rgba(106,162,127, 1)', 'rgba(97, 115, 255,1)', 'rgba(38,186,164,1)', '#24324a', '#ee3c3c'],
+      borderColor: ['rgba(0,117,53,1)', 'rgba(145,211,26, 1)', '#6aa27f', 'rgba(97, 115, 255,1)', 'rgba(38,186,164,1)', '#24324a', '#ee3c3c'],
     },
 
   ];

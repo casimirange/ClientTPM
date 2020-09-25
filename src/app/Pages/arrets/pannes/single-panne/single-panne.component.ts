@@ -152,7 +152,7 @@ export class SinglePanneComponent implements OnInit {
   }
 
   loadOperateurs() {
-    this.opService.getOperateurs().subscribe(
+    this.opService.getActiveOperateurs().subscribe(
         data => {
           this.operateurs = data
 

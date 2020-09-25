@@ -136,21 +136,21 @@ export class StatsGlobalComponent implements OnInit {
   public colorsPARETO: Color[] = [
 
     { // red Failiure
-      backgroundColor: 'rgba(225,69,96,0.2)',
-      borderColor: '#ff4560',
-      pointBackgroundColor: 'rgba(225,69,96,1)',
+      backgroundColor: 'rgba(0,183,195,0.2)',
+      borderColor: '#00b7c3',
+      pointBackgroundColor: 'rgba(0, 183, 195,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(225,69,96,0.8)'
+      pointHoverBorderColor: 'rgba(0, 183, 195,0.8)'
     },
     { // vert MTBF
-      backgroundColor: 'rgba(0,142,249,0.4)',
-      borderColor: 'rgba(0,142,249,1)',
+      backgroundColor: 'rgba(119, 93, 208,0.4)',
+      borderColor: '#775dd0',
       borderWidth: 2,
-      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(119, 93, 208,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
+      pointHoverBorderColor: 'rgba(119, 93, 208,1)'
     }
   ];
   public labs = {

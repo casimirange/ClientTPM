@@ -41,6 +41,8 @@ export class NewPanneComponent implements OnInit {
     ttr: number;
     dt: number;
 
+    countUnfinishedFailure: number;
+
     // @ViewChild('dayPicker') datePicker: DatePickerComponent;
 
     constructor(private machineService: MachinesService,
@@ -108,6 +110,7 @@ export class NewPanneComponent implements OnInit {
         console.log('random nber '+ result2)
 
         const nm = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
+        const Swal = require('sweetalert2');
 
         this.panne.idT = this.panForm.controls['idTechnicien'].value ? this.panForm.controls['idTechnicien'].value : [];
         // this.panne.description = this.panForm.controls['description'].value;
@@ -161,36 +164,52 @@ export class NewPanneComponent implements OnInit {
             this.pn.ttr = this.ttr;
             this.pn.dt = this.dt;
 
-            this.panneService.addPannes(this.pn).subscribe(
-                res => {
-                    if (this.panForm.controls['etat'].value == false){
-                        this.initPanne();
-                        this.loadUnfinishedPannes();
-                    }else{
-                        this.router.navigateByUrl('/pannes')
-                    }
+            if(this.dt <= 15 && this.panForm.controls['etat'].value == 'true'){
+                Swal.fire({
+                    title: 'Impossible d\'enregistrer',
+                    text: "Les pannes inférieures à 15 min ne sont pas enregistrées",
+                    icon: 'error',
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    cancelButtonColor: '#f65656',
+                    cancelButtonText: 'OK',
+                    allowOutsideClick: false
+                });
+            } else if((this.dt <= 15 && this.panForm.controls['etat'].value == 'false') || this.dt > 15){
+                this.panneService.addPannes(this.pn).subscribe(
+                    res => {
+                        if (this.panForm.controls['etat'].value == false){
+                            this.initPanne();
+                            this.loadUnfinishedPannes();
+                        }else{
+                            this.router.navigateByUrl('/pannes')
+                        }
 
-                }
-            );
+                    }
+                );
+            }
+
         }
 
-        const Swal = require('sweetalert2');
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 5000,
-            timerProgressBar: true,
-            onOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
+        // const Swal = require('sweetalert2');
+        if((this.dt <= 15 && this.panForm.controls['etat'].value == 'false') || this.dt > 15) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
 
-        Toast.fire({
-            icon: 'success',
-            title: 'Panne Enregistrée'
-        })
+            Toast.fire({
+                icon: 'success',
+                title: 'Panne Enregistrée'
+            })
+        }
 
     }
 
@@ -201,7 +220,7 @@ export class NewPanneComponent implements OnInit {
     }
 
     loadMachines() {
-        this.machineService.getMachines().subscribe(
+        this.machineService.getActiveMachines().subscribe(
             data => {
                 this.machines = data;
             },
@@ -217,19 +236,19 @@ export class NewPanneComponent implements OnInit {
     }
 
     loadOperateurs() {
-        this.opService.getOperateurs().subscribe(
-            data => {
-                this.operateurs = data
+            this.opService.getActiveOperateurs().subscribe(
+                data => {
+                    this.operateurs = data
 
-            },
-            error => {
-                console.log('une erreur a été détectée!')
-            },
-            () => {
-                console.log('chargement des techniciens');
-                console.log(this.operateurs)
-            }
-        );
+                },
+                error => {
+                    console.log('une erreur a été détectée!')
+                },
+                () => {
+                    console.log('chargement des techniciens actifs');
+                }
+            );
+
     }
 
     loadActiveTechniciens() {
@@ -252,14 +271,14 @@ export class NewPanneComponent implements OnInit {
         this.panneService.getUnfinishedPannes().subscribe(
             data => {
                 this.unPan = data;
+                this.countUnfinishedFailure = this.unPan.length;
                 if (this.unPan.length >= 1){
                     const Swal = require('sweetalert2');
                     Swal.fire({
-                        title: 'A titre d\'information',
-                        text: "Vous avez des pannes innachevées en attente ",
+                        title: 'A titre d\'Information',
+                        html: this.countUnfinishedFailure >1 ? "Vous avez <b>"+this.unPan.length+" pannes innachevées</b> en attente !": "Vous avez <b>"+this.unPan.length+" panne innachevée</b> en attente !",
                         icon: 'info',
                         showCancelButton: false,
-
                         confirmButtonText: 'OK',
                         allowOutsideClick: false
                     });
@@ -312,6 +331,13 @@ export class NewPanneComponent implements OnInit {
                 console.log(this.Tpannes);
             }
         );
+    }
+
+    showMachine(m: Machine){
+        console.log('machine' + m.nom);
+        this.modalService.dismissAll();
+        let url = btoa(m.idM.toString());
+        this.router.navigateByUrl("machines/"+url);
     }
 
 }

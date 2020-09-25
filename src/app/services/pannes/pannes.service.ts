@@ -38,6 +38,10 @@ export class PannesService {
     return this.http.get(API_URLS.PANNES_URL + `/tech/${numero}`);
   }
 
+  deleteTechPannes(numero: number): Observable<any>{
+    return this.http.delete(API_URLS.PANNES_URL + `/tech/${numero}`);
+  }
+
   getHeurePannes(numero: string): Observable<any>{
     return this.http.get(API_URLS.PANNES_URL + `/heure/${numero}`);
   }
@@ -124,5 +128,49 @@ export class PannesService {
 
   activePanne(numero: string): Observable<any>{
     return this.http.put(API_URLS.PANNES_URL+ `/${numero}`, '');
+  }
+
+  updateEtat(numero: string): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/etat/${numero}`, '');
+  }
+
+  updateHeureArret(numero: string, quart: number,  HA: Date, DI: Date, FI: Date): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/periode/${numero}/${quart}?heureArret=${HA}&debutInter=${DI}&finInter=${FI}`, '');
+  }
+
+  updateOutils(numero: string, quart: number,  outil: string, qte: number, ref: string): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/outils/${numero}/${quart}?outil=${outil}&qte=${qte}&ref=${ref}`, '');
+  }
+
+  updateDate(numero: string, date: Date): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/date/${numero}?date=${date}`, '');
+  }
+
+  updateDescription(numero: string, description: string): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/description/${numero}?description=${description}`, '');
+  }
+
+  updateCause(numero: string, quart: number,  cause: string): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/cause/${numero}/${quart}?cause=${cause}`, '');
+  }
+
+  updateDetails(numero: string, quart: number,  details: string): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/details/${numero}/${quart}?details=${details}`, '');
+  }
+
+  updateOperateur(numero: string, quart: number,  idOp: number): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/operateur/${numero}/${quart}?operateur=${idOp}`, '');
+  }
+
+  updateMachine(numero: string,  idOp: number): Observable<any>{
+    return this.http.put(API_URLS.PANNES_URL+ `/machine/${numero}?machine=${idOp}`, '');
+  }
+
+  updateTechPannes(numero: number): Observable<any>{
+    return this.http.delete(API_URLS.PANNES_URL + `/technicien/${numero}`);
+  }
+
+  addTech(numero: string, quart: number,  idTec: number): Observable<any>{
+    return this.http.post(API_URLS.PANNES_URL+ `/technicien/${numero}/${quart}?tec=${idTec}`, '');
   }
 }

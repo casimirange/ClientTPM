@@ -16,12 +16,12 @@ export class MachinesService {
     return this.http.get(API_URLS.MACHINE_URL);
   }
 
-  addMachine(ligne: Machine): Observable<any>{
-    return this.http.post(API_URLS.MACHINE_URL, ligne);
+  addMachine(machine: Machine): Observable<any>{
+    return this.http.post(API_URLS.MACHINE_URL, machine);
   }
 
-  updateMachine(ligne: Machine): Observable<any>{
-    return this.http.put(API_URLS.MACHINE_URL, ligne);
+  updateMachine(machine: Machine): Observable<any>{
+    return this.http.put(API_URLS.MACHINE_URL, machine);
   }
 
   deleteMachine(id: number): Observable<any>{
@@ -90,5 +90,16 @@ export class MachinesService {
 
   mtbfThisYear(id: number): Observable<any>{
     return this.http.get(API_URLS.MACHINE_URL + `/mtbfThisYear/${id}`);
+  }
+
+  activeMachine(code: string): Observable<any>{
+    return this.http.put(API_URLS.MACHINE_URL+ `/${code}`, '');
+  }
+  getActiveMachines(): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL+ `/active`);
+  }
+
+  getDesactiveMachines(): Observable<any>{
+    return this.http.get(API_URLS.MACHINE_URL+ `/desactive`);
   }
 }

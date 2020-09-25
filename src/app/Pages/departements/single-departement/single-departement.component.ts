@@ -38,6 +38,10 @@ export class SingleDepartementComponent implements OnInit {
   subheading = 'Gérez les départements dans l\'application';
   icon = 'fa fa-home icon-gradient';
   bg = 'text-white bg-midnight-bloom';
+  series1 = [];
+  series2 = [];
+  series3 = [];
+  series4 = [];
 
   // departements: Departement[];
 
@@ -521,6 +525,10 @@ export class SingleDepartementComponent implements OnInit {
     }
   ];
 
+  nb: number;
+  td: number;
+  md: number;
+  ht: number;
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
@@ -544,6 +552,306 @@ export class SingleDepartementComponent implements OnInit {
 
     const dat = new Date();
     this.date_this_month = this.datePipe.transform(dat, 'MMMM yyyy');
+
+    this.route.params.subscribe(params => {
+      let url = atob(params['id']);
+      const t = 1000;
+      this.departementService.countThisMonthPannesDep(Number.parseInt(url)).subscribe(
+          data => data.forEach(mach => {
+            this.countThisMonthPanneTDT = mach.TDT;
+            this.countThisMonthPannenbre = mach.nbre;
+            if (mach.nbre == 0) {
+              this.countThisMonthPanneMDT = 0;
+            } else {
+              this.countThisMonthPanneMDT = Math.round(mach.TDT / mach.nbre);
+            }
+            this.series1.push(mach.nbre);
+            this.series2.push(mach.TDT);
+            this.series3.push(this.countThisMonthPanneMDT);
+            // var options = {
+
+          },
+              error => {
+                console.log('une erreur a été détectée!')
+              },
+              () => {
+                console.log('Total');
+                // console.log(this.cdount);
+              }
+              ));
+
+      this.departementService.hourThisMonthDep(Number.parseInt(url)).subscribe(
+          datas => {
+              this.hourThisMonth = datas ? datas.heure :0;
+            // this.hourThisMonth = machs.heure;
+            this.series4.push(this.hourThisMonth);
+
+          },
+              error => {
+                console.log('une erreur a été détectée!')
+              },
+              () => {
+                console.log('heure');
+                console.log(this.hourThisMonth);
+              }
+              );
+    });
+
+    this.chartOptions = {
+      chart: {
+        height: 200,
+        type: "radialBar",
+      },
+
+      series: [this.series1],
+
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 0,
+            size: "70%",
+            background: "#293450",
+            dropShadow: {
+              enabled: true,
+              top: 0,
+              left: 0,
+              blur: 3,
+              opacity: 0.5
+            }
+          },
+          track: {
+            dropShadow: {
+              enabled: true,
+              top: 2,
+              left: 0,
+              blur: 4,
+              opacity: 0.15
+            }
+          },
+          dataLabels: {
+            name: {
+              offsetY: -10,
+              color: "#fff",
+              fontSize: "13px"
+            },
+            value: {
+              color: "#fff",
+              fontSize: "30px",
+              show: true,
+              formatter: function (val) {
+                return val;
+              }
+            }
+          }
+        }
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "dark",
+          type: "horizontal",
+          gradientToColors: ["#e3a1e5"],
+          stops: [0, 100]
+        }
+      },
+      stroke: {
+        lineCap: "round"
+      },
+      labels: [this.countThisMonthPannenbre > 1 ? "Total Pannes" : "Total Panne"]
+    };
+    // var options = {
+    this.TDTOptions = {
+      chart: {
+        height: 200,
+        type: "radialBar",
+      },
+
+      series: [this.series2],
+
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 0,
+            size: "70%",
+            background: "#293450",
+            dropShadow: {
+              enabled: true,
+              top: 0,
+              left: 0,
+              blur: 3,
+              opacity: 0.5
+            }
+          },
+          track: {
+            dropShadow: {
+              enabled: true,
+              top: 2,
+              left: 0,
+              blur: 4,
+              opacity: 0.15
+            }
+          },
+          dataLabels: {
+            name: {
+              offsetY: -10,
+              color: "#fff",
+              fontSize: "20px"
+            },
+            value: {
+              color: "#fff",
+              fontSize: this.countThisMonthPanneTDT >= 10000 ? "25px" : this.countThisMonthPanneTDT >= 1000 ? "28px" : "30px",
+              show: true,
+              formatter: function (val) {
+                return val + " min";
+              }
+            }
+          }
+        }
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "dark",
+          type: "horizontal",
+          gradientToColors: ["#f65656"],
+          stops: [0, 100]
+        }
+      },
+      stroke: {
+        lineCap: "round"
+      },
+      labels: ["TDT"]
+    };
+    // var options = {
+    this.MDTOptions = {
+      chart: {
+        height: 200,
+        type: "radialBar",
+      },
+
+      series: [this.series3],
+
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 0,
+            size: "70%",
+            background: "#293450",
+            dropShadow: {
+              enabled: true,
+              top: 0,
+              left: 0,
+              blur: 3,
+              opacity: 0.5
+            }
+          },
+          track: {
+            // background: "#e5a1b2",
+            dropShadow: {
+              enabled: true,
+              top: 2,
+              left: 0,
+              blur: 4,
+              opacity: 0.15
+            }
+          },
+          dataLabels: {
+            name: {
+              offsetY: -10,
+              color: "#fff",
+              fontSize: "20px"
+            },
+            value: {
+              color: "#fff",
+              fontSize: "30px",
+              show: true,
+              formatter: function (val) {
+                return val + " min";
+              }
+            }
+          }
+        }
+      },
+      fill: {
+        type: "gradient",
+        // colors: "transparent",
+        gradient: {
+          shade: "dark",
+          type: "vertical",
+          // inverseColors: true,
+          // gradientToColors: ["#e5d4a1"],
+          gradientToColors: ["#f9ce66"],
+          stops: [0, 100]
+        }
+      },
+      stroke: {
+        lineCap: "round",
+      },
+      labels: ["MDT"]
+    };
+    // var options ={
+    this.HOUROptions = {
+      chart: {
+        height: 200,
+        type: "radialBar",
+      },
+
+      series: [this.series4],
+
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            margin: 0,
+            size: "70%",
+            background: "#293450",
+            dropShadow: {
+              enabled: true,
+              top: 0,
+              left: 0,
+              blur: 3,
+              opacity: 0.5
+            }
+          },
+          track: {
+            dropShadow: {
+              enabled: true,
+              top: 2,
+              left: 0,
+              blur: 4,
+              opacity: 0.15
+            }
+          },
+          dataLabels: {
+            name: {
+              offsetY: -10,
+              color: "#fff",
+              fontSize: "13px"
+            },
+            value: {
+              color: "#fff",
+              fontSize: this.hourThisMonth >= 10000 ? "25px" : this.hourThisMonth >= 1000 ? "28px" : "30px",
+              show: true,
+              formatter: function (val) {
+                return val+" h";
+              }
+            }
+          }
+        }
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "dark",
+          type: "horizontal",
+          gradientToColors: ["#abe5a1"],
+          stops: [0, 100]
+        }
+      },
+      stroke: {
+        lineCap: "round"
+      },
+      labels: ["Total Heures"]
+    };
   }
 
   dashForm() {
@@ -828,211 +1136,213 @@ export class SingleDepartementComponent implements OnInit {
   CountMonthPannes(){
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);const t = 1000;
-      this.departementService.countThisMonthPannesDep(Number.parseInt(url)).subscribe(
-          data => data.forEach(mach => {
-            this.countThisMonthPanneTDT = mach.TDT;
-            this.countThisMonthPannenbre = mach.nbre;
-            if(mach.nbre == 0){
-              this.countThisMonthPanneMDT = 0;
-            }else{
-              this.countThisMonthPanneMDT = Math.round(mach.TDT/mach.nbre);
-            }
-
-            // var options = {
-            this.chartOptions = {
-              chart: {
-                height: 200,
-                type: "radialBar",
-              },
-
-              series: [mach.nbre],
-
-              plotOptions: {
-                radialBar: {
-                  hollow: {
-                    margin: 0,
-                    size: "70%",
-                    background: "#293450",
-                    dropShadow: {
-                      enabled: true,
-                      top: 0,
-                      left: 0,
-                      blur: 3,
-                      opacity: 0.5
-                    }
-                  },
-                  track: {
-                    dropShadow: {
-                      enabled: true,
-                      top: 2,
-                      left: 0,
-                      blur: 4,
-                      opacity: 0.15
-                    }
-                  },
-                  dataLabels: {
-                    name: {
-                      offsetY: -10,
-                      color: "#fff",
-                      fontSize: "13px"
-                    },
-                    value: {
-                      color: "#fff",
-                      fontSize: "30px",
-                      show: true,
-                      formatter: function (val) {
-                        return val;
-                      }
-                    }
-                  }
-                }
-              },
-              fill: {
-                type: "gradient",
-                gradient: {
-                  shade: "dark",
-                  type: "horizontal",
-                  gradientToColors: ["#e3a1e5"],
-                  stops: [0, 100]
-                }
-              },
-              stroke: {
-                lineCap: "round"
-              },
-              labels: [mach.nbre > 1 ? "Total Pannes" : "Total Panne"]
-            };
-            // var options = {
-            this.TDTOptions = {
-              chart: {
-                height: 200,
-                type: "radialBar",
-              },
-
-              series: [this.countThisMonthPanneTDT],
-
-              plotOptions: {
-                radialBar: {
-                  hollow: {
-                    margin: 0,
-                    size: "70%",
-                    background: "#293450",
-                    dropShadow: {
-                      enabled: true,
-                      top: 0,
-                      left: 0,
-                      blur: 3,
-                      opacity: 0.5
-                    }
-                  },
-                  track: {
-                    dropShadow: {
-                      enabled: true,
-                      top: 2,
-                      left: 0,
-                      blur: 4,
-                      opacity: 0.15
-                    }
-                  },
-                  dataLabels: {
-                    name: {
-                      offsetY: -10,
-                      color: "#fff",
-                      fontSize: "20px"
-                    },
-                    value: {
-                      color: "#fff",
-                      fontSize: this.countThisMonthPanneTDT >= 10000 ? "25px" : this.countThisMonthPanneTDT >= 1000 ? "28px" : "30px",
-                      show: true,
-                      formatter: function (val) {
-                        return val + " min";
-                      }
-                    }
-                  }
-                }
-              },
-              fill: {
-                type: "gradient",
-                gradient: {
-                  shade: "dark",
-                  type: "horizontal",
-                  gradientToColors: ["#f65656"],
-                  stops: [0, 100]
-                }
-              },
-              stroke: {
-                lineCap: "round"
-              },
-              labels: ["TDT"]
-            };
-            // var options = {
-            this.MDTOptions = {
-              chart: {
-                height: 200,
-                type: "radialBar",
-              },
-
-              series: [this.countThisMonthPanneMDT],
-
-              plotOptions: {
-                radialBar: {
-                  hollow: {
-                    margin: 0,
-                    size: "70%",
-                    background: "#293450",
-                    dropShadow: {
-                      enabled: true,
-                      top: 0,
-                      left: 0,
-                      blur: 3,
-                      opacity: 0.5
-                    }
-                  },
-                  track: {
-                    // background: "#e5a1b2",
-                    dropShadow: {
-                      enabled: true,
-                      top: 2,
-                      left: 0,
-                      blur: 4,
-                      opacity: 0.15
-                    }
-                  },
-                  dataLabels: {
-                    name: {
-                      offsetY: -10,
-                      color: "#fff",
-                      fontSize: "13px"
-                    },
-                    value: {
-                      color: "#fff",
-                      fontSize: "30px",
-                      show: true,
-                      formatter: function (val) {
-                        return val+" min";
-                      }
-                    }
-                  }
-                }
-              },
-              fill: {
-                type: "gradient",
-                // colors: "transparent",
-                gradient: {
-                  shade: "dark",
-                  type: "vertical",
-                  // inverseColors: true,
-                  // gradientToColors: ["#e5d4a1"],
-                  gradientToColors: ["#f9ce66"],
-                  stops: [0, 100]
-                }
-              },
-              stroke: {
-                lineCap: "round",
-              },
-              labels: ["MDT"]
-            };
-
-          }));
+      // this.departementService.countThisMonthPannesDep(Number.parseInt(url)).subscribe(
+      //     data => data.forEach(mach => {
+      //       this.countThisMonthPanneTDT = mach.TDT;
+      //       this.countThisMonthPannenbre = mach.nbre;
+      //       if(mach.nbre == 0){
+      //         this.countThisMonthPanneMDT = 0;
+      //       }else{
+      //         this.countThisMonthPanneMDT = Math.round(mach.TDT/mach.nbre);
+      //       }
+      //       this.series1.push(mach.nbre);
+      //       this.series2.push(mach.TDT);
+      //       this.series3.push(this.countThisMonthPanneMDT);
+      //       // var options = {
+      //       this.chartOptions = {
+      //         chart: {
+      //           height: 200,
+      //           type: "radialBar",
+      //         },
+      //
+      //         series: [this.series1],
+      //
+      //         plotOptions: {
+      //           radialBar: {
+      //             hollow: {
+      //               margin: 0,
+      //               size: "70%",
+      //               background: "#293450",
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 0,
+      //                 left: 0,
+      //                 blur: 3,
+      //                 opacity: 0.5
+      //               }
+      //             },
+      //             track: {
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 2,
+      //                 left: 0,
+      //                 blur: 4,
+      //                 opacity: 0.15
+      //               }
+      //             },
+      //             dataLabels: {
+      //               name: {
+      //                 offsetY: -10,
+      //                 color: "#fff",
+      //                 fontSize: "13px"
+      //               },
+      //               value: {
+      //                 color: "#fff",
+      //                 fontSize: "30px",
+      //                 show: true,
+      //                 formatter: function (val) {
+      //                   return val;
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         },
+      //         fill: {
+      //           type: "gradient",
+      //           gradient: {
+      //             shade: "dark",
+      //             type: "horizontal",
+      //             gradientToColors: ["#e3a1e5"],
+      //             stops: [0, 100]
+      //           }
+      //         },
+      //         stroke: {
+      //           lineCap: "round"
+      //         },
+      //         labels: [mach.nbre > 1 ? "Total Pannes" : "Total Panne"]
+      //       };
+      //       // var options = {
+      //       this.TDTOptions = {
+      //         chart: {
+      //           height: 200,
+      //           type: "radialBar",
+      //         },
+      //
+      //         series: [this.series2],
+      //
+      //         plotOptions: {
+      //           radialBar: {
+      //             hollow: {
+      //               margin: 0,
+      //               size: "70%",
+      //               background: "#293450",
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 0,
+      //                 left: 0,
+      //                 blur: 3,
+      //                 opacity: 0.5
+      //               }
+      //             },
+      //             track: {
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 2,
+      //                 left: 0,
+      //                 blur: 4,
+      //                 opacity: 0.15
+      //               }
+      //             },
+      //             dataLabels: {
+      //               name: {
+      //                 offsetY: -10,
+      //                 color: "#fff",
+      //                 fontSize: "20px"
+      //               },
+      //               value: {
+      //                 color: "#fff",
+      //                 fontSize: this.countThisMonthPanneTDT >= 10000 ? "25px" : this.countThisMonthPanneTDT >= 1000 ? "28px" : "30px",
+      //                 show: true,
+      //                 formatter: function (val) {
+      //                   return val + " min";
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         },
+      //         fill: {
+      //           type: "gradient",
+      //           gradient: {
+      //             shade: "dark",
+      //             type: "horizontal",
+      //             gradientToColors: ["#f65656"],
+      //             stops: [0, 100]
+      //           }
+      //         },
+      //         stroke: {
+      //           lineCap: "round"
+      //         },
+      //         labels: ["TDT"]
+      //       };
+      //       // var options = {
+      //       this.MDTOptions = {
+      //         chart: {
+      //           height: 200,
+      //           type: "radialBar",
+      //         },
+      //
+      //         series: [this.series3],
+      //
+      //         plotOptions: {
+      //           radialBar: {
+      //             hollow: {
+      //               margin: 0,
+      //               size: "70%",
+      //               background: "#293450",
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 0,
+      //                 left: 0,
+      //                 blur: 3,
+      //                 opacity: 0.5
+      //               }
+      //             },
+      //             track: {
+      //               // background: "#e5a1b2",
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 2,
+      //                 left: 0,
+      //                 blur: 4,
+      //                 opacity: 0.15
+      //               }
+      //             },
+      //             dataLabels: {
+      //               name: {
+      //                 offsetY: -10,
+      //                 color: "#fff",
+      //                 fontSize: "13px"
+      //               },
+      //               value: {
+      //                 color: "#fff",
+      //                 fontSize: "30px",
+      //                 show: true,
+      //                 formatter: function (val) {
+      //                   return val+" min";
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         },
+      //         fill: {
+      //           type: "gradient",
+      //           // colors: "transparent",
+      //           gradient: {
+      //             shade: "dark",
+      //             type: "vertical",
+      //             // inverseColors: true,
+      //             // gradientToColors: ["#e5d4a1"],
+      //             gradientToColors: ["#f9ce66"],
+      //             stops: [0, 100]
+      //           }
+      //         },
+      //         stroke: {
+      //           lineCap: "round",
+      //         },
+      //         labels: ["MDT"]
+      //       };
+      //
+      //     }));
       this.departementService.countLastMonthPannesDep(Number.parseInt(url)).subscribe(
           list => list.forEach(mach => {
             this.countLastMonthPanneTDT = mach.TDT;
@@ -1048,79 +1358,79 @@ export class SingleDepartementComponent implements OnInit {
   HourPerMonth(){
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
-      this.departementService.hourThisMonthDep(Number.parseInt(url)).subscribe(
-          data => {
-            this.hourThisMonth = data ? data : 0;
-            // var options = {
-            this.HOUROptions = {
-              chart: {
-                height: 200,
-                type: "radialBar",
-              },
-
-              series: [this.hourThisMonth ? this.hourThisMonth.heure : 0],
-
-              plotOptions: {
-                radialBar: {
-                  hollow: {
-                    margin: 0,
-                    size: "70%",
-                    background: "#293450",
-                    dropShadow: {
-                      enabled: true,
-                      top: 0,
-                      left: 0,
-                      blur: 3,
-                      opacity: 0.5
-                    }
-                  },
-                  track: {
-                    dropShadow: {
-                      enabled: true,
-                      top: 2,
-                      left: 0,
-                      blur: 4,
-                      opacity: 0.15
-                    }
-                  },
-                  dataLabels: {
-                    name: {
-                      offsetY: -10,
-                      color: "#fff",
-                      fontSize: "13px"
-                    },
-                    value: {
-                      color: "#fff",
-                      fontSize: this.hourThisMonth.heure >= 10000 ? "25px" : this.hourThisMonth.heure >= 1000 ? "28px" : "30px",
-                      show: true,
-                      formatter: function (val) {
-                        return val+" h";
-                      }
-                    }
-                  }
-                }
-              },
-              fill: {
-                type: "gradient",
-                gradient: {
-                  shade: "dark",
-                  type: "horizontal",
-                  gradientToColors: ["#abe5a1"],
-                  stops: [0, 100]
-                }
-              },
-              stroke: {
-                lineCap: "round"
-              },
-              labels: ["Total Heures"]
-            };
-          }
-      ),
+      // this.departementService.hourThisMonthDep(Number.parseInt(url)).subscribe(
+      //     data => {
+      //       this.hourThisMonth = data ? data : 0;
+      //       this.series4.push(this.hourThisMonth.heure);
+      //       // var options = {
+      //       this.HOUROptions = {
+      //         chart: {
+      //           height: 200,
+      //           type: "radialBar",
+      //         },
+      //
+      //         series: [this.series4],
+      //
+      //         plotOptions: {
+      //           radialBar: {
+      //             hollow: {
+      //               margin: 0,
+      //               size: "70%",
+      //               background: "#293450",
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 0,
+      //                 left: 0,
+      //                 blur: 3,
+      //                 opacity: 0.5
+      //               }
+      //             },
+      //             track: {
+      //               dropShadow: {
+      //                 enabled: true,
+      //                 top: 2,
+      //                 left: 0,
+      //                 blur: 4,
+      //                 opacity: 0.15
+      //               }
+      //             },
+      //             dataLabels: {
+      //               name: {
+      //                 offsetY: -10,
+      //                 color: "#fff",
+      //                 fontSize: "13px"
+      //               },
+      //               value: {
+      //                 color: "#fff",
+      //                 fontSize: this.hourThisMonth.heure >= 10000 ? "25px" : this.hourThisMonth.heure >= 1000 ? "28px" : "30px",
+      //                 show: true,
+      //                 formatter: function (val) {
+      //                   return val+" h";
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         },
+      //         fill: {
+      //           type: "gradient",
+      //           gradient: {
+      //             shade: "dark",
+      //             type: "horizontal",
+      //             gradientToColors: ["#abe5a1"],
+      //             stops: [0, 100]
+      //           }
+      //         },
+      //         stroke: {
+      //           lineCap: "round"
+      //         },
+      //         labels: ["Total Heures"]
+      //       };
+      //     }
+      // ),
       this.departementService.hourLastMonthDep(Number.parseInt(url)).subscribe(
           data => {
-            this.hourLastMonth = data ? data : 0;
-          }
-      )
+              this.hourLastMonth = data ? data.heure : 0;
+          });
     });
   }
 

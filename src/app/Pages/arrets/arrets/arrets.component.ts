@@ -6,6 +6,7 @@ import {MachinesService} from "../../../services/machines/machines.service";
 import {Machine} from "../../../Models/machines";
 import DateTimeFormat = Intl.DateTimeFormat;
 import {Color} from "ng2-charts";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-arrets',
@@ -17,8 +18,11 @@ export class ArretsComponent implements OnInit {
   subheadings = 'Gérez les arrêts machines ';
   icons = 'fa fa-clock fa-spin icon-gradient bg-mixed-hopes';
 
+  public chartOptions: Partial<any>;
+
   arretForm: FormGroup;
   rangeForm: FormGroup;
+  dashPanForm: FormGroup;
   searchPanForm: FormGroup;
   selectPanForm: FormGroup;
   pageForm: FormGroup;
@@ -34,6 +38,8 @@ export class ArretsComponent implements OnInit {
   arr: Arrets;
   machines: Machine[];
   pages: number = 7;
+  ranger: string = 'false';
+  ranges: string = 'false';
   today: Date;
   typeArret = {
     labels: [],
@@ -41,26 +47,170 @@ export class ArretsComponent implements OnInit {
     tdt: []
   };
 
+  titre: string;
+  thisYearArret: any;
+
+    datas = {
+        labels: [],
+        datasets: []
+    };
+
+    pareto = {
+        labels: [],
+        datasets: []
+    };
+
     public lineChartColors: Color[] = [
         { // red
-            backgroundColor: ['#008ffb', '#00e396', '#feb019', '#ff4560', '#775dd0', '#dad9dd'],
-            borderColor: ['#008ffb', '#00e396', '#feb019', '#ff4560', '#775dd0', '#dad9dd'],
+            backgroundColor: ['#008ffb', '#00e396', '#feb019', '#ff4560', '#775dd0', '#69797e'],
+            borderColor: ['#fff', '#fff', '#fff', '#fff', '#fff', '#fff'],
         },
 
     ];
+    public colorsPARETO: Color[] = [
+
+        { // red Failiure
+            backgroundColor: 'rgba(38,186,164,0.2)',
+            borderColor: '#26baa4',
+            pointBackgroundColor: 'rgba(38,186,164,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(38,186,164,0.8)'
+        },
+        { // vert MTBF
+            backgroundColor: 'rgba(97, 115, 255,0.4)',
+            borderColor: '#6173ff',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(97, 115, 255,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(97, 115, 255,1)'
+        }
+    ];
+    private series = [];
+    private recapArret = [];
+    taux: number;
+    nbre_arret_last_month: number;
+    date_this_months: any;
+    date_this_month: any = '30 dernier jours';
 
   constructor(private arretService: ArretsService,
               private fb: FormBuilder,
+              private datePipe: DatePipe,
               private machineService: MachinesService,) {
     this.createForm();
     this.createForm1();
     this.createForms();
     this.pageForms();
     this.rangeForms();
+    this.dashForm();
+
     this.arr = new Arrets();
     // this.selectedArret = new Arrets();
     var tim = new Date();
     this.today = tim;
+    this.date_this_months = this.datePipe.transform(tim, 'MMMM yyyy');
+
+  }
+
+  thisYearArrets(){
+      this.arretService.getThisYearArret().subscribe(
+          data => {
+              this.thisYearArret = data;
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('nbre this year')
+              console.log(this.thisYearArret)
+          }
+      );
+  }
+
+  radialBar(){
+      this.arretService.getRecapArret().subscribe(
+
+          data => {
+              this.recapArret = data;
+              console.log('nbre : ' +this.recapArret.length);
+              console.log('nbre total: '+ this.recapArret);
+              this.taux = this.recapArret[0].taux.toFixed(0);
+              this.nbre_arret_last_month = this.recapArret[1].nbre;
+              this.series.push(this.recapArret[0].nbre);
+
+          },
+          error => {
+              console.log('une erreur a été détectée!')
+          },
+          () => {
+              console.log('Total');
+              // console.log(this.cdount);
+          }
+      );
+
+      this.chartOptions = {
+          chart: {
+              height: 265,
+              type: "radialBar",
+          },
+
+          series: [this.series],
+
+          plotOptions: {
+              radialBar: {
+                  hollow: {
+                      margin: 0,
+                      size: "70%",
+                      background: "#293450",
+                      dropShadow: {
+                          enabled: true,
+                          top: 0,
+                          left: 0,
+                          blur: 3,
+                          opacity: 0.5
+                      }
+                  },
+                  track: {
+                      dropShadow: {
+                          enabled: true,
+                          top: 2,
+                          left: 0,
+                          blur: 4,
+                          opacity: 0.15
+                      }
+                  },
+                  dataLabels: {
+                      name: {
+                          offsetY: -10,
+                          color: "#fff",
+                          fontSize: "13px"
+                      },
+                      value: {
+                          color: "#fff",
+                          fontSize: "30px",
+                          show: true,
+                          formatter: function (val) {
+                              return val;
+                          }
+                      }
+                  }
+              }
+          },
+          fill: {
+              type: "gradient",
+              gradient: {
+                  shade: "dark",
+                  type: "horizontal",
+                  gradientToColors: ["#ABE5A1"],
+                  stops: [0, 100]
+              }
+          },
+          stroke: {
+              lineCap: "round"
+          },
+          labels: ["Arrêts Total"]
+      };
   }
 
   createForm() {
@@ -75,14 +225,24 @@ export class ArretsComponent implements OnInit {
     });
   }
 
+  dashForm() {
+        this.dashPanForm = this.fb.group({
+            dashPeriode: [''],
+        });
+    }
+
   ngOnInit() {
+    this.thisYearArrets();
     this.loadMachines();
     this.LoadArrets();
     this.initArret();
     this.typeArretThisMonth();
     this.newArret = new Arrets();
-
+    this.dashLast30days();
+    this.radialBar();
+    this.paretoArretThisMonth();
   }
+
   rangeForms() {
     this.rangeForm = this.fb.group({
       date1: [''],
@@ -140,11 +300,124 @@ export class ArretsComponent implements OnInit {
     );
   }
 
+  TodayArrets(){
+
+    this.arretService.getTodayArret().subscribe(
+        data => {
+          this.arrets = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('toutes les Arrets');
+          console.log(this.arrets);
+        }
+    );
+  }
+
+  HierArrets(){
+
+    this.arretService.getHierArret().subscribe(
+        data => {
+          this.arrets = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('toutes les Arrets');
+          console.log(this.arrets);
+        }
+    );
+  }
+
+  ThisMonthArrets(){
+
+    this.arretService.getThisMonthArret().subscribe(
+        data => {
+          this.arrets = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('toutes les Arrets');
+          console.log(this.arrets);
+        }
+    );
+  }
+
+  LastMonthArrets(){
+
+    this.arretService.getLastMonthArret().subscribe(
+        data => {
+          this.arrets = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('toutes les Arrets');
+          console.log(this.arrets);
+        }
+    );
+  }
+
+  RangeArrets(){
+
+      const d1 = this.rangeForm.controls['date1'].value;
+      const d2 = this.rangeForm.controls['date2'].value;
+    this.arretService.getRangeArret(d1, d2).subscribe(
+        data => {
+          this.arrets = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('toutes les Arrets');
+          console.log(this.arrets);
+        }
+    );
+  }
+
     typeArretThisMonth(){
         this.typeArret.labels = [];
         this.typeArret.nbre = [];
         this.typeArret.tdt = [];
         this.arretService.getArretTypeThisMonth().subscribe(
+            list => list.forEach(mach => {
+                this.typeArret.labels.push(mach.type.toUpperCase());
+                this.typeArret.nbre.push(mach.nbre);
+                this.typeArret.tdt.push(mach.TDT);
+            })
+        );
+
+    }
+
+    typeArretLastMonth(){
+        this.typeArret.labels = [];
+        this.typeArret.nbre = [];
+        this.typeArret.tdt = [];
+        this.arretService.getArretTypeLastMonth().subscribe(
+            list => list.forEach(mach => {
+                this.typeArret.labels.push(mach.type.toUpperCase());
+                this.typeArret.nbre.push(mach.nbre);
+                this.typeArret.tdt.push(mach.TDT);
+            })
+        );
+
+    }
+
+    typeArretRange(){
+        this.typeArret.labels = [];
+        this.typeArret.nbre = [];
+        this.typeArret.tdt = [];
+        const d1 = this.rangeForm.controls['date1'].value;
+        const d2 = this.rangeForm.controls['date2'].value;
+        this.date_this_months = d1 +' au '+ d2;
+        this.arretService.getArretTypeRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 this.typeArret.labels.push(mach.type.toUpperCase());
                 this.typeArret.nbre.push(mach.nbre);
@@ -183,8 +456,8 @@ export class ArretsComponent implements OnInit {
         res => {
           this.initArret();
           this.LoadArrets();
-          // this.loadActiveTechniciens();
-          // this.loadDesactiveTechniciens();
+          this.typeArretThisMonth();
+          this.dashLast30days();
         }
     );
   }
@@ -304,6 +577,273 @@ export class ArretsComponent implements OnInit {
         }
         if (this.pageForm.controls['page'].value == '1000'){
             this.pages = 1000;
+        }
+    }
+
+
+    dashLast30days(){
+        this.datas.labels = [];
+        this.datas.datasets = [];
+        this.date_this_month = "30 dernier jour";
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Arrêt",
+            yAxisID: 'y-axis-0',
+            backgroundColor: 'red',
+            borderColor: '#0692fb',
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        this.arretService.getCountPerDayPannes().subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.dt);
+
+            } )) ;
+        this.datas.datasets.push(datasetNbrePanne3);
+        this.datas.datasets.push(datasetNbrePanne4);
+    }
+
+    dashLastMonth(){
+        this.datas.labels = [];
+        this.datas.datasets = [];
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Arrêt",
+            yAxisID: 'y-axis-0',
+            backgroundColor: 'red',
+            borderColor: '#0692fb',
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        this.arretService.getCountDashLastPannes().subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.dt);
+
+            } )) ;
+        this.datas.datasets.push(datasetNbrePanne3);
+        this.datas.datasets.push(datasetNbrePanne4);
+    }
+
+    dashThisMonth(){
+        this.datas.labels = [];
+        this.datas.datasets = [];
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Arrêt",
+            yAxisID: 'y-axis-0',
+            backgroundColor: 'red',
+            borderColor: '#0692fb',
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        this.arretService.getCountDashThisPannes().subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.dt);
+
+            } )) ;
+        this.datas.datasets.push(datasetNbrePanne3);
+        this.datas.datasets.push(datasetNbrePanne4);
+    }
+
+    dashRange(){
+        this.datas.labels = [];
+        this.datas.datasets = [];
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Arrêt",
+            yAxisID: 'y-axis-0',
+            backgroundColor: 'red',
+            borderColor: '#0692fb',
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        console.log('rien');
+        const d1 = this.rangeForm.controls['date1'].value;
+        const d2 = this.rangeForm.controls['date2'].value;
+
+        console.log(d1 + ' et '+ d2);
+        this.arretService.getCountRangePannes(d1, d2).subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.dt);
+
+            } )) ;
+        this.datas.datasets.push(datasetNbrePanne3);
+        this.datas.datasets.push(datasetNbrePanne4);
+    }
+
+    paretoArretRange(){
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Arrêt",
+            yAxisID: 'y-axis-0',
+            type: 'line'
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        this.pareto.labels = [];
+        this.pareto.datasets = [];
+        const d1 = this.rangeForm.controls['date1'].value;
+        const d2 = this.rangeForm.controls['date2'].value;
+        this.arretService.paretoAlpiRange(d1, d2).subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.pareto.labels.push(mach.nom);
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.TDT);
+
+            } )) ;
+        this.pareto.datasets.push(datasetNbrePanne3);
+        this.pareto.datasets.push(datasetNbrePanne4);
+    }
+
+    paretoArretThisMonth(){
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Arrêt",
+            yAxisID: 'y-axis-0',
+            type: 'line'
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        this.pareto.labels = [];
+        this.pareto.datasets = [];
+        this.arretService.paretoAlpiThisMonth().subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.pareto.labels.push(mach.nom);
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.TDT);
+
+            } )) ;
+        this.pareto.datasets.push(datasetNbrePanne3);
+        this.pareto.datasets.push(datasetNbrePanne4);
+    }
+
+    paretoArretLastMonth(){
+        const datasetNbrePanne3 = {
+            data: [],
+            label: "Arrêt",
+            yAxisID: 'y-axis-0',
+            type: 'line'
+        };
+        const datasetNbrePanne4 = {
+            data: [],
+            label: "Total Down Time",
+            yAxisID: 'y-axis-1',
+            type: 'line'
+        };
+        this.pareto.labels = [];
+        this.pareto.datasets = [];
+        this.arretService.paretoAlpiLastMonth().subscribe(
+            list => list.forEach(mach => {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.pareto.labels.push(mach.nom);
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.TDT);
+
+            } )) ;
+        this.pareto.datasets.push(datasetNbrePanne3);
+        this.pareto.datasets.push(datasetNbrePanne4);
+    }
+
+    suiviJournalier($event){
+        if (this.dashPanForm.controls['dashPeriode'].value == 'l30d'){
+            this.dashLast30days();
+        }
+        if (this.dashPanForm.controls['dashPeriode'].value == 'tmp'){
+            this.dashThisMonth();
+            this.typeArretThisMonth();
+            this.paretoArretThisMonth()
+            const dat = new Date();
+            this.date_this_months = this.datePipe.transform(dat, 'MMMM yyyy');
+            // this.StatistiquesTechniciens();
+            // this.ThisMonthPannes();
+        }
+        if (this.dashPanForm.controls['dashPeriode'].value == 'lmp'){
+            this.dashLastMonth();
+            this.typeArretLastMonth();
+            this.paretoArretLastMonth()
+            const dat = new Date();
+            const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM yyyy');
+            this.date_this_months = dat1;
+            // this.StatistiquesTechniciensLastMonth();
+            // this.LastMonthPannes();
+        }
+        if (this.dashPanForm.controls['dashPeriode'].value == 'pp'){
+            this.ranger = "true";
+        }
+        else {
+            this.ranger = "false";
+        }
+    }
+
+    findSso($event){
+        if (this.selectPanForm.controls['periode'].value == 'hp'){
+            this.HierArrets();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'tp'){
+            this.TodayArrets();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'tmp'){
+            this.ThisMonthArrets();
+            this.dashThisMonth();
+            this.typeArretThisMonth();
+            this.paretoArretThisMonth()
+            const dat = new Date();
+            this.date_this_months = this.datePipe.transform(dat, 'MMMM yyyy');
+            this.date_this_month = this.datePipe.transform(dat, 'MMMM yyyy');
+        }
+        if (this.selectPanForm.controls['periode'].value == 'lmp'){
+            this.LastMonthArrets();
+            this.dashLastMonth();
+            this.typeArretLastMonth();
+            this.paretoArretLastMonth()
+            const dat = new Date();
+            const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM yyyy');
+            this.date_this_months = dat1;
+            this.date_this_month = dat1;
+        }
+        if (this.selectPanForm.controls['periode'].value == 'pp'){
+            this.ranger = "true";
+        }
+        else {
+            this.ranger = "false";
         }
     }
 

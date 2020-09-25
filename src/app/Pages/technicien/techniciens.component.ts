@@ -15,22 +15,29 @@ export class TechniciensComponent implements OnInit {
 
   headings = 'Techniciens';
   subheadings = 'Gérez les techniciens dans l\'application';
-  icons = 'fa fa-user icon-gradient bg-mixed-hopes';
+  icons = 'lnr-user icon-gradient bg-mixed-hopes';
 
   techForm: FormGroup;
+  searchPanForm: FormGroup;
+  selectPanForm: FormGroup;
+  pageForm: FormGroup;
 
   operation: string = 'add';
+  pages: number = 7;
 
   techniciens: Technicien[];
-  ActiveTec: Technicien[];
-  DesactiveTec: Technicien[];
 
   selectedTech: Technicien;
+    private modelTech: Technicien;
 
 
 
   constructor(private techService: TechniciensService, private fb: FormBuilder) {
     this.createForm();
+    this.createForm1();
+    this.createForms();
+    this.pageForms();
+    this.modelTech = new Technicien;
   }
 
   createForm() {
@@ -42,11 +49,27 @@ export class TechniciensComponent implements OnInit {
     });
   }
 
+    createForm1() {
+        this.searchPanForm = this.fb.group({
+            search: [''],
+        });
+    }
+
+    createForms() {
+        this.selectPanForm = this.fb.group({
+            periode: ['']
+        });
+    }
+
+    pageForms() {
+        this.pageForm = this.fb.group({
+            page: ['']
+        });
+    }
+
   ngOnInit() {
     this.loadTechniciens();
     this.initTech();
-    this.loadActiveTechniciens();
-    this.loadDesactiveTechniciens();
   }
 
   loadTechniciens() {
@@ -68,7 +91,7 @@ export class TechniciensComponent implements OnInit {
     loadActiveTechniciens() {
         this.techService.getActiveTechniciens().subscribe(
             data => {
-                this.ActiveTec = data
+                this.techniciens = data
 
             },
             error => {
@@ -76,7 +99,6 @@ export class TechniciensComponent implements OnInit {
             },
             () => {
                 console.log('chargement des techniciens actifs');
-                console.log(this.ActiveTec)
             }
         );
     }
@@ -84,7 +106,7 @@ export class TechniciensComponent implements OnInit {
     loadDesactiveTechniciens() {
         this.techService.getDesactiveTechniciens().subscribe(
             data => {
-                this.DesactiveTec = data
+                this.techniciens = data
 
             },
             error => {
@@ -92,7 +114,6 @@ export class TechniciensComponent implements OnInit {
             },
             () => {
                 console.log('chargement des techniciens actifs');
-                console.log(this.DesactiveTec)
             }
         );
     }
@@ -100,30 +121,38 @@ export class TechniciensComponent implements OnInit {
   addTechnicien() {
     const t = this.techForm.value;
     console.log(t);
+    this.selectedTech = t;
+    this.selectedTech.localisation = 'bonaberi';
 
     //dès qu'on crée le département on affiche immédiatement la liste
-    this.techService.addTech(t).subscribe(
+    this.techService.addTech(this.selectedTech).subscribe(
         res => {
           this.initTech();
           this.loadTechniciens();
-          this.loadActiveTechniciens();
-          this.loadDesactiveTechniciens();
         }
     );
 
   }
 
-
-
-
-
   updateTechnicien() {
-    this.techService.updateTech(this.selectedTech).subscribe(
+      // console.log('tech: '+ this.selectedTech)
+      this.modelTech.nom = this.techForm.controls['nom'].value;
+      this.modelTech.prenom = this.techForm.controls['prenom'].value;
+      this.modelTech.fonction= this.techForm.controls['fonction'].value;
+      this.modelTech.matricule= this.techForm.controls['matricule'].value;
+      this.modelTech.etat = this.selectedTech.etat;
+      this.modelTech.idTechnicien = this.selectedTech.idTechnicien;
+
+      console.log('nom : '+ this.modelTech.nom )
+      console.log('prenom : '+ this.modelTech.prenom )
+      console.log('fonction: '+ this.modelTech.fonction)
+      console.log('matricule: '+ this.modelTech.matricule)
+      console.log('etat : '+ this.modelTech.etat )
+      console.log('idTechnicien : '+ this.modelTech.idTechnicien )
+    this.techService.updateTech(this.modelTech).subscribe(
         res => {
           this.initTech();
             this.loadTechniciens();
-            this.loadActiveTechniciens();
-            this.loadDesactiveTechniciens();
         }
     );
   }
@@ -148,8 +177,8 @@ export class TechniciensComponent implements OnInit {
       this.techService.activeTech(this.selectedTech.matricule).subscribe(
           res => {
               this.initTech();
-              this.loadActiveTechniciens();
-              this.loadDesactiveTechniciens();
+              // this.loadActiveTechniciens();
+              // this.loadDesactiveTechniciens();
               this.loadTechniciens();
           }
       );
@@ -158,28 +187,62 @@ export class TechniciensComponent implements OnInit {
     swl(tec: Technicien){
       const Swal = require('sweetalert2');
         Swal.fire({
-            title: 'Activation',
-            text: "Voulez-vous activer/désactiver " + tec.nom.toUpperCase().bold(),
-            icon: 'question',
+            title: tec.etat == false ? 'Activation' : 'Désactivation',
+            html: tec.etat == false ? "Voulez-vous activer "+ tec.nom.toUpperCase().bold(): "Voulez-vous désactiver " + tec.nom.toUpperCase().bold()+" ?",
+            icon: tec.etat == false ? 'question' : 'warning',
             showCancelButton: true,
+
             confirmButtonColor: '#00ace6',
             cancelButtonColor: '#f65656',
             confirmButtonText: 'OUI',
             cancelButtonText: 'Annuler',
-            allowOutsideClick: false,
+            allowOutsideClick: true,
+            focusConfirm: false,
+            focusCancel: false,
+            focusDeny: true,
             showLoaderOnConfirm: true
         }).then((result) => {
             if (result.value) {
                 this.activeTechnicien();
                 Swal.fire({
-                    title: 'Activation',
-                    text: "Utilisateur " + tec.nom.toUpperCase().bold() + " bien activé/désactivé!",
+                    // title: tec.etat == false ? 'Activation' : 'Désactivation',
+                    html:  tec.etat == false ? 'Utilisateur ' + tec.nom.toUpperCase().bold() +' Activé avec succès!' : 'Utilisateur ' + tec.nom.toUpperCase().bold() +' Désactivé avec succès!',
                     icon: 'success',
                     timer: 2000,
                     showConfirmButton: false
                 })
             }
         })
+    }
+
+    findSso($event){
+        if (this.selectPanForm.controls['periode'].value == 'tous'){
+            this.loadTechniciens();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'actifs'){
+            this.loadActiveTechniciens();
+        }
+        if (this.selectPanForm.controls['periode'].value == 'inactifs'){
+            this.loadDesactiveTechniciens();
+        }
+    }
+
+    paginate($event){
+        if (this.pageForm.controls['page'].value == '10'){
+            this.pages = 10;
+        }
+        if (this.pageForm.controls['page'].value == '25'){
+            this.pages = 25;
+        }
+        if (this.pageForm.controls['page'].value == '50'){
+            this.pages = 50;
+        }
+        if (this.pageForm.controls['page'].value == '100'){
+            this.pages = 100;
+        }
+        if (this.pageForm.controls['page'].value == '1000'){
+            this.pages = 1000;
+        }
     }
 
 }

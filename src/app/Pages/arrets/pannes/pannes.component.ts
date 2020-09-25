@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PannesService} from "../../../services/pannes/pannes.service";
 import {Pannes} from "../../../Models/pannes";
 import {AgGridAngular} from "ag-grid-angular"
@@ -45,6 +45,27 @@ export class PannesComponent implements OnInit {
   ranger: string = "false";
   pages: number = 7;
 
+    cause1: string;
+    details1: string;
+    desc1: string;
+    cause2: string;
+    details2: string;
+    desc2: string;
+    ha1: any;
+    di1: any;
+    fi1: any;
+    ha2: any;
+    di2: any;
+    fi2: any;
+    outil1: any;
+    qte1: any;
+    ref1: any;
+    outil2: any;
+    qte2: any;
+    ref2: any;
+    OP1: any;
+    OP2: any;
+
   @ViewChild('htmlData', {static: false}) htmlData: ElementRef;
 
   machines: Machine[];
@@ -54,7 +75,6 @@ export class PannesComponent implements OnInit {
       labels: [],
       datasets: []
   };
-
 
 
   constructor(private fb: FormBuilder,
@@ -70,7 +90,7 @@ export class PannesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadPannes();
+    this.ThisWeekPannes();
     this.countAllPannes();
     this.loadTimePannes();
     // this.loadTechPannes();
@@ -80,81 +100,6 @@ export class PannesComponent implements OnInit {
     // this.loadHeurePannes(this.selectedPanne);
     // this.wt();
   }
-
-  onExport(){
-
-      // var data = document.getElementById('element-pannes');
-      //
-      // html2canvas(data).then(canvas => {
-      //    var imgWidth = 186;
-      //    var pageHeight = 295;
-      //    var imgHeight = canvas.height * imgWidth/canvas.width;
-      //    // var imgHeight = 400;
-      //    // var heightLeft = imgHeight;
-      //
-      //    const contentDataURL = canvas.toDataURL('image/png');
-      //    let pdf = new jsPDF('p', 'mm', 'a4'); //orientation(portrait, landscape), unité(cm, mm, m...), format(A0, A2, A3, A4, A5...)
-      //    var position  = 10;
-      //    // pdf.text('ceci est du texte');
-      //
-      //    pdf.addImage(contentDataURL, 'PNG', 12, position, imgWidth, imgHeight);
-      //
-      //
-      //    pdf.save('BI Alpicams');
-      // });
-
-      html2pdf(html2canvas, {
-          margin: 10,
-          filename: "my.pdf",
-          image: {type: 'jpeg', quality: 1},
-          html2canvas: {dpi: 72, letterRendering: true},
-          jsPDF: {unit: 'mm', format: 'a4', orientation: 'landscape'},
-          pdfCallback: pdfCallback
-      })
-
-      function pdfCallback(pdfObject) {
-          var number_of_pages = pdfObject.internal.getNumberOfPages();
-          var pdf_pages = pdfObject.internal.pages
-          var myFooter = "Footer info"
-          for (var i = 1; i < pdf_pages.length; i++) {
-              // We are telling our pdfObject that we are now working on this page
-              pdfObject.setPage(i)
-              // The 10,200 value is only for A4 landscape. You need to define your own for other page sizes
-              pdfObject.text(myFooter, 10, 200);
-              pdfObject.text("my header text", 10, 10);
-          }
-      }
-
-      // const options = {
-      //     filename: 'BI Alpicam',
-      //     image: {type: 'jpeg'},
-      //     html2canvas: {},
-      //     jsPDF: {orientation: 'landscape'}
-      // };
-      //
-      // const content: Element = document.getElementById('element-pannes');
-      //
-      // html2pdf().from(content).set(options).save();
-  }
-
-
-
-    public openPDF():void {
-        let DATA = this.htmlData.nativeElement;
-        let doc = new jsPDF('p','pt', 'a4');
-
-        let handleElement = {
-            '#element-pannes':function(element,renderer){
-                return true;
-            }
-        };
-        doc.fromHTML(DATA.innerHTML,15,15,{
-            'width': 200,
-            'elementHandlers': handleElement
-        });
-
-        doc.open('angular-demo.pdf');
-    }
 
     createForm() {
         this.searchPanForm = this.fb.group({
@@ -274,6 +219,9 @@ export class PannesComponent implements OnInit {
     this.panneService.getOpPannes(this.selectedPanne.numero).subscribe(
         data => {
           this.Opannes = data;
+            this.OP1 = data[0];
+
+            (data.length>1)? this.OP2 = data[1] : this.OP2 = '';
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -287,6 +235,13 @@ export class PannesComponent implements OnInit {
     this.panneService.getDetailsPannes(this.selectedPanne.numero).subscribe(
         data => {
           this.Detailspannes = data;
+            this.cause1 = data[0].cause;
+            this.desc1 = data[0].description;
+            this.details1 = data[0].details;
+
+            (data.length>1)? this.cause2 = data[1].cause : this.cause2 = '';
+            (data.length>1)? this.desc2 = data[1].description : this.desc2 = '';
+            (data.length>1)? this.details2 = data[1].details : this.details2 = '';
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -300,6 +255,16 @@ export class PannesComponent implements OnInit {
     this.panneService.getOutilsPannes(this.selectedPanne.numero).subscribe(
         data => {
           this.Outilpannes = data;
+          this.outil1 = data[0].outil;
+          this.qte1 = data[0].qte;
+          this.ref1 = data[0].ref;
+            (data.length>1)? this.outil2 = data[1].outil : this.outil2 = '';
+            (data.length>1)? this.qte2 = data[1].qte : this.qte2 = '';
+            (data.length>1)? this.ref2 = data[1].ref : this.ref2 = '';
+          //   this.outil2 = data[1].outil;
+          // this.qte2 = data[1].qte;
+          // this.ref2 = data[1].ref;
+
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -314,6 +279,12 @@ export class PannesComponent implements OnInit {
           data => {
               this.Hpannes = data;
               this.tail = this.Hpannes.length;
+              this.ha1 = data[0].heure_arret;
+              this.di1 = data[0].debut_inter;
+              this.fi1 = data[0].fin_inter;
+              (data.length > 1)?this.ha2 = data[1].heure_arret: this.ha2  = '';
+              (data.length > 1)?this.di2 = data[1].debut_inter: this.di2  = '';
+              (data.length > 1)?this.fi2 = data[1].fin_inter: this.fi2  = '';
           },
           error => {
               console.log('une erreur a été détectée!')
@@ -521,6 +492,51 @@ export class PannesComponent implements OnInit {
 
   }
 
+
+    swl(pan: Pannes){
+        const Swal = require('sweetalert2');
+        var content = document.createElement('div');
+        content.innerHTML = 'Voulez-vous vraiment supprimer la panne n° <strong>' + pan.numero.toString()+ '</strong> de la machine '+ pan.machine.toString().toLowerCase().bold() +'?';
+        Swal.fire({
+            title: 'Suppression',
+            html: content,
+            icon: 'warning',
+            footer: '<a >Cette action est irréversible</a>',
+
+            showCancelButton: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            cancelButtonColor: '#f65656',
+            confirmButtonText: 'OUI',
+            cancelButtonText: 'Annuler',
+            allowOutsideClick: true,
+            focusConfirm: false,
+            showLoaderOnConfirm: true
+        }).then((result) => {
+            if (result.value) {
+                this.panneService.deletePannes(pan.numero).subscribe(
+                    res => {
+                        console.log('panne terminée')
+                    }
+                );
+                Swal.fire({
+                    title: 'Suppression !',
+                    text: "la panne " + pan.numero.bold() + " a été supprimée avec succès!",
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                this.modalService.dismissAll();
+                this.loadPannes();
+            }
+        })
+    }
+
   findSso($event){
       if (this.selectPanForm.controls['periode'].value == 'hp'){
           this.HierPannes();
@@ -583,4 +599,6 @@ export class PannesComponent implements OnInit {
         let url = btoa(m.idM.toString());
         this.router.navigateByUrl("machines/"+url);
     }
+
+
 }

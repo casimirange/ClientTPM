@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Departement} from '../../Models/departement';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DepartementsService} from "../../services/departements/departements.service";
 import {ActivatedRoute, Router} from "@angular/router";
-// import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {DataModel} from "../../Models/data.model";
 
 @Component({
     selector: 'app-departements',
@@ -29,8 +29,19 @@ export class DepartementsComponent implements OnInit {
 
     closeResult: string;
 
-    constructor(private fb: FormBuilder, private departementService: DepartementsService, private route: ActivatedRoute, private router: Router, ) {
+    fileForms: FormGroup;
+    // @ViewChild('fileUploadInput', { static: true })fileUploadInput: any;
+
+    // test: Pannes[];
+
+    logObject: any;
+
+    depModel: DataModel[];
+    dataArray: any;
+
+    constructor(private fb: FormBuilder, private departementService: DepartementsService, private route: ActivatedRoute, private router: Router) {
         this.createForm();
+        this.fileForm();
         this.newDep = new Departement();
     }
 
@@ -42,29 +53,25 @@ export class DepartementsComponent implements OnInit {
         });
     }
 
-    // open(content) {
-    //     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    //         this.closeResult = `Closed with: ${result}`;
-    //     }, (reason) => {
-    //         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    //     });
-    // }
-    //
-    // private getDismissReason(reason: any): string {
-    //     if (reason === ModalDismissReasons.ESC) {
-    //         return 'by pressing ESC';
-    //     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-    //         return 'by clicking on a backdrop';
-    //     } else {
-    //         return  `with: ${reason}`;
-    //     }
-    // }
+    fileForm() {
+        this.fileForms = this.fb.group({
+            file: ['', [Validators.required]],
+        });
+    }
 
 
     ngOnInit() {
         this.loadDepartements();
         this.initDep();
+
          // this.departements = this.route.snapshot.data.departements;
+
+        this.depModel = [
+            new DataModel('id', 'ID', 'number'),
+            new DataModel('nom', 'nom', 'String'),
+            new DataModel('centre_cout', 'centre cout', 'String'),
+            new DataModel('responsable', 'responsable', 'String'),
+        ]
     }
 
     loadDepartements() {
@@ -134,7 +141,5 @@ export class DepartementsComponent implements OnInit {
             }
         );
     }
-
-
 
 }

@@ -5,10 +5,13 @@
 import {Ligne} from "../Models/lignes";
 
 export class Departement {
-    public nom?: string;
-    public centre_cout?: string;
-    public responsable?: string;
-    public idDepartement?: number;
-    public lignes?: Ligne;
-    constructor( ) {}
+
+    constructor( public nom?: string,
+    public centre_cout?: string,
+    public responsable?: string,
+    public columnName?: string,
+    public columnReference?: string,
+    public dataType?: string,
+    public idDepartement?: number,
+    public lignes?: Ligne,) {}
 }

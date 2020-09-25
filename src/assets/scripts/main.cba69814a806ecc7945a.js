@@ -34803,7 +34803,7 @@
                 for (var n in i)if (Object.prototype.hasOwnProperty.call(i, n)) {
                     var a = i[n], r = e[n],
                         o = r && c.isElement(r) ? "element" : (s = r, {}.toString.call(s).match(/\s([a-z]+)/i)[1].toLowerCase());
-                    if (!new RegExp(a).test(o))throw new Error(t.toUpperCase() + ': Option "' + n + '" provided type "' + o + '" but expected type "' + a + '".')
+                    // if (!new RegExp(a).test(o))throw new Error(t.toUpperCase() + ': Option "' + n + '" provided type "' + o + '" but expected type "' + a + '".')
                 }
                 var s
             }, findShadowRoot: function (t) {

@@ -23,23 +23,23 @@
                                     <div class=" col-md-4">
                                         <div class="custom-radio custom-control position-relative form-group">
                                             <input type="radio" id="exampleCustomRadio8" name="pic1" class="custom-control-input" formControlName="pic1" value="HA" [(ngModel)]="piece"  >
-                                            <label class="custom-control-label" for="exampleCustomRadio8">Heure d'Arrêt</label>
+                                            <label class="custom-control-label" for="exampleCustomRadio8">Période</label>
                                         </div>
                                     </div>
-                                    <div class="e col-md-4">
-                                        <div class="custom-radio custom-control position-relative form-group">
-                                            <input type="radio" id="exampleCustomRadio9" name="pic1" class="custom-control-input" formControlName="pic1" value="DI" [(ngModel)]="piece" >
-                                            <label class="custom-control-label" for="exampleCustomRadio9">Début d'Intervention </label>
+                                    <!--<div class="e col-md-4">-->
+                                        <!--<div class="custom-radio custom-control position-relative form-group">-->
+                                            <!--<input type="radio" id="exampleCustomRadio9" name="pic1" class="custom-control-input" formControlName="pic1" value="DI" [(ngModel)]="piece" >-->
+                                            <!--<label class="custom-control-label" for="exampleCustomRadio9">Début d'Intervention </label>-->
 
-                                        </div>
-                                    </div>
+                                        <!--</div>-->
+                                    <!--</div>-->
 
-                                    <div class=" col-md-4">
-                                        <div class="custom-radio custom-control position-relative form-group">
-                                            <input type="radio" id="exampleCustomRadiofi" name="pic1" class="custom-control-input" formControlName="pic1" value="FI" [(ngModel)]="piece"  >
-                                            <label class="custom-control-label" for="exampleCustomRadiofi">Fin d'Intervention</label>
-                                        </div>
-                                    </div>
+                                    <!--<div class=" col-md-4">-->
+                                        <!--<div class="custom-radio custom-control position-relative form-group">-->
+                                            <!--<input type="radio" id="exampleCustomRadiofi" name="pic1" class="custom-control-input" formControlName="pic1" value="FI" [(ngModel)]="piece"  >-->
+                                            <!--<label class="custom-control-label" for="exampleCustomRadiofi">Fin d'Intervention</label>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                     <div class=" col-md-4">
                                         <div class="custom-radio custom-control position-relative form-group">
                                             <input type="radio" id="exampleCustomRadioMachine" name="pic1" class="custom-control-input" formControlName="pic1" value="Mach" [(ngModel)]="piece"  >
@@ -56,7 +56,7 @@
 
                                     <div class=" col-md-4">
                                         <div class="custom-radio custom-control position-relative form-group">
-                                            <input type="radio" id="exampleCustomRadioTech" name="pic1" class="custom-control-input" formControlName="pic1" value="Tec" [(ngModel)]="piece"  >
+                                            <input type="radio" id="exampleCustomRadioTech" name="pic1" class="custom-control-input" formControlName="pic1" value="Tec" [(ngModel)]="piece" (click)="test()" >
                                             <label class="custom-control-label" for="exampleCustomRadioTech">Techniciens</label>
                                         </div>
                                     </div>
@@ -86,7 +86,7 @@
                                             <label class="custom-control-label" for="exampleCustomRadioOutil">Outils Utilisés</label>
                                         </div>
                                     </div>
-                                    <div class="e col-md-4">
+                                    <div class="e col-md-4" *ngIf="(continuePanne.cont == true && continuePanne.etat == true) || (continuePanne.cont == false && continuePanne.etat == false)">
                                         <div class="custom-radio custom-control position-relative form-group">
                                             <input type="radio" id="exampleCustomRadioEtat" name="pic1" class="custom-control-input" formControlName="pic1" value="Etat" [(ngModel)]="piece" >
                                             <label class="custom-control-label" for="exampleCustomRadioEtat">Etat </label>
@@ -105,17 +105,58 @@
                                         <input type="date" id="date" class="form-control form-control-sm" formControlName="dateP" [ngClass]="{'fred': suitePanForm.controls['dateP'].invalid && (suitePanForm.controls['dateP'].touched)}" [(ngModel)]="continuePanne.date"/>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="position-relative form-group">
-                                        <label for="date" >Date</label>
-                                        <input type="hidden" id="numero" class="form-control form-control-sm" formControlName="numero" [ngClass]="{'fred': suitePanForm.controls['numero'].invalid && (suitePanForm.controls['numero'].touched)}" [(ngModel)]="continuePanne.numero"/>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group"  *ngIf="piece == 'HA' || piece == 'DI' || piece == 'FI' ">
-                            <div class="form-row">
+                        <div class="form-group"  *ngIf="piece == 'HA'">
+                            <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio77147" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="periodde"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio77147">Qaurt 1</label>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio88147" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="periodde"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio88147">Quart 2</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true) && (periodde == 1 || periodde == 2)">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="ha" [ngClass]="{'red': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}">Heure d'arrêt</label>
+                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" [ngClass]="{'fred': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}" />
+                                    </div>
+                                    <div>
+                                        date heure: {{periodde == 1 ? (ha1| date: 'yyyy-MM-ddTHH:mm') : periodde == 2 ? (ha2 | date: 'yyyy-MM-ddTHH:mm'): ''}}
+                                    </div>
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched) ">
+                                        <span>*</span> Date et heure invalide
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="di" [ngClass]="{'red': suitePanForm.controls['debutInter'].invalid && (suitePanForm.controls['debutInter'].touched)}">Début d'intervention</label>
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="di" class="form-control form-control-sm" formControlName="debutInter" [(ngModel)]="continuePanne.debut_inter" [ngClass]="{'fred': suitePanForm.controls['debutInter'].invalid && (suitePanForm.controls['debutInter'].touched)}">
+                                    </div>
+                                    <div>
+                                        debut inter: {{periodde == 1 ? (di1| date: 'yyyy-MM-ddTHH:mm') : periodde == 2 ? (di2 | date: 'yyyy-MM-ddTHH:mm'): ''}}
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="fi" [ngClass]="{'red': suitePanForm.controls['finInter'].invalid && (suitePanForm.controls['finInter'].touched)}">Fin d'intervention</label>
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="fi" class="form-control form-control-sm" formControlName="finInter" [(ngModel)]="continuePanne.fin_inter" [ngClass]="{'fred': suitePanForm.controls['finInter'].invalid && (suitePanForm.controls['finInter'].touched)}">
+                                    </div>
+                                    <div>
+                                        fin inter: {{periodde == 1 ? (fi1| date: 'yyyy-MM-ddTHH:mm') : periodde == 2 ? (fi2 | date: 'yyyy-MM-ddTHH:mm'): ''}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row" *ngIf="(continuePanne.cont == true && continuePanne.etat == true) || (continuePanne.cont == false && continuePanne.etat == false)">
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="ha" [ngClass]="{'red': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}">Heure d'arrêt</label>
@@ -154,20 +195,29 @@
                         <div class="form-group" >
 
                             <div class="form-row">
-
-
                                 <div class="col-md-6" *ngIf="piece == 'Mach' ">
+                                    <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">
+                                        <div class=" col-md-4">
+                                            <div class="custom-radio custom-control position-relative form-group">
+                                                <input type="radio" id="exampleCustomRadio770000" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="machsss"  (click)="infoPanne()">
+                                                <label class="custom-control-label" for="exampleCustomRadio770000">Qaurt 1</label>
+                                            </div>
+                                        </div>
+                                        <div class=" col-md-4">
+                                            <div class="custom-radio custom-control position-relative form-group">
+                                                <input type="radio" id="exampleCustomRadio880000" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="machsss"  (click)="infoPanne()">
+                                                <label class="custom-control-label" for="exampleCustomRadio880000">Quart 2</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="position-relative form-group">
                                         <label for="machine" [ngClass]="{'red': suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched)}">Machine</label>
-                                        <select id="machine" class="form-control form-control-sm" formControlName="idMachine" [(ngModel)]="continuePanne.machine" [ngClass]="{'fred': suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched)}"  >
-                                        <option  value="{{continuePanne.idMachine}}">
-                                        <b>{{continuePanne.idMachine}}</b>&nbsp; {{continuePanne.machine}}
+                                        <select id="machine" class="form-control form-control-sm" formControlName="idMachine" [(ngModel)]="continuePanne.idMachine" [ngClass]="{'fred': suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched)}"  >
+                                        <option *ngFor="let mach of machines"  [ngValue]="mach.idMachine">
+                                            {{mach.code}} &nbsp; {{mach.nom}}
                                         </option>
-                                        <!--<option *ngFor="let op of operateurs"  [ngValue]="op.idOperateur" (select)="selop = op">-->
-                                            <!--{{op.nom}} &nbsp; {{op.prenom}}-->
-                                        <!--</option>-->
                                         </select>
-                                        <!--<input type="text" [(ngModel)]="continuePanne.machine" formControlName="idMachine" class="form-control form-ontrol-sm" disabled>-->
+                                        machine: {{continuePanne.machine}} {{continuePanne.idMachine}}
                                     </div>
 
                                     <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched) ">
@@ -176,14 +226,41 @@
                                 </div>
 
                                 <div class="col-md-6" *ngIf="piece == 'Op' ">
+                                    <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">
+                                        <div class=" col-md-4">
+                                            <div class="custom-radio custom-control position-relative form-group">
+                                                <input type="radio" id="exampleCustomRadio770op" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="ops"  (click)="infoPanne()">
+                                                <label class="custom-control-label" for="exampleCustomRadio770op">Qaurt 1</label>
+                                            </div>
+                                        </div>
+                                        <div class=" col-md-4">
+                                            <div class="custom-radio custom-control position-relative form-group">
+                                                <input type="radio" id="exampleCustomRadio880op" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="ops"  (click)="infoPanne()">
+                                                <label class="custom-control-label" for="exampleCustomRadio880op">Quart 2</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="position-relative form-group">
                                         <label for="op" [ngClass]="{'red': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">Opérateur de Production</label>
 
-                                        <select id="op" class="form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]="continuePanne.idOperateur" [ngClass]="{'fred': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">
-                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOperateur" (select)="selop = op">
-                                                {{op.nom}} &nbsp; {{op.prenom}}
-                                            </option>
-                                        </select>
+                                        <div *ngIf="(continuePanne.cont == false && continuePanne.etat == true) && (ops == 1 || ops == 2)">
+                                            <select id="op" class="form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]="ops == 1 ? OP1.idOP : ops == 2 ? OP2.idOP: continuePanne.etat"  [ngClass]="{'fred': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">
+                                                <option *ngFor="let op of operateurs"  [ngValue]="op.idOP">
+                                                    {{op.nomOP}} &nbsp; {{op.prenomOP}}
+                                                </option>
+                                            </select>
+                                            Opérateur: {{ops == 1 ? (OP1.idOP) : ops == 2 ? (OP2.idOP): ''}}
+                                        </div>
+
+                                        <div *ngIf="(continuePanne.cont == true && continuePanne.etat == true) || (continuePanne.cont == false && continuePanne.etat == false)">
+                                            <select id="op" class="form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]=" continuePanne.idOperateur" [ngClass]="{'fred': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">
+                                                <option *ngFor="let op of operateurs"  [ngValue]="op.idOP">
+                                                    {{op.nomOP}} &nbsp; {{op.prenomOP}}
+                                                </option>
+                                            </select>
+                                            Opérateur: {{continuePanne.nomOP}} {{continuePanne.prenomOP}} id2: {{continuePanne.idOperateur}}
+                                        </div>
+
                                     </div>
                                     <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched) ">
                                         <span>*</span> Veuillez sélectionner un Opérateur de production
@@ -193,51 +270,215 @@
                             </div>
                         </div>
 
+<div>
+                        <!--<div *ngIf="piece == 'Tec' ">-->
+                            <!--<div class="form-group ">-->
+                                <!--<label>Maintenanciers</label> &nbsp;-->
+                                <!--<span>-->
+                                    <!--<button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddTech()"><i class="fa fa-plus-circle"></i> Ajouter</button>-->
+                                <!--</span>-->
+                                <!--<div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">-->
+                                    <!--<div class=" col-md-4">-->
+                                        <!--<div class="custom-radio custom-control position-relative form-group">-->
+                                            <!--<input type="radio" id="exampleCustomRadio7744" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="piec"  (click)="test()">-->
+                                            <!--<label class="custom-control-label" for="exampleCustomRadio7744">Qaurt 1</label>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class=" col-md-4">-->
+                                        <!--<div class="custom-radio custom-control position-relative form-group">-->
+                                            <!--<input type="radio" id="exampleCustomRadio8844" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="piec"  (click)="test()">-->
+                                            <!--<label class="custom-control-label" for="exampleCustomRadio8844">Quart 2</label>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="mt-3" *ngIf="piec == 1" >-->
+                                    <!--<div class="form-row" *ngFor="let tec1 of TEC1; let s = index">-->
+                                        <!--<div class="col-md-5 field_wrapper">-->
+                                            <!--<div class="position-relative form-group">-->
+                                                <!--<label [ngClass]="{'red': suitePanForm.controls['idTechnicien'].invalid && (suitePanForm.controls['idTechnicien'].touched)}">Maintenancier N°{{s+1}}</label>-->
+                                                <!--<div >-->
+                                                        <!--nom: {{tec1.nomTec}} techID: {{tec1.id_technicien}} panneID: {{tec1.id_panne}}-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="mt-3" *ngIf="piec == 2" >-->
+                                <!--<div class="form-row" *ngFor="let tec2 of TEC2; let s = index">-->
+                                    <!--<div class="col-md-5 field_wrapper">-->
+                                        <!--<div class="position-relative form-group">-->
+                                            <!--<label [ngClass]="{'red': suitePanForm.controls['idTechnicien'].invalid && (suitePanForm.controls['idTechnicien'].touched)}">Maintenancier N°{{s+1}}</label>-->
+                                            <!--<div >-->
+                                                    <!--nom: {{tec2.nomTec}} techID: {{tec2.id_technicien}} panneID: {{tec2.id_panne}}-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 
-                        <div formArrayName="idTechnicien" *ngIf="piece == 'Tec' ">
-                            <div class="form-group ">
-                                <label>Maintenanciers</label> &nbsp;
-                                <span>
-                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddTech()"><i class="fa fa-plus-circle"></i> Ajouter</button>
-                                </span>
-                            </div>
-
-                            <div class="form-group" *ngFor="let tc of getTechni().controls; let i = index">
-
-                                <div class="form-row">
-                                    <div class="col-md-5 field_wrapper">
-                                        <div class="position-relative form-group">
-                                            <label for="mnt{{i+1}}" [ngClass]="{'red': suitePanForm.controls['idTechnicien'].invalid && (suitePanForm.controls['idTechnicien'].touched)}">Maintenancier N°{{i+1}}</label>
-                                            <select id="mnt{{i+1}}" class="multiselect-dropdown form-control form-control-sm"  [formControlName]="i" [ngClass]="{'fred': suitePanForm.controls['idTechnicien'].invalid && (suitePanForm.controls['idTechnicien'].touched)}">
-                                                <option *ngFor="let tec of techniciens" [ngValue]="tec.idTechnicien" >
-                                                    {{tec.nom}} &nbsp; {{tec.prenom}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched) ">
-                                            <span>*</span> Veuillez sélectionner un maintenancier
-                                        </div>
+                                <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                </div>
+                        <div *ngIf="piece == 'Tec'">
+                            <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio7744" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="technis"  (click)="test()">
+                                        <label class="custom-control-label" for="exampleCustomRadio7744">Qaurt 1</label>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="position-relative form-group"><label for="matM{{i+1}}" class="">Matricule</label><input
-                                                name="code" id="matM{{i+1}}" type="text" placeholder="BCP002"
-                                                class="form-control form-control-sm" disabled></div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="position-relative form-group"><label for="fct{{i+1}}" class="">Fonction</label><input
-                                                name="code" id="fct{{i+1}}" type="text" placeholder="Electricien" class="form-control form-control-sm" disabled></div>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <div class="position-relative form-group">
-                                            <label class="" style="color:transparent;">Fonction</label>
-                                            <button class="btn-transition btn btn-sm btn-shadow btn-outline-danger form-control-sm form-control" (click)="onMoveTech(i)">-</button>
-                                        </div>
+                                </div>
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio8844" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="technis"  (click)="test()">
+                                        <label class="custom-control-label" for="exampleCustomRadio8844">Quart 2</label>
                                     </div>
                                 </div>
                             </div>
 
+                            <div >
+                                <div class="form-group ">
+                                    <label>Maintenanciers</label> &nbsp;
+                                    <span>
+                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddTech()"><i class="fa fa-plus-circle"></i> Ajouter</button>
+                                </span>
+                                </div>
+
+                                <div class="mt-3" *ngIf="technis == 1" >
+                                    <div class="form-group" *ngFor="let tec1 of TEC1; let i = index">
+
+                                    <div class="form-row">
+                                        <div class="col-md-4">
+                                            <div class="position-relative form-group">
+                                                <label for="matM{{i+1}}" class="">Technicien N°{{i+1}}</label>
+                                                <input type="text" class="form-control form-control-sm" disabled value="{{tec1.nomTec}}" >
+
+                                            </div>
+                                            nom: {{tec1.nomTec}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group"><label for="matM{{i+1}}" class="">Matricule</label><input
+                                                    name="code" id="matM{{i+1}}" type="text" placeholder="BCP002" value="{{tec1.matricule}}"
+                                                    class="form-control form-control-sm" disabled></div>
+                                            mat: {{tec1.matricule}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group"><label for="fct{{i+1}}" class="">Fonction</label><input
+                                                    name="code" id="fct{{i+1}}" type="text" placeholder="Electricien" class="form-control form-control-sm" value="{{tec1.fonction}}" disabled></div>
+                                            fction: {{tec1.fonction}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="position-relative form-group">
+                                                <label class="" style="color:transparent;">Fonction</label>
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-success form-control-sm form-control" (click)="updateTec(tec1)">/</button>
+                                            </div>
+                                            ID: {{tec1.id_panne}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="position-relative form-group">
+                                                <label class="" style="color:transparent;">Fonction</label>
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-danger form-control-sm form-control" (click)="swl(tec1)">-</button>
+                                            </div>
+                                            ID: {{tec1.id_panne}}
+                                        </div>
+                                    </div>
+
+                                </div>
+                                </div>
+
+                                <div class="mt-3" *ngIf="technis == 2" >
+                                    <div class="form-group" *ngFor="let tec2 of TEC2; let i = index">
+
+                                    <div class="form-row">
+                                        <div class="col-md-4">
+                                            <div class="position-relative form-group">
+                                                <label for="matM{{i+1}}" class="">Technicien N°{{i+1}}</label>
+                                                <input type="text" class="form-control form-control-sm" disabled value="{{tec2.nomTec}}" >
+
+                                            </div>
+                                            nom: {{tec2.nomTec}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group"><label for="matM{{i+1}}" class="">Matricule</label><input
+                                                    name="code" id="matM{{i+1}}" type="text" placeholder="BCP002" value="{{tec2.matricule}}"
+                                                    class="form-control form-control-sm" disabled></div>
+                                            mat: {{tec2.matricule}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group"><label for="fct{{i+1}}" class="">Fonction</label><input
+                                                    name="code" id="fct{{i+1}}" type="text" placeholder="Electricien" class="form-control form-control-sm" value="{{tec2.fonction}}" disabled></div>
+                                            fction: {{tec2.fonction}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="position-relative form-group">
+                                                <label class="" style="color:transparent;">Fonction</label>
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-success form-control-sm form-control" (click)="updateTec(tec1)">/</button>
+                                            </div>
+                                            ID: {{tec2.id_panne}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="position-relative form-group">
+                                                <label class="" style="color:transparent;">Fonction</label>
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-danger form-control-sm form-control" (click)="swl(tec2)">-</button>
+                                            </div>
+                                            ID: {{tec2.id_panne}}
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <div class="mt-3" *ngIf="(continuePanne.cont == true && continuePanne.etat == true) || (continuePanne.cont == false && continuePanne.etat == false)">
+                                    <div class="form-group" *ngFor="let tec2 of techs; let i = index">
+                                        <div class="form-row">
+                                        <div class="col-md-4">
+                                            <div class="position-relative form-group">
+                                                <label for="matM{{i+1}}" class="">Technicien N°{{i+1}}</label>
+                                                <input type="text" class="form-control form-control-sm" disabled value="{{tec2.nomTec}}" >
+
+                                            </div>
+                                            nom: {{tec2.nomTec}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group"><label for="matM{{i+1}}" class="">Matricule</label><input
+                                                    name="code" id="matM{{i+1}}" type="text" placeholder="BCP002" value="{{tec2.matricule}}"
+                                                    class="form-control form-control-sm" disabled></div>
+                                            mat: {{tec2.matricule}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="position-relative form-group"><label for="fct{{i+1}}" class="">Fonction</label><input
+                                                    name="code" id="fct{{i+1}}" type="text" placeholder="Electricien" class="form-control form-control-sm" value="{{tec2.fonction}}" disabled></div>
+                                            fction: {{tec2.fonction}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="position-relative form-group">
+                                                <label class="" style="color:transparent;">Fonction</label>
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-success form-control-sm form-control" (click)="updateTec(tec1)">/</button>
+                                            </div>
+                                            ID: {{tec2.id_panne}}
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="position-relative form-group">
+                                                <label class="" style="color:transparent;">Fonction</label>
+                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-danger form-control-sm form-control" (click)="swl(tec2)">-</button>
+                                            </div>
+                                            ID: {{tec2.id_panne}}
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="ajout == true" class="mb-3 mt-3">
+                                    <select class="form-control form-control-sm"  formControlName="idtec" >
+                                        <option value="" selected disabled hidden>Sélectionner un maintenancier</option>
+                                        <option *ngFor="let tec of techniciens" [ngValue]="tec.idTechnicien" >
+                                            {{tec.nom | uppercase}} {{tec.prenom | titlecase}}
+                                        </option>
+                                    </select>
+
+                                    <!--<button class="btn btn-sm btn-outline-alternate mb-3" (click)="addTec()">ajout Tec</button>-->
+                                </div>
 
 
+                            </div>
                         </div>
 
                         <div class="form-group" *ngIf="piece == 'Desc' ">
@@ -253,28 +494,100 @@
 
 
                         <div class="form-group" *ngIf="piece == 'Cause' ">
+                            <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio77" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="caus"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio77">Qaurt 1</label>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio88" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="caus"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio88">Quart 2</label>
+                                    </div>
+                                </div>
+                            </div>
                             <label for="cause" [ngClass]="{'red': suitePanForm.controls['cause'].invalid && (suitePanForm.controls['cause'].touched)}">Cause du Problème</label>
-                            <div>
+                            <div *ngIf="(continuePanne.cont == false && continuePanne.etat == true) && (caus == 1 || caus == 2)">
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="Cause..." formControlName="cause" [(ngModel)]="caus == 1 ? cause1 : caus == 2 ? cause2 : continuePanne.etat" [ngClass]="{'fred': suitePanForm.controls['cause'].invalid && (suitePanForm.controls['cause'].touched)}"></textarea>
+                            </div>
+                            <div *ngIf="(continuePanne.cont == true && continuePanne.etat == true) || (continuePanne.cont == false && continuePanne.etat == false)">
                                 <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="Cause..." formControlName="cause" [(ngModel)]="continuePanne.cause" [ngClass]="{'fred': suitePanForm.controls['cause'].invalid && (suitePanForm.controls['cause'].touched)}"></textarea>
                             </div>
+                            {{caus == 1 ? cause1 : caus == 2 ? cause2 : ''}}
                             <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['cause'].invalid && (suitePanForm.controls['cause'].touched) ">
                                 <span>*</span> Minimum 5 caractères sont requis
                             </div>
                         </div>
 
                         <div class="form-group" *ngIf="piece == 'Det' ">
-                            <label for="detail" [ngClass]="{'red': suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched)}">Détails d'intervention</label>
-                            <div>
-                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="detail" placeholder="Détails..." formControlName="details" [(ngModel)]="continuePanne.details" [ngClass]="{'fred': suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched)}"></textarea>
+                            <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio7017" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="det"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio7017">Qaurt 1</label>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio8018" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="det"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio8018">Quart 2</label>
+                                    </div>
+                                </div>
                             </div>
+                            <label for="cause" [ngClass]="{'red': suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched)}">details du Problème</label>
+                            <div *ngIf="(continuePanne.cont == false && continuePanne.etat == true) && (det == 1 || det == 2)">
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="cause" placeholder="details..." formControlName="details" [(ngModel)]="det == 1 ? details1 : det == 2 ? details2 : continuePanne.etat" [ngClass]="{'fred': suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched)}"></textarea>
+                            </div>
+                            <div *ngIf="(continuePanne.cont == true && continuePanne.etat == true) || (continuePanne.cont == false && continuePanne.etat == false)">
+                                <textarea rows="1" class="form-control autosize-input" style="max-height: 200px; height: 40px;" id="details" placeholder="details..." formControlName="details" [(ngModel)]="continuePanne.details" [ngClass]="{'fred': suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched)}"></textarea>
+                            </div>
+                            {{det == 1 ? details1 : det == 2 ? details2 : ''}}
                             <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['details'].invalid && (suitePanForm.controls['details'].touched) ">
                                 <span>*</span> Minimum 5 caractères sont requis
                             </div>
                         </div>
 
                         <div class="form-group" *ngIf="piece == 'Outil' ">
-
-                            <div class="form-row">
+                            <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true)">
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio770" name="qrt" class="custom-control-input" formControlName="qrt" value="1" [(ngModel)]="ou"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio770">Qaurt 1</label>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4">
+                                    <div class="custom-radio custom-control position-relative form-group">
+                                        <input type="radio" id="exampleCustomRadio880" name="qrt" class="custom-control-input" formControlName="qrt" value="2" [(ngModel)]="ou"  (click)="infoPanne()">
+                                        <label class="custom-control-label" for="exampleCustomRadio880">Quart 2</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row" *ngIf="(continuePanne.cont == false && continuePanne.etat == true) && (ou == 1 || ou == 2)">
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="pieces" class="">Nom de la pièce</label>
+                                        <input [(ngModel)]="ou == 1 ? (outil1) : ou == 2 ? (outil2): continuePanne.etat" name="code" id="pieces" type="text" placeholder="Ampoule"
+                                               class="form-control form-control-sm" formControlName="outil" value="ou12" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="qtes" class="">Quantité</label>
+                                        <input [(ngModel)]="ou == 1 ? (qte1) : ou == 2 ? (qte2): continuePanne.etat" name="code" id="qtes" type="number" placeholder="01"
+                                               class="form-control form-control-sm" formControlName="qte" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <label for="refs" class="">Référence Magasin</label>
+                                        <input [(ngModel)]="ou == 1 ? (ref1) : ou == 2 ? (ref2): continuePanne.etat" name="code" id="refs" type="text" placeholder="6000157"
+                                               class="form-control form-control-sm" formControlName="ref" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row" *ngIf="(continuePanne.cont == true && continuePanne.etat == true) || (continuePanne.cont == false && continuePanne.etat == false)">
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="piece" class="">Nom de la pièce</label>
@@ -299,29 +612,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group" *ngIf="piece == 'Etat' ">
-                            <label for="machine" class="">La panne a t-elle été réparée?</label>
-                            <div class="">
-                                {{continuePanne.etat}}
-                                <div class="position-relative form-check-inline">
-                                    <div class="custom-radio custom-control position-relative form-group">
-                                        <input type="radio" id="exampleCustomRadio1" name="etat" class="custom-control-input" value="true" formControlName="etat"  required [(ngModel)]="continuePanne.etat" >
-                                        <label class="custom-control-label" for="exampleCustomRadio1">Panne achevée</label>
-                                    </div>
-                                </div>
-                                <div class="position-relative form-check-inline">
-                                    <div class="custom-radio custom-control position-relative form-group">
-                                        <input type="radio" id="exampleCustomRadio2" name="etat" class="custom-control-input" value="false" formControlName="etat" required [(ngModel)]="continuePanne.etat" >
-                                        <label class="custom-control-label" for="exampleCustomRadio2">Panne en cours... </label>
-
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group" *ngIf="piece == 'Etat'">
+                            <label >Cette panne est <span [ngClass]="continuePanne.etat == true ? 'text-success' : 'text-danger'">{{continuePanne.etat == true ? ' achevée.' : ' inachevée '}}</span>{{continuePanne.etat == true ? '' : ' pour le moment'}}</label>
+                            <p>cliquez sur le bouton modifier pour{{continuePanne.etat == false ? ' l\'activer.' : ' la désactiver.'}}</p>
                         </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn-pill btn-shadow btn btn-warning text-dark"
                                     (click)="
+                                             ajout == true ? addTec() :
                                              piece == 'date' ? dateUpdate() :
                                              piece == 'HA' ? haUpdate() :
                                              piece == 'DI' ? diUpdate() :

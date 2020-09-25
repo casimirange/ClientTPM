@@ -1,80 +1,85 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 <div class="row">
-    <div class="col-lg-5">
+    <div class="col-lg-12">
         <div class="main-card mb-3 card">
-            <div class="card-header bg-info">
-                <table class="table mb-0 mt-0">
-                    <tr>
-                        <td style="color: #fff;" class="">
-                            {{operation == 'add' ? 'Nouveau Département' :
-                            operation == 'edit' ? 'Modifier Département' :
-                            operation == 'remove' ? 'Supprimer Département' : ''}}
-                        </td>
-                    </tr>
-                </table>
+            <div class="card-header">
+                {{operation == 'add' ? 'Nouvelle Machine' :
+                operation == 'edit' ? 'Modifier Machine' :
+                operation == 'remove' ? 'Supprimer Machine' : ''}}
             </div>
             <div class="card-body">
                 <div *ngIf="operation == 'add' || operation == 'edit'">
                     <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="machineForm">
                         <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-4">
                             <div class="">
                                 <div class="position-relative">
                                     <label for="lig" class="">Nom Machine</label>
-                                    <input type="text" class="form-control" id="lig" placeholder="massicot A" formControlName="nom" [(ngModel)]="selectedMachine.nom"/>
+                                    <input type="text" class="form-control form-control-sm" id="lig" placeholder="massicot A" formControlName="nom" [(ngModel)]="selectedMachine.nom"/>
                                 </div>
                             </div>
-                        </div>
-                        <div style="color: #f65656" *ngIf="machineForm.controls['nom'].invalid && (machineForm.controls['nom'].touched) ">
-                            <span>*</span> minimum 5 caractères
-                        </div>
-                        <div class="form-group">
-                            <div class="">
-                                <div class="position-relative">
-                                    <label for="code" class="">Code Machine</label>
-                                    <input type="text" class="form-control" id="code" placeholder="BCP001" formControlName="code" [(ngModel)]="selectedMachine.code"/>
-                                </div>
+                            <div style="color: #f65656" *ngIf="machineForm.controls['nom'].invalid && (machineForm.controls['nom'].touched) ">
+                                <span>*</span> minimum 5 caractères
                             </div>
-                        </div>
-                        <div style="color: #f65656" *ngIf="machineForm.controls['code'].invalid && (machineForm.controls['code'].touched) ">
-                            <span>*</span> minimum 5 caractères
-                        </div>
-                        <div class="form-group">
-                            <div class="">
-                                <div class="position-relative">
-                                    <label for="cc" class="">Centre de coût</label>
-                                    <input type="text" class="form-control" id="cc" placeholder="B300" formControlName="cc" [(ngModel)]="selectedMachine.centreCout"/>
                                 </div>
-                            </div>
-                        </div>
-                        <div style="color: #f65656" *ngIf="machineForm.controls['cc'].invalid && (machineForm.controls['cc'].touched) ">
-                            <span>*</span> minimum 5 caractères
-                        </div>
-                        <div class="form-group">
-                            <div class="">
-                                <div class="position-relative">
-                                    <label for="label" class="">Label</label>
-                                    <input type="text" class="form-control" id="label" placeholder="B300" formControlName="label" [(ngModel)]="selectedMachine.label"/>
+
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <div class="position-relative">
+                                            <label for="code" class="">Code Machine</label>
+                                            <input type="text" class="form-control form-control-sm" id="code" placeholder="BCP001" formControlName="code" [(ngModel)]="selectedMachine.code"/>
+                                        </div>
+                                    </div>
+                                    <div style="color: #f65656" *ngIf="machineForm.controls['code'].invalid && (machineForm.controls['code'].touched) ">
+                                        <span>*</span> minimum 5 caractères
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div style="color: #f65656" *ngIf="machineForm.controls['label'].invalid && (machineForm.controls['label'].touched) ">
-                            <span>*</span> minimum 5 caractères
-                        </div>
-                        <div class="form-group">
-                            <div class="">
-                                <div class="position-relative">
-                                    <label for="liste" class="">Ligne</label>
-                                    <select id="liste"  class="multiselect-dropdown form-control" data-live-search="true"
-                                            formControlName="depL" >
-                                        <option   *ngFor="let lign of ligns" [ngValue]="lign.idLigne"  >{{lign.nomLigne}}</option>
-                                    </select>
+
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <div class="position-relative">
+                                            <label for="cc" class="">Centre de coût</label>
+                                            <input type="text" class="form-control form-control-sm" id="cc" placeholder="B300" formControlName="cc" [(ngModel)]="selectedMachine.centre_cout"/>
+                                        </div>
+                                    </div>
+                                    <div style="color: #f65656" *ngIf="machineForm.controls['cc'].invalid && (machineForm.controls['cc'].touched) ">
+                                        <span>*</span> minimum 5 caractères
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary"
+                            <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="">
+                                    <div class="position-relative">
+                                        <label for="label" class="">Label</label>
+                                        <input type="text" class="form-control form-control-sm" id="label" placeholder="B300" formControlName="label" [(ngModel)]="selectedMachine.label"/>
+                                    </div>
+                                </div>
+                                <div style="color: #f65656" *ngIf="machineForm.controls['label'].invalid && (machineForm.controls['label'].touched) ">
+                                    <span>*</span> minimum 5 caractères
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                    <div class="">
+                                        <div class="position-relative">
+                                            <label for="liste" class="">Ligne</label>
+                                            <select id="liste"  class="form-control-sm form-control" [(ngModel)]="selectedMachine.idLigne"
+                                                    formControlName="depL" >
+                                                <option *ngFor="let lign of ligns" [ngValue]="lign.idLigne"  >{{lign.nomLigne | uppercase}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-sm" [disabled]="machineForm.invalid || machineForm.pristine"
                                     (click)="operation == 'add' ? addMachine() : updateMachine() " >
                                 {{operation == 'add' ? 'Enregistrer' :
                                 operation == 'edit' ? 'Modifier ' : ''}}
@@ -82,114 +87,107 @@
                         </div>
                     </form>
                 </div>
-                <div *ngIf="operation == 'remove'">
-                    <ul class="tabs-animated-shadow tabs-animated nav nav-justified tabs-shadow-bordered p-3">
-                        <li class="nav-item">
-                            <a role="tab" class="nav-link active" data-toggle="tab" href="#tab-messages-header">
-                                <span>Nouvelle Ligne</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab-errors-header" role="tabpanel">
-                            <div class="scroll-area-sm">
-                                <div class="scrollbar-container">
-                                    <div class="no-results pt-3 pb-0">
-                                        <div class="swal2-icon swal2-question swal2-animate-error-icon">
-                                            <div class="swal2-success-circular-line-left"
-                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                            <span class="swal2-success-line-tip"></span>
-                                            <span class="swal2-success-line-long"></span>
-                                            <div class="swal2-success-ring"></div>
-                                            <div class="swal2-success-fix"
-                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                            <b style="font-size: 1.5em; font-weight: bold">?</b>
-                                            <div class="swal2-success-circular-line-right"
-                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                        </div>
-                                        <div class="results-subtitle">{{selectedMachine.nom}}</div>
-                                        <div class="results-title">Confirmez-vous la suppression de cette machine ?</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item-divider nav-item"></li>
-                        <li class="nav-item-btn text-center nav-item">
-                            <button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedMachine.idMachine" (click)="deleteMachine(); operation = 'ok'">Supprimer
-                            </button>
-                            &nbsp;&nbsp;
-                            <button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm">Annuler
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-                <div *ngIf="operation == 'ok'">
-                    <div class="no-results pt-3 pb-0">
-                        <div class="swal2-icon swal2-success swal2-animate-success-icon">
-                            <div class="swal2-success-circular-line-left"
-                                 style="background-color: rgb(255, 255, 255);"></div>
-                            <span class="swal2-success-line-tip"></span>
-                            <span class="swal2-success-line-long"></span>
-                            <div class="swal2-success-ring"></div>
-                            <div class="swal2-success-fix"
-                                 style="background-color: rgb(255, 255, 255);"></div>
-                            <div class="swal2-success-circular-line-right"
-                                 style="background-color: rgb(255, 255, 255);"></div>
-                        </div>
-                        <div class="results-subtitle">Suppression Réussie!</div>
-                        <div class="results-title">Machine supprimée avec succès!</div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-7">
+    <div class="col-lg-12">
         <div class="main-card mb-3 card">
-            <div class="card-header bg-info">
-                <table class="table mb-0 ">
-                    <tr>
-                        <td style="color: #fff;">Liste des Machines</td>
-                        <td><button class="btn btn-secondary float-right" (click)="operation = 'add'; initMachine();">Ajouter</button></td>
-                    </tr>
-                </table>
+            <div class="card-header">
+                Liste des machines
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="searchPanForm">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="selectPanForm">
+                            <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
+                                <option value="" selected disabled hidden>Afficher Tout</option>
+                                <option value="tous">Tous les Techniciens</option>
+                                <option value="actifs" >Actifs</option>
+                                <option value="inactifs" >Inactifs</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <button class="btn btn-secondary float-right" (click)="operation = 'add'; initMachine();">
+                            <i class="fa fa-plus-circle"></i>
+                            Nouvelle Machine
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
-                <table class="mb-0 table table-hover">
+                <div class="table-responsive" >
+                <table class="align-middle mb-0 table table-sm table-borderless table-hover">
                     <thead>
                     <tr>
                         <th>Code</th>
-                        <th>Nom</th>
+                        <th>Ligne</th>
+                        <th>Nom Machine</th>
                         <th>Centre de coût</th>
                         <th>Label</th>
-                        <th>Actions</th>
+                        <th>Activité</th>
+                        <th class="text-right">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let lign of machines">
-                        <th scope="row" >{{ lign.code }}</th>
-                        <td>{{lign.nom}}</td>
-                        <td>{{lign.centre_cout}}</td>
-                        <td>{{lign.label}}</td>
+                    <tr class="widget-content" *ngFor="let lign of machines | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; ">
+                        <th scope="row" ># {{ lign.code | uppercase}}</th>
+                        <td class="text-capitalize">{{lign.nom_ligne}}</td>
+                        <td>{{lign.nom | uppercase}}</td>
+                        <td>{{lign.centre_cout | uppercase}}</td>
+                        <td class="text-capitalize">{{lign.label}}</td>
+                        <td> <div [ngClass]="lign.etat == true ? 'badge badge-success' : 'badge badge-focus'">
+                            {{lign.etat == true ? 'En Service' : 'Hors Service'}}
+                        </div>
                         <td>
-                            <div class="widget-content-right widget-content-actions">
-                                <a (click)="showMachine(lign)">
-                                    <button class="border-0 btn-transition btn btn-outline-success">
-                                        <i class="fa fa-eye"></i>
-                                    </button>
-                                </a>
-                                <button class="border-0 btn-transition btn btn-outline-primary" (click)="operation = 'edit'; selectedMachine = lign;">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger" (click)="operation = 'remove'; selectedMachine = lign;">
-                                    <i class="fa fa-times"></i>
-                                </button>
+                        <td class="text-right">
+                            <div role="group" class="btn-group-sm btn-group">
+                                <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedMachine = lign;"><i class="fa fa-pencil"></i></button>
+                                <button class="btn  btn-danger" (click)="swl(lign); selectedMachine = lign;"><i class="fa fa-times"></i></button>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <form [formGroup]="pageForm">
+                        <span style="display: inline-block">Afficher</span>&nbsp;
+                        <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
+
+                            <option value="" selected disabled hidden>10</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                        </select></span>&nbsp;
+                        <span style="display: inline-block">données</span>
+                    </form>
+                </div>
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

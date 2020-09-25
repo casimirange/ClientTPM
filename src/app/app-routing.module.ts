@@ -72,6 +72,7 @@ const routes: Routes = [
   {
     path: '',
     component: BaseLayoutComponent,
+    canActivate:[AuthGuardService],
     children: [
 
   {path: 'departements', canActivate:[AuthGuardService], component: DepartementsComponent },
@@ -106,6 +107,7 @@ const routes: Routes = [
   {
     path: '',
     component: PaddingLayoutComponent,
+    canActivate:[AuthGuardService],
     children: [
 
   {path: 'new-panne', canActivate:[AuthGuardService], component: NewPanneComponent },
@@ -114,7 +116,7 @@ const routes: Routes = [
   {path: 'tempsMachine', canActivate:[AuthGuardService], component: HeuresMachinesComponent },
     ]
   },
-  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: '**', redirectTo: '/erreur'}
 ];
 

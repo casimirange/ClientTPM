@@ -1,58 +1,54 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 <div class="row">
-    <div class="col-lg-5">
+    <div class="col-lg-12">
         <div class="main-card mb-3 card">
-            <div class="card-header bg-info">
-                <table class="table mb-0 mt-0">
-                    <tr>
-                        <td style="color: #fff;" class="">
-                            {{operation == 'add' ? 'Nouvel Opérateur' :
-                            operation == 'edit' ? 'Modifier Opérateur' :
-                            operation == 'remove' ? 'Supprimer Opérateur' : ''}}
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <div class="card-header">
+                {{operation == 'add' ? 'Nouvel Opérateur' :
+                operation == 'edit' ? 'Modifier Opérateur' :
+                operation == 'remove' ? 'Supprimer Opérateur' : ''}}</div>
             <div class="card-body">
                 <div *ngIf="operation == 'add' || operation == 'edit'">
                     <form id="signupForm" class="col-md-10 mx-auto" [formGroup]="opForm">
                         <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-4">
                             <div class="">
                                 <div class="position-relative">
                                     <label for="lig" class="">Nom </label>
-                                    <input type="text" class="form-control" id="lig" placeholder="Nom" formControlName="nom" [(ngModel)]="selectedOp.nom"/>
+                                    <input type="text" class="form-control" id="lig" placeholder="Nom" formControlName="nom" [(ngModel)]="selectedOp.nomOP"/>
+                                </div>
+                            </div>
+                            <div style="color: #f65656" *ngIf="opForm.controls['nom'].invalid && (opForm.controls['nom'].touched) ">
+                                 <span>*</span> minimum 4 caractères
+                             </div>
+                                </div>
+                                <div class="col-md-4">
+                                <div class="">
+                                    <div class="position-relative">
+                                        <label for="pre" class="">Prénom </label>
+                                        <input type="text" class="form-control" id="pre" placeholder="Prénom" formControlName="prenom" [(ngModel)]="selectedOp.prenomOP"/>
+                                    </div>
+                                    <div style="color: #f65656" *ngIf="opForm.controls['prenom'].invalid && (opForm.controls['prenom'].touched) ">
+                                        <span>*</span> minimum 4 caractères
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <div class="position-relative">
+                                            <label for="mat" class="">Matricule </label>
+                                            <input type="text" class="form-control input-mask-trigger" id="mat" placeholder="Matricule" formControlName="matricule" [(ngModel)]="selectedOp.matOP" />
+                                        </div>
+                                    </div>
+                                    <div style="color: #f65656" *ngIf="opForm.controls['matricule'].invalid && (opForm.controls['matricule'].touched) ">
+                                        <span>*</span> minimum 4 caractères
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div style="color: #f65656" *ngIf="opForm.controls['nom'].invalid && (opForm.controls['nom'].touched) ">
-                            <span>*</span> minimum 4 caractères
-                        </div>
                         <div class="form-group">
-                            <div class="">
-                                <div class="position-relative">
-                                    <label for="pre" class="">Prénom </label>
-                                    <input type="text" class="form-control" id="pre" placeholder="Prénom" formControlName="prenom" [(ngModel)]="selectedOp.prenom"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="color: #f65656" *ngIf="opForm.controls['prenom'].invalid && (opForm.controls['prenom'].touched) ">
-                            <span>*</span> minimum 4 caractères
-                        </div>
-                        <div class="form-group">
-                            <div class="">
-                                <div class="position-relative">
-                                    <label for="mat" class="">Matricule </label>
-                                    <input type="text" class="form-control input-mask-trigger" id="mat" placeholder="Matricule" formControlName="matricule" [(ngModel)]="selectedOp.matricule" />
-                                </div>
-                            </div>
-                        </div>
-                        <div style="color: #f65656" *ngIf="opForm.controls['matricule'].invalid && (opForm.controls['matricule'].touched) ">
-                            <span>*</span> minimum 4 caractères
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary" [disabled]="opForm.invalid || opForm.pristine"
+                            <button type="submit" class="btn btn-primary"
                                     (click)="operation == 'add' ? addOperateur() : updateOperateur() " >
                                 {{operation == 'add' ? 'Enregistrer' :
                                 operation == 'edit' ? 'Modifier ' : ''}}
@@ -60,70 +56,10 @@
                         </div>
                     </form>
                 </div>
-                <!--<div *ngIf="operation == 'remove'">-->
-                <!--<ul class="tabs-animated-shadow tabs-animated nav nav-justified tabs-shadow-bordered p-3">-->
-                <!--<li class="nav-item">-->
-                <!--<a role="tab" class="nav-link active" data-toggle="tab" href="#tab-messages-header">-->
-                <!--<span>Nouveau Technicien</span>-->
-                <!--</a>-->
-                <!--</li>-->
-                <!--</ul>-->
-                <!--<div class="tab-content">-->
-                <!--<div class="tab-pane active" id="tab-errors-header" role="tabpanel">-->
-                <!--<div class="scroll-area-sm">-->
-                <!--<div class="scrollbar-container">-->
-                <!--<div class="no-results pt-3 pb-0">-->
-                <!--<div class="swal2-icon swal2-question swal2-animate-error-icon">-->
-                <!--<div class="swal2-success-circular-line-left"-->
-                <!--style="background-color: rgb(255, 255, 255);"></div>-->
-                <!--<span class="swal2-success-line-tip"></span>-->
-                <!--<span class="swal2-success-line-long"></span>-->
-                <!--<div class="swal2-success-ring"></div>-->
-                <!--<div class="swal2-success-fix"-->
-                <!--style="background-color: rgb(255, 255, 255);"></div>-->
-                <!--<b style="font-size: 1.5em; font-weight: bold">?</b>-->
-                <!--<div class="swal2-success-circular-line-right"-->
-                <!--style="background-color: rgb(255, 255, 255);"></div>-->
-                <!--</div>-->
-                <!--<div class="results-subtitle">{{selectedTech.nom}}</div>-->
-                <!--<div class="results-title">Confirmez-vous la suppression de cette ligne ?</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<ul class="nav flex-column">-->
-                <!--<li class="nav-item-divider nav-item"></li>-->
-                <!--<li class="nav-item-btn text-center nav-item">-->
-                <!--<button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedTech.idTechnicien" (click)="deleteTechnicien(); operation = 'ok'">Supprimer-->
-                <!--</button>-->
-                <!--&nbsp;&nbsp;-->
-                <!--<button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm">Annuler-->
-                <!--</button>-->
-                <!--</li>-->
-                <!--</ul>-->
-                <!--</div>-->
-                <!--<div *ngIf="operation == 'ok'">-->
-                <!--<div class="no-results pt-3 pb-0">-->
-                <!--<div class="swal2-icon swal2-success swal2-animate-success-icon">-->
-                <!--<div class="swal2-success-circular-line-left"-->
-                <!--style="background-color: rgb(255, 255, 255);"></div>-->
-                <!--<span class="swal2-success-line-tip"></span>-->
-                <!--<span class="swal2-success-line-long"></span>-->
-                <!--<div class="swal2-success-ring"></div>-->
-                <!--<div class="swal2-success-fix"-->
-                <!--style="background-color: rgb(255, 255, 255);"></div>-->
-                <!--<div class="swal2-success-circular-line-right"-->
-                <!--style="background-color: rgb(255, 255, 255);"></div>-->
-                <!--</div>-->
-                <!--<div class="results-subtitle">Suppression Réussie!</div>-->
-                <!--<div class="results-title">Technicien supprimé avec succès!</div>-->
-                <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
     </div>
-    <div class="col-lg-7">
+    <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Liste des Opérateurs
@@ -136,117 +72,75 @@
                     </div>
                 </div>
                 <div class="btn-actions-pane-right">
-                    <button class="btn btn-secondary float-right" (click)="operation = 'add'; initLigne();">Ajouter</button>
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="selectPanForm">
+                            <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
+                                <option value="" selected disabled hidden>Afficher Tout</option>
+                                <option value="tous">Tous les Techniciens</option>
+                                <option value="actifs" >Actifs</option>
+                                <option value="inactifs" >Inactifs</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <button class="btn btn-secondary float-right" (click)="operation = 'add'; initLigne();">
+                            <i class="fa fa-plus-circle"></i>
+                            Nouvel Opérateur
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
+                <div class="table-responsive" >
                 <table class="align-middle mb-0 table table-sm table-borderless table-hover">
                     <thead>
                     <tr>
                         <th>Matricule</th>
                         <th>Nom</th>
                         <th>Prénom</th>
-                        <th>Actions</th>
+                        <th>Activité</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="widget-content" *ngFor="let op of operateurs | filter: term | paginate:{itemsPerPage: 5, currentPage:p}; ">
+                    <tr class="widget-content" *ngFor="let op of operateurs | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; ">
                         <th scope="row" >{{ op.matOP}}</th>
-                        <td>{{op.nomOP}}</td>
-                        <td>{{op.prenomOP}}</td>
-                        <td>
-                            <div class="">
-                                <a [routerLink]="['/techniciens', op.matOP]">
-                                    <button class="border-0 btn btn-outline-success">
-                                        <i class="fa fa-eye"></i>
-                                    </button>
-                                </a>
-                                <button class="border-0 btn btn-outline-primary" (click)="operation = 'edit'; selectedOp = op;">
-                                    <i class="fa fa-pencil"></i>
-                                </button>
-                                <button class="border-0 btn btn-outline-danger" (click)="operation = 'remove'; selectedOp = op;showModal=true" data-toggle="modal" data-target="exampleModal">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                                <div class="modal" role="dialog" id="mymodal" [ngClass]="{'show': showModal}">
-                                    <div class="modal-dialog" >
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <div *ngIf="operation == 'remove'">
-                                                    <div class="tab-content" style="height: auto;">
-                                                        <div class="tab-pane active" id="tab-errors-header" role="tabpanel">
-                                                            <div class="scroll-area-sm">
-                                                                <div class="scrollbar-container">
-                                                                    <div class="no-results pt-3 pb-0">
-                                                                        <div class="swal2-icon swal2-question swal2-animate-error-icon">
-                                                                            <div class="swal2-success-circular-line-left"
-                                                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                                                            <span class="swal2-success-line-tip"></span>
-                                                                            <span class="swal2-success-line-long"></span>
-                                                                            <div class="swal2-success-ring"></div>
-                                                                            <div class="swal2-success-fix"
-                                                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                                                            <b style="font-size: 1.5em; font-weight: bold">?</b>
-                                                                            <div class="swal2-success-circular-line-right"
-                                                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                                                        </div>
-                                                                        <div class="results-subtitle">{{selectedOp.nomOP}}</div>
-                                                                        <div class="results-title">Confirmez-vous la suppression de cet Opérateur ?</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <ul class="nav flex-column">
-                                                        <li class="nav-item-divider nav-item"></li>
-                                                        <li class="nav-item-btn text-center nav-item">
-                                                            <button class="btn-shadow btn-wide btn-pill btn btn-danger btn-sm" [disabled]="!selectedOp.matOP" (click)="deleteOperateur(); operation = 'ok'">Supprimer
-                                                            </button>
-                                                            &nbsp;&nbsp;
-                                                            <button class="btn-shadow btn-wide btn-pill btn btn-focus btn-sm" data-dismiss="modal" (click)="showModal=false; operation = 'add'">Annuler
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <div *ngIf="operation == 'ok'">
-                                                    <ul class="nav flex-column">
-                                                        <li class="nav-item-btn text-right nav-item">
-                                                            <button class="close" data-dismiss="modal" (click)="showModal=false; operation = 'add'">&times;
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="no-results pt-3 pb-0">
-                                                        <div class="swal2-icon swal2-success swal2-animate-success-icon">
-                                                            <div class="swal2-success-circular-line-left"
-                                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                                            <span class="swal2-success-line-tip"></span>
-                                                            <span class="swal2-success-line-long"></span>
-                                                            <div class="swal2-success-ring"></div>
-                                                            <div class="swal2-success-fix"
-                                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                                            <div class="swal2-success-circular-line-right"
-                                                                 style="background-color: rgb(255, 255, 255);"></div>
-                                                        </div>
-                                                        <div class="results-subtitle">Suppression Réussie!</div>
-                                                        <div class="results-title">Opérateur supprimé avec succès!</div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!--<button class="btn btn-primary" type="button" data-toggle="modal" data-target="exampleModal" (click)="showModal=true">&times;</button>-->
+                        <td>{{op.nomOP | uppercase}}</td>
+                        <td class="text-capitalize">{{op.prenomOP}}</td>
+                        <td> <div [ngClass]="op.etat == true ? 'badge badge-success' : 'badge badge-focus'">
+                            {{op.etat == true ? 'En Service' : 'Hors Service'}}
+                        </div>
+                        <td class="text-center">
+                            <div role="group" class="btn-group-sm btn-group">
+                                <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedOp = op;"><i class="fa fa-pencil"></i></button>
+                                <button class="btn  btn-danger" (click)="selectedOp = op;swl(op)"><i class="fa fa-times"></i></button>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
-            <div class="card-footer">
+            <div class="d-block clearfix card-footer">
+                <div class="float-left">
+                    <form [formGroup]="pageForm">
+                        <span style="display: inline-block">Afficher</span>&nbsp;
+                        <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
+
+                            <option value="" selected disabled hidden>10</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                        </select></span>&nbsp;
+                        <span style="display: inline-block">données</span>
+                    </form>
+                </div>
                 <div class="float-right">
                     <ul class="pagination pagination-sm mb-0">
                         <li>
@@ -258,8 +152,6 @@
                             </pagination-controls>
                         </li>
                     </ul>
-                    <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
-                    <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
                 </div>
             </div>
         </div>

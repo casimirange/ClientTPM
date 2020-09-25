@@ -23,6 +23,10 @@ export class MachinesComponent implements OnInit {
   machineModel: Machine;
   machines: Machine[];
   machineForm: FormGroup;
+  searchPanForm: FormGroup;
+  selectPanForm: FormGroup;
+  pageForm: FormGroup;
+  pages: number = 7;
 
   operation: string = 'add';
 
@@ -37,6 +41,9 @@ export class MachinesComponent implements OnInit {
               private machineService: MachinesService)
       {
         this.createForm();
+        this.createForm1();
+        this.createForms();
+        this.pageForms();
         this.machineModel = new Machine();
         this.newligne= new Ligne();
       }
@@ -48,6 +55,23 @@ export class MachinesComponent implements OnInit {
       code: ['', [Validators.required]],
       label: ['', [Validators.required]],
       depL: ['']
+    });
+  }
+  createForm1() {
+    this.searchPanForm = this.fb.group({
+      search: [''],
+    });
+  }
+
+  createForms() {
+    this.selectPanForm = this.fb.group({
+      periode: ['']
+    });
+  }
+
+  pageForms() {
+    this.pageForm = this.fb.group({
+      page: ['']
     });
   }
 
@@ -74,8 +98,49 @@ export class MachinesComponent implements OnInit {
     );
   }
 
+  loadActiveMachine() {
+    this.machineService.getActiveMachines().subscribe(
+        data => {
+          this.machines = data
+
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des techniciens actifs');
+        }
+    );
+  }
+
+  loadDesactiveMachine() {
+    this.machineService.getDesactiveMachines().subscribe(
+        data => {
+          this.machines = data
+
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('chargement des techniciens actifs');
+        }
+    );
+  }
+
+  activeMachine(){
+    this.machineService.activeMachine(this.selectedMachine.code).subscribe(
+        res => {
+          this.initMachine();
+          // this.loadActiveTechniciens();
+          // this.loadDesactiveTechniciens();
+          this.loadMachines();
+        }
+    );
+  }
+
   loadligns() {
-    this.ligneService.getAllLignes().subscribe(
+    this.ligneService.getLignes().subscribe(
         data => {
           this.ligns = data
         },
@@ -99,7 +164,8 @@ export class MachinesComponent implements OnInit {
     }));
 
     this.newligne = this.ligns[indexDep];
-    this.machineModel.idLigne = this.newligne.idLigne;
+    // this.machineModel.idLigne = this.newligne.idLigne;
+    this.machineModel.idLigne = this.machineForm.controls['depL'].value;
     this.machineModel.nom = this.machineForm.controls['nom'].value;
     this.machineModel.code = this.machineForm.controls['code'].value;
     this.machineModel.centreCout = this.machineForm.controls['cc'].value;
@@ -107,7 +173,7 @@ export class MachinesComponent implements OnInit {
     console.log("index", indexDep);
     console.log("model", this.machineModel);
 
-    console.log("ligne :" + this.newligne.idLigne);
+    console.log("ligne :" + this.machineModel.idLigne);
     console.log("nom :" + this.machineForm.controls['nom'].value);
     console.log("code :" + this.machineForm.controls['code'].value);
     console.log("cc :" + this.machineForm.controls['cc'].value);
@@ -132,22 +198,18 @@ export class MachinesComponent implements OnInit {
     let indexDep = _.findIndex(this.ligns, (o => {
       return o.nomLigne == texte;
     }));
+    console.log("centre cout: "+this.machineForm.controls['cc'].value);
 
     this.newligne = this.ligns[indexDep];
-    this.machineModel.idLigne = this.newligne.idLigne;
+    // this.machineModel.idLigne = this.newligne.idLigne;
+    this.machineModel.idLigne = this.machineForm.controls['depL'].value;
     this.machineModel.nom = this.machineForm.controls['nom'].value;
     this.machineModel.code = this.machineForm.controls['code'].value;
     this.machineModel.centreCout = this.machineForm.controls['cc'].value;
     this.machineModel.label = this.machineForm.controls['label'].value;
-    console.log("index", indexDep);
-    console.log("model", this.machineModel);
-
-    console.log("ligne :" + this.newligne.idLigne);
-    console.log("nom :" + this.machineForm.controls['nom'].value)
-    console.log("code :" + this.machineForm.controls['code'].value)
-    console.log("cc :" + this.machineForm.controls['cc'].value)
-    console.log("label :" + this.machineForm.controls['label'].value)
-    this.machineService.updateMachine(this.selectedMachine).subscribe(
+    this.machineModel.etat = this.selectedMachine.etat;
+    console.log("machine"+ this.selectedMachine);
+    this.machineService.updateMachine(this.machineModel).subscribe(
         res => {
           this.initMachine();
           this.loadMachines();
@@ -173,5 +235,67 @@ export class MachinesComponent implements OnInit {
     let url = btoa(m.idMachine.toString());
     this.router.navigateByUrl("machines/"+url);
   }
+
+  swl(tec: Machine){
+    const Swal = require('sweetalert2');
+    Swal.fire({
+      title: tec.etat == false ? 'Activation' : 'Désactivation',
+      html: tec.etat == false ? "Voulez-vous activer "+ tec.nom.toUpperCase().bold(): "Voulez-vous désactiver " + tec.nom.toUpperCase().bold()+" ?",
+      icon: tec.etat == false ? 'question' : 'warning',
+      showCancelButton: true,
+
+      confirmButtonColor: '#00ace6',
+      cancelButtonColor: '#f65656',
+      confirmButtonText: 'OUI',
+      cancelButtonText: 'Annuler',
+      allowOutsideClick: true,
+      focusConfirm: false,
+      focusCancel: false,
+      focusDeny: true,
+      showLoaderOnConfirm: true
+    }).then((result) => {
+      if (result.value) {
+        this.activeMachine();
+        Swal.fire({
+          // title: tec.etat == false ? 'Activation' : 'Désactivation',
+          html:  tec.etat == false ? 'Machine ' + tec.nom.toUpperCase().bold() +' Activée avec succès!' : 'Machine ' + tec.nom.toUpperCase().bold() +' Désactivée avec succès!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        })
+      }
+    })
+  }
+
+  findSso($event){
+    if (this.selectPanForm.controls['periode'].value == 'tous'){
+      this.loadMachines();
+    }
+    if (this.selectPanForm.controls['periode'].value == 'actifs'){
+      this.loadActiveMachine();
+    }
+    if (this.selectPanForm.controls['periode'].value == 'inactifs'){
+      this.loadDesactiveMachine();
+    }
+  }
+
+  paginate($event){
+    if (this.pageForm.controls['page'].value == '10'){
+      this.pages = 10;
+    }
+    if (this.pageForm.controls['page'].value == '25'){
+      this.pages = 25;
+    }
+    if (this.pageForm.controls['page'].value == '50'){
+      this.pages = 50;
+    }
+    if (this.pageForm.controls['page'].value == '100'){
+      this.pages = 100;
+    }
+    if (this.pageForm.controls['page'].value == '1000'){
+      this.pages = 1000;
+    }
+  }
+
 
 }

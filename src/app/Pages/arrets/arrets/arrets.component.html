@@ -33,7 +33,7 @@
                                     <label for="machine" [ngClass]="{'red': arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched)}">Machine</label>
                                     <select id="machine" class="form-control form-control-sm" formControlName="machine"  [ngClass]="{'fred': arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched)}" [(ngModel)]="selectedArret.idMachine" >
                                         <option *ngFor="let mach of machines"  [value]="mach.idMachine">
-                                            {{mach.nom}}
+                                            {{mach.code | uppercase}}&nbsp;{{mach.nom | uppercase}}
                                         </option>
                                     </select>
                                 </div>
@@ -51,7 +51,7 @@
                                 <div class="">
                                     <div class="position-relative form-group">
                                         <label for="ha" [ngClass]="{'red': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)}">Heure d'arrêt</label>
-                                        <input type="datetime-local" class="form-control form-control-sm"  id="ha" formControlName="debut" [(ngModel)]="selectedArret.debutArret" [ngClass]="{'fred': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)}" />
+                                        <input type="datetime-local" class="form-control form-control-sm"  id="ha" formControlName="debut" ngModel="{{selectedArret.debutArret}}" [ngClass]="{'fred': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)}" />
                                     </div>
                                     <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched) ">
                                         <span>*</span> Date et heure invalide
@@ -163,15 +163,9 @@
                         <form [formGroup]="selectPanForm">
                             <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
 
-                                <option value="ttesp" selected>Toutes les pannes</option>
-                                <option value="tp" >Aujourd'hui</option>
-                                <option value="hp" >Hier</option>
-                                <option value="twp" >Cette Semaine</option>
-                                <option value="lwp" >Semaine Dernière</option>
+                                <option value="" selected disabled hidden>Sélectionner la période</option>
                                 <option value="tmp" >Ce mois</option>
                                 <option value="lmp" >Mois Dernier</option>
-                                <option value="typ" >Cette Année</option>
-                                <option value="lyp" >Année Dernière</option>
                                 <option value="pp"  >Personaliser la recherche</option>
                             </select>
                         </form>
@@ -200,8 +194,8 @@
                         </ng-template>
                     </div>
                 </div>
-                <div class="btn-actions-pane-right">
-                    <div *ngIf="ranger == 'true'" role="group" class="btn-group-sm btn-group">
+                <div *ngIf="ranger == 'true'" class="btn-actions-pane-right">
+                    <div  role="group" class="btn-group-sm btn-group">
                         <div >
                             <form [formGroup]="rangeForm">
                                 <div class="form-row">
@@ -213,7 +207,7 @@
                                         <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
                                     </div>
                                     <div class="col-md-2">
-                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); typeArretRange(); paretoArretRange(); RangeArrets()" type="submit"><i class="fa fa-search"></i></button>
 
                                     </div>
 
@@ -239,7 +233,23 @@
                     <tbody>
                     <tr class="widget-content" *ngFor="let arret of arrets | filter : term | paginate:{itemsPerPage: pages, currentPage:p}">
                         <td>{{ arret.date  | date: 'dd/MM/y'}}</td>
-                        <td>{{arret.machine}}</td>
+                        <td><div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left mr-3">
+                                    <div class="widget-content-left">
+                                        <!--<img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">-->
+                                        <button class="btn-icon btn-icon-only btn btn-link btn-sm">
+                                            <!--<i class="pe-7s-settings btn-icon-wrapper font-size-xlg"> </i>-->
+                                            <img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="widget-content-left flex2">
+                                    <div class="widget-heading">{{arret.machine | uppercase}}</div>
+                                    <div class="widget-subheading opacity-7">{{arret.code | uppercase}}</div>
+                                </div>
+                            </div>
+                        </div></td>
                         <td>{{arret.cause}}</td>
                         <td>{{arret.debut_arret | date: 'HH:mm'}}</td>
                         <td>{{arret.fin_arret | date: 'HH:mm'}}</td>
@@ -287,6 +297,122 @@
     </div>
 </div>
 
+<div class="row" >
+    <div class="col-md-12 col-lg-6 col-xl-7">
+        <div class="main-card mb-3 card">
+            <div class="rm-border card-header">
+                <div>
+                    <h5 class="menu-header-title text-capitalize text-primary">Suivi Journalier</h5>
+                </div>
+                <div class="btn-actions-pane-right">
+                    {{date_this_month}}
+                </div>
+
+            </div>
+            <!--<div *ngIf="ranger == 'true'" class="btn-actions-pane-right mr-2">-->
+                <!--<div  role="group" class="btn-group-sm btn-group">-->
+                    <!--<div >-->
+                        <!--<form [formGroup]="rangeForm">-->
+                            <!--<div class="form-row">-->
+
+                                <!--<div class="col-md-5">-->
+                                    <!--<input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">-->
+                                <!--</div>-->
+                                <!--<div class="col-md-5">-->
+                                    <!--<input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">-->
+                                <!--</div>-->
+                                <!--<div class="col-md-2">-->
+                                    <!--<button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); typeArretRange(); paretoArretRange(); RangeArrets()" type="submit"><i class="fa fa-search"></i></button>-->
+
+                                <!--</div>-->
+
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="card-body p-2" id="pdf1">
+                <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
+                    <div style="height: auto" >
+                        <div class="flex-item">
+                            <div style="display: block; height: auto;">
+                                <app-chart
+                                        [type]="'line'"
+                                        [data]="datas.datasets"
+                                        [lineChartLabels]="datas.labels"
+                                ></app-chart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-5">
+        <div class="main-card mb-3 card" >
+            <div class="card-body">
+                <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Récapitulatif Arrêts</h6>
+
+
+                <ul class="list-group list-group-flush">
+                    <li class="p-0 list-group-item">
+                        <div class="row">
+                            <div class="center-elem col-md-6">
+                                <div class="center-elem w-100">
+                                    <apx-chart
+                                            [series]="chartOptions.series"
+                                            [chart]="chartOptions.chart"
+                                            [plotOptions]="chartOptions.plotOptions"
+                                            [labels]="chartOptions.labels"
+                                            [stroke]="chartOptions.stroke"
+                                            [fill]="chartOptions.fill">
+                                    </apx-chart>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{nbre_arret_last_month}}</span></div>
+                                        <div class="widget-description text-focus">
+                                            {{taux < 0  ? 'En baisse de' : taux > 0  ? 'En Hausse de': ''}}
+                                            <span class="pl-1"
+                                                  [ngClass]="
+            taux < 0 ? 'text-success' :
+            taux > 0 ? 'text-danger' : 'text-warning'"
+                                            >
+                                            <i [ngClass]="
+            taux < 0 ? 'fa fa-arrow-down' :
+            taux > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+                                            <span class="pl-1" >
+                                                {{ taux == 0 ? taux+' %':
+                                                    (taux == 100) ? taux+' %':
+                                                    (taux == -100) ? (taux) * (-1)+' %':
+                                                    (taux < 0 ) ? (taux) * (-1)+' %':
+                                                    taux+' %'}}
+                                            </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divider mt-0 mb-0 mr-2"></div>
+                                <div class="widget-chart">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-numbers-sm mt-0 text-primary" >
+                                            <span *ngFor="let nber of thisYearArret">{{nber.nbre}}</span>
+                                        </div>
+                                        <div class="widget-subheading">Total annuel</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-lg-6">
         <div class="main-card mb-3 card">
@@ -298,8 +424,11 @@
                                     [doughnutChartData] = "typeArret.nbre"
                                     [doughnutChartLabels] = "typeArret.labels"
                                     [lineChartColors]="lineChartColors"
+                                    [doughnutChartType]="'pie'"
                 ></app-doughnut-chart>
                 <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
+                <div class="divider"></div>
+                <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
             </div>
         </div>
     </div>
@@ -313,8 +442,32 @@
                                     [doughnutChartData] = "typeArret.tdt"
                                     [doughnutChartLabels] = "typeArret.labels"
                                     [lineChartColors]="lineChartColors"
+                                    [doughnutChartType]="'doughnut'"
                 ></app-doughnut-chart>
                 <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
+                <div class="divider"></div>
+                <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Pareto des arrêts
+            </div>
+            <div class="card-body">
+                <app-chart
+                        [type]="'line'"
+                        [data]="pareto.datasets"
+                        [lineChartLabels]="pareto.labels"
+                        [lineChartColors]="colorsPARETO"
+                ></app-chart>
+                <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
+                <div class="divider"></div>
+                <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
             </div>
         </div>
     </div>

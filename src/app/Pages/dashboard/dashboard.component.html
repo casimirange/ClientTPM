@@ -306,7 +306,7 @@
                                             <div class="widget-subheading">Mois Dernier</div>
                                             <div class="widget-numbers-sm mt-0 text-alternate"><span>{{lastMonth}}</span></div>
                                             <div class="widget-description text-focus">
-                                                {{(cdount < lastMonth) ? 'En baisse de' : (cdount > lastMonth) ? 'En Hausse de': ''}}
+                                                {{(cdount < lastMonth) ? 'En baisse de' : (cdount > lastMonth) ? 'En Hausse de': 'Constant'}}
                                                 <span class="pl-1"
                                                       [ngClass]="
             cdount < lastMonth ? 'text-success' :
@@ -316,9 +316,18 @@
             cdount < lastMonth ? 'fa fa-arrow-down' :
             cdount > lastMonth ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
                                             <!--<span class="pl-1" *ngIf="cdount == 0 && lastMonth !=0 || lastMonth == 0">100 %</span>-->
-                                            <span class="pl-1" *ngIf="cdount < lastMonth">{{(((cdount)/(lastMonth))-1) *(-1) | percent}}</span>
-                                            <span class="pl-1" *ngIf="cdount >= lastMonth && lastMonth != 0">{{(((cdount)/(lastMonth))-1) | percent}}</span>
+                                            <!--<span class="pl-1" *ngIf="cdount < lastMonth">{{(((cdount)/(lastMonth))-1) *(-1) | percent}}</span>-->
+                                            <!--<span class="pl-1" *ngIf="cdount >= lastMonth && lastMonth != 0">{{(((cdount)/(lastMonth))-1) | percent}}</span>-->
+                                                    <span class="pl-1">{{
+                                                    cdount < lastMonth ? ((((cdount)/(lastMonth))-1) *(-1) | percent) :
+                                                    (cdount >= lastMonth && lastMonth != 0) ? ((((cdount)/(lastMonth))-1) | percent) :
+                                                    (cdount == 0 && lastMonth !=0 ) ? '100 %' :
+                                                    (cdount != 0 && lastMonth ==0 ) ? '100 %' : '0 %'
+                                                    }} </span>
                                             </span>
+
+
+                                                <!--decimal((hour.hour_prog - (hour.AT/60))) == false ? (hour.hour_prog - (hour.AT/60)).toFixed(2) : (hour.hour_prog - (hour.AT/60))-->
                                             </div>
                                         </div>
                                     </div>
@@ -359,7 +368,7 @@
                     <div class="border-light card-border scroll-area-sm card">
                         <div class="scrollbar-container">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item" *ngFor="let pan of pannes " style="cursor: pointer;" (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }">
+                                <li class="list-group-item" *ngFor="let pan of todatpannes " style="cursor: pointer;" (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }">
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <!--<div class="widget-content-left mr-3">-->

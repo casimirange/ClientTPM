@@ -23,7 +23,7 @@ export class Pannes {
     etat?: boolean;
     cont?: boolean;
     quart?: number;
-
+    id_panne?: number;
 
 
     machine?: string;
@@ -60,6 +60,6 @@ export class Pannes {
     dep?: string;
     idDepartement?: number;
 
-    constructor( ) {}
+    constructor(public nom?: string, public id_departement?: string, public id?: number ) {}
     // constructor(public nom?: string, public id_departement?: string, public id?: number ) {}
 }

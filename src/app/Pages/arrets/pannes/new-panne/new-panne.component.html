@@ -610,9 +610,10 @@
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
                                         <label for="machine" [ngClass]="{'red': panForm.controls['idMachine'].invalid && (panForm.controls['idMachine'].touched)}">Machine</label>
-                                        <select id="machine" class="form-control form-control-sm" formControlName="idMachine" [(ngModel)]="mach" [ngClass]="{'fred': panForm.controls['idMachine'].invalid && (panForm.controls['idMachine'].touched)}" >
+                                        <select id="machine" class="form-control form-control-sm" formControlName="idMachine" [ngClass]="{'fred': panForm.controls['idMachine'].invalid && (panForm.controls['idMachine'].touched)}" >
+                                            <option value="" selected disabled hidden>Sélectionner machine en panne</option>
                                             <option *ngFor="let mach of machines"  [ngValue]="mach.idMachine">
-                                                <b>{{mach.code}}</b>&nbsp; {{mach.nom}}
+                                                <b>{{mach.code | uppercase}}</b>&nbsp; {{mach.nom | uppercase}}
                                             </option>
                                         </select>
                                     </div>
@@ -626,9 +627,10 @@
                                     <div class="position-relative form-group">
                                         <label for="op" [ngClass]="{'red': panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched)}">Opérateur de Production</label>
 
-                                        <select id="op" class="multiselect-dropdown form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]="selo" [ngClass]="{'fred': panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched)}">
-                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOP" (select)="selop = op">
-                                                {{op.nomOP}} &nbsp; {{op.prenomOP}}
+                                        <select id="op" class=" form-control form-control-sm"  formControlName="idOperateur" [ngClass]="{'fred': panForm.controls['idOperateur'].invalid && (panForm.controls['idOperateur'].touched)}">
+                                            <option value="" selected disabled hidden>Sélectionner un opérateur</option>
+                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOP">
+                                                {{op.nomOP | uppercase}} {{op.prenomOP | titlecase}}
                                             </option>
                                         </select>
                                     </div>
@@ -655,9 +657,10 @@
                                     <div class="col-md-5 field_wrapper">
                                         <div class="position-relative form-group">
                                             <label for="mnt{{i+1}}" [ngClass]="{'red': panForm.controls['idTechnicien'].invalid && (panForm.controls['idTechnicien'].touched)}">Maintenancier N°{{i+1}}</label>
-                                            <select id="mnt{{i+1}}" class="multiselect-dropdown form-control form-control-sm"  [formControlName]="i" [ngClass]="{'fred': panForm.controls['idTechnicien'].invalid && (panForm.controls['idTechnicien'].touched)}">
+                                            <select id="mnt{{i+1}}" class="form-control form-control-sm"  [formControlName]="i" [ngClass]="{'fred': panForm.controls['idTechnicien'].invalid && (panForm.controls['idTechnicien'].touched)}">
+                                                <option value="" selected disabled hidden>Sélectionner un maintenancier</option>
                                                 <option *ngFor="let tec of techniciens" [ngValue]="tec.idTechnicien" >
-                                                    {{tec.nom}} &nbsp; {{tec.prenom}}
+                                                    {{tec.nom | uppercase}} {{tec.prenom | titlecase}}
                                                 </option>
                                             </select>
                                         </div>
@@ -1017,7 +1020,7 @@
                         <ng-template #mymodal let-modal>
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
-                                <div class="close vertical-timeline-element-content bounce-in" >
+                                <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')">
                                     <span class="timeline-title"><b>{{pan.machine}}</b></span>
                                     <p>{{pan.code}}</p>
                                 </div>
@@ -1027,15 +1030,15 @@
                                     <div class="row">
                                         <div class="col-md-4 col-xl-4 ">
                                             <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                            <p>{{pan.heureArret | date: 'HH:mm'}}</p>
+                                            <p>{{pan.heure_arret | date: 'HH:mm'}}</p>
                                         </div>
                                         <div class="col-md-4 col-xl-4 text-center">
                                             <span class="timeline-title"><b>Début Inter</b></span>
-                                            <p>{{pan.debutInter | date: 'HH:mm'}}</p>
+                                            <p>{{pan.debut_inter | date: 'HH:mm'}}</p>
                                         </div>
                                         <div class="col-md-4 col-xl-4 text-right">
                                             <span class="timeline-title"><b>Fin Inter</b></span>
-                                            <p>{{pan.finInter | date: 'HH:mm'}}</p>
+                                            <p>{{pan.fin_inter | date: 'HH:mm'}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1064,7 +1067,7 @@
                                             <div class="vertical-timeline-item vertical-timeline-element">
                                                 <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
-                                                        <p><b class="text-alternate">{{pan.matOp}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
+                                                        <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1092,18 +1095,21 @@
                                 </div>
                             </div>
                             <div class="d-block clearfix modal-footer">
-                                <div class="float-left">
-                                <button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning btn-sm">Modifier</button>
-                                </div>
+                                <!--<div class="float-left">-->
+                                <!--<button class="mr-2 btn-icon btn-icon-only btn btn-outline-warning btn-sm">Modifier</button>-->
+                                <!--</div>-->
                                 <div class="float-right">
-                                    <button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger btn-sm" (click)="modal.close('save click')">Annuler</button>
-                                    <a [routerLink]="['/new-panne', pan.numero]">
-                                        <button class="btn-wide btn-shadow btn btn-primary btn-sm" >Continuer</button>
+                                    <!--<button class="mr-2 btn-icon btn-icon-only btn btn-outline-danger btn-sm" (click)="modal.close('save click')">Annuler</button>-->
+                                    <a [routerLink]="['/new-panne', pan.numero]" (click)="modal.close('save click')">
+                                        <button class="btn-wide btn-shadow btn btn-outline-alternate btn-sm" >Continuer</button>
                                     </a>
                                 </div>
                                 <!--<button class="btn btn-primary" type="button" (click)="modal.close('save click')">Fermer</button>-->
                             </div>
                         </ng-template>
+                    </li>
+                    <li class="list-group-item font-weight-bold" *ngIf="countUnfinishedFailure == 0">
+                        Aucune panne inachevée !!!
                     </li>
                 </ul>
             </div>
