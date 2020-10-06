@@ -89,6 +89,8 @@ import { UserListComponent } from './user-list/user-list.component';
 import {DatePipe} from "@angular/common";
 import { RadialBarComponent } from './dashboard/radial-bar/radial-bar.component';
 import { EditPanneComponent } from './Pages/arrets/pannes/edit-panne/edit-panne.component';
+import {RapportService} from "./services/rapport/rapport.service";
+import { DashCartComponent } from './dashboard/dash-cart/dash-cart.component';
 // import {ClientSideRowModel} from "ag-grid";
 // import {NgScrollbarModule} from "ngx-scrollbar";
 // import {IgxGridModule} from "igniteui-angular";
@@ -145,6 +147,7 @@ import { EditPanneComponent } from './Pages/arrets/pannes/edit-panne/edit-panne.
     UserListComponent,
     RadialBarComponent,
     EditPanneComponent,
+    DashCartComponent,
   ],
   imports: [
     BrowserModule,
@@ -195,6 +198,7 @@ import { EditPanneComponent } from './Pages/arrets/pannes/edit-panne/edit-panne.
     DatePipe,
     ArretsService,
     HeuresService,
+    RapportService,
     // AuthInterceptor,
     // TokenStorageService
     httpInterceptorProviders,

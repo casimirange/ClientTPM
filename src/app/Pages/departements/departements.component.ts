@@ -47,9 +47,10 @@ export class DepartementsComponent implements OnInit {
 
     createForm() {
         this.depForm = this.fb.group({
-            nom: ['', [Validators.required]],
-            centre_cout: ['', [Validators.required]],
-            responsable: ['', [Validators.required]]
+            nom: ['', [Validators.required, Validators.minLength(5)]],
+            centre_cout: ['', [Validators.required, Validators.minLength(4)]],
+            localisation: ['', [Validators.required, Validators.minLength(4)]],
+            responsable: ['', [Validators.required, Validators.minLength(4)]]
         });
     }
 
@@ -75,7 +76,7 @@ export class DepartementsComponent implements OnInit {
     }
 
     loadDepartements() {
-        this.departementService.getDepartements().subscribe(
+        this.departementService.getAllDepartements().subscribe(
             data => {
                 this.departements = data
             },
@@ -140,6 +141,37 @@ export class DepartementsComponent implements OnInit {
                 this.loadDepartements();
             }
         );
+    }
+
+    swl(tec: Departement){
+        const Swal = require('sweetalert2');
+        Swal.fire({
+            title: 'Spprimer',
+            html: "Voulez-vous vraiment supprimer "+ tec.nom.toUpperCase().bold()+ " ?",
+            icon: 'error',
+            showCancelButton: true,
+            footer: '<a >Cette action est irréversible</a>',
+            confirmButtonColor: '#00ace6',
+            cancelButtonColor: '#f65656',
+            confirmButtonText: 'OUI',
+            cancelButtonText: 'Annuler',
+            allowOutsideClick: true,
+            focusConfirm: false,
+            focusCancel: false,
+            focusDeny: true,
+            showLoaderOnConfirm: true
+        }).then((result) => {
+            if (result.value) {
+                this.deleteDepartement();
+                Swal.fire({
+                    // title: tec.etat == false ? 'Activation' : 'Désactivation',
+                    html: 'Département supprimé avec succès!',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+            }
+        })
     }
 
 }

@@ -887,8 +887,9 @@ export class SingleDepartementComponent implements OnInit {
 
   ngOnInit() {
     this.showDepartement();
+    this.ThisMonthPannes();
     this.ListMachines();
-    this.showPannesDep();
+    // this.showPannesDep();
     this.CountMonthPannes();
     this.HourPerMonth();
     this.mtbfAlpicam();
@@ -931,6 +932,10 @@ export class SingleDepartementComponent implements OnInit {
     // dashboard dep
     this.getChart3();
     this.countThisYear();
+
+    var date = new Date();
+    var lastDay = new Date(date.getFullYear()-1, 1, date.setDate(1));
+    console.log('la date: '+ lastDay);
   }
 
   getChart3(){
@@ -1969,7 +1974,7 @@ export class SingleDepartementComponent implements OnInit {
                     this.departementService.ligne1ThisYear(Number.parseInt(url)).subscribe(
                         data2 => {
                             this.L1mtbfTY = data2;
-                            this.L1mtbf = this.L1mtbfY.concat(this.L1mtbfTY);
+                            this.L1mtbf = this.L1mtbfY.slice((this.L1mtbfY.length -6), this.L1mtbfY.length).concat(this.L1mtbfTY);
                             console.log('concat '+this.L1mtbf);
 
                             for (let mach of this.L1mtbf){
@@ -4664,5 +4669,12 @@ export class SingleDepartementComponent implements OnInit {
     if (this.pageForm.controls['page'].value == '1000'){
       this.pages = 1000;
     }
+  }
+
+  decimal(x: number){
+    if (Number.isInteger(x)) {
+      return true;
+    }
+    return false;
   }
 }

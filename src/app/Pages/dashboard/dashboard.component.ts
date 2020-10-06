@@ -277,7 +277,7 @@ export class DashboardComponent implements OnInit {
               type: "radialBar",
           },
 
-          series: [this.series],
+          series: [this.series ? this.series : 0],
 
           plotOptions: {
               radialBar: {

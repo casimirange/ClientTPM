@@ -90,7 +90,7 @@ export class PannesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.ThisWeekPannes();
+    this.ThisMonthPannes();
     this.countAllPannes();
     this.loadTimePannes();
     // this.loadTechPannes();
@@ -436,6 +436,14 @@ export class PannesComponent implements OnInit {
       this.panneService.getRangeDatePannes(d1, d2).subscribe(
           data => {
               this.pannes = data;
+              var x =0;
+              for (let pin of this.pannes){
+                  x = x + pin.dt;
+              }
+
+              console.log('pannes: '+data.length);
+              console.log('TDT2: '+x);
+
           },
           error => {
               console.log('une erreur a été détectée!')
@@ -520,7 +528,9 @@ export class PannesComponent implements OnInit {
             if (result.value) {
                 this.panneService.deletePannes(pan.numero).subscribe(
                     res => {
-                        console.log('panne terminée')
+                        console.log('panne supprimée')
+                        this.modalService.dismissAll();
+                        this.ThisMonthPannes();
                     }
                 );
                 Swal.fire({
@@ -531,8 +541,7 @@ export class PannesComponent implements OnInit {
                     showConfirmButton: false
                 });
 
-                this.modalService.dismissAll();
-                this.loadPannes();
+
             }
         })
     }

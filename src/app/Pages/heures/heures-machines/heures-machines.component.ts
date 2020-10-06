@@ -38,6 +38,7 @@ export class HeuresMachinesComponent implements OnInit {
   date_this_months: any;
   closeResult: any;
   machProg: any[];
+  machNonProg: any[];
   period: string = 'hier';
 
   constructor(private machineService: MachinesService,
@@ -57,6 +58,8 @@ export class HeuresMachinesComponent implements OnInit {
     this.pageForms();
     this.selectedHeure = new Heures();
     this.day = new Date();
+
+
   }
 
   pageForms() {
@@ -134,7 +137,7 @@ export class HeuresMachinesComponent implements OnInit {
   }
 
   loadMachines() {
-    this.machineService.getMachines().subscribe(
+    this.machineService.getActiveMachines().subscribe(
         data => {
           this.machines = data;
         },
@@ -210,6 +213,18 @@ export class HeuresMachinesComponent implements OnInit {
           console.log(this.machProg);
         }
     );
+    this.heuresService.machNonProg(dep).subscribe(
+        data => {
+          this.machNonProg = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('mach prog');
+          console.log(this.machNonProg);
+        }
+    );
   }
 
   decimal(x: number){
@@ -234,6 +249,18 @@ export class HeuresMachinesComponent implements OnInit {
           console.log(this.machProg);
         }
     );
+    this.heuresService.machNonProgRange(dep, d1).subscribe(
+        data => {
+          this.machNonProg = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('mach prog');
+          console.log(this.machNonProg);
+        }
+    );
   }
 
   loadMachProgByDepRangeMonth(dep: string) {
@@ -252,6 +279,19 @@ export class HeuresMachinesComponent implements OnInit {
           console.log(this.machProg);
         }
     );
+    this.heuresService.machNonProgRangeMonth(dep, d1).subscribe(
+        data => {
+          this.machNonProg = data;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+        },
+        () => {
+          console.log('mach prog');
+          console.log(this.machNonProg);
+        }
+    );
+
   }
 
   loadHeuresByDep() {

@@ -9,7 +9,7 @@
                     <div class="col-lg-12 col-md-12 col-xl-12 ml-1 mt-1">
                         <div class="main-card mb-3 card">
                             <div class="card-header">
-                                Enregistrer les heures de Travail Programmée des machines
+                                Enregistrer les heures de Travail Programmées des machines
                             </div>
                             <div class="card-body">
                                 <form [formGroup]="heurForm" id="signupForm" class="col-md-10 mx-auto"  >
@@ -88,7 +88,7 @@
                     <div class="col-lg-12 col-md-12 col-xl-12 ml-1">
                         <div class="main-card mb-3 card">
                             <div class="card-header">
-                                Récapitulatif des Heures par machine
+                                <div *ngIf="ranger == 'false'">Récapitulatif des Heures par machine</div>
                                 <div class="btn-actions-pane-right">
                                     <div role="group" class="btn-group-sm btn-group">
                                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
@@ -174,18 +174,18 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{heure.heure}}</td>
+                                        <td>{{heure.heure}} h</td>
                                         <td class="text-center" [ngClass]="{'bg-danger text-white font-weight-bold': heure.nbre > 0 }">{{heure.nbre}}</td>
-                                        <td class="text-center" [ngClass]="{'bg-danger text-white font-weight-bold': heure.nbre > 0 }">{{heure.AT}}</td>
+                                        <td class="text-center" [ngClass]="{'bg-danger text-white font-weight-bold': heure.nbre > 0 }">{{heure.AT}} min</td>
                                         <td class="text-left" >
                                             {{heure.nbre == 0 ? heure.heure :
                                             decimal((heure.heure - (heure.AT/60))) == false ? (heure.heure - (heure.AT/60)).toFixed(2) : (heure.heure - (heure.AT/60))
-                                            }}
+                                            }} h
                                         </td>
                                         <td class="text-center">
                                             <div role="group" class="btn-group-sm btn-group">
                                                 <button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>
-                                                <button class="btn  btn-danger" (click)="swl()"><i class="fa fa-times"></i></button>
+                                                <button class="btn  btn-danger" ><i class="fa fa-times"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -316,7 +316,7 @@
                             <div class="vertical-timeline-item vertical-timeline-element">
                                 <div><span class="vertical-timeline-element-icon bounce-in"><i class="badge badge-dot badge-dot-xl badge-danger"> </i></span>
                                     <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Heures de Travail</h4>
-                                        <p>Temps Programmé: <span class="text-alternate">{{hour.hour_prog}} h</span></p>
+                                        <p>Temps Programmé: <span class="text-alternate">{{decimal(hour.hour_prog) == false ? hour.hour_prog.toFixed(0) : hour.hour_prog }} h</span></p>
                                         <p>Temps Fonctionnel: <span class="text-success">
                                             {{hour.AT == 0 ? hour.hour_prog : decimal((hour.hour_prog - (hour.AT/60))) == false ? (hour.hour_prog - (hour.AT/60)).toFixed(2) : (hour.hour_prog - (hour.AT/60))}} h
 
@@ -337,7 +337,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6 col-lg-6 col-xl-6" style="border-right: groove #0b5885 1px">
+                                <div class="col-md-6 col-lg-8 col-xl-8" style="border-right: groove #0b5885 1px">
                                     <div class="tabs-animation">
                                         <div class="row" >
                                             <div class="col-md-12 col-xl-12 ">
@@ -346,19 +346,36 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="scroll-area-lg">
-                                        <div class="scrollbar-container">
-                                            <div *ngFor="let mp of machProg">
-                                                mach: {{mp.nom}} HP: {{mp.heure}} AP: {{mp.nbre}} AT: {{mp.AT}} HT: {{decimal((mp.heure - (mp.AT/60))) == false ? (mp.heure - (mp.AT/60)).toFixed(2) : (mp.heure - (mp.AT/60))}}
-                                                <p>
-                                                    okay {{decimal((mp.heure - (mp.AT/60))) == false ? (mp.heure - (mp.AT/60)).toFixed(2) : (mp.heure - (mp.AT/60))}}
-                                                </p>
-                                            </div>
-                                        </div>
+                                <div class="bod">
+                                    <div class="tbl-header">
+                                        <table class="tables" cellpadding="0" cellspacing="0" border="0">
+                                            <thead>
+                                            <tr>
+                                                <th class="th">Machine</th>
+                                                <th class="th">H. Prog</th>
+                                                <th class="th">Arrêt</th>
+                                                <th class="th">Down Time</th>
+                                                <th class="th">H. Travailée</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="tbl-content">
+                                        <table class="tables" cellpadding="0" cellspacing="0" border="0">
+                                            <tbody>
+                                            <tr *ngFor="let mp of machProg; let i = index">
+                                                <td class="td" >{{mp.nom}}</td>
+                                                <td class="td" >{{decimal(mp.heure) == false ? mp.heure.toFixed(0) : mp.heure }} <small>h</small></td>
+                                                <td [ngClass]="mp.nbre >= 1 ? 'tds': 'td'">{{mp.nbre}}</td>
+                                                <td [ngClass]="mp.nbre >= 1 ? 'tds': 'td'">{{mp.AT}} <small>min</small></td>
+                                                <td class="td" >{{decimal((mp.heure - (mp.AT/60))) == false ? (mp.heure - (mp.AT/60)).toFixed(2) : (mp.heure - (mp.AT/60))}} <small>h</small></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-6 col-xl-6">
+                                </div>
+                                <div class="col-md-6 col-lg-4 col-xl-4">
                                     <div class="tabs-animation">
                                         <div class="row" >
                                             <div class="col-md-12 col-xl-12 ">
@@ -370,7 +387,16 @@
 
                                     <div class="scroll-area-lg">
                                         <div class="scrollbar-container">
-                                            NP
+                                            <div class="vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                <div class="vertical-timeline-item vertical-timeline-element" >
+                                                    <div *ngFor="let mp of machNonProg"><span class="vertical-timeline-element-icon bounce-in"><i class="badge badge-dot badge-dot-lg badge-success"> </i></span>
+                                                        <div class="vertical-timeline-element-content bounce-in">
+                                                            <h4 class="timeline-title">{{mp.mach}}</h4>
+                                                            <p>{{mp.code}} </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -395,3 +421,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(window).on("load resize ", function() {
+        var scrollWidth = $('.tbl-content').width() - $('.tbl-content .table').width();
+        $('.tbl-header').css({'padding-right':scrollWidth});
+    }).resize();
+</script>

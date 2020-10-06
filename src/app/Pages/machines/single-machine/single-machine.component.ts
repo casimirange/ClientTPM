@@ -151,7 +151,7 @@ export class SingleMachineComponent implements OnInit {
       this.url = atob(params['id']);
     });
     this.showMachine();
-    this.historiquePannes();
+    this.ThisMonthPannes();
     this.HourPerMonth();
     this.mtbfAlpicam();
   }

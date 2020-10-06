@@ -45,6 +45,18 @@ export class HeuresService {
     return this.http.get(API_URLS.HEURES_URL + `/groupByDepRangeMonth?date=${d1}`);
   }
 
+  machNonProg(dep: string): Observable<any>{
+    return this.http.get(API_URLS.HEURES_URL + `/machNonProg?dep=${dep}`);
+  }
+
+  machNonProgRange(dep: string, d1: Date): Observable<any>{
+    return this.http.get(API_URLS.HEURES_URL + `/machNonProgRange?date=${d1}&dep=${dep}`);
+  }
+
+  machNonProgRangeMonth(dep: string, d1: Date): Observable<any>{
+    return this.http.get(API_URLS.HEURES_URL + `/machNonProgRangeMonth?date=${d1}&dep=${dep}`);
+  }
+
   addHeure(heure: Heures): Observable<any>{
     return this.http.post(API_URLS.HEURES_URL, heure);
   }

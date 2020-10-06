@@ -138,7 +138,6 @@
                     <thead>
                     <tr>
                         <th>Départements</th>
-                        <th>Id</th>
                         <th>Lignes</th>
                         <th>Actions</th>
                     </tr>
@@ -146,7 +145,6 @@
                     <tbody>
                     <tr class="widget-content" *ngFor="let lign of lignes | paginate:{itemsPerPage: 7, currentPage:p}">
                         <td scope="row" >{{ lign.nomDep }}</td>
-                        <td>{{lign.idLigne}}</td>
                         <td>{{lign.nomLigne}}</td>
                         <td>
                             <div class="widget-content-right widget-content-actions">

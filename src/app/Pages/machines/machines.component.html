@@ -53,18 +53,18 @@
 
                         <div class="form-group">
                             <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="">
-                                    <div class="position-relative">
-                                        <label for="label" class="">Label</label>
-                                        <input type="text" class="form-control form-control-sm" id="label" placeholder="B300" formControlName="label" [(ngModel)]="selectedMachine.label"/>
+                                <div class="col-md-6">
+                                    <div class="">
+                                        <div class="position-relative">
+                                            <label for="label" class="">Label</label>
+                                            <input type="text" class="form-control form-control-sm" id="label" placeholder="B300" formControlName="label" [(ngModel)]="selectedMachine.label"/>
+                                        </div>
+                                    </div>
+                                    <div style="font-style: italic;color: #f65656" *ngIf="machineForm.controls['label'].invalid && (machineForm.controls['label'].touched) ">
+                                        <span>*</span> minimum 5 caractères
                                     </div>
                                 </div>
-                                <div style="color: #f65656" *ngIf="machineForm.controls['label'].invalid && (machineForm.controls['label'].touched) ">
-                                    <span>*</span> minimum 5 caractères
-                                </div>
-                            </div>
-                            <div class="col-md-6">
+                                <div class="col-md-6">
                                     <div class="">
                                         <div class="position-relative">
                                             <label for="liste" class="">Ligne</label>

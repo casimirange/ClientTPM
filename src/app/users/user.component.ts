@@ -11,6 +11,10 @@ export class UserComponent implements OnInit {
   board: string;
   errorMessage: string;
 
+  headings = 'Users';
+  subheadings = 'Gestion des droits d\'accès';
+  icons = 'lnr-user icon-gradient bg-mixed-hopes';
+
   constructor(private userService: UserService) { }
 
   ngOnInit() {

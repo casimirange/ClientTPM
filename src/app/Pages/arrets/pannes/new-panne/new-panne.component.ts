@@ -98,16 +98,7 @@ export class NewPanneComponent implements OnInit {
 
     addPanne() {
 
-        var result           = '';
-        var result1           = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
 
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < 5; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        var result2 = result+''+result1;
-        console.log('random nber '+ result2)
 
         const nm = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
         const Swal = require('sweetalert2');
@@ -145,7 +136,7 @@ export class NewPanneComponent implements OnInit {
             this.pn.qte = this.panForm.controls['qte'].value;
             this.pn.ref = this.panForm.controls['ref'].value;
             this.pn.etat = this.panForm.controls['etat'].value;
-            this.pn.numero = result2;
+
             this.pn.cont = this.panForm.controls['etat'].value;
             this.pn.quart = 1;
 
@@ -176,6 +167,17 @@ export class NewPanneComponent implements OnInit {
                     allowOutsideClick: false
                 });
             } else if((this.dt <= 15 && this.panForm.controls['etat'].value == 'false') || this.dt > 15){
+                var result           = '';
+                var result1           = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
+
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < 5; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                var result2 = result+''+result1;
+                console.log('random nber '+ result2)
+                this.pn.numero = result2;
                 this.panneService.addPannes(this.pn).subscribe(
                     res => {
                         if (this.panForm.controls['etat'].value == false){

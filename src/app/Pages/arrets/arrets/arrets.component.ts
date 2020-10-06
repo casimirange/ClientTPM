@@ -269,7 +269,7 @@ export class ArretsComponent implements OnInit {
   }
 
   loadMachines() {
-    this.machineService.getMachines().subscribe(
+    this.machineService.getActiveMachines().subscribe(
         data => {
           this.machines = data;
         },

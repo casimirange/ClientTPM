@@ -16,6 +16,10 @@ export class DepartementsService {
     return this.http.get(API_URLS.DEPARTEMENT_URL);
   }
 
+  getAllDepartements(): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL+ `/all`);
+  }
+
   getDashboard(id: number): Observable<any>{
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/dashboard/${id}`);
   }

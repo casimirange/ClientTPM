@@ -7,8 +7,8 @@ import {Ligne} from "../Models/lignes";
 export class Departement {
 
     constructor( public nom?: string,
-    public centre_cout?: string,
     public responsable?: string,
+    public localisation?: string,
     public columnName?: string,
     public columnReference?: string,
     public dataType?: string,

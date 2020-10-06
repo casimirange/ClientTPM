@@ -1,4 +1,4 @@
-.red{
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);.red{
     color: #f65656;
     font-weight: bold;
 }
@@ -9,4 +9,72 @@
     border-color: #f65656;
     outline: 0;
     box-shadow: 0 0 0 .2rem rgba(246, 86, 86, 0.25)
+}
+
+.wtd{
+    color: #f65656;
+}
+
+.tables{
+    width:100%;
+    table-layout: fixed;
+}
+.bod{
+    background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+    background: linear-gradient(to right, #25c481, #25b7c4);
+    font-family: 'Roboto', sans-serif;
+}
+.tbl-header{
+    background-color: rgba(255,255,255,0.3);
+}
+.tbl-content{
+    height:auto;
+    max-height: 350px;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,1);
+}
+.th{
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 300;
+    font-size: 12px;
+    color: #fff;
+    text-transform: uppercase;
+}
+.td{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 12px;
+    color: #000;
+    border-bottom: solid 1px rgba(0,0,0,0.1);
+}
+.tds{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 12px;
+    color: #f65656;
+    border-bottom: solid 1px rgba(0,0,0,0.1);
+}
+
+
+/* demo styles */
+
+
+
+/* for custom scrollbar for webkit browser*/
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }

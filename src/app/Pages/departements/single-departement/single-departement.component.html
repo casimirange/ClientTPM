@@ -306,7 +306,7 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-subheading">Mois Dernier</div>
-                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{hourLastMonth ? hourLastMonth : 0}} h</span></div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{hourLastMonth ? (decimal(hourLastMonth) == false ? hourLastMonth : hourLastMonth) : 0}} h</span></div>
                                         <div class="widget-description text-focus">
                                             {{(hourThisMonth < hourLastMonth) ? 'En baisse de' : (hourThisMonth > hourLastMonth) ? 'En Hausse de': 'Constant'}}
                                             <span class="pl-1"
@@ -337,7 +337,7 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-numbers-sm mt-0 text-primary" >
-                                            <span>{{depHourThisYear}} h</span>
+                                            <span>{{depHourThisYear ? (decimal(depHourThisYear) == false ? depHourThisYear.toFixed(0) : depHourThisYear) : 0 }} h</span>
                                         </div>
                                         <div class="widget-subheading">Heures annuelle</div>
                                     </div>
@@ -487,7 +487,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                   Ligne 1 MTBF
                 </div>
             </div>
@@ -506,7 +506,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                   Ligne 1 MDT
                 </div>
             </div>
@@ -527,7 +527,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne 2 MTBF
                 </div>
             </div>
@@ -546,7 +546,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne 2 MDT
                 </div>
             </div>
@@ -567,7 +567,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne 3 MTBF
                 </div>
             </div>
@@ -586,7 +586,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne 3 MDT
                 </div>
             </div>
@@ -607,7 +607,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Sechoirs MTBF
                 </div>
             </div>
@@ -626,7 +626,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Sechoirs MDT
                 </div>
             </div>
@@ -647,7 +647,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Ecorçage MTBF
                 </div>
             </div>
@@ -666,7 +666,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Ecorçage MDT
                 </div>
             </div>
@@ -687,7 +687,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Jointure MTBF
                 </div>
             </div>
@@ -706,7 +706,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Jointure MDT
                 </div>
             </div>
@@ -728,7 +728,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Derouleuses
                 </div>
             </div>
@@ -756,7 +756,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Derouleuses
                 </div>
             </div>
@@ -787,7 +787,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Bobineuses
                 </div>
             </div>
@@ -815,7 +815,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Bobineuses
                 </div>
             </div>
@@ -845,7 +845,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Magasins Bobines
                 </div>
             </div>
@@ -873,7 +873,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Magasins Bobines
                 </div>
             </div>
@@ -903,7 +903,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Massicots
                 </div>
             </div>
@@ -931,7 +931,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Massicots
                 </div>
             </div>
@@ -961,7 +961,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Sechoirs
                 </div>
             </div>
@@ -989,7 +989,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Sechoirs
                 </div>
             </div>
@@ -1021,7 +1021,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Encollage Brazil MTBF
                 </div>
             </div>
@@ -1041,7 +1041,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Encollage Brazil MDT
                 </div>
             </div>
@@ -1063,7 +1063,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Teinture MTBF
                 </div>
             </div>
@@ -1083,7 +1083,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Teinture MDT
                 </div>
             </div>
@@ -1105,7 +1105,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Tranchage MTBF
                 </div>
             </div>
@@ -1125,7 +1125,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Tranchage MDT
                 </div>
             </div>
@@ -1148,7 +1148,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Trancheuses
                 </div>
             </div>
@@ -1177,7 +1177,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Trancheuses
                 </div>
             </div>
@@ -1208,7 +1208,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Encolleuses
                 </div>
             </div>
@@ -1237,7 +1237,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Encolleuses
                 </div>
             </div>
@@ -1270,7 +1270,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Encollage CP MTBF
                 </div>
             </div>
@@ -1290,7 +1290,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Encollage CP MDT
                 </div>
             </div>
@@ -1312,7 +1312,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Ponçage MTBF
                 </div>
             </div>
@@ -1332,7 +1332,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Ponçage MDT
                 </div>
             </div>
@@ -1354,7 +1354,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Pressage MTBF
                 </div>
             </div>
@@ -1374,7 +1374,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Ligne Pressage MDT
                 </div>
             </div>
@@ -1396,7 +1396,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto TDT Encolleuses
                 </div>
             </div>
@@ -1425,7 +1425,7 @@
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title">
-                    <i class="header-icon lnr-rocket icon-gradient bg-tempting-azure"> </i>
+                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
                     Pareto MDT Encolleuses
                 </div>
             </div>
