@@ -225,7 +225,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="pan.outil" class="vertical-timeline-item vertical-timeline-element">
+                                            <div *ngIf="pan.outil != ''" class="vertical-timeline-item vertical-timeline-element">
                                                 <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
                                                     <div class="vertical-timeline-element-content bounce-in">
                                                         <h4 class="timeline-title">Outils utilisés</h4>
@@ -240,7 +240,7 @@
                                 <div class="float-left">
                                     <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                 </div>
-                                <div class="float-right">
+                                <div class="float-right" *ngIf="authority === 'super_admin'">
                                     <div role="group" class="btn-group-sm btn-group">
                                         <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
                                         <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
@@ -264,15 +264,15 @@
                                             <div class="row" >
                                                 <div class="col-md-4 col-xl-4 ">
                                                     <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                                    <p >{{Hpannes[0].heure_arret | date: 'HH:mm'}}</p>
+                                                    <p >{{ha1 | date: 'HH:mm'}}</p>
                                                 </div>
                                                 <div class="col-md-4 col-xl-4 text-center">
                                                     <span class="timeline-title"><b>Début Inter</b></span>
-                                                    <p >{{Hpannes[0].debut_inter | date: 'HH:mm'}}</p>
+                                                    <p >{{di1 | date: 'HH:mm'}}</p>
                                                 </div>
                                                 <div class="col-md-4 col-xl-4 text-right">
                                                     <span class="timeline-title"><b>Fin Inter</b></span>
-                                                    <p >{{Hpannes[0].fin_inter | date: 'HH:mm'}}</p>
+                                                    <p >{{fi1 | date: 'HH:mm'}}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -283,19 +283,19 @@
                                                     <div class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
-                                                                <p>{{Detailspannes[0].description}}</p></div>
+                                                                <p>{{desc1}}</p></div>
                                                         </div>
                                                     </div>
                                                     <div class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
-                                                                <p>{{Detailspannes[0].cause}}</p></div>
+                                                                <p>{{cause1}}</p></div>
                                                         </div>
                                                     </div>
                                                     <div class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
-                                                                <p>{{Detailspannes[0].details}}</p></div>
+                                                                <p>{{details1}}</p></div>
                                                         </div>
                                                     </div>
                                                     <div class="vertical-timeline-item vertical-timeline-element">
@@ -326,11 +326,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="Outilpannes[0].outil" class="vertical-timeline-item vertical-timeline-element">
+                                                    <div *ngIf="qte1 != 0" class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in">
                                                                 <h4 class="timeline-title">Outils utilisés</h4>
-                                                                <p><b>{{Outilpannes[0].qte}}</b> {{Outilpannes[0].outil}}: <b class="text-dark">{{Outilpannes[0].ref}}</b></p>                                                           </div>
+                                                                <p><b>{{qte1}}</b> {{outil1}}: <b class="text-dark">{{ref1}}</b></p>                                                           </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -342,15 +342,15 @@
                                             <div class="row" >
                                                 <div class="col-md-4 col-xl-4 ">
                                                     <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                                    <p >{{Hpannes[1].heure_arret | date: 'HH:mm'}}</p>
+                                                    <p >{{ha2 | date: 'HH:mm'}}</p>
                                                 </div>
                                                 <div class="col-md-4 col-xl-4 text-center">
                                                     <span class="timeline-title"><b>Début Inter</b></span>
-                                                    <p >{{Hpannes[1].debut_inter | date: 'HH:mm'}}</p>
+                                                    <p >{{di2 | date: 'HH:mm'}}</p>
                                                 </div>
                                                 <div class="col-md-4 col-xl-4 text-right">
                                                     <span class="timeline-title"><b>Fin Inter</b></span>
-                                                    <p >{{Hpannes[1].fin_inter | date: 'HH:mm'}}</p>
+                                                    <p >{{fi2 | date: 'HH:mm'}}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -361,19 +361,19 @@
                                                     <div class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
-                                                                <p>{{Detailspannes[1].description}}</p></div>
+                                                                <p>{{desc2}}</p></div>
                                                         </div>
                                                     </div>
                                                     <div class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
-                                                                <p>{{Detailspannes[1].cause}}</p></div>
+                                                                <p>{{cause2}}</p></div>
                                                         </div>
                                                     </div>
                                                     <div class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
-                                                                <p>{{Detailspannes[1].details}}</p></div>
+                                                                <p>{{details2}}</p></div>
                                                         </div>
                                                     </div>
                                                     <div class="vertical-timeline-item vertical-timeline-element">
@@ -404,14 +404,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="Outilpannes[1].outil" class="vertical-timeline-item vertical-timeline-element">
+                                                    <div *ngIf="qte2 != 0" class="vertical-timeline-item vertical-timeline-element">
                                                         <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
                                                             <div class="vertical-timeline-element-content bounce-in">
                                                                 <h4 class="timeline-title">Outils utilisés</h4>
                                                                 <p>
 
-                                                                    <b>{{Outilpannes[1].qte}}</b> {{Outilpannes[1].outil}}:
-                                                                    <b class="text-dark float-right">{{Outilpannes[1].ref}}</b>
+                                                                    <b>{{qte2}}</b> {{outil2}}:
+                                                                    <b class="text-dark float-right">{{ref2}}</b>
                                                                 </p>                                                           </div>
                                                         </div>
                                                     </div>
@@ -426,8 +426,11 @@
                                 <div class="float-left">
                                     <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                 </div>
-                                <div class="float-right">
-                                    <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
+                                <div class="float-right" *ngIf="authority === 'super_admin'">
+                                    <div role="group" class="btn-group-sm btn-group">
+                                        <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
+                                        <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </ng-template>
@@ -498,7 +501,7 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                         <span style="display: inline-block">Afficher</span>&nbsp;
                         <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
 
-                            <option value="" selected disabled hidden>10</option>
+                            <option value="" selected disabled hidden>07</option>
                             <option value="10">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>

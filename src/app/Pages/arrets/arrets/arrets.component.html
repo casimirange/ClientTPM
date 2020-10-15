@@ -1,7 +1,7 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12" *ngIf="authority != 'pm' && authority != 'admin' ">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 {{operation == 'add' ? 'Nouvel Arrêt' :
@@ -31,7 +31,7 @@
                             <div class="">
                                 <div class="position-relative">
                                     <label for="machine" [ngClass]="{'red': arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched)}">Machine</label>
-                                    <select id="machine" class="form-control form-control-sm" formControlName="machine"  [ngClass]="{'fred': arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched)}" [(ngModel)]="selectedArret.idMachine" >
+                                    <select id="machine" class="form-control form-control-sm" formControlName="machine"  [ngClass]="{'fred': arretForm.controls['machine'].invalid && (arretForm.controls['machine'].touched)}" [(ngModel)]="selectedArret.id_machine" >
                                         <option *ngFor="let mach of machines"  [value]="mach.idMachine">
                                             {{mach.code | uppercase}}&nbsp;{{mach.nom | uppercase}}
                                         </option>
@@ -50,11 +50,11 @@
                         <div class="form-group">
                                 <div class="">
                                     <div class="position-relative form-group">
-                                        <label for="ha" [ngClass]="{'red': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)}">Heure d'arrêt</label>
-                                        <input type="datetime-local" class="form-control form-control-sm"  id="ha" formControlName="debut" ngModel="{{selectedArret.debutArret}}" [ngClass]="{'fred': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)}" />
+                                        <label for="ha" [ngClass]="{'red': ((arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)) || (selectedArret.date | date: 'dd/MM//y') > (ha | date: 'dd/MM/y'))}">Heure d'arrêt</label>
+                                        <input type="datetime-local" class="form-control form-control-sm"  id="ha" formControlName="debut" [(ngModel)]="ha"  min="{{selectedArret.date}}" [ngClass]="{'fred': arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched) || (selectedArret.date | date: 'dd/MM//y') > (ha | date: 'dd/MM/y')}" />
                                     </div>
-                                    <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched) ">
-                                        <span>*</span> Date et heure invalide
+                                    <div style="color: #f65656; font-style: italic; font-size: 0.9em" *ngIf="(arretForm.controls['debut'].invalid && (arretForm.controls['debut'].touched)) || (selectedArret.date | date: 'dd/MM//y') > (ha | date: 'dd/MM/y')">
+                                        <span>*</span> {{selectedArret.date ? 'Veuillez sélectionner une valeur ≥ '+selectedArret.date: 'Date et heure invalide'}}.
                                     </div>
                                 </div>
                         </div>
@@ -64,11 +64,11 @@
                         <div class="form-group">
                             <div class="">
                                 <div class="position-relative">
-                                    <label for="fa" [ngClass]="{'red': arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched)}">Fin de l'arrêt</label>
-                                    <input type="datetime-local" class="form-control form-control-sm"  id="fa" formControlName="fin" [(ngModel)]="selectedArret.finArret" [ngClass]="{'fred': arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched)}" />
+                                    <label for="fa" [ngClass]="{'red': ((arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched)) || (ha > di))}">Fin de l'arrêt</label>
+                                    <input type="datetime-local" class="form-control form-control-sm"  id="fa" formControlName="fin" [(ngModel)]="di"  min="{{ha}}" [ngClass]="{'fred': ((arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched)) || (ha > di))}">
                                 </div>
-                                <div style="color: #f65656; font-style: italic;" *ngIf="arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched) ">
-                                    <span>*</span> Date et heure invalide
+                                <div *ngIf="(di < ha) || (arretForm.controls['fin'].invalid && (arretForm.controls['fin'].touched))" style="font-style: italic; font-size: 0.9em; color: #f65656;">
+                                    <span>*</span> {{ha ? 'Veuillez sélectionner une valeur ≥ '+ha: 'Date et heure invalide'}}.
                                 </div>
                             </div>
                         </div>
@@ -133,7 +133,9 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" (click)="operation == 'add' ? addArret() : updateArret()  " >
+                            <button type="submit" class="btn btn-primary" (click)="operation == 'add' ? addArret() : updateArret()  "
+                                    [disabled]="((selectedArret.date | date: 'dd/MM//y') > (ha | date: 'dd/MM/y')) || (di < ha)"
+                            >
                                 {{operation == 'add' ? 'Enregistrer' :
                                 operation == 'edit' ? 'Modifier ' : ''}}
                             </button>
@@ -169,29 +171,6 @@
                                 <option value="pp"  >Personaliser la recherche</option>
                             </select>
                         </form>
-
-                        <ng-template #range let-modal >
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <form [formGroup]="rangeForm">
-                                        <div class="form-row">
-
-                                            <div class="col-md-5">
-                                                <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
-                                            </div>
-                                            <div class="col-md-5">
-                                                <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
-
-                                            </div>
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </ng-template>
                     </div>
                 </div>
                 <div *ngIf="ranger == 'true'" class="btn-actions-pane-right">
@@ -201,13 +180,13 @@
                                 <div class="form-row">
 
                                     <div class="col-md-5">
-                                        <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date1'].invalid && (rangeForm.controls['date1'].touched)}" [(ngModel)]="d" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
                                     </div>
                                     <div class="col-md-5">
-                                        <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
                                     </div>
                                     <div class="col-md-2">
-                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); typeArretRange(); paretoArretRange(); RangeArrets()" type="submit"><i class="fa fa-search"></i></button>
+                                        <button [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); typeArretRange(); paretoArretRange(); RangeArrets()" type="submit"><i class="fa fa-search"></i></button>
 
                                     </div>
 
@@ -227,7 +206,7 @@
                         <th>Debut</th>
                         <th>Fin</th>
                         <th class="text-center">DT (min)</th>
-                        <th>Actions</th>
+                        <th *ngIf="authority === 'super_admin'">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -254,9 +233,9 @@
                         <td>{{arret.debut_arret | date: 'HH:mm'}}</td>
                         <td>{{arret.fin_arret | date: 'HH:mm'}}</td>
                         <td class="text-center" [ngClass]="{'text-danger': arret.DT >= 60}">{{arret.DT}}</td>
-                        <td class="text-center">
+                        <td class="text-center" *ngIf="authority === 'super_admin'">
                             <div role="group" class="btn-group-sm btn-group">
-                                <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedArret = arret;"><i class="fa fa-pencil"></i></button>
+                                <button class=" btn  btn-primary" (click)="operation = 'edit'; selectedArret = arret; test(arret)"><i class="fa fa-pencil"></i></button>
                                 <button class="btn  btn-danger" (click)="selectedArret = arret ;swl(arret)" ><i class="fa fa-times"></i></button>
                             </div>
                         </td>
@@ -270,7 +249,8 @@
                         <span style="display: inline-block">Afficher</span>&nbsp;
                         <span style="display: inline-block">
                             <select (change)="paginate($event.target.value)" formControlName="page" class="form-control form-control-sm">
-                                <option value="10" aria-selected="true" selected>10</option>
+                                <option value="" selected disabled hidden>07</option>
+                                <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
@@ -297,12 +277,12 @@
     </div>
 </div>
 
-<div class="row" >
+<div class="row" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin'">
     <div class="col-md-12 col-lg-6 col-xl-7">
         <div class="main-card mb-3 card">
             <div class="rm-border card-header">
                 <div>
-                    <h5 class="menu-header-title text-capitalize text-primary">Suivi Journalier</h5>
+                    <h5 class="menu-header-title text-capitalize text-secondary">Suivi Journalier</h5>
                 </div>
                 <div class="btn-actions-pane-right">
                     {{date_this_month}}
@@ -369,27 +349,27 @@
                                     </apx-chart>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" *ngFor="let x of recapArret">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-subheading">Mois Dernier</div>
-                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{nbre_arret_last_month}}</span></div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{x.lm}}</span></div>
                                         <div class="widget-description text-focus">
-                                            {{taux < 0  ? 'En baisse de' : taux > 0  ? 'En Hausse de': ''}}
+                                            {{x.taux < 0  ? 'En baisse de' : x.taux > 0  ? 'En Hausse de': 'Constant'}}
                                             <span class="pl-1"
                                                   [ngClass]="
-            taux < 0 ? 'text-success' :
-            taux > 0 ? 'text-danger' : 'text-warning'"
+            x.taux < 0 ? 'text-success' :
+            x.taux > 0 ? 'text-danger' : 'text-warning'"
                                             >
                                             <i [ngClass]="
-            taux < 0 ? 'fa fa-arrow-down' :
-            taux > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+            x.taux < 0 ? 'fa fa-arrow-down' :
+            x.taux > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
                                             <span class="pl-1" >
-                                                {{ taux == 0 ? taux+' %':
-                                                    (taux == 100) ? taux+' %':
-                                                    (taux == -100) ? (taux) * (-1)+' %':
-                                                    (taux < 0 ) ? (taux) * (-1)+' %':
-                                                    taux+' %'}}
+                                                {{ x.taux == 0 ? x.taux+' %':
+                                                    (x.taux == 100) ? x.taux+' %':
+                                                    (x.taux == -100) ? (x.taux) * (-1)+' %':
+                                                    (x.taux < 0 ) ? (x.taux.toFixed(2)) * (-1)+' %':
+                                                    x.taux.toFixed(2)+' %'}}
                                             </span>
                                             </span>
                                         </div>
@@ -413,21 +393,22 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin'">
     <div class="col-lg-6">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Répartition par type d'arrêt
             </div>
             <div class="card-body">
-                <app-doughnut-chart *ngIf="typeArret.nbre"
+                <app-doughnut-chart *ngIf="typeArret.nbre.length > 0"
                                     [doughnutChartData] = "typeArret.nbre"
                                     [doughnutChartLabels] = "typeArret.labels"
                                     [lineChartColors]="lineChartColors"
                                     [doughnutChartType]="'pie'"
                 ></app-doughnut-chart>
-                <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
-                <div class="divider"></div>
+                <p style="font-size: 1.3em" class="text-center" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>
+            </div>
+            <div class="card-footer">
                 <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
             </div>
         </div>
@@ -438,35 +419,39 @@
                 Perte de production par type d'arrêt (minutes)
             </div>
             <div class="card-body">
-                <app-doughnut-chart *ngIf="typeArret.nbre"
+                <app-doughnut-chart *ngIf="typeArret.nbre.length > 0"
                                     [doughnutChartData] = "typeArret.tdt"
                                     [doughnutChartLabels] = "typeArret.labels"
                                     [lineChartColors]="lineChartColors"
                                     [doughnutChartType]="'doughnut'"
                 ></app-doughnut-chart>
-                <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
-                <div class="divider"></div>
+                <p style="font-size: 1.3em" class="text-center" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>
+            </div>
+            <div class="card-footer">
                 <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin'">
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Pareto des arrêts
             </div>
             <div class="card-body">
-                <app-chart
+                <app-chart *ngIf="typeArret.nbre.length > 0"
                         [type]="'line'"
                         [data]="pareto.datasets"
                         [lineChartLabels]="pareto.labels"
                         [lineChartColors]="colorsPARETO"
                 ></app-chart>
-                <p style="font-size: 0.8em" *ngIf="typeArret.nbre.length == 0">Aucune Arrêt Enregistrée cette période!!</p>
-                <div class="divider"></div>
+                <div class="text-center">
+                    <p style="font-size: 1.8em" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>
+                </div>
+            </div>
+            <div class="card-footer">
                 <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
             </div>
         </div>

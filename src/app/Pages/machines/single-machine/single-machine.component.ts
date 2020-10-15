@@ -133,6 +133,28 @@ export class SingleMachineComponent implements OnInit {
         }
     ];
 
+
+    cause1: string;
+    details1: string;
+    desc1: string;
+    cause2: string;
+    details2: string;
+    desc2: string;
+    ha1: any;
+    di1: any;
+    fi1: any;
+    ha2: any;
+    di2: any;
+    fi2: any;
+    outil1: any;
+    qte1: any;
+    ref1: any;
+    outil2: any;
+    qte2: any;
+    ref2: any;
+    OP1: any;
+    OP2: any;
+
   constructor(private machineService: MachinesService,
               private panneService: PannesService,
               private modalService: NgbModal,
@@ -214,6 +236,9 @@ export class SingleMachineComponent implements OnInit {
         this.panneService.getOpPannes(this.selectedPanne.numero).subscribe(
             data => {
                 this.Opannes = data;
+                this.OP1 = data[0];
+
+                (data.length>1)? this.OP2 = data[1] : this.OP2 = '';
             },
             error => {
                 console.log('une erreur a été détectée!')
@@ -227,6 +252,13 @@ export class SingleMachineComponent implements OnInit {
         this.panneService.getDetailsPannes(this.selectedPanne.numero).subscribe(
             data => {
                 this.Detailspannes = data;
+                this.cause1 = data[0].cause;
+                this.desc1 = data[0].description;
+                this.details1 = data[0].details;
+
+                (data.length>1)? this.cause2 = data[1].cause : this.cause2 = '';
+                (data.length>1)? this.desc2 = data[1].description : this.desc2 = '';
+                (data.length>1)? this.details2 = data[1].details : this.details2 = '';
             },
             error => {
                 console.log('une erreur a été détectée!')
@@ -240,6 +272,16 @@ export class SingleMachineComponent implements OnInit {
         this.panneService.getOutilsPannes(this.selectedPanne.numero).subscribe(
             data => {
                 this.Outilpannes = data;
+                this.outil1 = data[0].outil;
+                this.qte1 = data[0].qte;
+                this.ref1 = data[0].ref;
+                (data.length>1)? this.outil2 = data[1].outil : this.outil2 = '';
+                (data.length>1)? this.qte2 = data[1].qte : this.qte2 = '';
+                (data.length>1)? this.ref2 = data[1].ref : this.ref2 = '';
+                //   this.outil2 = data[1].outil;
+                // this.qte2 = data[1].qte;
+                // this.ref2 = data[1].ref;
+
             },
             error => {
                 console.log('une erreur a été détectée!')
@@ -254,6 +296,12 @@ export class SingleMachineComponent implements OnInit {
             data => {
                 this.Hpannes = data;
                 this.tail = this.Hpannes.length;
+                this.ha1 = data[0].heure_arret;
+                this.di1 = data[0].debut_inter;
+                this.fi1 = data[0].fin_inter;
+                (data.length > 1)?this.ha2 = data[1].heure_arret: this.ha2  = '';
+                (data.length > 1)?this.di2 = data[1].debut_inter: this.di2  = '';
+                (data.length > 1)?this.fi2 = data[1].fin_inter: this.fi2  = '';
             },
             error => {
                 console.log('une erreur a été détectée!')

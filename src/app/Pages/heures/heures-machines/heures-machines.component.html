@@ -118,13 +118,13 @@
                                                 <div class="form-row">
 
                                                     <div class="col-md-5">
-                                                        <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date1'].invalid && (rangeForm.controls['date1'].touched)}" [(ngModel)]="d" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="RangeHeures()" type="submit"><i class="fa fa-search"></i></button>
+                                                        <button [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="RangeHeures()" type="submit"><i class="fa fa-search"></i></button>
 
                                                     </div>
 
@@ -364,7 +364,7 @@
                                         <table class="tables" cellpadding="0" cellspacing="0" border="0">
                                             <tbody>
                                             <tr *ngFor="let mp of machProg; let i = index">
-                                                <td class="td" >{{mp.nom}}</td>
+                                                <td class="td" >{{mp.nom | titlecase}}</td>
                                                 <td class="td" >{{decimal(mp.heure) == false ? mp.heure.toFixed(0) : mp.heure }} <small>h</small></td>
                                                 <td [ngClass]="mp.nbre >= 1 ? 'tds': 'td'">{{mp.nbre}}</td>
                                                 <td [ngClass]="mp.nbre >= 1 ? 'tds': 'td'">{{mp.AT}} <small>min</small></td>
@@ -392,7 +392,7 @@
                                                     <div *ngFor="let mp of machNonProg"><span class="vertical-timeline-element-icon bounce-in"><i class="badge badge-dot badge-dot-lg badge-success"> </i></span>
                                                         <div class="vertical-timeline-element-content bounce-in">
                                                             <h4 class="timeline-title">{{mp.mach}}</h4>
-                                                            <p>{{mp.code}} </p>
+                                                            <p>{{mp.code}} <small *ngIf="mp.etat == false" class="text-white badge badge-secondary">{{mp.etat == false ? 'HORS SERVICE' : ''}}</small></p>
                                                         </div>
                                                     </div>
                                                 </div>

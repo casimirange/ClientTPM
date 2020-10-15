@@ -7,6 +7,7 @@ import {Machine} from "../../../Models/machines";
 import DateTimeFormat = Intl.DateTimeFormat;
 import {Color} from "ng2-charts";
 import {DatePipe} from "@angular/common";
+import {TokenStorageService} from "../../../auth/token-storage.service";
 
 @Component({
   selector: 'app-arrets',
@@ -19,6 +20,8 @@ export class ArretsComponent implements OnInit {
   icons = 'fa fa-clock fa-spin icon-gradient bg-mixed-hopes';
 
   public chartOptions: Partial<any>;
+    private roles: string[];
+    private authority: string;
 
   arretForm: FormGroup;
   rangeForm: FormGroup;
@@ -87,8 +90,8 @@ export class ArretsComponent implements OnInit {
             pointHoverBorderColor: 'rgba(97, 115, 255,1)'
         }
     ];
-    private series = [];
-    private recapArret = [];
+    seriess = [];
+    private recapArret: any[];
     taux: number;
     nbre_arret_last_month: number;
     date_this_months: any;
@@ -97,19 +100,94 @@ export class ArretsComponent implements OnInit {
   constructor(private arretService: ArretsService,
               private fb: FormBuilder,
               private datePipe: DatePipe,
+              private tokenStorage: TokenStorageService,
               private machineService: MachinesService,) {
+
+      // this.arretService.getThisMonthArret().subscribe(
+      //
+      //     data => {
+      //         this.seriess.push(data.length);
+      //         console.log("log", this.seriess)
+      //     }
+      // );
+      //
+      // this.chartOptions = {
+      //     chart: {
+      //         height: 265,
+      //         type: "radialBar",
+      //     },
+      //
+      //     series: [this.seriess ? this.seriess : 0],
+      //
+      //     plotOptions: {
+      //         radialBar: {
+      //             hollow: {
+      //                 margin: 0,
+      //                 size: "70%",
+      //                 background: "#293450",
+      //                 dropShadow: {
+      //                     enabled: true,
+      //                     top: 0,
+      //                     left: 0,
+      //                     blur: 3,
+      //                     opacity: 0.5
+      //                 }
+      //             },
+      //             track: {
+      //                 dropShadow: {
+      //                     enabled: true,
+      //                     top: 2,
+      //                     left: 0,
+      //                     blur: 4,
+      //                     opacity: 0.15
+      //                 }
+      //             },
+      //             dataLabels: {
+      //                 name: {
+      //                     offsetY: -10,
+      //                     color: "#fff",
+      //                     fontSize: "13px"
+      //                 },
+      //                 value: {
+      //                     color: "#fff",
+      //                     fontSize: "30px",
+      //                     show: true,
+      //                     formatter: function (val) {
+      //                         return val;
+      //                     }
+      //                 }
+      //             }
+      //         }
+      //     },
+      //     fill: {
+      //         type: "gradient",
+      //         gradient: {
+      //             shade: "dark",
+      //             type: "horizontal",
+      //             gradientToColors: ["#ABE5A1"],
+      //             stops: [0, 100]
+      //         }
+      //     },
+      //     stroke: {
+      //         lineCap: "round"
+      //     },
+      //     labels: ["Arrêts Total"]
+      // };
     this.createForm();
     this.createForm1();
     this.createForms();
     this.pageForms();
     this.rangeForms();
     this.dashForm();
+    this.radialBar();
 
     this.arr = new Arrets();
     // this.selectedArret = new Arrets();
     var tim = new Date();
     this.today = tim;
     this.date_this_months = this.datePipe.transform(tim, 'MMMM yyyy');
+
+
 
   }
 
@@ -133,12 +211,6 @@ export class ArretsComponent implements OnInit {
 
           data => {
               this.recapArret = data;
-              console.log('nbre : ' +this.recapArret.length);
-              console.log('nbre total: '+ this.recapArret);
-              this.taux = this.recapArret[0].taux.toFixed(0);
-              this.nbre_arret_last_month = this.recapArret[1].nbre;
-              this.series.push(this.recapArret[0].nbre);
-
           },
           error => {
               console.log('une erreur a été détectée!')
@@ -149,13 +221,22 @@ export class ArretsComponent implements OnInit {
           }
       );
 
+      this.seriess = [];
+      this.arretService.getThisMonthArret().subscribe(
+
+          data => {
+              this.seriess.push(data.length);
+              console.log("log", this.seriess)
+          }
+      );
+
       this.chartOptions = {
           chart: {
               height: 265,
               type: "radialBar",
           },
 
-          series: [this.series],
+          series: [this.seriess ? this.seriess : 0],
 
           plotOptions: {
               radialBar: {
@@ -232,6 +313,26 @@ export class ArretsComponent implements OnInit {
     }
 
   ngOnInit() {
+      if (this.tokenStorage.getToken()) {
+          this.roles = this.tokenStorage.getAuthorities();
+          this.roles.every(role => {
+              if (role === 'ROLE_ADMIN') {
+                  this.authority = 'admin';
+                  return false;
+              } else if (role === 'ROLE_SUPER_ADMIN') {
+                  this.authority = 'super_admin';
+                  return false;
+              } else if (role === 'ROLE_PM') {
+                  this.authority = 'pm';
+                  return false;
+              } else if (role === 'ROLE_RESPONSABLE') {
+                  this.authority = 'responsable';
+                  return false;
+              }
+              this.authority = 'user';
+              return true;
+          });
+      }
     this.thisYearArrets();
     this.loadMachines();
     this.LoadArrets();
@@ -239,14 +340,14 @@ export class ArretsComponent implements OnInit {
     this.typeArretThisMonth();
     this.newArret = new Arrets();
     this.dashLast30days();
-    this.radialBar();
+    // this.radialBar();
     this.paretoArretThisMonth();
   }
 
   rangeForms() {
     this.rangeForm = this.fb.group({
-      date1: [''],
-      date2: ['']
+      date1: ['', Validators.required],
+      date2: ['', Validators.required]
     });
   }
 
@@ -430,6 +531,7 @@ export class ArretsComponent implements OnInit {
   addArret() {
     const a = this.arretForm.value;
     console.log('formulaire 1 '+ a);
+    const Swal = require('sweetalert2');
 
     var result           = '';
     var result1          = Math.floor((Math.random() * 1000) + (Math.random() * 99999999));
@@ -452,34 +554,118 @@ export class ArretsComponent implements OnInit {
     // console.log('2 au final: \n'+ this.arretForm.value);
 
     //dès qu'on crée le département on affiche immédiatement la liste
-    this.arretService.postArret(this.newArret).subscribe(
-        res => {
-          this.initArret();
-          this.LoadArrets();
-          this.typeArretThisMonth();
-          this.dashLast30days();
-        }
-    );
+      if(!this.newArret.date || !this.newArret.debutArret ||
+          !this.newArret.finArret || !this.newArret.idMachine ||
+          !this.newArret.cause){
+          Swal.fire({
+              title: 'Impossible',
+              text: "Tous les champs ne sont pas correctement remplis",
+              icon: 'warning',
+              showCancelButton: false,
+              confirmButtonColor: '#b97a56',
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              showLoaderOnConfirm: true
+          })
+      }else{
+          this.arretService.postArret(this.newArret).subscribe(
+              res => {
+                  this.initArret();
+                  this.LoadArrets();
+                  this.typeArretThisMonth();
+                  this.dashLast30days();
+                  this.thisYearArrets();
+                  this.radialBar();
+
+                  const Toast = Swal.mixin({
+                      toast: true,
+                      position: 'bottom-end',
+                      showConfirmButton: false,
+                      background: '#d5f7d3',
+                      timer: 5000,
+                      timerProgressBar: true,
+                      onOpen: (toast) => {
+                          toast.addEventListener('mouseenter', Swal.stopTimer)
+                          toast.addEventListener('mouseleave', Swal.resumeTimer)
+                      }
+                  });
+
+                  Toast.fire({
+                      icon: 'success',
+                      title: 'Arrêt Enregistré'
+                  })
+              }
+          );
+
+
+      }
+
+  }
+  test(tes: Arrets){
+        console.log(`mach ${this.selectedArret.idMachine}`)
+        console.log(`test ${tes.id_machine}`)
+        console.log(`testerrr ${tes.numero}`)
+        console.log(tes)
   }
 
   updateArret() {
       const a = this.arretForm.value;
-      this.arr.date = this.selectedArret.date;
-      this.arr.cause = this.selectedArret.cause;
+      const Swal = require('sweetalert2');
+      this.arr.date = this.arretForm.controls['date'].value;
+      this.arr.cause = this.arretForm.controls['pic1'].value != 'divers' ? this.arretForm.controls['pic1'].value : this.arretForm.controls['cause'].value;
       this.arr.numero = this.selectedArret.numero;
-      this.arr.debutArret = this.selectedArret.debutArret;
-      this.arr.finArret = this.selectedArret.finArret;
-      this.arr.idMachine = this.selectedArret.idMachine;
-      this.arr.idArret = this.selectedArret.idArret;
+      this.arr.debutArret = this.arretForm.controls['debut'].value;
+      this.arr.finArret = this.arretForm.controls['fin'].value;
+      this.arr.idMachine = this.arretForm.controls['machine'].value;
       console.log('modif Arrêt :' + a);
       console.log('modif Arrêt2 :' + this.selectedArret.idMachine);
       console.log('modif Arrêt3 :' + this.arr.idArret);
-    this.arretService.putArret(this.arr).subscribe(
+
+      if(!this.arr.date || !this.arr.debutArret ||
+          !this.arr.finArret || !this.arr.idMachine ||
+          !this.arr.cause){
+          Swal.fire({
+          title: 'Impossible',
+          text: "Tous les champs ne sont pas correctement remplis",
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonColor: '#b97a56',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          showLoaderOnConfirm: true
+          })
+      }else{
+
+
+
+    this.arretService.putArret(this.arr, this.selectedArret.numero).subscribe(
         res => {
           this.initArret();
           this.LoadArrets();
+            this.typeArretThisMonth();
+            this.dashLast30days();
+            this.thisYearArrets();
+            this.radialBar();
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Arrêt Modifié'
+            })
         }
     );
+      }
   }
 
   initArret() {
@@ -491,9 +677,10 @@ export class ArretsComponent implements OnInit {
     const Swal = require('sweetalert2');
     Swal.fire({
       title: 'Suppression',
-      text: "Voulez-vous supprimer l\'arrêt N°" + this.newArret.numero+" ?",
       icon: 'error',
+      html: "Voulez-vous supprimer l\'arrêt N°" + this.selectedArret.numero.bold()+" ?",
       showCancelButton: true,
+      footer: '<a >Cette action est irréversible</a>',
       confirmButtonColor: '#00ace6',
       cancelButtonColor: '#f65656',
       confirmButtonText: 'OUI',
@@ -520,6 +707,7 @@ export class ArretsComponent implements OnInit {
         res => {
           this.initArret()
           this.LoadArrets();
+
         }
     );
   }
@@ -584,7 +772,7 @@ export class ArretsComponent implements OnInit {
     dashLast30days(){
         this.datas.labels = [];
         this.datas.datasets = [];
-        this.date_this_month = "30 dernier jour";
+        this.date_this_month = "30 derniers jours";
         const datasetNbrePanne3 = {
             data: [],
             label: "Arrêt",

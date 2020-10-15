@@ -55,8 +55,8 @@ export class ArretsService {
     return this.http.post(API_URLS.ARRETS_URL, arret);
   }
 
-  putArret(arret: Arrets ): Observable<any>{
-    return this.http.put(API_URLS.ARRETS_URL, arret);
+  putArret(arret: Arrets, numero: string ): Observable<any>{
+    return this.http.put(API_URLS.ARRETS_URL + `/${numero}`, arret);
   }
 
   deleteArret(id: number): Observable<any>{

@@ -6,6 +6,7 @@ export class Arrets {
     cause?: string;
     date?: string;
     idMachine?: number;
+    id_machine?: number;
     idArret?: number;
     debutArret?: DateTimeFormat;
     finArret?: DateTimeFormat;

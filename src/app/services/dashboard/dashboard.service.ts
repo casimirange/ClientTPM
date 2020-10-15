@@ -31,14 +31,14 @@ export class DashboardService {
   CountPastMonth(): Observable<any>{
     return this.http.get(API_URLS.DASHBOARD_URL + `/countPassMonth`);
   }
-  getmdtByYearAlpi(): Observable<any>{
-    return this.http.get(API_URLS.DASHBOARD_URL + `/mdtByYearAlpi`);
-  }
-  getmdtThisYearAlpi(): Observable<any>{
-    return this.http.get(API_URLS.DASHBOARD_URL + `/mdtThisYearAlpi`);
+  recapMonths(): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/recapMonth`);
   }
   mtbfByYearAlpi(): Observable<any>{
     return this.http.get(API_URLS.DASHBOARD_URL + `/mtbfByYear`);
+  }
+  mtbfAlpi(): Observable<any>{
+    return this.http.get(API_URLS.DASHBOARD_URL + `/MTBFAlpi`);
   }
   mtbfThisYearAlpi(): Observable<any>{
     return this.http.get(API_URLS.DASHBOARD_URL + `/mtbfThisYear`);

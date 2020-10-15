@@ -1,1 +1,60 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-card mb-3 card">
+            <div class="card-header">
+                Liste des Utilisateurs
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <form [formGroup]="searchPanForm">
+                            <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-actions-pane-right">
+                    <div role="group" class="btn-group-sm btn-group">
+                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
+                        <button class="btn btn-secondary float-right" >
+                            <i class="fa fa-plus-circle"></i>
+                            Nouvel Utilisateur
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" >
+                    <table class="align-middle mb-0 table table-sm table-borderless table-hover">
+                        <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Nom</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Permission</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="widget-content" >
+                            <th scope="row" >casimirange@alpiwood.com</th>
+                            <td>OUANDJI Casimir</td>
+                            <td class="text-capitalize">Acon</td>
+                            <td class="text-capitalize">Admin</td>
+                            <td> Technique</td>
+                            <td class="text-center">
+                                <div role="group" class="btn-group-sm btn-group">
+                                    <button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger"><i class="fa fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

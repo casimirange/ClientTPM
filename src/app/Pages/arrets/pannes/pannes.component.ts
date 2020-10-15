@@ -13,6 +13,7 @@ import {Router} from "@angular/router";
 
 import  * as html2canvas from "html2canvas";
 import * as html2pdf from 'html2pdf.js';
+import {TokenStorageService} from "../../../auth/token-storage.service";
 // import {content} from "html2canvas/dist/types/src/css";
 // import {content} from "html2canvas/dist/types/css";
 
@@ -75,12 +76,15 @@ export class PannesComponent implements OnInit {
       labels: [],
       datasets: []
   };
+    private roles: string[];
+    private authority: string;
 
 
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private machineService: MachinesService,
               private router: Router,
+              private tokenStorage: TokenStorageService,
               private modalService: NgbModal  ) {
       this.createForm();
       this.createForms();
@@ -90,6 +94,26 @@ export class PannesComponent implements OnInit {
   }
 
   ngOnInit() {
+      if (this.tokenStorage.getToken()) {
+          this.roles = this.tokenStorage.getAuthorities();
+          this.roles.every(role => {
+              if (role === 'ROLE_ADMIN') {
+                  this.authority = 'admin';
+                  return false;
+              } else if (role === 'ROLE_SUPER_ADMIN') {
+                  this.authority = 'super_admin';
+                  return false;
+              } else if (role === 'ROLE_PM') {
+                  this.authority = 'pm';
+                  return false;
+              } else if (role === 'ROLE_RESPONSABLE') {
+                  this.authority = 'responsable';
+                  return false;
+              }
+              this.authority = 'user';
+              return true;
+          });
+      }
     this.ThisMonthPannes();
     this.countAllPannes();
     this.loadTimePannes();
@@ -121,8 +145,8 @@ export class PannesComponent implements OnInit {
 
     rangeForms() {
         this.rangeForm = this.fb.group({
-            date1: [''],
-            date2: ['']
+            date1: ['', Validators.required],
+            date2: ['', Validators.required]
         });
     }
 

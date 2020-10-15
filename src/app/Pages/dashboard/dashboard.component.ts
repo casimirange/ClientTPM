@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Pannes} from "../../Models/pannes";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PannesService} from "../../services/pannes/pannes.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardService} from "../../services/dashboard/dashboard.service";
@@ -21,6 +21,7 @@ import {
 import {UserService} from "../../services/user/user.service";
 import * as jsPDF from 'jspdf';
 import  * as html2canvas from "html2canvas";
+import {TokenStorageService} from "../../auth/token-storage.service";
 
 export type ChartOptions = {
     series: ApexNonAxisChartSeries;
@@ -38,14 +39,15 @@ export type ChartOptions = {
   // encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
-    // @ViewChild("chart", { static: true }) chart: ChartComponent;
+    private roles: string[];
+    private authority: string;
     public chartOptions: Partial<any>;
     ranger: string = "false";
     ranges: string = "false";
     pages: number = 7;
     board: string;
     errorMessage: string;
-    series = [];
+    private series = [];
 
   headings = 'Tableau de Bord';
   subheadings = 'Consultez l\'actualité des évènements ';
@@ -131,6 +133,7 @@ export class DashboardComponent implements OnInit {
 
   type: string = "bar";
 
+  recapMonthFailure: any[];
 
     public datasets = [
         {
@@ -217,17 +220,30 @@ export class DashboardComponent implements OnInit {
         maintainAspectRatio: false
     };
 
-
-    public labs = {
-        type: "category",
-        categories: [],
-    };
-    contentDataURL: any;
-    contentDataURL1: any;
-
-    imgHeight: any
-    imgHeight1: any
     private todatpannes: Pannes[];
+
+    y: number = 0;
+
+    cause1: string;
+    details1: string;
+    desc1: string;
+    cause2: string;
+    details2: string;
+    desc2: string;
+    ha1: any;
+    di1: any;
+    fi1: any;
+    ha2: any;
+    di2: any;
+    fi2: any;
+    outil1: any;
+    qte1: any;
+    ref1: any;
+    outil2: any;
+    qte2: any;
+    ref2: any;
+    OP1: any;
+    OP2: any;
 
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
@@ -236,6 +252,7 @@ export class DashboardComponent implements OnInit {
               private departementService: DepartementsService,
               private userService: UserService,
               private datePipe: DatePipe,
+              private tokenStorage: TokenStorageService,
               private modalService: NgbModal, private router: Router  ) {
 
 
@@ -245,29 +262,25 @@ export class DashboardComponent implements OnInit {
       this.rangeForms();
       this.pageForms();
 
-
       this.dashboardService.getCountDepPannes().subscribe(
 
           data => {
-              this.cdpannes = data;
-              console.log('nbre : ' +this.cdpannes.length);
-              console.log('nbre total: ');
-              console.log(this.cdpannes);
-
+              this.cdpannes =  data;
               var x = 0;
-              for (let pin of this.cdpannes){
+
+              for(let pin of data){
+                  console.log('récapitulatif: ', pin);
                   x = x + pin.nbre;
               }
-
               this.series.push(x);
-
+              console.log('bizzare ', this.series)
           },
           error => {
               console.log('une erreur a été détectée!')
           },
           () => {
               console.log('Total');
-              // console.log(this.cdount);
+              console.log(this.series);
           }
       );
 
@@ -277,7 +290,7 @@ export class DashboardComponent implements OnInit {
               type: "radialBar",
           },
 
-          series: [this.series ? this.series : 0],
+          series: [this.series],
 
           plotOptions: {
               radialBar: {
@@ -356,8 +369,8 @@ export class DashboardComponent implements OnInit {
 
     rangeForms() {
         this.rangeForm = this.fb.group({
-            date1: [''],
-            date2: ['']
+            date1: ['', Validators.required],
+            date2: ['', Validators.required]
         });
     }
 
@@ -368,6 +381,27 @@ export class DashboardComponent implements OnInit {
     }
 
   ngOnInit() {
+
+      if (this.tokenStorage.getToken()) {
+          this.roles = this.tokenStorage.getAuthorities();
+          this.roles.every(role => {
+              if (role === 'ROLE_ADMIN') {
+                  this.authority = 'admin';
+                  return false;
+              } else if (role === 'ROLE_SUPER_ADMIN') {
+                  this.authority = 'super_admin';
+                  return false;
+              } else if (role === 'ROLE_PM') {
+                  this.authority = 'pm';
+                  return false;
+              } else if (role === 'ROLE_RESPONSABLE') {
+                  this.authority = 'responsable';
+                  return false;
+              }
+              this.authority = 'user';
+              return true;
+          });
+      }
 
       this.userService.getUserBoard().subscribe(
           data => {
@@ -740,87 +774,10 @@ export class DashboardComponent implements OnInit {
     radialBar(){
 
 
-    this.dashboardService.getCountDepPannes().subscribe(
+    this.dashboardService.recapMonths().subscribe(
 
         data => {
-            this.cdpannes = data;
-            console.log('nbre : ' +this.cdpannes.length);
-            console.log('nbre total: \n'+ this.cdpannes);
-
-            var x = 0;
-            for (let pin of this.cdpannes){
-                x = x + pin.nbre;
-            }
-
-            // this.series.push(x);
-
-            // var options = {
-            // this.chartOptions = {
-            //     chart: {
-            //         height: 200,
-            //         type: "radialBar",
-            //     },
-            //
-            //     series: [x],
-            //
-            //     plotOptions: {
-            //         radialBar: {
-            //             hollow: {
-            //                 margin: 0,
-            //                 size: "70%",
-            //                 background: "#293450",
-            //                 dropShadow: {
-            //                     enabled: true,
-            //                     top: 0,
-            //                     left: 0,
-            //                     blur: 3,
-            //                     opacity: 0.5
-            //                 }
-            //             },
-            //             track: {
-            //                 dropShadow: {
-            //                     enabled: true,
-            //                     top: 2,
-            //                     left: 0,
-            //                     blur: 4,
-            //                     opacity: 0.15
-            //                 }
-            //             },
-            //             dataLabels: {
-            //                 name: {
-            //                     offsetY: -10,
-            //                     color: "#fff",
-            //                     fontSize: "13px"
-            //                 },
-            //                 value: {
-            //                     color: "#fff",
-            //                     fontSize: "30px",
-            //                     show: true,
-            //                     formatter: function (val) {
-            //                         return val;
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     },
-            //     fill: {
-            //         type: "gradient",
-            //         gradient: {
-            //             shade: "dark",
-            //             type: "horizontal",
-            //             gradientToColors: ["#ABE5A1"],
-            //             stops: [0, 100]
-            //         }
-            //     },
-            //     stroke: {
-            //         lineCap: "round"
-            //     },
-            //     labels: ["Total Pannes"]
-            // };
-
-            // var chart = new ApexCharts(document.querySelector("#chart"), options);
-            //
-            // chart.render();
+            this.recapMonthFailure = data;
 
         },
         error => {
@@ -927,6 +884,9 @@ export class DashboardComponent implements OnInit {
         this.panneService.getOpPannes(this.selectedPanne.numero).subscribe(
             data => {
                 this.Opannes = data;
+                this.OP1 = data[0];
+
+                (data.length>1)? this.OP2 = data[1] : this.OP2 = '';
             },
             error => {
                 console.log('une erreur a été détectée!')
@@ -940,6 +900,13 @@ export class DashboardComponent implements OnInit {
         this.panneService.getDetailsPannes(this.selectedPanne.numero).subscribe(
             data => {
                 this.Detailspannes = data;
+                this.cause1 = data[0].cause;
+                this.desc1 = data[0].description;
+                this.details1 = data[0].details;
+
+                (data.length>1)? this.cause2 = data[1].cause : this.cause2 = '';
+                (data.length>1)? this.desc2 = data[1].description : this.desc2 = '';
+                (data.length>1)? this.details2 = data[1].details : this.details2 = '';
             },
             error => {
                 console.log('une erreur a été détectée!')
@@ -953,6 +920,16 @@ export class DashboardComponent implements OnInit {
         this.panneService.getOutilsPannes(this.selectedPanne.numero).subscribe(
             data => {
                 this.Outilpannes = data;
+                this.outil1 = data[0].outil;
+                this.qte1 = data[0].qte;
+                this.ref1 = data[0].ref;
+                (data.length>1)? this.outil2 = data[1].outil : this.outil2 = '';
+                (data.length>1)? this.qte2 = data[1].qte : this.qte2 = '';
+                (data.length>1)? this.ref2 = data[1].ref : this.ref2 = '';
+                //   this.outil2 = data[1].outil;
+                // this.qte2 = data[1].qte;
+                // this.ref2 = data[1].ref;
+
             },
             error => {
                 console.log('une erreur a été détectée!')
@@ -967,6 +944,12 @@ export class DashboardComponent implements OnInit {
             data => {
                 this.Hpannes = data;
                 this.tail = this.Hpannes.length;
+                this.ha1 = data[0].heure_arret;
+                this.di1 = data[0].debut_inter;
+                this.fi1 = data[0].fin_inter;
+                (data.length > 1)?this.ha2 = data[1].heure_arret: this.ha2  = '';
+                (data.length > 1)?this.di2 = data[1].debut_inter: this.di2  = '';
+                (data.length > 1)?this.fi2 = data[1].fin_inter: this.fi2  = '';
             },
             error => {
                 console.log('une erreur a été détectée!')

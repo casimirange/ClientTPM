@@ -314,6 +314,15 @@ export class StatsGlobalComponent implements OnInit {
   }
 
   alpicam(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
     this.rapportService.getRidotto().subscribe(
         data => {
           this.ridotto = data;
@@ -330,6 +339,15 @@ export class StatsGlobalComponent implements OnInit {
   }
 
   placage(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
     this.rapportService.getPlacage().subscribe(
         data => {
           this.ridotto = data;
@@ -346,6 +364,15 @@ export class StatsGlobalComponent implements OnInit {
   }
 
   brazil(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
     this.rapportService.getBrazil().subscribe(
         data => {
           this.ridotto = data;
@@ -362,6 +389,15 @@ export class StatsGlobalComponent implements OnInit {
   }
 
   contreplaque(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
     this.rapportService.getContreplaque().subscribe(
         data => {
           this.ridotto = data;
@@ -378,6 +414,15 @@ export class StatsGlobalComponent implements OnInit {
   }
 
   scierie(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
     this.rapportService.getScierie().subscribe(
         data => {
           this.ridotto = data;
@@ -518,6 +563,148 @@ export class StatsGlobalComponent implements OnInit {
     );
   }
 
+  // mtbfAlpicam(){
+  //   const mtbf = {
+  //     data: [],
+  //     label: "MTBF",
+  //     yAxisID: 'y-axis-0',
+  //     type: 'bar',
+  //   };
+  //   const teste = {
+  //     data: [],
+  //     type: 'line',
+  //     name: 'Nombre de Pannes'
+  //   };
+  //   const teste1 = {
+  //     data: [],
+  //     type: 'column',
+  //     name: 'TDT'
+  //   };
+  //   const teste2 = {
+  //     data: [],
+  //     type: 'column',
+  //     name: 'MTBF'
+  //   };
+  //   const test1 = {
+  //     categories: []
+  //   };
+  //   const tdt = {
+  //     data: [],
+  //     label: "TDT",
+  //     yAxisID: 'y-axis-1',
+  //     type: 'bar',
+  //   };
+  //
+  //   const panne = {
+  //     data: [],
+  //     label: "Pannes",
+  //     yAxisID: 'y-axis-1',
+  //     type: 'line',
+  //   };
+  //
+  //   const wt = {
+  //     data: [],
+  //     label: "WT",
+  //     yAxisID: 'y-axis-0',
+  //     type: 'bar',
+  //     order: 1,
+  //     stacked: true
+  //   };
+  //   const ttr = {
+  //     data: [],
+  //     label: "TTR",
+  //     yAxisID: 'y-axis-0',
+  //     type: 'bar',
+  //     order: 1,
+  //     stacked: true
+  //   };
+  //
+  //   const mdt = {
+  //     data: [],
+  //     label: "MDT",
+  //     yAxisID: 'y-axis-1',
+  //     type: 'line',
+  //     order: 2,
+  //   };
+  //
+  //   this.dashboardService.mtbfByYearAlpi().subscribe(
+  //       data1 => {
+  //         this.mtbfY = data1;
+  //         this.dashboardService.mtbfThisYearAlpi().subscribe(
+  //             data2 => {
+  //               this.mtbfTY = data2;
+  //               this.mtbf = this.mtbfY.slice((this.mtbfY.length - 6), this.mtbfY.length).concat(this.mtbfTY);
+  //               console.log('concat '+this.mtbf)
+  //
+  //               for (let mach of this.mtbf){
+  //                 this.mtbfByYear.labels.push(mach.date);
+  //                 this.mdtByYear.labels.push(mach.date);
+  //                 test1.categories.push(mach.date);
+  //
+  //                   var y = mach.TDT/60;
+  //                   var z = mach.HT - y;
+  //
+  //
+  //                   var a = Number.parseInt(mach.nbre.toString()) + 1 ;
+  //
+  //
+  //                   var mt = z / a;
+  //                   mtbf.data.push(Math.trunc(mt));
+  //                   teste2.data.push(Math.trunc(mt));
+  //
+  //
+  //
+  //
+  //                 // mtbf.data.push(((mach.HT)-((Number.parseInt(mach.AT)/60)+(mach.TDT/60)))/(mach.nbre+1));
+  //                 panne.data.push(mach.nbre);
+  //                 tdt.data.push(mach.TDT);
+  //                 teste.data.push(mach.nbre);
+  //                 teste1.data.push(mach.TDT);
+  //                 // teste2.data.push(mtbf);
+  //
+  //                 wt.data.push(Math.trunc(mach.WT/mach.nbre));
+  //                 ttr.data.push(Math.trunc(mach.TTR/mach.nbre));
+  //                 mdt.data.push(Math.trunc(mach.TDT/mach.nbre));
+  //
+  //               }
+  //               console.log('testons voir :' + JSON.stringify(test1));
+  //               // this.labs = test1;
+  //               // console.log('dépassé: '+this.labs.valueOf())
+  //             },
+  //             error => {
+  //               console.log('une erreur a été détectée!')
+  //             },
+  //             () => {
+  //               console.log('years');
+  //               console.log(this.py);
+  //             }
+  //         );
+  //       },
+  //       error => {
+  //         console.log('une erreur a été détectée!')
+  //       },
+  //       () => {
+  //         console.log('months');
+  //         console.log(this.pm);
+  //       }
+  //   ) ;
+  //
+  //
+  //   this.mtbfByYear.datasets.push(mtbf);
+  //   this.mtbfByYear.datasets.push(tdt);
+  //   this.mtbfByYear.datasets.push(panne);
+  //   // this.test.datasets.push(teste2);
+  //   // this.test.datasets.push(teste1);
+  //   // this.test.datasets.push(teste);
+  //
+  //   this.mdtByYear.datasets.push(wt);
+  //   this.mdtByYear.datasets.push(ttr);
+  //   this.mdtByYear.datasets.push(mdt);
+  //   // this.labs.categories.push(this.mtbfByYear.labels);
+  //   // this.labs.categories.push(test1.categories)
+  //
+  // }
+
   mtbfAlpicam(){
     const mtbf = {
       data: [],
@@ -582,14 +769,9 @@ export class StatsGlobalComponent implements OnInit {
       order: 2,
     };
 
-    this.dashboardService.mtbfByYearAlpi().subscribe(
+    this.dashboardService.mtbfAlpi().subscribe(
         data1 => {
-          this.mtbfY = data1;
-          this.dashboardService.mtbfThisYearAlpi().subscribe(
-              data2 => {
-                this.mtbfTY = data2;
-                this.mtbf = this.mtbfY.slice((this.mtbfY.length - 6), this.mtbfY.length).concat(this.mtbfTY);
-                console.log('concat '+this.mtbf)
+          this.mtbf = data1;
 
                 for (let mach of this.mtbf){
                   this.mtbfByYear.labels.push(mach.date);
@@ -625,15 +807,7 @@ export class StatsGlobalComponent implements OnInit {
                 console.log('testons voir :' + JSON.stringify(test1));
                 // this.labs = test1;
                 // console.log('dépassé: '+this.labs.valueOf())
-              },
-              error => {
-                console.log('une erreur a été détectée!')
-              },
-              () => {
-                console.log('years');
-                console.log(this.py);
-              }
-          );
+
         },
         error => {
           console.log('une erreur a été détectée!')

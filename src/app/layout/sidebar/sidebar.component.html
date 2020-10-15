@@ -41,72 +41,72 @@
                         Tableau de bord
                     </a>
                 </li>
-                <li *ngIf="authority === 'admin'" class="app-sidebar__heading">Statistiques</li>
-                <li *ngIf="authority === 'admin'">
+                <li *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'" class="app-sidebar__heading">Rapport</li>
+                <li *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'">
                     <a routerLinkActive="mm-active" routerLink="/statistiques/alpicam">
                         <i class="metismenu-icon pe-7s-graph3"></i>
                         Alpicam
                     </a>
                 </li>
-                <li class="app-sidebar__heading">UI Components</li>
+                <li *ngIf="authority != 'pm'" class="app-sidebar__heading">Gestion des Machines</li>
 
-                <li>
+                <li *ngIf="authority != 'pm'">
                     <a routerLinkActive="mm-active" routerLink="/tempsMachine">
                         <i class="metismenu-icon pe-7s-clock fa-spin"></i>
                         Horaires Machines
                     </a>
                 </li>
-                <li routerLinkActive="mm-active">
+                <li *ngIf="authority != 'pm'" routerLinkActive="mm-active">
                     <a routerLinkActive="mm-active" routerLink="/arrets">
-                        <i class="metismenu-icon">
-                        </i>Toutes les Arrêts
+                        <i class="pe-7s-timer metismenu-icon">
+                        </i>Arrêts Machines
                     </a>
                 </li>
-                <li routerLinkActive="mm-active">
+                <li *ngIf="authority != 'pm'" routerLinkActive="mm-active">
                     <a routerLinkActive="mm-active" routerLink="/pannes">
-                        <i class="metismenu-icon">
-                        </i>Toutes les Pannes
+                        <i class="pe-7s-tools metismenu-icon">
+                        </i>Pannes Machines
                     </a>
                 </li>
-                <li *ngIf="authority === 'admin'" class="app-sidebar__heading">Administration</li>
-                <li *ngIf="authority === 'admin'">
+                <li *ngIf="authority === 'super_admin'" class="app-sidebar__heading">Administration</li>
+                <li *ngIf="authority === 'super_admin'">
                     <a routerLinkActive="mm-active" routerLink="/utilisateurs">
                         <i class="metismenu-icon pe-7s-door-lock"></i>
                         Droits d'accès
                     </a>
                 </li>
-                <li *ngIf="authority === 'admin'" routerLinkActive="mm-active">
+                <li *ngIf="authority === 'super_admin'" routerLinkActive="mm-active">
                     <a href="#">
                         <i class="metismenu-icon pe-7s-settings"></i>
                         Configuration
                         <i class="metismenu-state-icon pe-7s-angle-down"></i>
                     </a>
                     <ul>
-                        <li>
+                        <li *ngIf="authority === 'super_admin'">
                             <a routerLinkActive="mm-active" routerLink="/departements" >
                                 <i class="metismenu-icon">
                                 </i>Départements
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="authority === 'super_admin'">
                             <a routerLinkActive="mm-active" routerLink="/lignes" >
                                 <i class="metismenu-icon">
                                 </i>Lignes
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="authority === 'super_admin'">
                             <a routerLinkActive="mm-active" routerLink="/machines" >
                                 <i class="metismenu-icon">
                                 </i>Machines
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="authority === 'super_admin'">
                             <a routerLinkActive="mm-active" routerLink="/operateurs" >
                                 <i class="metismenu-icon">
                                 </i>Opérateurs
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="authority === 'super_admin'">
                             <a routerLinkActive="mm-active" routerLink="/techniciens">
                                 <i class="metismenu-icon">
                                 </i>Techniciens

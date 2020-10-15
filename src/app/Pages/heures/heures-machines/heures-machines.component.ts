@@ -78,13 +78,13 @@ export class HeuresMachinesComponent implements OnInit {
   }
   rangeForms() {
     this.rangeForm = this.fb.group({
-      date1: [''],
-      date2: ['']
+      date1: ['', Validators.required],
+      date2: ['', Validators.required]
     });
   }
   newDateForms() {
     this.newDateForm = this.fb.group({
-      date1: ['']
+      date1: ['', Validators.required]
     });
   }
   choiceForms() {
@@ -94,7 +94,7 @@ export class HeuresMachinesComponent implements OnInit {
   }
   monthForms() {
     this.monthForm = this.fb.group({
-      date1: ['']
+      date1: ['', Validators.required]
     });
   }
 
@@ -362,7 +362,7 @@ export class HeuresMachinesComponent implements OnInit {
 
       this.heuresService.addHeure(this.selectedHeure).subscribe(
           res => {
-              this.loadThisMonthHeures();
+              this.loadLastMonthHeures();
               this.loadHeuresByDep();
               this.onResetMachine();
               this.createForm();

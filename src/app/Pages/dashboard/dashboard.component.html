@@ -1,6 +1,6 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
-<div class="row" *ngIf="cdpannes">
+<div class="row" *ngIf="cdpannes && authority != 'user'">
     <div class="col-md-6 "  style="cursor: pointer;" *ngFor="let cdp of cdpannes" (click)="showDepart(cdp)" [ngClass]="cdpannes.length == 4 ? 'col-lg-3' : cdpannes.length == 3 ? 'col-lg-4' : cdpannes.length == 2 ? 'col-lg-6' : 'col-lg-3'">
         <div class="mb-3 widget-chart widget-chart2 text-left card" [ngClass]="
             cdp.dep == 'Scierie' ? 'card-shadow-danger' :
@@ -36,25 +36,15 @@
     </div>
 
 </div>
-
-<!--<div class="row">-->
-    <!--{{board}}-->
-    <!--{{errorMessage}}-->
-<!--</div>-->
-<!--<div class="btn-actions-pane-right text-capitalize">-->
-    <!--<div class="btn-group dropdown">-->
-        <!--<button type="button" class="btn-wide mr-1 dropdown-toggle btn btn-outline-focus btn-sm" (click)="onExport()">Rapport PDF</button>-->
-    <!--</div>-->
-<!--</div>-->
 <div class="tabs-animation">
     <div class="row" >
         <div class="col-md-12 col-lg-6 col-xl-7">
             <div class="main-card mb-3 card">
                 <div class="rm-border card-header">
                     <div>
-                        <h5 class="menu-header-title text-capitalize text-primary">Suivi Journalier</h5>
+                        <h5 class="menu-header-title text-capitalize text-secondary">Suivi Journalier</h5>
                     </div>
-                    <div class="btn-actions-pane-right">
+                    <div class="btn-actions-pane-right" *ngIf="authority != 'user'">
                         <div role="group" class="btn-group-sm btn-group">
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                             <form [formGroup]="dashPanForm">
@@ -70,20 +60,20 @@
                     </div>
 
                 </div>
-                <div *ngIf="ranger == 'true'" class="btn-actions-pane-right mr-2">
+                <div *ngIf="ranger == 'true' && authority != 'user'" class="btn-actions-pane-right mr-2">
                     <div  role="group" class="btn-group-sm btn-group">
                         <div >
                             <form [formGroup]="rangeForm">
                                 <div class="form-row">
 
                                     <div class="col-md-5">
-                                        <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date1'].invalid && (rangeForm.controls['date1'].touched)}" [(ngModel)]="d" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
                                     </div>
                                     <div class="col-md-5">
-                                        <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
                                     </div>
                                     <div class="col-md-2">
-                                        <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); countAllRangePannes(); StatistiquesTechniciensRange(); rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+                                        <button [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid || !d || !f" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); countAllRangePannes(); StatistiquesTechniciensRange(); rangeDate()" type="submit"><i class="fa fa-search"></i></button>
 
                                     </div>
 
@@ -94,11 +84,7 @@
                 </div>
                 <div class="card-body p-2" id="pdf1">
                     <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
-                        <div style="height: 274px;" >
-                            <!--<app-my-chart-->
-                                    <!--[type]="'bar'"-->
-                                    <!--[data]="dataPanne"-->
-                            <!--&gt;</app-my-chart>-->
+                        <div style="height: auto" >
                             <div class="flex-item">
                                 <div style="display: block; height: auto;">
                                     <app-chart
@@ -108,24 +94,10 @@
                                     ></app-chart>
                                 </div>
                             </div>
-                            <!--<ngx-charts-bar-vertical-->
-                                <!--[view] = "view"-->
-                                <!--[results] = "single"-->
-                                <!--[xAxis] = "showXAxis"-->
-                                <!--[yAxis] = "showYAxis"-->
-                                <!--[showXAxisLabel] = "showXAxisLabel"-->
-                                <!--[showYAxisLabel] = "showYAxisLabel"-->
-                                <!--[xAxisLabel] = "XAxisLabel"-->
-                                <!--[yAxisLabel] = "YAxisLabel"-->
-                                <!--[legend] = "showLegend"-->
-                                <!--[legendTitle] = "'Légende'"-->
-                                <!--(select)="onselect($event)"-->
-                            <!--&gt;-->
-                            <!--</ngx-charts-bar-vertical>-->
                         </div>
                     </div>
                 </div>
-                <div class="border-top bg-light card-header">
+                <div class="border-top bg-light card-header" *ngIf="authority != 'user' && authority != 'responsable'">
                     <div class="actions-icon-btn mx-auto">
                         <div>
                             <div role="group" class="btn-group-lg btn-group nav">
@@ -135,7 +107,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" *ngIf="authority != 'user' && authority != 'responsable'">
                     <div class="tab-content">
                         <div class="tab-pane active fade show" id="tab-content-income" role="tabpanel">
                             <h5 class="menu-header-title">Pannes
@@ -275,55 +247,46 @@
             </div>
         </div>
         <div class="col-md-12 col-lg-6 col-xl-5">
-            <div class="main-card mb-3 card" id="pdf2">
+            <div class="main-card mb-3 card" id="pdf2" >
                 <div class="card-body">
                     <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Total des Pannes Mensuel</h6>
-
-
                     <ul class="list-group list-group-flush">
                         <li class="p-0 list-group-item">
                             <div class="row">
                                 <div class="center-elem col-md-6">
-                                    <!--<div class="center-elem w-100">-->
-                                        <!--<div id="chart" ></div>-->
-                                    <!--</div>-->
                                     <div class="center-elem w-100">
-                                        <!--<div id="chart">-->
-                                            <apx-chart
-                                                [series]="chartOptions.series"
-                                                [chart]="chartOptions.chart"
-                                                [plotOptions]="chartOptions.plotOptions"
-                                                [labels]="chartOptions.labels"
-                                                [stroke]="chartOptions.stroke"
-                                                [fill]="chartOptions.fill">
-                                            </apx-chart>
-                                        <!--</div>-->
+                                    <apx-chart
+                                        [series]="chartOptions.series"
+                                        [chart]="chartOptions.chart"
+                                        [plotOptions]="chartOptions.plotOptions"
+                                        [labels]="chartOptions.labels"
+                                        [stroke]="chartOptions.stroke"
+                                        [fill]="chartOptions.fill">
+                                    </apx-chart>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" *ngFor="let recap of recapMonthFailure">
                                     <div class="widget-chart">
                                         <div class="widget-chart-content">
                                             <div class="widget-subheading">Mois Dernier</div>
-                                            <div class="widget-numbers-sm mt-0 text-alternate"><span>{{lastMonth}}</span></div>
+                                            <div class="widget-numbers-sm mt-0 text-alternate"><span>{{recap.lastMonthFailure}}</span></div>
                                             <div class="widget-description text-focus">
-                                                {{(cdount < lastMonth) ? 'En baisse de' : (cdount > lastMonth) ? 'En Hausse de': 'Constant'}}
+                                                {{(recap.taux < 0) ? 'En baisse de' : (recap.taux > 0) ? 'En Hausse de': 'Constant'}}
                                                 <span class="pl-1"
                                                       [ngClass]="
-            cdount < lastMonth ? 'text-success' :
-            cdount > lastMonth ? 'text-danger' : 'text-warning'"
+            recap.taux < 0 ? 'text-success' :
+            recap.taux > 0 ? 'text-danger' : 'text-warning'"
                                                 >
                                             <i [ngClass]="
-            cdount < lastMonth ? 'fa fa-arrow-down' :
-            cdount > lastMonth ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
-                                            <!--<span class="pl-1" *ngIf="cdount == 0 && lastMonth !=0 || lastMonth == 0">100 %</span>-->
-                                            <!--<span class="pl-1" *ngIf="cdount < lastMonth">{{(((cdount)/(lastMonth))-1) *(-1) | percent}}</span>-->
-                                            <!--<span class="pl-1" *ngIf="cdount >= lastMonth && lastMonth != 0">{{(((cdount)/(lastMonth))-1) | percent}}</span>-->
-                                                    <span class="pl-1">{{
-                                                    cdount < lastMonth ? ((((cdount)/(lastMonth))-1) *(-1) | percent) :
-                                                    (cdount >= lastMonth && lastMonth != 0) ? ((((cdount)/(lastMonth))-1) | percent) :
-                                                    (cdount == 0 && lastMonth !=0 ) ? '100 %' :
-                                                    (cdount != 0 && lastMonth ==0 ) ? '100 %' : '0 %'
-                                                    }} </span>
+            recap.taux < 0 ? 'fa fa-arrow-down' :
+            recap.taux > 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-right'"></i>
+                                                    <span class="pl-1">
+                                                    {{ recap.taux == 0 ? recap.taux+' %':
+                                                    (recap.taux == 100) ? recap.taux+' %':
+                                                    (recap.taux == -100) ? (recap.taux) * (-1)+' %':
+                                                    (recap.taux < 0 ) ? (recap.taux.toFixed(2)) * (-1)+' %':
+                                                    recap.taux.toFixed(2)+' %'}}
+                                                    </span>
                                             </span>
 
 
@@ -362,13 +325,13 @@
             </div>
 
 
-            <div class="main-card mb-3 card">
+            <div class="main-card mb-3 card" *ngIf="authority != 'user'">
                 <div class="card-body">
                     <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Liste des Pannes de la Journée</h6>
                     <div class="border-light card-border scroll-area-sm card">
                         <div class="scrollbar-container">
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item" *ngFor="let pan of todatpannes " style="cursor: pointer;" (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }">
+                                <li class="list-group-item" *ngFor="let pan of todatpannes " style="cursor: pointer;" (click)="(pan.cont == false && pan.etat == true) ? modal(extendPanne) : open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }">
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <!--<div class="widget-content-left mr-3">-->
@@ -391,10 +354,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <ng-template #mymodal let-modal>
+                                    <ng-template #mymodal let-modal >
                                         <div class="modal-header">
                                             <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
-                                            <div style="cursor: pointer" class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)">
+                                            <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
                                                 <span class="timeline-title"><b>{{pan.machine}}</b></span>
                                                 <p>{{pan.code}}</p>
                                             </div>
@@ -404,29 +367,29 @@
                                                 <div class="row" *ngIf="tail < 2">
                                                     <div class="col-md-4 col-xl-4 ">
                                                         <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                                        <p *ngFor="let hp of Hpannes">{{hp.heureArret | date: 'HH:mm'}}</p>
+                                                        <p *ngFor="let hp of Hpannes">{{hp.heure_arret | date: 'HH:mm'}}</p>
                                                     </div>
                                                     <div class="col-md-4 col-xl-4 text-center">
                                                         <span class="timeline-title"><b>Début Inter</b></span>
-                                                        <p *ngFor="let hp of Hpannes;">{{hp.debutInter | date: 'HH:mm'}}</p>
+                                                        <p *ngFor="let hp of Hpannes;">{{hp.debut_inter | date: 'HH:mm'}}</p>
                                                     </div>
                                                     <div class="col-md-4 col-xl-4 text-right">
                                                         <span class="timeline-title"><b>Fin Inter</b></span>
-                                                        <p *ngFor="let hp of Hpannes">{{hp.finInter | date: 'HH:mm'}}</p>
+                                                        <p *ngFor="let hp of Hpannes">{{hp.fin_inter | date: 'HH:mm'}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="row" *ngIf="tail > 1">
                                                     <div class="col-md-4 col-xl-4 ">
                                                         <span class="timeline-title"><b>Heure Arrêt</b></span>
-                                                        <p >{{Hpannes[0].heureArret | date: 'HH:mm'}}</p>
+                                                        <p >{{Hpannes[0].heure_arret | date: 'HH:mm'}}</p>
                                                     </div>
                                                     <div class="col-md-4 col-xl-4 text-center">
                                                         <span class="timeline-title"><b>Début Inter</b></span>
-                                                        <p >{{Hpannes[0].debutInter | date: 'HH:mm'}}</p>
+                                                        <p >{{Hpannes[0].debut_inter | date: 'HH:mm'}}</p>
                                                     </div>
                                                     <div class="col-md-4 col-xl-4 text-right">
                                                         <span class="timeline-title"><b>Fin Inter</b></span>
-                                                        <p >{{Hpannes[1].finInter | date: 'HH:mm'}}</p>
+                                                        <p >{{Hpannes[1].fin_inter | date: 'HH:mm'}}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -455,15 +418,18 @@
                                                         <div class="vertical-timeline-item vertical-timeline-element">
                                                             <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
                                                                 <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
-                                                                    <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>
+                                                                    <p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp;
+                                                                        <span class="text-capitalize">{{pan.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{pan.nomOP}}</span>
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="vertical-timeline-item vertical-timeline-element">
                                                             <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
                                                                 <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
-                                                                    <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp; {{pt.preTec}} {{pt.nomTec}}
-                                                                        <span class="float-right">
+                                                                    <p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                        <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span class="text-uppercase">{{pt.nomTec}}</span>
+                                                                        <span class="float-right text-capitalize">
                                                            {{pt.fonction}}
                                                         </span>
                                                                     </p>
@@ -471,7 +437,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div *ngIf="pan.outil" class="vertical-timeline-item vertical-timeline-element">
+                                                        <div *ngIf="pan.outil != ''" class="vertical-timeline-item vertical-timeline-element">
                                                             <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
                                                                 <div class="vertical-timeline-element-content bounce-in">
                                                                     <h4 class="timeline-title">Outils utilisés</h4>
@@ -486,8 +452,197 @@
                                             <div class="float-left">
                                                 <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                             </div>
-                                            <div class="float-right">
-                                                <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
+                                            <div class="float-right" *ngIf="authority === 'super_admin'">
+                                                <div role="group" class="btn-group-sm btn-group">
+                                                    <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
+                                                    <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template #extendPanne let-modal >
+                                        <div class="modal-header">
+                                            <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
+                                            <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
+                                                <span class="timeline-title"><b>{{pan.machine}}</b></span>
+                                                <p>{{pan.code}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6 col-lg-6 col-xl-6" style="border-right: groove #0b5885 1px">
+                                                    <div class="tabs-animation">
+                                                        <div class="row" >
+                                                            <div class="col-md-4 col-xl-4 ">
+                                                                <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                                <p >{{ha1 | date: 'HH:mm'}}</p>
+                                                            </div>
+                                                            <div class="col-md-4 col-xl-4 text-center">
+                                                                <span class="timeline-title"><b>Début Inter</b></span>
+                                                                <p >{{di1 | date: 'HH:mm'}}</p>
+                                                            </div>
+                                                            <div class="col-md-4 col-xl-4 text-right">
+                                                                <span class="timeline-title"><b>Fin Inter</b></span>
+                                                                <p >{{fi1 | date: 'HH:mm'}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="scroll-area-lg">
+                                                        <div class="scrollbar-container">
+                                                            <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                            <p>{{desc1}}</p></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                            <p>{{cause1}}</p></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                            <p>{{details1}}</p></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                            <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 1">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                            <p *ngFor="let pt of Tpannes">
+                                                                    <span *ngIf="pt.quart == 1">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div *ngIf="qte1 != 0" class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in">
+                                                                            <h4 class="timeline-title">Outils utilisés</h4>
+                                                                            <p><b>{{qte1}}</b> {{outil1}}: <b class="text-dark">{{ref1}}</b></p>                                                           </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-6 col-xl-6">
+                                                    <div class="tabs-animation">
+                                                        <div class="row" >
+                                                            <div class="col-md-4 col-xl-4 ">
+                                                                <span class="timeline-title"><b>Heure Arrêt</b></span>
+                                                                <p >{{ha2 | date: 'HH:mm'}}</p>
+                                                            </div>
+                                                            <div class="col-md-4 col-xl-4 text-center">
+                                                                <span class="timeline-title"><b>Début Inter</b></span>
+                                                                <p >{{di2 | date: 'HH:mm'}}</p>
+                                                            </div>
+                                                            <div class="col-md-4 col-xl-4 text-right">
+                                                                <span class="timeline-title"><b>Fin Inter</b></span>
+                                                                <p >{{fi2 | date: 'HH:mm'}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="scroll-area-lg">
+                                                        <div class="scrollbar-container">
+                                                            <div class="vertical-time-icons vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>
+                                                                            <p>{{desc2}}</p></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>
+                                                                            <p>{{cause2}}</p></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>
+                                                                            <p>{{details2}}</p></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>
+                                                                            <p *ngFor="let op of Opannes">
+                                                                    <span *ngIf="op.quart == 2">
+                                                                    <b class="text-alternate">{{op.matOP}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{op.prenomOP}}</span> &nbsp;<span class="text-uppercase">{{op.nomOP}}</span>
+                                                                    </span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>
+                                                                            <p *ngFor="let pt of Tpannes" >
+                                                                    <span *ngIf="pt.quart == 2">
+                                                                    <b class="text-primary">{{pt.matricule}}</b>:&nbsp;
+                                                                    <span class="text-capitalize">{{pt.preTec}}</span> &nbsp;<span
+                                                                            class="text-uppercase">{{pt.nomTec}}</span>
+                                                                    <span class="float-right text-capitalize">
+                                                           {{pt.fonction}}
+                                                        </span></span>
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div *ngIf="qte2 != 0" class="vertical-timeline-item vertical-timeline-element">
+                                                                    <div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>
+                                                                        <div class="vertical-timeline-element-content bounce-in">
+                                                                            <h4 class="timeline-title">Outils utilisés</h4>
+                                                                            <p>
+
+                                                                                <b>{{qte2}}</b> {{outil2}}:
+                                                                                <b class="text-dark float-right">{{ref2}}</b>
+                                                                            </p>                                                           </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="d-block clearfix card-footer ">
+                                            <div class="float-left">
+                                                <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
+                                            </div>
+                                            <div class="float-right" *ngIf="authority === 'super_admin'">
+                                                <div role="group" class="btn-group-sm btn-group">
+                                                    <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
+                                                    <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </ng-template>
@@ -501,7 +656,7 @@
                 </div>
             </div>
 
-            <div class="main-card mb-3 card">
+            <div class="main-card mb-3 card" *ngIf="authority != 'user'">
                 <div class="card-body">
                     <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Liste des Machines en Arrêt</h6>
                     <div class="border-light card-border scroll-area-sm card">
@@ -573,210 +728,10 @@
     </div>
 
     <div class="row">
-        <!--<div class="col-md-12">-->
-            <!--<div class="main-card mb-3 card " #content>-->
-                <!--<div class="card-header">-->
-                    <!--Récapitulatif des Pannes de la Semaine-->
-                    <!--<div class="btn-actions-pane-right">-->
-                        <!--<div role="group" class="btn-group-sm btn-group">-->
-                            <!--&lt;!&ndash;<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>&ndash;&gt;-->
-                            <!--<form [formGroup]="searchPanForm">-->
-                                <!--<input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">-->
-                            <!--</form>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="btn-actions-pane-right">-->
-                        <!--<div role="group" class="btn-group-sm btn-group">-->
-                            <!--Total :&nbsp;<span class="text-danger"> {{countPannes }} pannes</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="btn-actions-pane-right">-->
-                        <!--<div role="group" class="btn-group-sm btn-group">-->
-                            <!--&lt;!&ndash;<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>&ndash;&gt;-->
-                            <!--<button routerLink="/pannes" class="btn btn-primary" >-->
-                                <!--<i class="fa fa-eye"></i> Voir plus...</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <!--<div class="table-responsive">-->
-                    <!--<table class="align-middle mb-0 table table-sm table-borderless table-hover">-->
-                        <!--<thead>-->
-                        <!--<tr>-->
-                            <!--<th class="text-center">Date</th>-->
-                            <!--<th>Machine</th>-->
-                            <!--<th class="">Cause</th>-->
-                            <!--<th class="text-center">Arrêt</th>-->
-                            <!--<th class="text-center">Début Inter</th>-->
-                            <!--<th class="text-center">Fin Inter</th>-->
-                            <!--<th class="text-center">WT (min)</th>-->
-                            <!--<th class="text-center">TTR (min)</th>-->
-                            <!--<th class="text-center">DT (min)</th>-->
-                        <!--</tr>-->
-                        <!--</thead>-->
-                        <!--<tbody>-->
-                        <!--<tr style="cursor: pointer" *ngFor="let pan of ThisWeekPannes | filter: term " (click)="open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >-->
-                            <!--<ng-template #mymodal let-modal>-->
-                                <!--<div class="modal-header">-->
-                                    <!--<h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>-->
-                                    <!--<div style="cursor: pointer" class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan)">-->
-                                        <!--<span class="timeline-title"><b>{{pan.machine}}</b></span>-->
-                                        <!--<p>{{pan.code}}</p>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="modal-body">-->
-                                    <!--<div class="tabs-animation">-->
-                                        <!--<div class="row" *ngIf="tail < 2">-->
-                                            <!--<div class="col-md-4 col-xl-4 ">-->
-                                                <!--<span class="timeline-title"><b>Heure Arrêt</b></span>-->
-                                                <!--<p *ngFor="let hp of Hpannes">{{hp.heureArret | date: 'HH:mm'}}</p>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-md-4 col-xl-4 text-center">-->
-                                                <!--<span class="timeline-title"><b>Début Inter</b></span>-->
-                                                <!--<p *ngFor="let hp of Hpannes;">{{hp.debutInter | date: 'HH:mm'}}</p>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-md-4 col-xl-4 text-right">-->
-                                                <!--<span class="timeline-title"><b>Fin Inter</b></span>-->
-                                                <!--<p *ngFor="let hp of Hpannes">{{hp.finInter | date: 'HH:mm'}}</p>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<div class="row" *ngIf="tail > 1">-->
-                                            <!--<div class="col-md-4 col-xl-4 ">-->
-                                                <!--<span class="timeline-title"><b>Heure Arrêt</b></span>-->
-                                                <!--<p >{{Hpannes[0].heureArret | date: 'HH:mm'}}</p>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-md-4 col-xl-4 text-center">-->
-                                                <!--<span class="timeline-title"><b>Début Inter</b></span>-->
-                                                <!--<p >{{Hpannes[0].debutInter | date: 'HH:mm'}}</p>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-md-4 col-xl-4 text-right">-->
-                                                <!--<span class="timeline-title"><b>Fin Inter</b></span>-->
-                                                <!--<p >{{Hpannes[1].finInter | date: 'HH:mm'}}</p>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-
-                                    <!--<div class="scroll-area-lg">-->
-                                        <!--<div class="scrollbar-container">-->
-                                            <!--<div class="vertical-time-icons vertical-timeline vertical-timeline&#45;&#45;animate vertical-timeline&#45;&#45;one-column">-->
-                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
-                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
-                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Description de la panne</h4>-->
-                                                            <!--<p>{{pan.description}}</p></div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
-                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
-                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Cause du problème</h4>-->
-                                                            <!--<p>{{pan.cause}}</p></div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
-                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-success"></div></span>-->
-                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Détails de l'intervention</h4>-->
-                                                            <!--<p>{{pan.details}}</p></div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
-                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-alternate"></div></span>-->
-                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Opérateur de Production</h4>-->
-                                                            <!--<p><b class="text-alternate">{{pan.matOP}}</b>:&nbsp; {{pan.prenomOP}} {{pan.nomOP}} </p>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div class="vertical-timeline-item vertical-timeline-element">-->
-                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-primary"></div></span>-->
-                                                        <!--<div class="vertical-timeline-element-content bounce-in"><h4 class="timeline-title">Equipe de Maintenance</h4>-->
-                                                            <!--<p *ngFor="let pt of Tpannes"><b class="text-primary">{{pt.matricule}}</b>:&nbsp; {{pt.preTec}} {{pt.nomTec}}-->
-                                                                <!--<span class="float-right">-->
-                                                           <!--{{pt.fonction}}-->
-                                                        <!--</span>-->
-                                                            <!--</p>-->
-
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div *ngIf="pan.outil" class="vertical-timeline-item vertical-timeline-element">-->
-                                                    <!--<div><span class="vertical-timeline-element-icon bounce-in"><div class="timeline-icon border-warning"><i class="pe-7s-cloud-upload text-white"></i></div></span>-->
-                                                        <!--<div class="vertical-timeline-element-content bounce-in">-->
-                                                            <!--<h4 class="timeline-title">Outils utilisés</h4>-->
-                                                            <!--<p><b>{{pan.qte}}</b> {{pan.outil}}: <b class="text-dark">{{pan.ref}}</b></p>                                                           </div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="d-block clearfix card-footer ">-->
-                                    <!--<div class="float-left">-->
-                                        <!--<b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>-->
-                                    <!--</div>-->
-                                    <!--<div class="float-right">-->
-                                        <!--<button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</ng-template>-->
-                            <!--<td class="text-center text-muted">{{ pan.date  | date: 'dd/MM/y'}}</td>-->
-                            <!--<td>-->
-                                <!--<div class="widget-content p-0">-->
-                                    <!--<div class="widget-content-wrapper">-->
-                                        <!--<div class="widget-content-left mr-3">-->
-                                            <!--<div class="widget-content-left">-->
-                                                <!--<img width="40" class="rounded-circle" src="assets/images/avatars/4.jpg" alt="">-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<div class="widget-content-left flex2">-->
-                                            <!--<div class="widget-heading">{{pan.machine}}</div>-->
-                                            <!--<div class="widget-subheading opacity-7">{{pan.code}}</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</td>-->
-                            <!--<td class="text-left" style="white-space: nowrap;overflow: hidden;-->
-<!--text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'...' : pan.cause}}</td>-->
-                            <!--<td class="text-center" >{{ pan.heure_arret | date: 'HH:mm'}}</td>-->
-                            <!--<td class="text-center" >{{pan.debut_inter | date: 'HH:mm'}}</td>-->
-                            <!--<td class="text-center" >{{pan.fin_inter | date: 'HH:mm'}}</td>-->
-                            <!--<td [ngClass]="{'text-center': true, 'wtd': pan.wt >= 20}">{{pan.wt}}</td>-->
-                            <!--<td class="text-center">{{pan.ttr}}</td>-->
-                            <!--<td class="text-center">{{pan.dt}}</td>-->
-                        <!--</tr>-->
-
-                        <!--</tbody>-->
-
-                    <!--</table>-->
-                    <!--<p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne dans la semaine !</p>-->
-                <!--</div>-->
-                <!--<div class="d-block clearfix card-footer">-->
-                    <!--&lt;!&ndash;<div class="float-left">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-focus " (click)="makePdf()">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<i class="fa fa-file-pdf-o"></i> Exporter PDF</button> &nbsp;&ndash;&gt;-->
-                        <!--&lt;!&ndash;<button class=" border-0 btn-transition btn btn-sm btn-shadow btn-outline-success "><i class="fa fa-file-excel-o"></i> Exporter Excel</button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--<div class="float-right">-->
-                        <!--&lt;!&ndash;<ul class="pagination pagination-sm mb-0">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<li>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<pagination-controls (pageChange)="p=$event"&ndash;&gt;-->
-                                                     <!--&lt;!&ndash;autoHide = "true"&ndash;&gt;-->
-                                                     <!--&lt;!&ndash;responsive = "true"&ndash;&gt;-->
-                                                     <!--&lt;!&ndash;previousLabel = "Précédent"&ndash;&gt;-->
-                                                     <!--&lt;!&ndash;nextLabel = "Suivant">&ndash;&gt;-->
-                                <!--&lt;!&ndash;</pagination-controls>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<button class="btn-wide btn btn-link btn-sm">View All</button>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>&ndash;&gt;-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    </div>
-
-    <div class="row">
         <div class="col-md-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
-                    Pannes de la Semaine (Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)
+                    Pannes de la Semaine <span *ngIf="authority != 'user'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
                     <div class="btn-actions-pane-right">
                         <div role="group" class="btn-group-sm btn-group">
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
@@ -791,41 +746,18 @@
                             <form [formGroup]="selectPanForm">
                                 <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
                                     <option value="" selected disabled hidden>Cette Semaine</option>
-                                    <option value="ttesp">Toutes les pannes</option>
+                                    <option value="ttesp" *ngIf="authority != 'user'">Toutes les pannes</option>
                                     <option value="tp" >Aujourd'hui</option>
                                     <option value="hp" >Hier</option>
                                     <option value="twp" >Cette Semaine</option>
                                     <option value="lwp" >Semaine Dernière</option>
                                     <option value="tmp" >Ce mois</option>
                                     <option value="lmp" >Mois Dernier</option>
-                                    <option value="typ" >Cette Année</option>
-                                    <option value="lyp" >Année Dernière</option>
-                                    <option value="pp"  >Personaliser la recherche</option>
+                                    <option value="typ" *ngIf="authority != 'user'">Cette Année</option>
+                                    <option value="lyp" *ngIf="authority != 'user'">Année Dernière</option>
+                                    <option value="pp"  *ngIf="authority != 'user'">Personaliser la recherche</option>
                                 </select>
                             </form>
-
-                            <ng-template #range let-modal >
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <form [formGroup]="rangeForm">
-                                            <div class="form-row">
-
-                                                <div class="col-md-5">
-                                                    <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
-
-                                                </div>
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </ng-template>
                         </div>
                     </div>
                     <div class="btn-actions-pane-right">
@@ -835,13 +767,13 @@
                                     <div class="form-row">
 
                                         <div class="col-md-5">
-                                            <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                            <input type="date" [ngClass]="{'fred': rangeForm.controls['date1'].invalid && (rangeForm.controls['date1'].touched)}" [(ngModel)]="d" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                            <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
                                         </div>
                                         <div class="col-md-2">
-                                            <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
+                                            <button [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid || !d || !f" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate()" type="submit"><i class="fa fa-search"></i></button>
 
                                         </div>
 
@@ -968,7 +900,7 @@
                                     <div class="float-left">
                                         <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                     </div>
-                                    <div class="float-right">
+                                    <div class="float-right"  *ngIf="authority === 'super_admin'">
                                         <div role="group" class="btn-group-sm btn-group">
                                             <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
                                             <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
@@ -1154,8 +1086,11 @@
                                     <div class="float-left">
                                         <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                     </div>
-                                    <div class="float-right">
-                                        <button class="btn btn-primary pull-right" type="button" (click)="modal.close('save click')">Fermer</button>
+                                    <div class="float-right"  *ngIf="authority === 'super_admin'">
+                                        <div role="group" class="btn-group-sm btn-group">
+                                            <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
+                                            <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </ng-template>
@@ -1226,7 +1161,7 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                             <span style="display: inline-block">Afficher</span>&nbsp;
                             <span style="display: inline-block"><select (change)="paginate($event.target.value)" name="" id="sort" formControlName="page" class="form-control form-control-sm">
 
-                            <option value="" selected disabled hidden>10</option>
+                            <option value="" selected disabled hidden>07</option>
                             <option value="10">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>

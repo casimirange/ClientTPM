@@ -83,3 +83,16 @@
 ::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
+
+.red{
+    color: #f65656;
+    font-weight: bold;
+}
+
+.fred {
+    color: #495057;
+    background-color: #fff;
+    border-color: #f65656;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(246, 86, 86, 0.25)
+}
