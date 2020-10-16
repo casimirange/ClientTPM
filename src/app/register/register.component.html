@@ -1,51 +1,51 @@
-<div *ngIf="isSignedUp; else signupForm">
-  Your registration is successful. Please login!
-</div>
+<!--<div *ngIf="isSignedUp; else signupForm">-->
+  <!--Your registration is successful. Please login!-->
+<!--</div>-->
 
-<ng-template #signupForm>
-  <div class="row col-sm-6" style="max-width:350px;">
-    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-      <div class="form-group">
-        <label for="name">Your name</label>
-        <input type="text" class="form-control" name="name" [(ngModel)]="form.name" #name="ngModel" required />
-        <div *ngIf="f.submitted && name.invalid">
-          <div *ngIf="name.errors.required">Name is required</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"
-          required />
-        <div *ngIf="f.submitted && username.invalid">
-          <div *ngIf="username.errors.required">Username is required</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel" required email />
-        <div *ngIf="f.submitted && email.invalid">
-          <div *ngIf="email.errors.required">Email is required</div>
-          <div *ngIf="email.errors.email">Email must be a valid email address</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"
-          required minlength="6" />
-        <div *ngIf="f.submitted && password.invalid">
-          <div *ngIf="password.errors.required">Password is required</div>
-          <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary">Register</button>
-        <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-warning">
-          Signup failed!<br/>{{errorMessage}}
-        </div>
-      </div>
-    </form>
-  </div>
-</ng-template>
+<!--<ng-template #signupForm>-->
+  <!--<div class="row col-sm-6" style="max-width:350px;">-->
+    <!--<form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>-->
+      <!--<div class="form-group">-->
+        <!--<label for="name">Your name</label>-->
+        <!--<input type="text" class="form-control" name="name" [(ngModel)]="form.name" #name="ngModel" required />-->
+        <!--<div *ngIf="f.submitted && name.invalid">-->
+          <!--<div *ngIf="name.errors.required">Name is required</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group">-->
+        <!--<label for="username">Username</label>-->
+        <!--<input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"-->
+          <!--required />-->
+        <!--<div *ngIf="f.submitted && username.invalid">-->
+          <!--<div *ngIf="username.errors.required">Username is required</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group">-->
+        <!--<label for="email">Email</label>-->
+        <!--<input type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel" required email />-->
+        <!--<div *ngIf="f.submitted && email.invalid">-->
+          <!--<div *ngIf="email.errors.required">Email is required</div>-->
+          <!--<div *ngIf="email.errors.email">Email must be a valid email address</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group">-->
+        <!--<label for="password">Password</label>-->
+        <!--<input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"-->
+          <!--required minlength="6" />-->
+        <!--<div *ngIf="f.submitted && password.invalid">-->
+          <!--<div *ngIf="password.errors.required">Password is required</div>-->
+          <!--<div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-group">-->
+        <!--<button class="btn btn-primary">Register</button>-->
+        <!--<div *ngIf="f.submitted && isSignUpFailed" class="alert alert-warning">-->
+          <!--Signup failed!<br/>{{errorMessage}}-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</form>-->
+  <!--</div>-->
+<!--</ng-template>-->
 
 <div class="h-100">
   <div class="h-100 no-gutters row">
@@ -53,8 +53,8 @@
       <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
         <div class="app-logo"></div>
         <h4>
-          <div>Welcome,</div>
-          <span>It only takes a <span class="text-success">few seconds</span> to create your account</span></h4>
+          <div>Nouvel Utilisateur,</div>
+          <span>ça prend juste quelques secondes pour créer un nouvel utilisateur</span></h4>
         <div>
           <form [formGroup]="registerForm">
             <div class="form-row">
@@ -95,14 +95,48 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-12">
+              <div class="position-relative form-group">
+                <div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespCP" class="custom-control-input" value="responsable" formControlName="respCP">
+                    <label class="custom-control-label" for="RespCP">Resp. CP</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespPlacage" class="custom-control-input" value="responsable" formControlName="respPL">
+                    <label class="custom-control-label" for="RespPlacage">Resp. PL</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespMaint" class="custom-control-input" value="pm" formControlName="respMAINT">
+                    <label class="custom-control-label" for="RespMaint">Resp. Maint.</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="RespMind" class="custom-control-input" value="responsable" formControlName="respMIND">
+                    <label class="custom-control-label" for="RespMind">Resp. Mind.</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="UserAlp" class="custom-control-input" value="user" formControlName="userAL">
+                    <label class="custom-control-label" for="UserAlp">User Alp</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="UserMind" class="custom-control-input" value="user" formControlName="userMIND">
+                    <label class="custom-control-label" for="UserMind">User Mind.</label>
+                  </div>
+                  <div class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" id="Admin" class="custom-control-input" value="admin" formControlName="admin">
+                    <label class="custom-control-label" for="Admin">Admin</label>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--<div class="mt-3 position-relative form-check"><input name="check" id="exampleCheck" type="checkbox" class="form-check-input"><label for="exampleCheck" class="form-check-label">Accept our <a href="javascript:void(0);">Terms-->
               <!--and Conditions</a>.</label></div>-->
             <div *ngIf="registerForm.valid && isSignUpFailed" class="alert alert-warning">
               Echec d'Inscription!<br/>{{errorMessage}}
             </div>
-            <div class="mt-4 d-flex align-items-center"><h5 class="mb-0">Déjà inscrit? <a routerLink="/auth/login" class="text-primary">Connexion</a></h5>
+            <div class="mt-4 d-flex align-items-center">
               <div class="ml-auto">
-                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg" [disabled]="registerForm.invalid" (click)="onSubmit()">Create User</button>
+                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-sm" [disabled]="registerForm.invalid" (click)="onSubmit()">Create User</button>
               </div>
             </div>
           </form>
@@ -115,8 +149,9 @@
           <div>
             <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark" tabindex="-1">
               <div class="slide-img-bg" style="background-image: url('assets/images/originals/citynights.jpg');"></div>
-              <div class="slider-content"><h3>Scalable, Modular, Consistent</h3>
-                <p>Easily exclude the components you don't require. Lightweight, consistent Bootstrap based styles across all elements and components</p></div>
+              <div class="slider-content"><h3>BI Alpicam</h3>
+                <p>Copyright © ALPICAM Industries 2020, Conçu par <b>ING. Casimir OUANDJI </b></p>
+              </div>
             </div>
           </div>
         </div>

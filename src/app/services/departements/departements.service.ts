@@ -392,4 +392,9 @@ export class DepartementsService {
     return this.http.get(API_URLS.DEPARTEMENT_URL + `/paretoEncolleuseMDTLastMonth/${id}`);
   }
 
+  year(id: number): Observable<any>{
+    return this.http.get(API_URLS.DEPARTEMENT_URL + `/countThisYear/${id}`);
+  }
+
+
 }

@@ -1,6 +1,6 @@
-<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority == 'super_admin'"></app-page-title>
 
-<div class="row">
+<div class="row" *ngIf="authority == 'super_admin'">
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">
@@ -16,7 +16,7 @@
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
-                        <button class="btn btn-secondary float-right" >
+                        <button class="btn btn-secondary float-right" routerLink="/signup">
                             <i class="fa fa-plus-circle"></i>
                             Nouvel Utilisateur
                         </button>
@@ -38,21 +38,166 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="widget-content" >
-                            <th scope="row" >casimirange@alpiwood.com</th>
-                            <td>OUANDJI Casimir</td>
-                            <td class="text-capitalize">Acon</td>
-                            <td class="text-capitalize">Admin</td>
+                        <tr class="widget-content" *ngFor="let user of users | filter: term | paginate:{itemsPerPage: 7, currentPage:p}; ">
+                            <th scope="row" >{{user.email}}</th>
+                            <td>{{user.name}}</td>
+                            <td class="text-capitalize">{{user.username}}</td>
+                            <td class="text-capitalize">
+                                <div class="dropright btn-group">
+                                    <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="btn-wide mb-2 mr-2 dropdown-toggle btn btn-sm btn-light">Roles</button>
+                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
+                                        <button *ngFor="let rol of user.roles" type="button" tabindex="0" class="dropdown-item">{{rol.name == 'ROLE_ADMIN' ? 'admin' : rol.name == 'ROLE_SUPER_ADMIN' ? 'super admin' : rol.name == 'ROLE_PM' ? 'pm' : rol.name == 'ROLE_RESPONSABLE' ? 'resp' : 'user'}}</button>
+                                    </div>
+                                </div>
+                            </td>
                             <td> Technique</td>
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
-                                    <button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>
-                                    <button class="btn  btn-danger"><i class="fa fa-times"></i></button>
+                                    <button class=" btn  btn-primary" (click)="SelectedUser = user; modal(extendPanne)"><i class="fa fa-pencil"></i></button>
+                                    <button class="btn  btn-danger" (click)="swl(user)"><i class="fa fa-times"></i></button>
                                 </div>
                             </td>
+
+                            <ng-template #extendPanne let-modal >
+                                <div class="modal-header">
+                                    <h6 class="modal-title timeline-title" id="modal-basic-title"><b>MODIFICATION</b></h6>
+                                    <div class="close vertical-timeline-element-content bounce-in" (click)="modal.close('save click')" >
+                                        <span class="timeline-title"><b><i class="fa fa-times"></i></b></span>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-9 col-lg-9 col-xl-9" style="border-right: groove #0b5885 1px">
+
+                                            <div class="scroll-area-lg">
+                                                <div class="scrollbar-container">
+                                                    <form [formGroup]="registerForm">
+                                                        <div class="form-row">
+                                                            <div class="col-md-6">
+                                                                <div class="position-relative form-group">
+                                                                    <label for="exampleEmail" class=""><span class="text-danger">*</span> Email</label>
+                                                                    <input formControlName="email" name="email" id="exampleEmail" placeholder="Email here..." type="email" class="form-control form-control-sm" [(ngModel)]="SelectedUser.email">
+                                                                </div>
+                                                                <div style="color: #f65656" *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched)">
+                                                                    <span>*</span> entrez une adresse mail valide
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="position-relative form-group">
+                                                                    <label for="exampleName" class="">Nom & Prénom</label>
+                                                                    <input name="text" id="exampleName" placeholder="Name here..." formControlName="name" type="text" class="form-control form-control-sm" [(ngModel)]="SelectedUser.name">
+                                                                </div>
+                                                                <div style="color: #f65656" *ngIf="registerForm.controls['name'].invalid && (registerForm.controls['name'].touched)">
+                                                                    <span>*</span> au moins 4 caractères requis
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="position-relative form-group">
+                                                                    <label for="examplePassword" class=""><span class="text-danger">*</span> Username</label>
+                                                                    <input name="password" formControlName="username" id="examplePassword" placeholder="Username" type="text" class="form-control form-control-sm" [(ngModel)]="SelectedUser.username">
+                                                                </div>
+                                                                <div style="color: #f65656" *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].touched)">
+                                                                    <span>*</span> au moins 3 caractères requis
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="position-relative form-group">
+                                                                    <label for="examplePasswordRep" class=""><span class="text-danger">*</span> Password</label>
+                                                                    <input name="passwordrep" id="examplePasswordRep" formControlName="password" placeholder="Password here..." type="password" class="form-control form-control-sm" [(ngModel)]="SelectedUser.password">
+                                                                </div>
+                                                                <div style="color: #f65656" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched)">
+                                                                    <span>*</span> le mot de passe doit comporter au moins 6 caractères
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="position-relative form-group">
+                                                                <div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespCP" class="custom-control-input" value="responsable" formControlName="respCP">
+                                                                        <label class="custom-control-label" for="RespCP">Resp. CP</label>
+                                                                    </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespPlacage" class="custom-control-input" value="responsable" formControlName="respPL">
+                                                                        <label class="custom-control-label" for="RespPlacage">Resp. PL</label>
+                                                                    </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespMaint" class="custom-control-input" value="pm" formControlName="respMAINT">
+                                                                        <label class="custom-control-label" for="RespMaint">Resp. Maint.</label>
+                                                                    </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="RespMind" class="custom-control-input" value="responsable" formControlName="respMIND">
+                                                                        <label class="custom-control-label" for="RespMind">Resp. Mind.</label>
+                                                                    </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="UserAlp" class="custom-control-input" value="user" formControlName="userAL">
+                                                                        <label class="custom-control-label" for="UserAlp">User Alp</label>
+                                                                    </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="UserMind" class="custom-control-input" value="user" formControlName="userMIND">
+                                                                        <label class="custom-control-label" for="UserMind">User Mind.</label>
+                                                                    </div>
+                                                                    <div class="custom-checkbox custom-control custom-control-inline">
+                                                                        <input type="checkbox" id="Admin" class="custom-control-input" value="admin" formControlName="admin">
+                                                                        <label class="custom-control-label" for="Admin">Admin</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="registerForm.valid && isSignUpFailed" class="alert alert-warning">
+                                                            Echec de modification<br/>{{errorMessage}}
+                                                        </div>
+                                                        <div class="mt-4 d-flex align-items-center">
+                                                            <div class="ml-auto">
+                                                                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-sm" [disabled]="registerForm.invalid" (click)="onUpdate(user); modal.close('save click')">Modifier</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xl-3">
+                                            <div class="tabs-animation">
+                                                <div class="row" >
+                                                    <span class="timeline-title ml-2"><b>Ses Authorisations</b></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="scroll-area-lg">
+                                                <div class="scrollbar-container">
+                                                    <div class="vertical-time-simple vertical-without-time vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
+                                                        <div *ngFor="let rol of user.roles" class="vertical-timeline-item dot-danger vertical-timeline-element">
+                                                            <div>
+                                                                <span class="vertical-timeline-element-icon bounce-in"></span>
+                                                                <div class="vertical-timeline-element-content bounce-in">
+                                                                    <h4 class="timeline-title text-uppercase font-weight-bold">{{rol.name == 'ROLE_ADMIN' ? 'admin' : rol.name == 'ROLE_SUPER_ADMIN' ? 'super admin' : rol.name == 'ROLE_PM' ? 'pm' : rol.name == 'ROLE_RESPONSABLE' ? 'resp' : 'user'}}</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="d-block clearfix card-footer">
+                <div class="float-right">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li>
+                            <pagination-controls (pageChange)="p=$event"
+                                                 autoHide = "true"
+                                                 responsive = "true"
+                                                 previousLabel = "Précédent"
+                                                 nextLabel = "Suivant">
+                            </pagination-controls>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

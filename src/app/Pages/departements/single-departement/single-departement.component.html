@@ -102,7 +102,7 @@
                             <div class="col-md-5">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-subheading">Mois Dernier a:{{countThisMonthPannenbre}} b:{{countLastMonthPannenbre}}</div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPannenbre ? countLastMonthPannenbre : 0}}</span></div>
                                         <div class="widget-description text-focus">
                                             {{(countThisMonthPannenbre < countLastMonthPannenbre) ? 'En baisse de' : (countThisMonthPannenbre > countLastMonthPannenbre) ? 'En Hausse de': 'Constant'}}
@@ -170,7 +170,7 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-subheading">Mois Dernier </div>
-                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneTDT ? countLastMonthPanneTDT.toString().slice(0, -2) : 0}} min</span></div>
+                                        <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneTDT ? countLastMonthPanneTDT : 0}} min</span></div>
                                         <div class="widget-description text-focus">
                                             {{((countThisMonthPanneTDT - countLastMonthPanneTDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneTDT - countLastMonthPanneTDT) > 0) ? 'En Hausse de': 'Constant'}}
                                             <span class="pl-1"
@@ -481,7 +481,7 @@
 
 
 
-<div class="row" *ngIf="selectedDep.nom == 'Placage'">
+<div class="row" *ngIf="selectedDep.nom == 'Placage';">
     <!--Ligne1-->
     <div class="col-lg-12 col-xl-6" >
         <div class="mb-3 card">

@@ -550,6 +550,8 @@ export class SingleDepartementComponent implements OnInit {
   ref2: any;
   OP1: any;
   OP2: any;
+
+  dep: any[];
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
@@ -579,15 +581,15 @@ export class SingleDepartementComponent implements OnInit {
       const t = 1000;
       this.departementService.countThisMonthPannesDep(Number.parseInt(url)).subscribe(
           data => data.forEach(mach => {
-            this.countThisMonthPanneTDT = mach.TDT;
-            this.countThisMonthPannenbre = mach.nbre;
-            if (mach.nbre == 0) {
-              this.countThisMonthPanneMDT = 0;
-            } else {
-              this.countThisMonthPanneMDT = Math.round(mach.TDT / mach.nbre);
-            }
-            this.series1.push(mach.nbre);
-            this.series2.push(mach.TDT);
+            this.countThisMonthPanneTDT = Number.parseInt(mach.TDT);
+            this.countThisMonthPannenbre = Number.parseInt(mach.nbre);
+            // if (mach.nbre == 0) {
+            //   this.countThisMonthPanneMDT = 0;
+            // } else {
+              this.countThisMonthPanneMDT = Number.parseInt(mach.nbre) == 0 ? 0 : Math.round(Number.parseInt(mach.TDT) / Number.parseInt(mach.nbre));
+            // }
+            this.series1.push(Number.parseInt(mach.nbre));
+            this.series2.push(Number.parseInt(mach.TDT));
             this.series3.push(this.countThisMonthPanneMDT);
             // var options = {
 
@@ -603,7 +605,7 @@ export class SingleDepartementComponent implements OnInit {
 
       this.departementService.hourThisMonthDep(Number.parseInt(url)).subscribe(
           datas => {
-              this.hourThisMonth = datas ? datas.heure :0;
+              this.hourThisMonth = datas ? Number.parseInt(datas.heure) :0;
             // this.hourThisMonth = machs.heure;
             this.series4.push(this.hourThisMonth);
 
@@ -907,6 +909,7 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.showDepartement();
     this.ThisMonthPannes();
     this.ListMachines();
@@ -1099,26 +1102,23 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   countThisYear(){
-    this.dashboardService.CountThisYear().subscribe(
-        data => {
-          this.nbreThisYear = data;
-        }
-    );
-
-    this.dashboardService.CountPastMonth().subscribe(
-        data => {
-          this.nbreLastMonth = data;
-          this.lastMonth = 0;
-          for (let mach of this.nbreLastMonth){
-            this.lastMonth = this.lastMonth + mach.nbre;
-          }
-        }
-    )
+    this.route.params.subscribe(params => {
+      let url = atob(params['id']);
+      console.log('url finale: ' +url);
+        this.departementService.year(Number.parseInt(url)).subscribe(
+            data => {
+              for(let pin of data){
+                this.depTDTThisYear = pin.TDT;
+                this.depPanneThisYear = pin.nbre;
+                this.depMDTThisYear = Math.round(pin.MDT);
+                this.depHourThisYear = Math.round(pin.hour);
+              }
+            }
+        );
+    });
   }
 
   showDepartement() {
-
-
     this.route.params.subscribe(params => {
       let url = atob(params['id']);
       console.log('url finale: ' +url);
@@ -1371,8 +1371,8 @@ export class SingleDepartementComponent implements OnInit {
       //     }));
       this.departementService.countLastMonthPannesDep(Number.parseInt(url)).subscribe(
           list => list.forEach(mach => {
-            this.countLastMonthPanneTDT = mach.TDT;
-            this.countLastMonthPannenbre = mach.nbre;
+            this.countLastMonthPanneTDT = Number.parseInt(mach.TDT);
+            this.countLastMonthPannenbre = Number.parseInt(mach.nbre);
             if(mach.nbre == 0){
               this.countLastMonthPanneMDT = 0;
             }else{
@@ -1800,12 +1800,12 @@ export class SingleDepartementComponent implements OnInit {
     this.departementService.mtbfByYear(Number.parseInt(url)).subscribe(
       data1 => {
         this.mtbfY = data1;
-        for (let x of this.mtbfY){
-          this.depPanneThisYear = x.nbre;
-          this.depTDTThisYear= x.TDT;
-          this.depMDTThisYear = Math.round(x.TDT / x.nbre);
-          this.depHourThisYear = x.HT;
-        }
+        // for (let x of this.mtbfY){
+        //   this.depPanneThisYear = x.nbre;
+        //   this.depTDTThisYear= x.TDT;
+        //   this.depMDTThisYear = Math.round(x.TDT / x.nbre);
+        //   this.depHourThisYear = x.HT;
+        // }
         this.departementService.mtbfThisYear(Number.parseInt(url)).subscribe(
           data2 => {
             this.mtbfTY = data2;

@@ -17,6 +17,7 @@ export class AuthService {
 
   private loginUrl = 'http://localhost:8080/api/auth/signin';
   private signupUrl = 'http://localhost:8080/api/auth/signup';
+  private users = 'http://localhost:8080/api/auth';
 
   constructor(private http: HttpClient) {
   }
@@ -27,5 +28,17 @@ export class AuthService {
 
   signUp(info: SignUpInfo): Observable<string> {
     return this.http.post<string>(this.signupUrl, info, httpOptions);
+  }
+
+  updateUser(info: SignUpInfo, id: number): Observable<string> {
+    return this.http.put<string>(this.users+ `/${id}`, info, httpOptions);
+  }
+
+  deleteUser(id: number): Observable<string> {
+    return this.http.delete<string>(this.users+ `/${id}`, httpOptions);
+  }
+
+  getUsers(): Observable<string> {
+    return this.http.get<string>(this.users);
   }
 }
