@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 // import { UserService } from '../services/users.service';
 import {UserService} from "../services/user/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {User} from "../Models/users";
+// import {User} from "../Models/users";
 import {TokenStorageService} from "../auth/token-storage.service";
 import {Location} from '@angular/common';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AuthService} from "../auth/auth.service";
 import { SignUpInfo } from '../auth/signup-info';
+import {User} from "../Models/users";
 
 @Component({
   selector: 'app-user',
@@ -35,7 +36,9 @@ export class UserComponent implements OnInit {
   role: string[] = [];
 
   respCP: string;
+  respBRA: string;
   respPL: string;
+  respSC: string;
   respMIND: string;
   respMAINT: string;
   admin: string;
@@ -61,6 +64,8 @@ export class UserComponent implements OnInit {
       name: ['', [Validators.minLength(4), Validators.required ]],
       email: ['', [Validators.minLength(6), Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$") ]],
       respCP: ['',],
+      respSC: ['',],
+      respBRA: ['',],
       respPL: ['',],
       respMIND: ['',],
       respMAINT: ['',],
@@ -78,14 +83,29 @@ export class UserComponent implements OnInit {
         } else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
           return false;
-        } else if (role === 'ROLE_PM') {
+        } else if (role === 'ROLE_RESP_MAINTENANCE') {
           this.authority = 'pm';
           return false;
-        } else if (role === 'ROLE_RESPONSABLE') {
-          this.authority = 'responsable';
+        } else if (role === 'ROLE_RESP_MINDOUROU') {
+          this.authority = 'resp_mind';
+          return false;
+        } else if (role === 'ROLE_RESP_CP') {
+          this.authority = 'resp_CP';
+          return false;
+        } else if (role === 'ROLE_RESP_PLACAGE') {
+          this.authority = 'resp_PL';
+          return false;
+        } else if (role === 'ROLE_RESP_SCIERIE') {
+          this.authority = 'resp_SC';
+          return false;
+        } else if (role === 'ROLE_RESP_BRAZIL') {
+          this.authority = 'resp_BRA';
+          return false;
+        } else if (role === 'ROLE_USER_MINDOUROU') {
+          this.authority = 'user_mind';
           return false;
         }
-        this.authority = 'user';
+        this.authority = 'user_alpi';
         return true;
       });
 
@@ -204,13 +224,15 @@ export class UserComponent implements OnInit {
     this.role = [];
 
     console.log('admin', this.registerForm.controls['admin'].value );
-    this.respCP =  'responsable'
-    this.respPL =  'responsable'
-    this.respMIND =  'responsable'
-    this.respMAINT =  'pm'
+    this.respCP =  'respCP'
+    this.respPL =  'respPL'
+    this.respBRA =  'respBRA'
+    this.respSC =  'respSC'
+    this.respMIND =  'respMIND'
+    this.respMAINT =  'respMaint'
     this.admin =  'admin'
-    this.userMIND =  'user'
-    this.userAL =  'user'
+    this.userMIND =  'userMIND'
+    this.userAL =  'userALPI'
 
     this.registerForm.controls['admin'].value != '' ? this.role.push(this.admin) : '';
     this.registerForm.controls['respCP'].value != '' ? this.role.push(this.respCP): '';
@@ -219,6 +241,8 @@ export class UserComponent implements OnInit {
     this.registerForm.controls['respMIND'].value != '' ? this.role.push(this.respMIND): '';
     this.registerForm.controls['userMIND'].value != '' ? this.role.push(this.userMIND): '';
     this.registerForm.controls['userAL'].value != '' ? this.role.push(this.userAL): '';
+    this.registerForm.controls['respBRA'].value != '' ? this.role.push(this.respBRA): '';
+    this.registerForm.controls['respSC'].value != '' ? this.role.push(this.respSC): '';
 
     this.signupInfos = new SignUpInfo(
         this.registerForm.controls['name'].value,

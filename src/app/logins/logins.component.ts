@@ -118,21 +118,35 @@ export class LoginComponent implements OnInit {
       this.roles.every(role => {
         if (role === 'ROLE_ADMIN') {
           this.authority = 'admin';
-          this.router.navigateByUrl('/machines')
           return false;
         } else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
-          this.router.navigateByUrl('/dashboard')
           return false;
-        } else if (role === 'ROLE_PM') {
+        } else if (role === 'ROLE_RESP_MAINTENANCE') {
           this.authority = 'pm';
           return false;
-        } else if (role === 'ROLE_RESPONSABLE') {
-          this.authority = 'responsable';
+        } else if (role === 'ROLE_RESP_MINDOUROU') {
+          this.authority = 'resp_mind';
+          this.router.navigateByUrl('/pannes')
+          return false;
+        } else if (role === 'ROLE_RESP_CP') {
+          this.authority = 'resp_CP';
+          return false;
+        } else if (role === 'ROLE_RESP_PLACAGE') {
+          this.authority = 'resp_PL';
+          return false;
+        } else if (role === 'ROLE_RESP_SCIERIE') {
+          this.authority = 'resp_SC';
+          return false;
+        } else if (role === 'ROLE_RESP_BRAZIL') {
+          this.authority = 'resp_BRA';
+          return false;
+        } else if (role === 'ROLE_USER_MINDOUROU') {
+          this.authority = 'user_mind';
+          this.router.navigateByUrl('/pannes')
           return false;
         }
-        this.authority = 'user';
-        this.router.navigateByUrl('/pannes')
+        this.authority = 'user_alpi';
         return true;
       });
     }

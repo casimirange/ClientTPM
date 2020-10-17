@@ -33,7 +33,6 @@
                             <th>Nom</th>
                             <th>Username</th>
                             <th>Role</th>
-                            <th>Permission</th>
                             <th class="text-center">Actions</th>
                         </tr>
                         </thead>
@@ -46,11 +45,10 @@
                                 <div class="dropright btn-group">
                                     <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" class="btn-wide mb-2 mr-2 dropdown-toggle btn btn-sm btn-light">Roles</button>
                                     <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu">
-                                        <button *ngFor="let rol of user.roles" type="button" tabindex="0" class="dropdown-item">{{rol.name == 'ROLE_ADMIN' ? 'admin' : rol.name == 'ROLE_SUPER_ADMIN' ? 'super admin' : rol.name == 'ROLE_PM' ? 'pm' : rol.name == 'ROLE_RESPONSABLE' ? 'resp' : 'user'}}</button>
+                                        <button *ngFor="let rol of user.roles" type="button" tabindex="0" class="dropdown-item">{{rol.name == 'ROLE_ADMIN' ? 'Admin' : rol.name == 'ROLE_SUPER_ADMIN' ? 'Super Admin' : rol.name == 'ROLE_RESP_MAINTENANCE' ? 'Resp. Maintenance' : rol.name == 'ROLE_RESP_CP' ? 'Resp. Contreplaqué' : rol.name == 'ROLE_RESP_BRAZIL' ? 'Resp. Brazil' : rol.name == 'ROLE_RESP_SCIERIE' ? 'Resp. Scierie' : rol.name == 'ROLE_RESP_MINDOUROU' ? 'Resp. Mindourou' : rol.name == 'ROLE_RESP_PLACAGE' ? 'Resp. PL' : rol.name == 'ROLE_USER_MINDOUROU' ? 'User Mindourou' : 'User Alpi'}}</button>
                                     </div>
                                 </div>
                             </td>
-                            <td> Technique</td>
                             <td class="text-center">
                                 <div role="group" class="btn-group-sm btn-group">
                                     <button class=" btn  btn-primary" (click)="SelectedUser = user; modal(extendPanne)"><i class="fa fa-pencil"></i></button>
@@ -109,47 +107,95 @@
                                                                     <span>*</span> le mot de passe doit comporter au moins 6 caractères
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <div class="position-relative form-group">
-                                                                <div>
+                                                            <div class="col-md-12">
+                                                                <hr>
+                                                                <h6 class="text_bold">ROLES</h6>
+                                                                <br>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
                                                                     <div class="custom-checkbox custom-control custom-control-inline">
                                                                         <input type="checkbox" id="RespCP" class="custom-control-input" value="responsable" formControlName="respCP">
                                                                         <label class="custom-control-label" for="RespCP">Resp. CP</label>
                                                                     </div>
-                                                                    <div class="custom-checkbox custom-control custom-control-inline">
-                                                                        <input type="checkbox" id="RespPlacage" class="custom-control-input" value="responsable" formControlName="respPL">
-                                                                        <label class="custom-control-label" for="RespPlacage">Resp. PL</label>
-                                                                    </div>
-                                                                    <div class="custom-checkbox custom-control custom-control-inline">
-                                                                        <input type="checkbox" id="RespMaint" class="custom-control-input" value="pm" formControlName="respMAINT">
-                                                                        <label class="custom-control-label" for="RespMaint">Resp. Maint.</label>
-                                                                    </div>
-                                                                    <div class="custom-checkbox custom-control custom-control-inline">
-                                                                        <input type="checkbox" id="RespMind" class="custom-control-input" value="responsable" formControlName="respMIND">
-                                                                        <label class="custom-control-label" for="RespMind">Resp. Mind.</label>
-                                                                    </div>
-                                                                    <div class="custom-checkbox custom-control custom-control-inline">
-                                                                        <input type="checkbox" id="UserAlp" class="custom-control-input" value="user" formControlName="userAL">
-                                                                        <label class="custom-control-label" for="UserAlp">User Alp</label>
-                                                                    </div>
-                                                                    <div class="custom-checkbox custom-control custom-control-inline">
-                                                                        <input type="checkbox" id="UserMind" class="custom-control-input" value="user" formControlName="userMIND">
-                                                                        <label class="custom-control-label" for="UserMind">User Mind.</label>
-                                                                    </div>
-                                                                    <div class="custom-checkbox custom-control custom-control-inline">
-                                                                        <input type="checkbox" id="Admin" class="custom-control-input" value="admin" formControlName="admin">
-                                                                        <label class="custom-control-label" for="Admin">Admin</label>
-                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="RespPlacage" class="custom-control-input" value="responsable" formControlName="respPL">
+                                                                    <label class="custom-control-label" for="RespPlacage">Resp. Placage</label>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="RespSc" class="custom-control-input" value="responsable" formControlName="respSC">
+                                                                    <label class="custom-control-label" for="RespSc">Resp. Scierie</label>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="RespBRA" class="custom-control-input" value="responsable" formControlName="respBRA">
+                                                                    <label class="custom-control-label" for="RespBRA">Resp. Brazil</label>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="RespMaint" class="custom-control-input" value="pm" formControlName="respMAINT">
+                                                                    <label class="custom-control-label" for="RespMaint">Resp. Maintenance</label>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="RespMind" class="custom-control-input" value="responsable" formControlName="respMIND">
+                                                                    <label class="custom-control-label" for="RespMind">Resp. Mindourou</label>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="UserAlp" class="custom-control-input" value="user" formControlName="userAL">
+                                                                    <label class="custom-control-label" for="UserAlp">User Alpicam</label>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="UserMind" class="custom-control-input" value="user" formControlName="userMIND">
+                                                                    <label class="custom-control-label" for="UserMind">User Mindourou</label>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group position-relative">
+                                                                <div class="custom-checkbox custom-control custom-control-inline">
+                                                                    <input type="checkbox" id="Admin" class="custom-control-input" value="admin" formControlName="admin">
+                                                                    <label class="custom-control-label" for="Admin">Admin</label>
+                                                                </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
                                                         <div *ngIf="registerForm.valid && isSignUpFailed" class="alert alert-warning">
                                                             Echec de modification<br/>{{errorMessage}}
                                                         </div>
                                                         <div class="mt-4 d-flex align-items-center">
                                                             <div class="ml-auto">
-                                                                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-sm" [disabled]="registerForm.invalid" (click)="onUpdate(user); modal.close('save click')">Modifier</button>
+                                                                <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-sm" [disabled]="registerForm.invalid" (click)="onUpdate(user); modal.close('save click')"><span>
+                                                                    <i class="fa fa-pencil"></i> Modifier</span></button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -170,7 +216,7 @@
                                                             <div>
                                                                 <span class="vertical-timeline-element-icon bounce-in"></span>
                                                                 <div class="vertical-timeline-element-content bounce-in">
-                                                                    <h4 class="timeline-title text-uppercase font-weight-bold">{{rol.name == 'ROLE_ADMIN' ? 'admin' : rol.name == 'ROLE_SUPER_ADMIN' ? 'super admin' : rol.name == 'ROLE_PM' ? 'pm' : rol.name == 'ROLE_RESPONSABLE' ? 'resp' : 'user'}}</h4>
+                                                                    <h4 class="timeline-title text-uppercase font-weight-bold">{{rol.name == 'ROLE_ADMIN' ? 'Admin' : rol.name == 'ROLE_SUPER_ADMIN' ? 'Super Admin' : rol.name == 'ROLE_RESP_MAINTENANCE' ? 'Resp. Maintenance' : rol.name == 'ROLE_RESP_CP' ? 'Resp. Contreplaqué' : rol.name == 'ROLE_RESP_BRAZIL' ? 'Resp. Brazil' : rol.name == 'ROLE_RESP_SCIERIE' ? 'Resp. Scierie' : rol.name == 'ROLE_RESP_MINDOUROU' ? 'Resp. Mindourou' : rol.name == 'ROLE_RESP_PLACAGE' ? 'Resp. PL' : rol.name == 'ROLE_USER_MINDOUROU' ? 'User Mindourou' : 'User Alpi'}}</h4>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -3,7 +3,7 @@ import {Role} from "./roles";
  * Created by Casimir on 11/04/2020.
  */
 
-export class User {
+export class User{
     userId?: number;
     id?: number;
     fonction?: string;
