@@ -121,6 +121,7 @@ export class LoginComponent implements OnInit {
           return false;
         } else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
+          this.router.navigateByUrl('/dashboard')
           return false;
         } else if (role === 'ROLE_RESP_MAINTENANCE') {
           this.authority = 'pm';

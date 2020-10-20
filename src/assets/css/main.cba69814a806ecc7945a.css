@@ -11222,8 +11222,8 @@ a, button, .btn {
 }
 
 .app-header__logo .logo-src {
-    height: 23px;
-    width: 97px;
+    height: 30px;
+    width: 200px;
     background: url(/assets/images/logo2.png)
 }
 
@@ -20848,9 +20848,9 @@ legend {
 }
 
 .app-logo {
-    height: 23px;
-    width: 97px;
-    background: url(/assets/images/logo2.png)
+    height: 245px;
+    width: 500px;
+    background: url(/assets/images/logo25.png)
 }
 
 .app-logo-inverse {
