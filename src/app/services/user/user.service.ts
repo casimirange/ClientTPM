@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {API_URLS} from "../../configs/api.url.configs";
+import {environment} from "../../../environments/environment";
 // import {User} from "../../Models/users";
 
 @Injectable({
@@ -29,7 +30,7 @@ export class UserService {
   }
 
   getUsers(): Observable<any> {
-    return this.http.get(this.users);
+    return this.http.get(environment.URERS);
   }
 
   // getUsers(): Observable <any>{

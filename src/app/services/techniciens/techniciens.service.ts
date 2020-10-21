@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {API_URLS} from "../../configs/api.url.configs";
 import {Technicien} from "../../Models/techniciens";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -13,34 +14,34 @@ export class TechniciensService {
 
   //on retourne un observable
   getTechniciens(): Observable<any>{
-    return this.http.get(API_URLS.TECHNICIEN_URL);
+    return this.http.get(environment.TECHNICIEN_URL);
   }
   getActiveTechniciens(): Observable<any>{
-    return this.http.get(API_URLS.TECHNICIEN_URL+ `/active`);
+    return this.http.get(environment.TECHNICIEN_URL+ `/active`);
   }
 
   getDesactiveTechniciens(): Observable<any>{
-    return this.http.get(API_URLS.TECHNICIEN_URL+ `/desactive`);
+    return this.http.get(environment.TECHNICIEN_URL+ `/desactive`);
   }
 
   addTech(technicien: Technicien ): Observable<any>{
-    return this.http.post(API_URLS.TECHNICIEN_URL, technicien);
+    return this.http.post(environment.TECHNICIEN_URL, technicien);
   }
 
   updateTech(technicien: Technicien): Observable<any>{
-    return this.http.put(API_URLS.TECHNICIEN_URL, technicien);
+    return this.http.put(environment.TECHNICIEN_URL, technicien);
   }
 
   deleteTech(id: number): Observable<any>{
-    return this.http.delete(API_URLS.TECHNICIEN_URL + `/${id}`);
+    return this.http.delete(environment.TECHNICIEN_URL + `/${id}`);
   }
 
   showTech(id: number): Observable<any>{
-    return this.http.get(API_URLS.TECHNICIEN_URL + `/${id}`);
+    return this.http.get(environment.TECHNICIEN_URL + `/${id}`);
   }
 
   activeTech(matricule: number): Observable<any>{
-    return this.http.put(API_URLS.TECHNICIEN_URL+ `/${matricule}`, '');
+    return this.http.put(environment.TECHNICIEN_URL+ `/${matricule}`, '');
   }
 
 }

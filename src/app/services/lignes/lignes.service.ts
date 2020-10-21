@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {API_URLS} from "../../configs/api.url.configs";
 import {Observable} from "rxjs";
 import {Ligne} from "../../Models/lignes";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -13,26 +14,26 @@ export class LignesService {
 
   //on retourne un observable
   getLignes(): Observable<any>{
-     return this.http.get(API_URLS.LIGNE_URL);
+     return this.http.get(environment.LIGNE_URL);
   }
 
   getAllLignes(): Observable<any>{
-     return this.http.get(API_URLS.LIGNE_URL + `/all`);
+     return this.http.get(environment.LIGNE_URL + `/all`);
   }
 
   addLigne(ligne: Ligne): Observable<any>{
-     return this.http.post(API_URLS.LIGNE_URL, ligne);
+     return this.http.post(environment.LIGNE_URL, ligne);
   }
 
   updateLigne(ligne: Ligne): Observable<any>{
-     return this.http.put(API_URLS.LIGNE_URL, ligne);
+     return this.http.put(environment.LIGNE_URL, ligne);
   }
 
   deleteLigne(id: number): Observable<any>{
-     return this.http.delete(API_URLS.LIGNE_URL + `/${id}`);
+     return this.http.delete(environment.LIGNE_URL + `/${id}`);
   }
 
   showLigne(id: number): Observable<any>{
-     return this.http.get(API_URLS.LIGNE_URL + `/${id}`);
+     return this.http.get(environment.LIGNE_URL + `/${id}`);
   }
 }
