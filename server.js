@@ -16,16 +16,3 @@ app.get("/*", function (req, res) {
 })
 
 console.log("App is listening");
-// const wakeUpServerInterval = setInterval(wakeUpServer, 25 * 60 * 1000);
-//
-// function wakeUpServer() {
-//     const now = new Date();
-//     var endHour = new Date();
-//     endHour.setHours(25, 30, 0);
-//
-//     if(now < endHour){
-//         request(
-//
-//         )
-//     }
-// }
