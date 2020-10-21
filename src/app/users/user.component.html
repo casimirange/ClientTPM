@@ -189,7 +189,7 @@
                                                         </div>
 
 
-                                                        <div *ngIf="registerForm.valid && isSignUpFailed" class="alert alert-warning">
+                                                        <div *ngIf="registerForm.invalid" class="alert alert-warning">
                                                             Echec de modification<br/>{{errorMessage}}
                                                         </div>
                                                         <div class="mt-4 d-flex align-items-center">

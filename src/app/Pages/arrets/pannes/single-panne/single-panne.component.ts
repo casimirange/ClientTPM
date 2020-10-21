@@ -10,6 +10,7 @@ import {PannesService} from "../../../../services/pannes/pannes.service";
 import {TechniciensService} from "../../../../services/techniciens/techniciens.service";
 import {OperateursService} from "../../../../services/operateurs/operateurs.service";
 import {MachinesService} from "../../../../services/machines/machines.service";
+import DateTimeFormat = Intl.DateTimeFormat;
 
 @Component({
   selector: 'app-single-panne',
@@ -32,6 +33,15 @@ export class SinglePanneComponent implements OnInit {
   unPan: Pannes[];
   closeResult: any;
   Tpannes: Pannes[];
+
+  term: string;
+  p: number;
+  f: Date;
+  d: Date;
+  ha: DateTimeFormat;
+  fi: DateTimeFormat;
+  di: DateTimeFormat;
+  piece: string;
 
   constructor(private opService: OperateursService,
               private techService: TechniciensService,

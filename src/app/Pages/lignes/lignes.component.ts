@@ -31,6 +31,10 @@ export class LignesComponent implements OnInit {
     deps: Departement[];
     deps2: Departement[];
     newdep: Departement;
+    term: string;
+    p: number;
+    f: Date;
+    d: Date;
 
     constructor(private fb: FormBuilder,
                 private ligneService: LignesService,

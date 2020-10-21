@@ -48,7 +48,7 @@ export class DepartementsComponent implements OnInit {
     createForm() {
         this.depForm = this.fb.group({
             nom: ['', [Validators.required, Validators.minLength(5)]],
-            centre_cout: ['', [Validators.required, Validators.minLength(4)]],
+            // centre_cout: ['', [Validators.required, Validators.minLength(4)]],
             localisation: ['', [Validators.required, Validators.minLength(4)]],
             responsable: ['', [Validators.required, Validators.minLength(4)]]
         });

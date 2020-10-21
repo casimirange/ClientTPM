@@ -452,12 +452,12 @@
                                             <div class="float-left">
                                                 <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                             </div>
-                                            <div class="float-right" *ngIf="authority === 'super_admin'">
-                                                <div role="group" class="btn-group-sm btn-group">
-                                                    <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
-                                                    <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
+                                            <!--<div class="float-right" *ngIf="authority === 'super_admin'">-->
+                                                <!--<div role="group" class="btn-group-sm btn-group">-->
+                                                    <!--<button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>-->
+                                                    <!--<button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                         </div>
                                     </ng-template>
 
@@ -638,17 +638,17 @@
                                             <div class="float-left">
                                                 <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                             </div>
-                                            <div class="float-right" *ngIf="authority === 'super_admin'">
-                                                <div role="group" class="btn-group-sm btn-group">
-                                                    <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
-                                                    <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
+                                            <!--<div class="float-right" *ngIf="authority === 'super_admin'">-->
+                                                <!--<div role="group" class="btn-group-sm btn-group">-->
+                                                    <!--<button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>-->
+                                                    <!--<button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
                                         </div>
                                     </ng-template>
                                 </li>
 
-                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="pannes < 1">Aucune panne déclarée dans la journée!</p>
+                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="todatpannes.length < 1">Aucune panne déclarée dans la journée!</p>
                             </ul>
 
                         </div>
@@ -717,7 +717,7 @@
                                     </ng-template>
                                 </li>
 
-                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="arrets  < 1">Aucun Arrêt déclaré dans la journée!</p>
+                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="arrets.length  < 1">Aucun Arrêt déclaré dans la journée!</p>
                             </ul>
 
                         </div>
@@ -900,12 +900,12 @@
                                     <div class="float-left">
                                         <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                     </div>
-                                    <div class="float-right"  *ngIf="authority === 'super_admin'">
-                                        <div role="group" class="btn-group-sm btn-group">
-                                            <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
-                                            <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
+                                    <!--<div class="float-right"  *ngIf="authority === 'super_admin'">-->
+                                        <!--<div role="group" class="btn-group-sm btn-group">-->
+                                            <!--<button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>-->
+                                            <!--<button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </div>
                             </ng-template>
 
@@ -1086,12 +1086,12 @@
                                     <div class="float-left">
                                         <b class="pull-left">{{ pan.date  | date: 'dd MMM y'}}</b>
                                     </div>
-                                    <div class="float-right"  *ngIf="authority === 'super_admin'">
-                                        <div role="group" class="btn-group-sm btn-group">
-                                            <button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>
-                                            <button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>
-                                        </div>
-                                    </div>
+                                    <!--<div class="float-right"  *ngIf="authority === 'super_admin'">-->
+                                        <!--<div role="group" class="btn-group-sm btn-group">-->
+                                            <!--<button class=" btn  btn-primary" [routerLink]="['/pannes/panne/edit', pan.numero]" (click)="selectedPanne = pan; modal.close('save click')"><i class="fa fa-pencil"></i></button>-->
+                                            <!--<button class="btn  btn-danger" (click)="selectedPanne = pan ;swl(pan)" ><i class="fa fa-times"></i></button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </div>
                             </ng-template>
                             <td class="text-center text-muted">{{ pan.date  | date: 'dd/MM/y'}}</td>

@@ -25,6 +25,8 @@ export class OperateursComponent implements OnInit {
 
   selectedOp: Operateur;
   modelOp: Operateur;
+  term: string;
+  p: number;
 
   constructor(private opService: OperateursService, private fb: FormBuilder) {
     this.createForm();

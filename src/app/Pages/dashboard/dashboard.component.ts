@@ -40,7 +40,7 @@ export type ChartOptions = {
 })
 export class DashboardComponent implements OnInit {
     private roles: string[];
-    private authority: string;
+    public authority: string;
     public chartOptions: Partial<any>;
     ranger: string = "false";
     ranges: string = "false";
@@ -220,7 +220,7 @@ export class DashboardComponent implements OnInit {
         maintainAspectRatio: false
     };
 
-    private todatpannes: Pannes[];
+    public todatpannes: Pannes[];
 
     y: number = 0;
 
@@ -244,6 +244,13 @@ export class DashboardComponent implements OnInit {
     ref2: any;
     OP1: any;
     OP2: any;
+
+    term: string;
+    tech: string;
+    pann: string;
+    p: number;
+    f: Date;
+    d: Date;
 
   constructor(private fb: FormBuilder,
               private panneService: PannesService,

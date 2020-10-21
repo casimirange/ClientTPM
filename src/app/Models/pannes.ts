@@ -13,6 +13,7 @@ export class Pannes {
     description?: string;
     date?: string;
     idMachine?: number;
+    idM?: number;
     heureArret?: Date;
     debutInter?: Date;
     finInter?: Date;

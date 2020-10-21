@@ -29,396 +29,30 @@
                             <div class="form-row">
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="ha" [ngClass]="{'red': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}">Heure d'arrêt</label>
-                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" [(ngModel)]="ha" [ngClass]="{'fred': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}" />
+                                        <label for="ha" [ngClass]="{'red': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched || (ha |date: 'dd/MM/y') < (continuePanne.date | date: 'dd/MM/y'))}">Heure d'arrêt</label>
+                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" [(ngModel)]="ha" min="{{continuePanne.date}}" [ngClass]="{'fred': suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched)}" />
                                     </div>
-                                    <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched) ">
+                                    <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['heureArret'].invalid && (suitePanForm.controls['heureArret'].touched) || (ha |date: 'dd/MM/y') < (continuePanne.date | date: 'dd/MM/y')">
                                         <span>*</span> Date et heure invalide
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="di" [ngClass]="{'red': suitePanForm.controls['debutInter'].invalid && (suitePanForm.controls['debutInter'].touched)}">Début d'intervention</label>
-                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="di" class="form-control form-control-sm" formControlName="debutInter" [(ngModel)]="di" [ngClass]="{'fred': suitePanForm.controls['debutInter'].invalid && (suitePanForm.controls['debutInter'].touched)}">
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="di" class="form-control form-control-sm" formControlName="debutInter" [(ngModel)]="di" min="{{ha}}" [ngClass]="{'fred': suitePanForm.controls['debutInter'].invalid && (suitePanForm.controls['debutInter'].touched)}">
                                     </div>
-                                    <div *ngIf="
-                                    (
-                                    ((ha | date: 'M') == 1) || ((ha | date: 'M') == 3) ||
-                                    ((ha | date: 'M') == 5) || ((ha | date: 'M') == 7) ||
-                                    ((ha | date: 'M') == 8) || ((ha | date: 'M') == 10) ||
-                                    ((ha | date: 'M') == 12)
-                                    ?
-                                        (
-                                            ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*31*12
-                                        +
-                                        (
-                                            ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*31
-                                        +
-                                        (
-                                            ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                            ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                            ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                    :
-                                    ((ha | date: 'M') == 4) || ((ha | date: 'M') == 6) ||
-                                    ((ha | date: 'M') == 9) || ((ha | date: 'M') == 11)
-                                    ?
-                                        (
-                                        ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*30*12
-                                        +
-                                        (
-                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*30
-                                        +
-                                        (
-                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                    :
-                                    ((ha | date: 'M') == 2) && ((ha | date: 'y')%4 == 0)
-                                    ?
-                                    (
-                                    ( di | date: 'y' ) - ( ha | date: 'y' )
-                                    )*60*24*29*12
-                                    +
-                                    (
-                                    ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                    )*60*24*29
-                                    +
-                                    (
-                                    ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( di | date: 'mm') - ( ha | date: 'mm')
-                                    )
-                                    :
-                                    (
-                                    ( di | date: 'y' ) - ( ha | date: 'y' )
-                                    )*60*24*28*12
-                                    +
-                                    (
-                                    ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                    )*60*24*28
-                                    +
-                                    (
-                                    ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( di | date: 'mm') - ( ha | date: 'mm')
-                                    )
-                                    ) < 0" class="alert alert-danger fade show
+                                    <div *ngIf="di < ha" class="alert alert-danger fade show
 ">
-                                        l'heure du début de l'intervention ne peut être inférieur à l'heure d'arrêt {{
-                                        (
-                                        ((ha | date: 'M') == 1) || ((ha | date: 'M') == 3) ||
-                                        ((ha | date: 'M') == 5) || ((ha | date: 'M') == 7) ||
-                                        ((ha | date: 'M') == 8) || ((ha | date: 'M') == 10) ||
-                                        ((ha | date: 'M') == 12)
-                                        ?
-                                        (
-                                        ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*31*12
-                                        +
-                                        (
-                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*31
-                                        +
-                                        (
-                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                        :
-                                        ((ha | date: 'M') == 4) || ((ha | date: 'M') == 6) ||
-                                        ((ha | date: 'M') == 9) || ((ha | date: 'M') == 11)
-                                        ?
-                                        (
-                                        ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*30*12
-                                        +
-                                        (
-                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*30
-                                        +
-                                        (
-                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                        :
-                                        ((ha | date: 'M') == 2) && ((ha | date: 'y')%4 == 0)
-                                        ?
-                                        (
-                                        ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*29*12
-                                        +
-                                        (
-                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*29
-                                        +
-                                        (
-                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                        :
-                                        (
-                                        ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*28*12
-                                        +
-                                        (
-                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*28
-                                        +
-                                        (
-                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                        )
-                                        }}
+                                        l'heure du début de l'intervention ne peut être inférieur à l'heure d'arrêt
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
                                         <label for="fi" [ngClass]="{'red': suitePanForm.controls['finInter'].invalid && (suitePanForm.controls['finInter'].touched)}">Fin d'intervention</label>
-                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="fi" class="form-control form-control-sm" formControlName="finInter" [(ngModel)]="fi" [ngClass]="{'fred': suitePanForm.controls['finInter'].invalid && (suitePanForm.controls['finInter'].touched)}">
+                                        <input type="datetime-local" placeholder="Sélectionnez l'heure" id="fi" class="form-control form-control-sm" formControlName="finInter" [(ngModel)]="fi" min="{{di}}" [ngClass]="{'fred': suitePanForm.controls['finInter'].invalid && (suitePanForm.controls['finInter'].touched)}">
                                     </div>
-                                    <div *ngIf="
-                                    (
-                                    ((di | date: 'M') == 1) || ((di | date: 'M') == 3) ||
-                                    ((di | date: 'M') == 5) || ((di | date: 'M') == 7) ||
-                                    ((di | date: 'M') == 8) || ((di | date: 'M') == 10) ||
-                                    ((di | date: 'M') == 12)
-                                    ?
-                                        (
-                                            ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*31*12
-                                        +
-                                        (
-                                            ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*31
-                                        +
-                                        (
-                                            ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                            ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                            ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                    :
-                                    ((di | date: 'M') == 4) || ((di | date: 'M') == 6) ||
-                                    ((di | date: 'M') == 9) || ((di | date: 'M') == 11)
-                                    ?
-                                        (
-                                        ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*30*12
-                                        +
-                                        (
-                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*30
-                                        +
-                                        (
-                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                    :
-                                    ((di | date: 'M') == 2) && ((di | date: 'y')%4 == 0)
-                                    ?
-                                    (
-                                    ( fi | date: 'y' ) - ( di | date: 'y' )
-                                    )*60*24*29*12
-                                    +
-                                    (
-                                    ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                    )*60*24*29
-                                    +
-                                    (
-                                    ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( fi | date: 'mm') - ( di | date: 'mm')
-                                    )
-                                    :
-                                    (
-                                    ( fi | date: 'y' ) - ( di | date: 'y' )
-                                    )*60*24*28*12
-                                    +
-                                    (
-                                    ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                    )*60*24*28
-                                    +
-                                    (
-                                    ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( fi | date: 'mm') - ( di | date: 'mm')
-                                    )
-                                    ) < 0" class="alert alert-danger fade show">
-                                        l'heure du début de l'intervention ne peut être inférieur à l'heure d'arrêt {{
-                                        (
-                                        ((di | date: 'M') == 1) || ((di | date: 'M') == 3) ||
-                                        ((di | date: 'M') == 5) || ((di | date: 'M') == 7) ||
-                                        ((di | date: 'M') == 8) || ((di | date: 'M') == 10) ||
-                                        ((di | date: 'M') == 12)
-                                        ?
-                                        (
-                                        ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*31*12
-                                        +
-                                        (
-                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*31
-                                        +
-                                        (
-                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                        :
-                                        ((di | date: 'M') == 4) || ((di | date: 'M') == 6) ||
-                                        ((di | date: 'M') == 9) || ((di | date: 'M') == 11)
-                                        ?
-                                        (
-                                        ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*30*12
-                                        +
-                                        (
-                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*30
-                                        +
-                                        (
-                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                        :
-                                        ((di | date: 'M') == 2) && ((di | date: 'y')%4 == 0)
-                                        ?
-                                        (
-                                        ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*29*12
-                                        +
-                                        (
-                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*29
-                                        +
-                                        (
-                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                        :
-                                        (
-                                        ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*28*12
-                                        +
-                                        (
-                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*28
-                                        +
-                                        (
-                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                        )
-                                        }}
+                                    <div *ngIf="fi < di" class="alert alert-danger fade show">
+                                        l'heure du début de l'intervention ne peut être inférieur à l'heure d'arrêt
                                     </div>
                                 </div>
                             </div>
@@ -428,30 +62,13 @@
 
                             <div class="form-row">
 
-
-                                <div class="col-md-6" style="color: transparent;" *ngIf="1>2">
-                                    <div class="position-relative form-group">
-                                        <label for="machine" [ngClass]="{'red': suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched)}">Machine</label>
-                                        <!--<select id="machine" class="form-control form-control-sm" formControlName="idMachine" [ngClass]="{'fred': suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched)}"  >-->
-                                            <!--<option  value="{{continuePanne.idMachine}}">-->
-                                                <!--<b>{{continuePanne.idMachine}}</b>&nbsp; {{continuePanne.machine}}-->
-                                            <!--</option>-->
-                                        <!--</select>-->
-                                        <input type="text" [(ngModel)]="continuePanne.idM" formControlName="idMachine" class="form-control form-ontrol-sm" disabled>
-                                    </div>
-
-                                    <div style="color: #f65656; font-style: italic;" *ngIf="suitePanForm.controls['idMachine'].invalid && (suitePanForm.controls['idMachine'].touched) ">
-                                        <span>*</span> Veuillez sélectionner la machine en panne
-                                    </div>
-                                </div>
-
                                 <div class="col-md-6">
                                     <div class="position-relative form-group">
                                         <label for="op" [ngClass]="{'red': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">Opérateur de Production</label>
 
-                                        <select id="op" class="multiselect-dropdown form-control form-control-sm"  formControlName="idOperateur" [(ngModel)]="selo" [ngClass]="{'fred': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">
+                                        <select id="op" class="multiselect-dropdown form-control form-control-sm"  formControlName="idOperateur" [ngClass]="{'fred': suitePanForm.controls['idOperateur'].invalid && (suitePanForm.controls['idOperateur'].touched)}">
                                             <option value="" selected disabled hidden>Sélectionner un opérateur</option>
-                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOP" (select)="selop = op">
+                                            <option *ngFor="let op of operateurs"  [ngValue]="op.idOP">
                                                 {{op.nomOP | uppercase}} &nbsp; {{op.prenomOP | titlecase}}
                                             </option>
                                         </select>
@@ -460,6 +77,12 @@
                                         <span>*</span> Veuillez sélectionner un Opérateur de production
                                     </div>
                                 </div>
+
+                                <div class="col-md-6" style="color: transparent;">
+                                <div class="position-relative form-group">
+                                    <input type="hidden" [(ngModel)]="continuePanne.idM" formControlName="idMachine" class="form-control form-ontrol-sm" disabled>
+                                </div>
+                            </div>
 
                             </div>
                         </div>

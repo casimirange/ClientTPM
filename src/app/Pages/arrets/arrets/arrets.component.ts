@@ -21,7 +21,7 @@ export class ArretsComponent implements OnInit {
 
   public chartOptions: Partial<any>;
     private roles: string[];
-    private authority: string;
+    public authority: string;
 
   arretForm: FormGroup;
   rangeForm: FormGroup;
@@ -91,11 +91,20 @@ export class ArretsComponent implements OnInit {
         }
     ];
     seriess = [];
-    private recapArret: any[];
+    public recapArret: any[];
     taux: number;
     nbre_arret_last_month: number;
     date_this_months: any;
     date_this_month: any = '30 dernier jours';
+
+    term: string;
+    p: number;
+    f: Date;
+    d: Date;
+    dat: Date;
+    ha: DateTimeFormat;
+    di: DateTimeFormat;
+    piece: string;
 
   constructor(private arretService: ArretsService,
               private fb: FormBuilder,

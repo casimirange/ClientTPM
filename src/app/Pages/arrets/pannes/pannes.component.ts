@@ -77,8 +77,11 @@ export class PannesComponent implements OnInit {
       datasets: []
   };
     private roles: string[];
-    private authority: string;
-
+    public authority: string;
+    term: string;
+    p: number;
+    f: Date;
+    d: Date;
 
   constructor(private fb: FormBuilder,
               private panneService: PannesService,

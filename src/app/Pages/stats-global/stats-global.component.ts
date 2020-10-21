@@ -246,8 +246,8 @@ export class StatsGlobalComponent implements OnInit {
   datS4: any;
   date_this_months: any;
 
-  private rangeForm: FormGroup;
-  private ranges: string = 'false';
+  public rangeForm: FormGroup;
+  public ranges: string = 'false';
 
   constructor(private dashboardService: DashboardService,
               private rapportService: RapportService,

@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 import {Pannes} from "../../../../Models/pannes";
 // import  Swal from 'sweetalert2/dist/sweetalert2.js';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import DateTimeFormat = Intl.DateTimeFormat;
 
 @Component({
   selector: 'app-new-panne',
@@ -42,6 +43,16 @@ export class NewPanneComponent implements OnInit {
     dt: number;
 
     countUnfinishedFailure: number;
+
+    term: string;
+    p: number;
+    f: Date;
+    d: Date;
+    dat: Date;
+    ha: DateTimeFormat;
+    fi: DateTimeFormat;
+    di: DateTimeFormat;
+    piece: string;
 
     // @ViewChild('dayPicker') datePicker: DatePickerComponent;
 

@@ -26,6 +26,8 @@ export class TechniciensComponent implements OnInit {
   pages: number = 7;
 
   techniciens: Technicien[];
+    term: string;
+    p: number;
 
   selectedTech: Technicien;
     private modelTech: Technicien;

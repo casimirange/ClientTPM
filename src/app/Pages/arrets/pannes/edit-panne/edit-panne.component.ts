@@ -10,6 +10,7 @@ import {OperateursService} from "../../../../services/operateurs/operateurs.serv
 import {Technicien} from "../../../../Models/techniciens";
 import {MachinesService} from "../../../../services/machines/machines.service";
 import {Machine} from "../../../../Models/machines";
+import DateTimeFormat = Intl.DateTimeFormat;
 
 @Component({
   selector: 'app-edit-panne',
@@ -61,7 +62,25 @@ export class EditPanneComponent implements OnInit {
   techs: any[];
   TEC1: any[] = [];
   TEC2: any[] = [];
-  private ajout: boolean = false;
+  term: string;
+  p: number;
+  f: Date;
+  d: Date;
+  dat: Date;
+  ha: DateTimeFormat;
+  fi: DateTimeFormat;
+  di: DateTimeFormat;
+  piece: string;
+  periode: string;
+  periodde: string;
+  machsss: string;
+  ops: string;
+  technis: string;
+
+  caus: string;
+  det: string;
+  ou: string;
+  ajout: boolean = false;
 
   constructor(private opService: OperateursService,
               private techService: TechniciensService,

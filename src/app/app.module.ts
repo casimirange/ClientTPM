@@ -37,9 +37,7 @@ import {MachinesService} from "./services/machines/machines.service";
 import { AgGridModule } from 'ag-grid-angular';
 import {NgxPaginationModule} from "ngx-pagination";
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
-// import { LoginComponent } from './Pages/auth/login/login.component';
 // import {XhrInterceptor} from "./xhr.interceptor";
-// import { UserComponent } from './Pages/users/users.component';
 import {StoreModule} from "@ngrx/store";
 // import {principalReducer} from "./Models/principal.reducer";
 import {AuthService} from "./services/auth/auth.service";
@@ -85,7 +83,6 @@ import { PdfComponent } from './pdfMake/pdf/pdf.component';
 import {jqxGridModule} from "jqwidgets-ng/jqxgrid";
 // import { FilterPipe } from './filter.pipe';
 import { SearchComponent } from './search/search/search.component';
-import { UserListComponent } from './user-list/user-list.component';
 import {DatePipe} from "@angular/common";
 import { RadialBarComponent } from './dashboard/radial-bar/radial-bar.component';
 import { EditPanneComponent } from './Pages/arrets/pannes/edit-panne/edit-panne.component';
@@ -144,7 +141,6 @@ import { DashCartComponent } from './dashboard/dash-cart/dash-cart.component';
     PdfComponent,
     // FilterPipe,
     SearchComponent,
-    UserListComponent,
     RadialBarComponent,
     EditPanneComponent,
     DashCartComponent,

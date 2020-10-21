@@ -26,13 +26,13 @@
                             <div class="form-row">
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <label for="ha" [ngClass]="{'red': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) || ((dat | date: 'dd/MM//y') > (ha | date: 'dd/MM/y'))}">Heure d'arrêt</label>
-                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" min="{{dat}}" [(ngModel)]="ha" [ngClass]="{'fred': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) || ((dat | date: 'dd/MM//y') > (ha | date: 'dd/MM/y'))}" />
+                                        <label for="ha" [ngClass]="{'red': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) || ((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y'))}">Heure d'arrêt</label>
+                                        <input type="datetime-local" class="form-control form-control-sm" data-toggle="timePicker" id="ha" formControlName="heureArret" min="{{dat}}" [(ngModel)]="ha" [ngClass]="{'fred': panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) || ((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y'))}" />
                                     </div>
                                     <div style="color: #f65656; font-style: italic; font-size: 0.5em" *ngIf="panForm.controls['heureArret'].invalid && (panForm.controls['heureArret'].touched) ">
                                         <span>*</span> Date et heure invalide
                                     </div>
-                                    <div style="color: #f65656; font-style: italic; font-size: 0.9em" *ngIf="((dat | date: 'dd/MM//y') > (ha | date: 'dd/MM/y')) ">
+                                    <div style="color: #f65656; font-style: italic; font-size: 0.9em" *ngIf="((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y')) ">
                                         <span>*</span> Veuillez saisir une valeur ≥ {{dat}}.
                                     </div>
                                 </div>
@@ -250,187 +250,7 @@
                         </div>
                         <div class="divider"></div>
                         <div class="form-group">
-                            <button type="submit" class="btn-pill btn-shadow btn btn-primary" (click)="addPanne()" [disabled]="panForm.invalid || panForm.pristine || ((dat | date: 'dd/MM//y') > (ha | date: 'dd/MM/y')) || (
-                                    ((di | date: 'M') == 1) || ((di | date: 'M') == 3) ||
-                                    ((di | date: 'M') == 5) || ((di | date: 'M') == 7) ||
-                                    ((di | date: 'M') == 8) || ((di | date: 'M') == 10) ||
-                                    ((di | date: 'M') == 12)
-                                    ?
-                                        (
-                                            ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*31*12
-                                        +
-                                        (
-                                            ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*31
-                                        +
-                                        (
-                                            ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                            ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                            ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                    :
-                                    ((di | date: 'M') == 4) || ((di | date: 'M') == 6) ||
-                                    ((di | date: 'M') == 9) || ((di | date: 'M') == 11)
-                                    ?
-                                        (
-                                        ( fi | date: 'y' ) - ( di | date: 'y' )
-                                        )*60*24*30*12
-                                        +
-                                        (
-                                        ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                        )*60*24*30
-                                        +
-                                        (
-                                        ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( fi | date: 'mm') - ( di | date: 'mm')
-                                        )
-                                    :
-                                    ((di | date: 'M') == 2) && ((di | date: 'y')%4 == 0)
-                                    ?
-                                    (
-                                    ( fi | date: 'y' ) - ( di | date: 'y' )
-                                    )*60*24*29*12
-                                    +
-                                    (
-                                    ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                    )*60*24*29
-                                    +
-                                    (
-                                    ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( fi | date: 'mm') - ( di | date: 'mm')
-                                    )
-                                    :
-                                    (
-                                    ( fi | date: 'y' ) - ( di | date: 'y' )
-                                    )*60*24*28*12
-                                    +
-                                    (
-                                    ( fi | date: 'MM' ) - ( di | date: 'MM' )
-                                    )*60*24*28
-                                    +
-                                    (
-                                    ( fi | date: 'dd' ) - ( di | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( fi | date: 'HH' ) - ( di | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( fi | date: 'mm') - ( di | date: 'mm')
-                                    )
-                                    ) < 0 || (
-                                    ((ha | date: 'M') == 1) || ((ha | date: 'M') == 3) ||
-                                    ((ha | date: 'M') == 5) || ((ha | date: 'M') == 7) ||
-                                    ((ha | date: 'M') == 8) || ((ha | date: 'M') == 10) ||
-                                    ((ha | date: 'M') == 12)
-                                    ?
-                                        (
-                                            ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*31*12
-                                        +
-                                        (
-                                            ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*31
-                                        +
-                                        (
-                                            ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                            ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                            ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                    :
-                                    ((ha | date: 'M') == 4) || ((ha | date: 'M') == 6) ||
-                                    ((ha | date: 'M') == 9) || ((ha | date: 'M') == 11)
-                                    ?
-                                        (
-                                        ( di | date: 'y' ) - ( ha | date: 'y' )
-                                        )*60*24*30*12
-                                        +
-                                        (
-                                        ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                        )*60*24*30
-                                        +
-                                        (
-                                        ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                        )*60*24
-                                        +
-                                        (
-                                        ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                        )*60
-                                        +
-                                        (
-                                        ( di | date: 'mm') - ( ha | date: 'mm')
-                                        )
-                                    :
-                                    ((ha | date: 'M') == 2) && ((ha | date: 'y')%4 == 0)
-                                    ?
-                                    (
-                                    ( di | date: 'y' ) - ( ha | date: 'y' )
-                                    )*60*24*29*12
-                                    +
-                                    (
-                                    ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                    )*60*24*29
-                                    +
-                                    (
-                                    ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( di | date: 'mm') - ( ha | date: 'mm')
-                                    )
-                                    :
-                                    (
-                                    ( di | date: 'y' ) - ( ha | date: 'y' )
-                                    )*60*24*28*12
-                                    +
-                                    (
-                                    ( di | date: 'MM' ) - ( ha | date: 'MM' )
-                                    )*60*24*28
-                                    +
-                                    (
-                                    ( di | date: 'dd' ) - ( ha | date: 'dd' )
-                                    )*60*24
-                                    +
-                                    (
-                                    ( di | date: 'HH' ) - ( ha | date: 'HH' )
-                                    )*60
-                                    +
-                                    (
-                                    ( di | date: 'mm') - ( ha | date: 'mm')
-                                    )
-                                    ) < 0">
+                            <button type="submit" class="btn-pill btn-shadow btn btn-primary" (click)="addPanne()" [disabled]="panForm.invalid || panForm.pristine || ((dat | date: 'dd/MM/y') > (ha | date: 'dd/MM/y')) || (di > fi) || (ha > di)">
                                 <i class="fa fa-save"></i> Enregistrer
                             </button>
                         </div>

@@ -552,6 +552,10 @@ export class SingleDepartementComponent implements OnInit {
   OP2: any;
 
   dep: any[];
+  term: string;
+  p: number;
+  f: Date;
+  d: Date;
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,

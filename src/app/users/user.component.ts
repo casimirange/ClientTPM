@@ -28,7 +28,7 @@ export class UserComponent implements OnInit {
   users: any[];
   SelectedUser: User;
   roles: string[] = [];
-  private authority: string;
+  authority: string;
   closeResult: any;
   registerForm: FormGroup;
 
@@ -45,6 +45,9 @@ export class UserComponent implements OnInit {
   userMIND: string;
   userAL: string;
   signupInfos: SignUpInfo;
+
+  term: string;
+  p: number;
   constructor(private modalService: NgbModal, private userService: UserService, private fb: FormBuilder, private tokenStorage: TokenStorageService,private _location: Location, private authService: AuthService) {
     this.createForm1();
     this.SelectedUser = new User;

@@ -29,6 +29,8 @@ export class MachinesComponent implements OnInit {
   pages: number = 7;
 
   operation: string = 'add';
+  term: string;
+  p: number;
 
   selectedMachine: Machine;
 

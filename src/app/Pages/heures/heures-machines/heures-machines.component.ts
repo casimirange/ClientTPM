@@ -40,6 +40,11 @@ export class HeuresMachinesComponent implements OnInit {
   machProg: any[];
   machNonProg: any[];
   period: string = 'hier';
+  term: string;
+  p: number;
+  f: Date;
+  d: Date;
+  piece: string;
 
   constructor(private machineService: MachinesService,
               private fb: FormBuilder,

@@ -19,6 +19,9 @@ export class SingleMachineComponent implements OnInit {
   icon = 'fa fa-home icon-gradient';
   bg = 'text-white bg-midnight-bloom';
 
+    term: string;
+    p: number;
+
   selectedMachine: Machine;
   selectedPanne: Pannes;
   searchPanForm: FormGroup;
