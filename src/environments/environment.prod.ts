@@ -15,7 +15,6 @@ export const environment = {
   USER_ROLE_URL: url + '/api/user',
   USERS_URL: url + '/crud_user',
 
-
   ROLES_URL: url + '/admin/role',
   ALPICAM_URL: url + '/admin/alpicam',
   RAPPORT_URL: url + '/admin/rapport',
