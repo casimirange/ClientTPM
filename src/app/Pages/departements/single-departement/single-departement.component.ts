@@ -556,6 +556,8 @@ export class SingleDepartementComponent implements OnInit {
   p: number;
   f: Date;
   d: Date;
+
+  ids: number;
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
@@ -579,6 +581,11 @@ export class SingleDepartementComponent implements OnInit {
 
     const dat = new Date();
     this.date_this_month = this.datePipe.transform(dat, 'MMMM yyyy');
+    // this.route.params.subscribe(params => {
+    //   let url = atob(params['id']);
+    //   console.log('url finale: ' +url);
+    //   this.ids = Number.parseInt(url);
+    // })
 
     this.route.params.subscribe(params => {
       let url = atob(params['id']);
@@ -923,39 +930,50 @@ export class SingleDepartementComponent implements OnInit {
     this.mtbfAlpicam();
     // this.paretoThysYear();
     this.paretoThysMonth();
-    // ligne placage
-    this.Ligne1mtbfDep();
-    this.Ligne2mtbfDep();
-    this.Ligne3mtbfDep();
-    this.SechoirmtbfDep();
-    this.EcorcagemtbfDep();
-    this.JointagemtbfDep();
 
-    // ligne Brazil
-    this.EncolleuseBrazilmtbfDep();
-    this.TranchagemtbfDep();
-    this.TeinturemtbfDep();
+    this.route.params.subscribe(params => {
+      let url = atob(params['id']);
+      console.log('url finale: ' +url);
+      this.ids = Number.parseInt(url);
 
-    // lignes Contreplaqué
-    this.EncolleuseCPmtbfDep();
-    this.PonçagemtbfDep();
-    this.PressagemtbfDep();
+      if(this.ids == 4) {
+        // ligne placage
+        this.Ligne1mtbfDep();
+        this.Ligne2mtbfDep();
+        this.Ligne3mtbfDep();
+        this.SechoirmtbfDep();
+        this.EcorcagemtbfDep();
+        //Pareto Placage
+        this.paretoDerouleuseTDTThysMonth();
+        this.paretoDerouleuseMDTThysMonth();
+        this.paretoBobineuseTDTThysMonth();
+        this.paretoBobineuseMDTThysMonth();
+        this.paretoMagasinBobineTDTThysMonth();
+        this.paretoMagasinBobineMDTThysMonth();
+        this.paretoMassicotTDTThysMonth();
+        this.paretoMassicotMDTThysMonth();
+        this.paretoSechoirTDTThysMonth();
+        this.paretoSechoirMDTThysMonth();
+      }
+      if(this.ids == 1) {
+        // ligne Brazil
+        this.EncolleuseBrazilmtbfDep();
+        this.TranchagemtbfDep();
+        this.TeinturemtbfDep();
+        //Pareto Brazil
+        this.paretoTrancheuseTDTThysMonth();
+        this.paretoTrancheuseMDTThysMonth();
+        this.paretoEncolleuseTDTThysMonth();
+        this.paretoEncolleuseMDTThysMonth();
+      }
+      if(this.ids == 3) {
+        // lignes Contreplaqué
+        this.EncolleuseCPmtbfDep();
+        this.PonçagemtbfDep();
+        this.PressagemtbfDep();
+      }
 
-    //Pareto Placage
-    this.paretoDerouleuseTDTThysMonth();
-    this.paretoDerouleuseMDTThysMonth();
-    this.paretoBobineuseTDTThysMonth();
-    this.paretoBobineuseMDTThysMonth();
-    this.paretoMagasinBobineTDTThysMonth();
-    this.paretoMagasinBobineMDTThysMonth();
-    this.paretoMassicotTDTThysMonth();
-    this.paretoMassicotMDTThysMonth();
-    this.paretoSechoirTDTThysMonth();
-    this.paretoSechoirMDTThysMonth();
-    this.paretoTrancheuseTDTThysMonth();
-    this.paretoTrancheuseMDTThysMonth();
-    this.paretoEncolleuseTDTThysMonth();
-    this.paretoEncolleuseMDTThysMonth();
+    })
 
     // dashboard dep
     this.getChart3();
