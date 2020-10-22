@@ -15,9 +15,9 @@ const httpOptions = {
 })
 export class AuthService {
 
-  private loginUrl = 'http://localhost:8080/api/auth/signin';
-  private signupUrl = 'http://localhost:8080/api/auth/signup';
-  private users = 'http://localhost:8080/api/auth';
+  private loginUrl = 'https://acon-stats-server.herokuapp.com/api/auth/signin';
+  private signupUrl = 'https://acon-stats-server.herokuapp.com/api/auth/signup';
+  private users = 'https://acon-stats-server.herokuapp.com/api/auth';
 
   constructor(private http: HttpClient) {
   }

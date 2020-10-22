@@ -76,7 +76,9 @@ export class DashboardComponent implements OnInit {
   mtbfTY: Pannes[];
   mtbf: Pannes[];
   arrets: Arrets[];
+  arretsLength: number;
   cdpannes: Pannes[];
+  cdpannesLength: number;
   Opannes: Pannes[];
   Detailspannes: Pannes[];
   Outilpannes: Pannes[];
@@ -221,6 +223,7 @@ export class DashboardComponent implements OnInit {
     };
 
     public todatpannes: Pannes[];
+    public todatpannesLength: number;
 
     y: number = 0;
 
@@ -273,6 +276,7 @@ export class DashboardComponent implements OnInit {
 
           data => {
               this.cdpannes =  data;
+              this.cdpannesLength =  this.cdpannes.length;
               var x = 0;
 
               for(let pin of data){
@@ -459,6 +463,7 @@ export class DashboardComponent implements OnInit {
       this.arretService.getTodayArret().subscribe(
           data => {
               this.arrets = data;
+              this.arretsLength = this.arrets.length
           },
           error => {
               console.log('une erreur a été détectée!')
@@ -976,6 +981,7 @@ export class DashboardComponent implements OnInit {
             data => {
                 this.pannes = data;
                 this.todatpannes = data;
+                this.todatpannesLength = data.length;
                 this.countPannes = data.length;
             },
             error => {

@@ -5,7 +5,7 @@ const url = 'http://localhost:8080';
 const urls = 'https://acon-stats-server.herokuapp.com';
 export const environment = {
 
-  production: false,
+  production: true,
   api_url: 'https://acon-stats-server.herokuapp.com/',
   DEPARTEMENT_URL: urls + '/api/departements',
   LIGNE_URL: urls + '/api/lignes',

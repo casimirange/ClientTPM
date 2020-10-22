@@ -1,7 +1,7 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 <div class="row" *ngIf="cdpannes && authority != 'user'">
-    <div class="col-md-6 "  style="cursor: pointer;" *ngFor="let cdp of cdpannes" (click)="showDepart(cdp)" [ngClass]="cdpannes.length == 4 ? 'col-lg-3' : cdpannes.length == 3 ? 'col-lg-4' : cdpannes.length == 2 ? 'col-lg-6' : 'col-lg-3'">
+    <div class="col-md-6 "  style="cursor: pointer;" *ngFor="let cdp of cdpannes" (click)="showDepart(cdp)" [ngClass]="cdpannesLength == 4 ? 'col-lg-3' : cdpannesLength == 3 ? 'col-lg-4' : cdpannesLength == 2 ? 'col-lg-6' : 'col-lg-3'">
         <div class="mb-3 widget-chart widget-chart2 text-left card" [ngClass]="
             cdp.dep == 'Scierie' ? 'card-shadow-danger' :
             cdp.dep == 'Brazil' ? 'card-shadow-jaune' :
@@ -648,7 +648,7 @@
                                     </ng-template>
                                 </li>
 
-                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="todatpannes.length < 1">Aucune panne déclarée dans la journée!</p>
+                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="todatpannesLength < 1">Aucune panne déclarée dans la journée!</p>
                             </ul>
 
                         </div>
@@ -717,7 +717,7 @@
                                     </ng-template>
                                 </li>
 
-                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="arrets.length  < 1">Aucun Arrêt déclaré dans la journée!</p>
+                                <p style="font-size: 0.8rem;" class="text-center text-focus" *ngIf="arretsLength  < 1">Aucun Arrêt déclaré dans la journée!</p>
                             </ul>
 
                         </div>

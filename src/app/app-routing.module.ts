@@ -43,18 +43,18 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent
   },
-  {
-    path: 'user',
-    component: UserComponent
-  },
-  {
-    path: 'pm',
-    component: PmComponent
-  },
-  {
-    path: 'admin',
-    component: AdminComponent
-  },
+  // {
+  //   path: 'user',
+  //   component: UserComponent
+  // },
+  // {
+  //   path: 'pm',
+  //   component: PmComponent
+  // },
+  // {
+  //   path: 'admin',
+  //   component: AdminComponent
+  // },
   {
     path: 'auth/login',
     component: LoginComponent

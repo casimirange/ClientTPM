@@ -11,22 +11,26 @@ import {environment} from "../../../environments/environment";
 export class UserService {
 
   private userUrl = 'http://localhost:8080/api/test/user';
+  // private userUrl = 'http://localhost:8080/api/test/user';
   private pmUrl = 'http://localhost:8080/api/test/pm';
+  // private pmUrl = 'http://localhost:8080/api/test/pm';
   private adminUrl = 'http://localhost:8080/api/test/admin';
+  // private adminUrl = 'http://localhost:8080/api/test/admin';
   private users = 'http://localhost:8080/api/auth';
+  // private users = 'http://localhost:8080/api/auth';
 
   constructor(private http: HttpClient) { }
 
-  getUserBoard(): Observable<string> {
-    return this.http.get(this.userUrl, { responseType: 'text' });
+  getUserBoard() {
+    // return this.http.get(this.userUrl, { responseType: 'text' });
   }
 
-  getPMBoard(): Observable<string> {
-    return this.http.get(this.pmUrl, { responseType: 'text' });
+  getPMBoard() {
+    // return this.http.get(this.pmUrl, { responseType: 'text' });
   }
 
-  getAdminBoard(): Observable<string> {
-    return this.http.get(this.adminUrl, { responseType: 'text' });
+  getAdminBoard() {
+    // return this.http.get(this.adminUrl, { responseType: 'text' });
   }
 
   getUsers(): Observable<any> {
