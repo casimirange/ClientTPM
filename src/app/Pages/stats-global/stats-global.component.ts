@@ -769,7 +769,7 @@ export class StatsGlobalComponent implements OnInit {
       order: 2,
     };
 
-    this.dashboardService.mtbfAlpi().subscribe(
+    this.rapportService.MTBF().subscribe(
         data1 => {
           this.mtbf = data1;
 

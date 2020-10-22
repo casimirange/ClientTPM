@@ -50,4 +50,8 @@ export class RapportService {
   getScierieRange(d1: Date, d2: Date, d3: Date, d4: Date): Observable<any>{
     return this.http.get(environment.RAPPORT_URL+`/ridotto/scierieRange?debut1=${d1}&fin1=${d2}&debut2=${d3}&fin2=${d4}`);
   }
+
+  MTBF(): Observable<any>{
+    return this.http.get(environment.RAPPORT_URL+`/MTBFAlpi`);
+  }
 }
