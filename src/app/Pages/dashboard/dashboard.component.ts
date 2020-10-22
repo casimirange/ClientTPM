@@ -414,15 +414,6 @@ export class DashboardComponent implements OnInit {
           });
       }
 
-      this.userService.getUserBoard().subscribe(
-          data => {
-              this.board = data;
-          },
-          error => {
-              this.errorMessage = `${error.status}: ${JSON.parse(error.error).message}`;
-          }
-      );
-
     this.selectedPanne = new Pannes();
     this.selectedArret = new Arrets();
     this.TodayPannes();

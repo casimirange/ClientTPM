@@ -14,13 +14,13 @@ export class PmComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.getPMBoard().subscribe(
-      data => {
-        this.board = data;
-      },
-      error => {
-        this.errorMessage = `${error.status}: ${JSON.parse(error.error).message}`;
-      }
-    );
+    // this.userService.getPMBoard().subscribe(
+    //   data => {
+    //     this.board = data;
+    //   },
+    //   error => {
+    //     this.errorMessage = `${error.status}: ${JSON.parse(error.error).message}`;
+    //   }
+    // );
   }
 }
