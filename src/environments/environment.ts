@@ -2,31 +2,32 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 const url = 'http://localhost:8080';
+const urls = 'https://acon-stats-server.herokuapp.com';
 export const environment = {
 
   production: false,
   api_url: 'https://acon-stats-server.herokuapp.com/',
-  DEPARTEMENT_URL: url + '/api/departements',
-  LIGNE_URL: url + '/api/lignes',
-  TECHNICIEN_URL: url + '/api/techniciens',
-  OPERATEUR_URL: url + '/api/operateurs',
-  MACHINE_URL: url + '/api/machines',
-  PANNES_URL: url + '/api/pannes',
-  ARRETS_URL: url + '/api/arrets',
-  DASHBOARD_URL: url + '/api/dashboard',
-  HEURES_URL: url + '/api/heures',
+  DEPARTEMENT_URL: urls + '/api/departements',
+  LIGNE_URL: urls + '/api/lignes',
+  TECHNICIEN_URL: urls + '/api/techniciens',
+  OPERATEUR_URL: urls + '/api/operateurs',
+  MACHINE_URL: urls + '/api/machines',
+  PANNES_URL: urls + '/api/pannes',
+  ARRETS_URL: urls + '/api/arrets',
+  DASHBOARD_URL: urls + '/api/dashboard',
+  HEURES_URL: urls + '/api/heures',
 
-  USER_ROLE_URL: url + '/api/user',
-  USERS_URL: url + '/crud_user',
+  USER_ROLE_URL: urls + '/api/user',
+  USERS_URL: urls + '/crud_user',
 
 
-  ROLES_URL: url + '/admin/role',
-  ALPICAM_URL: url + '/admin/alpicam',
-  RAPPORT_URL: url + '/admin/rapport',
+  ROLES_URL: urls + '/admin/role',
+  ALPICAM_URL: urls + '/admin/alpicam',
+  RAPPORT_URL: urls + '/admin/rapport',
 
-  LOGIN_URL: url + '/api/auth/signin',
-  SIGNUP_URL: url + '/api/auth/signup',
-  URERS: url + '/api/auth',
+  LOGIN_URL: urls + '/api/auth/signin',
+  SIGNUP_URL: urls + '/api/auth/signup',
+  URERS: urls + '/api/auth',
 };
 
 /*
