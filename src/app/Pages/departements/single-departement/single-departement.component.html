@@ -382,23 +382,11 @@
                                     <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
                                 </div>
                                 <div class="col-md-2">
-                                    <button [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate(); DashboardRange(); paretoDepRange();
-                                    selectedDep.nom == 'Placage' ? paretoDerouleuseTDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoDerouleuseMDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoBobineuseTDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoBobineuseMDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoMagasinBobineTDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoMagasinBobineMDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoMassicotTDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoMassicotMDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoSechoirTDTRange() :
-                                    selectedDep.nom == 'Placage' ? paretoSechoirMDTRange() :
-                                    selectedDep.nom == 'Brazil' ? paretoTrancheuseTDTRange() :
-                                    selectedDep.nom == 'Brazil' ? paretoTrancheuseMDTRange() :
-                                    selectedDep.nom == 'Brazil' ? paretoEncolleuseTDTRange() :
-                                    selectedDep.nom == 'Brazil' ? paretoEncolleuseMDTRange() :
-                                    selectedDep.nom == 'Contreplaqué' ? paretoEncolleuseMDTRange() :
-                                    selectedDep.nom == 'Contreplaqué' ? paretoEncolleuseTDTRange() : '' " type="submit"><i class="fa fa-search"></i></button>
+                                    <button *ngIf="selectedDep.nom == 'Placage'" [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate(); DashboardRange(); paretoDepRange(); paretoDerouleuseTDTRange(); paretoDerouleuseMDTRange(); paretoBobineuseTDTRange(); paretoBobineuseMDTRange(); paretoMagasinBobineTDTRange(); paretoMagasinBobineMDTRange(); paretoMassicotTDTRange(); paretoMassicotMDTRange(); paretoSechoirTDTRange();
+                                    paretoSechoirMDTRange();" type="submit"><i class="fa fa-search"></i></button>
+                                    <button *ngIf="selectedDep.nom == 'Brazil'" [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate(); DashboardRange(); paretoDepRange(); paretoTrancheuseTDTRange(); paretoTrancheuseMDTRange(); paretoEncolleuseTDTRange(); paretoEncolleuseMDTRange();" type="submit"><i class="fa fa-search"></i></button>
+                                    <button *ngIf="selectedDep.nom == 'Contreplaqué'" [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate(); DashboardRange(); paretoDepRange(); paretoEncolleuseTDTRange(); paretoEncolleuseMDTRange();" type="submit"><i class="fa fa-search"></i></button>
+                                    <button *ngIf="selectedDep.nom == 'Scierie'" [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="rangeDate(); DashboardRange(); paretoDepRange();" type="submit"><i class="fa fa-search"></i></button>
 
                                 </div>
 
