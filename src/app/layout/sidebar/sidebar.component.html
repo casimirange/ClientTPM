@@ -48,8 +48,8 @@
                         Alpicam
                     </a>
                 </li>
-                <li *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'" *ngFor=" let dp of departement" (click)="showDepart(dp)">
-                    <a routerLinkActive="mm-active">
+                <li *ngFor=" let dp of departement" (click)="showDepart(dp)">
+                    <a routerLinkActive="mm-active" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'">
                         <i class="metismenu-icon lnr-apartment"></i>
                         {{dp.nom | titlecase}}
                     </a>
