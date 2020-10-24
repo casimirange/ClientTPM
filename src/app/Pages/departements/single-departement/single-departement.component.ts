@@ -971,6 +971,8 @@ export class SingleDepartementComponent implements OnInit {
         this.EncolleuseCPmtbfDep();
         this.PonçagemtbfDep();
         this.PressagemtbfDep();
+        this.paretoEncolleuseTDTThysMonth();
+        this.paretoEncolleuseMDTThysMonth();
       }
 
     })
