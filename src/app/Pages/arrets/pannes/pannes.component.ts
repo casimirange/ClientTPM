@@ -27,11 +27,12 @@ export class PannesComponent implements OnInit {
   subheadings = 'Consultez la liste des pannes survenues';
   icons = 'pe-7s-tools icon-gradient bg-heavy-rain';
 
+  loader: boolean = false;
   searchPanForm: FormGroup;
   selectPanForm: FormGroup;
   pageForm: FormGroup;
   rangeForm: FormGroup;
-  pannes: Pannes[];
+  pannes: Pannes[] = [];
   cpannes: Pannes[];
   Tpannes: Pannes[];
   Opannes: Pannes[];
@@ -154,16 +155,19 @@ export class PannesComponent implements OnInit {
     }
 
   loadPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getAllPannes().subscribe(
         data => {
           this.pannes = data;
             for (let pin of data){
                 this.selectedPanne.numero = pin.numero;
             }
+            this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false;
         },
         () => {
           console.log('chargement des pannes');
@@ -326,13 +330,16 @@ export class PannesComponent implements OnInit {
   }
 
   TodayPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getTodayPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -342,13 +349,16 @@ export class PannesComponent implements OnInit {
   }
 
   HierPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getHierPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false
         },
         () => {
           console.log('panne hier');
@@ -358,13 +368,16 @@ export class PannesComponent implements OnInit {
   }
 
   ThisWeekPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getThisWeekPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false;
         },
         () => {
           console.log('panne cette semaine');
@@ -374,13 +387,16 @@ export class PannesComponent implements OnInit {
   }
 
   LastWeekPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getLastWeekPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -390,13 +406,16 @@ export class PannesComponent implements OnInit {
   }
 
   LastMonthPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getLastMonthPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -406,13 +425,15 @@ export class PannesComponent implements OnInit {
   }
 
   ThisMonthPannes(){
-
+    this.loader = true;
     this.panneService.getThisMonthPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -422,13 +443,16 @@ export class PannesComponent implements OnInit {
   }
 
   LastYearPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getLastYearPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -438,13 +462,16 @@ export class PannesComponent implements OnInit {
   }
 
   ThisYearPannes(){
-
+      this.loader = true;
+      this.pannes = [];
     this.panneService.getThisYearPannes().subscribe(
         data => {
           this.pannes = data;
+          this.loader = false
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -459,6 +486,8 @@ export class PannesComponent implements OnInit {
       const d2 = this.rangeForm.controls['date2'].value;
 
       console.log(d1 + ' et '+ d2);
+      this.loader = true;
+      this.pannes = [];
 
       this.panneService.getRangeDatePannes(d1, d2).subscribe(
           data => {
@@ -470,10 +499,12 @@ export class PannesComponent implements OnInit {
 
               console.log('pannes: '+data.length);
               console.log('TDT2: '+x);
+              this.loader = false;
 
           },
           error => {
               console.log('une erreur a été détectée!')
+              this.loader = false;
           },
           () => {
               console.log('panne aujourd\'hui');

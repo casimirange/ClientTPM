@@ -180,10 +180,10 @@
                                 <div class="form-row">
 
                                     <div class="col-md-5">
-                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date1'].invalid && (rangeForm.controls['date1'].touched)}" [(ngModel)]="d" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date1'].invalid && (rangeForm.controls['date1'].touched)}" [(ngModel)]="d" class="form-control form-control-sm" formControlName="date1">
                                     </div>
                                     <div class="col-md-5">
-                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                        <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" class="form-control form-control-sm" formControlName="date2">
                                     </div>
                                     <div class="col-md-2">
                                         <button [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="dashRange(); typeArretRange(); paretoArretRange(); RangeArrets()" type="submit"><i class="fa fa-search"></i></button>
@@ -209,7 +209,7 @@
                         <th *ngIf="authority === 'super_admin'">Actions</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="arrets.length && loader == false">
                     <tr class="widget-content" *ngFor="let arret of arrets | filter : term | paginate:{itemsPerPage: pages, currentPage:p}">
                         <td>{{ arret.date  | date: 'dd/MM/y'}}</td>
                         <td><div class="widget-content p-0">
@@ -242,6 +242,21 @@
                     </tr>
                     </tbody>
                 </table>
+                <p *ngIf="!arrets.length && loader == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucun Arrêt trouvé !</p>
+                <div *ngIf="!arrets.length && loader == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="d-block clearfix card-footer">
                 <div class="float-left">
@@ -316,11 +331,26 @@
                     <div style="height: auto" >
                         <div class="flex-item">
                             <div style="display: block; height: auto;">
-                                <app-chart
+                                <app-chart *ngIf="datas.labels.length && loaderdash == false"
                                         [type]="'line'"
                                         [data]="datas.datasets"
                                         [lineChartLabels]="datas.labels"
                                 ></app-chart>
+                                <p *ngIf="!datas.labels.length && loaderdash == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune donnée trouvée !</p>
+                                <div *ngIf="!datas.labels.length && loaderdash == true" class="text-center">
+                                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                            <div class="loader">
+                                                <div class="ball-scale-multiple">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p style="vertical-align: middle">Chargement...</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -400,13 +430,28 @@
                 Répartition par type d'arrêt
             </div>
             <div class="card-body">
-                <app-doughnut-chart *ngIf="typeArret.nbre.length > 0"
+                <app-doughnut-chart *ngIf="typeArret.nbre.length && loadertype1 == false"
                                     [doughnutChartData] = "typeArret.nbre"
                                     [doughnutChartLabels] = "typeArret.labels"
                                     [lineChartColors]="lineChartColors"
                                     [doughnutChartType]="'pie'"
                 ></app-doughnut-chart>
-                <p style="font-size: 1.3em" class="text-center" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>
+                <p *ngIf="!typeArret.nbre.length && loadertype1 == false" style="color: grey; font-size: 1.3rem;" class="text-center" >Aucune donnée trouvée !</p>
+                <div *ngIf="!typeArret.nbre.length && loadertype1 == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
+                <!--<p style="font-size: 1.3em" class="text-center" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>-->
             </div>
             <div class="card-footer">
                 <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
@@ -419,13 +464,28 @@
                 Perte de production par type d'arrêt (minutes)
             </div>
             <div class="card-body">
-                <app-doughnut-chart *ngIf="typeArret.nbre.length > 0"
+                <app-doughnut-chart *ngIf="typeArret.nbre.length && loadertype1 == false"
                                     [doughnutChartData] = "typeArret.tdt"
                                     [doughnutChartLabels] = "typeArret.labels"
                                     [lineChartColors]="lineChartColors"
                                     [doughnutChartType]="'doughnut'"
                 ></app-doughnut-chart>
-                <p style="font-size: 1.3em" class="text-center" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>
+                <p *ngIf="!typeArret.nbre.length && loadertype1 == false" style="color: grey; font-size: 1.3rem;" class="text-center" >Aucune donnée trouvée !</p>
+                <div *ngIf="!typeArret.nbre.length && loadertype1 == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
+                <!--<p style="font-size: 1.3em" class="text-center" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>-->
             </div>
             <div class="card-footer">
                 <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>
@@ -441,15 +501,30 @@
                 Pareto des arrêts
             </div>
             <div class="card-body">
-                <app-chart *ngIf="typeArret.nbre.length > 0"
+                <app-chart *ngIf="pareto.labels.length && loaderpareto == false"
                         [type]="'line'"
                         [data]="pareto.datasets"
                         [lineChartLabels]="pareto.labels"
                         [lineChartColors]="colorsPARETO"
                 ></app-chart>
-                <div class="text-center">
-                    <p style="font-size: 1.8em" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>
+                <p *ngIf="!pareto.labels.length && loaderpareto == false" style="color: grey; font-size: 1.3rem;" class="text-center" >Aucune donnée trouvée !</p>
+                <div *ngIf="!pareto.labels.length && loaderpareto == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
                 </div>
+                <!--<div class="text-center">-->
+                    <!--<p style="font-size: 1.8em" *ngIf="typeArret.nbre.length == 0">Aucun Arrêt Enregistré cette période!!</p>-->
+                <!--</div>-->
             </div>
             <div class="card-footer">
                 <p>periode: <span  style="text-transform: capitalize; color: #6c757d;" class="opacity-6">{{date_this_months}}</span> </p>

@@ -13,24 +13,68 @@
         <div class="tab-pane" id="tab-minimal-1">
             <div class="card-body">
                 <div style="display: block; height: auto;">
-                    <app-chart
+                    <app-chart *ngIf="mdtByYear.labels.length && loader == false "
                             [type]="'bar'"
                             [data]="mdtByYear.datasets"
                             [lineChartLabels]="mdtByYear.labels"
                             [lineChartColors]="colorsMDT"
                     ></app-chart>
+                    <div class="card-body p-2 text-center"  *ngIf="!mdtByYear.labels.length && loader == false ">
+                        <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                    </div>
+                    <div class="card-body p-2 text-center"  *ngIf="!mdtByYear.labels.length && loader == true ">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="line-spin-fade-loader">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="tab-pane fade active show" id="tab-minimal-2">
             <div class="card-body">
                 <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
-                    <app-chart
+                    <app-chart *ngIf="mtbfByYear.labels.length && loader == false"
                             [type]="'bar'"
                             [data]="mtbfByYear.datasets"
                             [lineChartLabels]="mtbfByYear.labels"
                             [lineChartColors]="colorsMTBF"
                     ></app-chart>
+                    <div class="card-body p-2 text-center"  *ngIf="!mtbfByYear.labels.length && loader == false ">
+                        <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                    </div>
+                    <div class="card-body p-2 text-center"  *ngIf="!mtbfByYear.labels.length && loader == true ">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="line-spin-fade-loader">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,12 +82,29 @@
             <div class="card-body p-2">
                 <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
 
-                            <app-chart #myC
-                                    [type]="'bar'"
-                                    [data]="datas.datasets"
-                                    [lineChartLabels]="datas.labels"
-                                    [lineChartColors]="colorsPARETO"
-                            ></app-chart>
+                    <app-chart #myC *ngIf="datas.labels.length && loaderPareto == false "
+                            [type]="'bar'"
+                            [data]="datas.datasets"
+                            [lineChartLabels]="datas.labels"
+                            [lineChartColors]="colorsPARETO"
+                    ></app-chart>
+                    <div class="card-body p-2 text-center"  *ngIf="!datas.labels.length && loaderPareto == false ">
+                        <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                    </div>
+                    <div class="card-body p-2 text-center"  *ngIf="!datas.labels.length && loaderPareto == true ">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,13 +133,13 @@
                         <div class="form-row">
 
                             <div class="col-md-5">
-                                <input type="date" placeholder="BCP002" class="form-control form-control-sm" formControlName="date1">
+                                <input type="date" [ngClass]="{'fred': rangeForm.controls['date1'].invalid && (rangeForm.controls['date1'].touched)}" [(ngModel)]="d" class="form-control form-control-sm" formControlName="date1">
                             </div>
                             <div class="col-md-5">
-                                <input type="date" placeholder="Electricien" class="form-control form-control-sm" formControlName="date2">
+                                <input type="date" [ngClass]="{'fred': rangeForm.controls['date2'].invalid && (rangeForm.controls['date2'].touched) || (f < d)}" [(ngModel)]="f" min="{{d}}" class="form-control form-control-sm" formControlName="date2">
                             </div>
                             <div class="col-md-2">
-                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="paretoAlpiRange(); typePanneRange();" type="submit"><i class="fa fa-search"></i></button>
+                                <button [disabled]="(f < d) || rangeForm.pristine && rangeForm.invalid" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control" (click)="paretoAlpiRange(); typePanneRange();" type="submit"><i class="fa fa-search"></i></button>
 
                             </div>
 
@@ -117,12 +178,29 @@ text-orientation: mixed; float: left; width: auto;">Répartition par Types de Pa
                 <div class="col-lg-10 col-md-10 widget-chart widget-chart2 mx-auto my-auto  p-0">
                     <div class="widget-chat-wrapper-outer" >
                         <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0 " style="min-height: 226px;">
-                            <app-doughnut-chart *ngIf="dta"
+                            <app-doughnut-chart *ngIf="dta.length && loadertype == false"
                                     [doughnutChartData] = "dta"
                                     [doughnutChartLabels] = "catP.labels"
                                     [doughnutChartType]="'doughnut'"
                             ></app-doughnut-chart>
-                            <p style="font-size: 0.8em" *ngIf="dta.length == 0">Aucune panne!!</p>
+                            <div class="card-body p-2 text-center"  *ngIf="!dta.length && loadertype == false ">
+                                <p class="text-center" style="color: grey; font-size: 0.9rem;">Aucune donnée disponible!</p>
+                            </div>
+                            <div class="card-body p-2 text-center"  *ngIf="!dta.length && loadertype == true ">
+                                <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                    <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                        <div class="loader">
+                                            <div class="ball-scale-multiple">
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p style="vertical-align: middle">Chargement...</p>
+                                </div>
+                            </div>
+                            <!--<p style="font-size: 0.8em" *ngIf="dta.length == 0">Aucune panne!!</p>-->
                             <!--<app-chart width="auto" height="auto"-->
                                        <!--[type]="'pie'"-->
                                        <!--[data]="catP.datasets"-->
@@ -177,7 +255,7 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
                     </table>
                 </div>
                 <div class="tbl-content">
-                    <table class="tables" cellpadding="0" cellspacing="0" border="0">
+                    <table class="tables" cellpadding="0" cellspacing="0" border="0" *ngIf="stats.length && loaderrecap == false">
                         <tbody>
                         <tr *ngFor="let stat of stats">
                             <td class="td">
@@ -313,6 +391,28 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
                         </tr>
                         </tbody>
                     </table>
+                    <div class="card-body p-2 text-center"  *ngIf="!stats.length && loaderrecap == false ">
+                        <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible ces 6 derniers mois!</p>
+                    </div>
+                    <div class="card-body p-2 text-center"  *ngIf="!stats.length && loaderrecap == true ">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="line-spin-fade-loader">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -320,12 +420,34 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
         <div class="tab-pane" id="tab-eg5-111" role="tabpanel">
             <div class="card-body">
                 <div style="display: block; height: auto;">
-                    <app-dash-cart
+                    <app-dash-cart *ngIf="graph.labels.length && loaderrecap == false"
                             [type]="'bar'"
-                            [data]="graph.datasets.reverse()"
+                            [data]="graph.datasets"
                             [lineChartLabels]="graph.labels"
                             [lineChartColors]="colorsGraph"
                     ></app-dash-cart>
+                    <div class="card-body p-2 text-center"  *ngIf="!stats.length && loaderrecap == false ">
+                        <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible ces 6 derniers mois!</p>
+                    </div>
+                    <div class="card-body p-2 text-center"  *ngIf="!stats.length && loaderrecap == true ">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="line-spin-fade-loader">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -333,24 +455,25 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
 
 </div>
 
-<div class="row justify-content-md-center" *ngIf="rapport == false">
-    <div class="col-4 align-self-center">
-        <div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card" (click)="rapport = true" style="cursor: pointer">
-            <div class="widget-chat-wrapper-outer" >
-                <button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary" style="border: #f8f9fa solid 2px">
-                    <i class="lnr-exit text-primary opacity-7 btn-icon-wrapper mb-2"> </i>
-                    <span class="mr-2 opacity-7">
-                                    <i class="fa fa-cog fa-spin"></i>
-                                </span>
-                    Charger Le Rapport
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="row justify-content-md-center" *ngIf="rapport == false">-->
+    <!--<div class="col-4 align-self-center">-->
+        <!--<div class="card-shadow-primary mb-3 widget-chart widget-chart2 text-left card" (click)="rapport = true" style="cursor: pointer">-->
+            <!--<div class="widget-chat-wrapper-outer" >-->
+                <!--<button class="btn-icon-vertical btn-transition-text btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-primary" style="border: #f8f9fa solid 2px">-->
+                    <!--<i class="lnr-exit text-primary opacity-7 btn-icon-wrapper mb-2"> </i>-->
+                    <!--<span class="mr-2 opacity-7">-->
+                                    <!--<i class="fa fa-cog fa-spin"></i>-->
+                                <!--</span>-->
+                    <!--Charger Le Rapport-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 
 
-<div class="main-card mb-3 card" *ngIf="rapport == true">
+<!--<div class="main-card mb-3 card" *ngIf="rapport == true">-->
+<div class="main-card mb-3 card">
     <div class="card-header">
         <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
             Tableau comparatif <span class="font-italic text-primary">{{section}}</span> <small><b> {{datS3 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS4 | date: 'dd MMM yy' | uppercase}}</b> VS <b> {{datS1 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS2 | date: 'dd MMM yy' | uppercase}}</b></small>
@@ -397,7 +520,7 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
             </table>
         </div>
         <div class="tbl-content">
-            <table class="tables" cellpadding="0" cellspacing="0" border="0">
+            <table class="tables" cellpadding="0" cellspacing="0" border="0" *ngIf="ridotto.length && loaderrapport == false">
                 <tbody>
                 <tr *ngFor="let stat of ridotto">
                     <td class="td text-capitalize" >{{stat.dep}}
@@ -545,6 +668,28 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
                 </tr>
                 </tbody>
             </table>
+            <div class="p-2 text-center"  *ngIf="!ridotto.length && loaderrapport == false ">
+                <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+            </div>
+            <div class="p-2 text-center"  *ngIf="!ridotto.length && loaderrapport == true ">
+                <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                    <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                        <div class="loader">
+                            <div class="line-spin-fade-loader">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="vertical-align: middle">Chargement...</p>
+                </div>
+            </div>
         </div>
         <div class="border-top bg-light card-header">
                     <div class="btn-actions-pane-left">
@@ -556,9 +701,10 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
                     <div class="btn-actions-pane-left">
                         <small><span class="text-primary">% N°:</span> Taux de pannes</small>
                     </div>
-                    <div class="btn-actions-pane-right" *ngIf="filtrer == false"><button class="btn btn-sm btn-outline-alternate" (click)="filtrer = true"><i class="pe-7s-filter"></i> Filtrer</button></div>
+                    <div class="btn-actions-pane-right" ><button id="exportPDF" class="btn btn-sm btn-outline-focus" (click)="downloads()"><i class="fa fa-file-pdf-o"></i> PDF</button></div>
+                    <div class="btn-actions-pane-right" *ngIf="filtrer == false"><button class="btn btn-sm btn-outline-alternate" (click)="filtrer = true"><i class="pe-7s-filter"></i> Comparer</button></div>
                     <div class="btn-actions-pane-right" *ngIf="filtrer == true"><button class="btn btn-sm btn-outline-danger"
-                            (click)="filtrer = false; filt = false;
+                            (click)="filtrer = false; filt = false; alpicamRapport(); placageRapport(); brazilRapport(); scierieRapport(); contreplaqueRapport();
                                      section == 'Alpicam' ? alpicam() :
                                      section == 'Placage' ? placage() :
                                      section == 'Brazil'  ? brazil() :
@@ -571,31 +717,42 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
                 <div role="group" class="">
                     <form [formGroup]="rapportRangeForm">
                         <div class="form-row">
+                            <!--<div class="col-md-2">-->
+                                <!--&lt;!&ndash;<label for="p1">Du</label>&ndash;&gt;-->
+                                <!--<input type="date" id="p1" class="form-control form-control-sm" formControlName="date1">-->
+                            <!--</div>-->
+                            <!--<div class="col-md-2">-->
+                                <!--&lt;!&ndash;<label for="p2">Au</label>&ndash;&gt;-->
+                                <!--<input type="date" id="p2" class="form-control form-control-sm" formControlName="date2">-->
+                            <!--</div>-->
                             <div class="col-md-2">
-                                <!--<label for="p1">Du</label>-->
-                                <input type="date" id="p1" class="form-control form-control-sm" formControlName="date1">
+                                <input type="date" [ngClass]="{'fred': rapportRangeForm.controls['date1'].invalid && (rapportRangeForm.controls['date1'].touched)}" [(ngModel)]="d1" class="form-control form-control-sm" formControlName="date1">
                             </div>
                             <div class="col-md-2">
-                                <!--<label for="p2">Au</label>-->
-                                <input type="date" id="p2" class="form-control form-control-sm" formControlName="date2">
+                                <input type="date" [ngClass]="{'fred': rapportRangeForm.controls['date2'].invalid && (rapportRangeForm.controls['date2'].touched) || (f1 < d1)}" [(ngModel)]="f1" min="{{d1}}" class="form-control form-control-sm" formControlName="date2">
                             </div>
                             <div class="col-md-2 text-center">
                                 <span class="my-auto"><small><b><i class="fa fa-arrow-circle-left"></i> période 1 | période 2 <i class="fa fa-arrow-circle-right"></i></b></small></span>
                             </div>
+                            <!--<div class="col-md-2">-->
+                                <!--&lt;!&ndash;<label for="p3">Du</label>&ndash;&gt;-->
+                                <!--<input type="date" id="p3" class="form-control form-control-sm" formControlName="date3">-->
+                            <!--</div>-->
+                            <!--<div class="col-md-2">-->
+                                <!--&lt;!&ndash;<label for="p4">Au</label>&ndash;&gt;-->
+                                <!--<input type="date" id="p4" class="form-control form-control-sm" formControlName="date4">-->
+                            <!--</div>-->
                             <div class="col-md-2">
-                                <!--<label for="p3">Du</label>-->
-                                <input type="date" id="p3" class="form-control form-control-sm" formControlName="date3">
+                                <input type="date" [ngClass]="{'fred': rapportRangeForm.controls['date3'].invalid && (rapportRangeForm.controls['date3'].touched) || (d2<f1)}" [(ngModel)]="d2" min="{{f1}}" class="form-control form-control-sm" formControlName="date3">
                             </div>
                             <div class="col-md-2">
-                                <!--<label for="p4">Au</label>-->
-                                <input type="date" id="p4" class="form-control form-control-sm" formControlName="date4">
+                                <input type="date" [ngClass]="{'fred': rapportRangeForm.controls['date4'].invalid && (rapportRangeForm.controls['date4'].touched) || (f2 < d2)}" [(ngModel)]="f2" min="{{d2}}" class="form-control form-control-sm" formControlName="date4">
                             </div>
-
                             <div class="col-md-1">
                             </div>
 
                             <div class="col-md-1">
-                                <button class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control"
+                                <button [disabled]="(f1 < d1) || (d2 < f1) || (f2 < d2) || (rapportRangeForm.pristine && rapportRangeForm.invalid)" class="btn-transition btn btn-sm btn-shadow btn-outline-primary form-control-sm form-control"
                                         (click)=" filt = true; section == 'Alpicam' ? alpicamRange() :
                                              section == 'Placage' ? placageRange() :
                                              section == 'Brazil' ? brazilRange() :
@@ -611,3 +768,985 @@ text-orientation: mixed; width: auto;">Période : <b>{{date_this_months}}</b></s
         </div>
     </div>
 </div>
+
+<!--<div id="rapPDF">-->
+<!--<div id="alpicam" class="main-card mb-3 card" >-->
+    <!--<div class="card-header">-->
+        <!--<div class="card-header-title font-size-lg text-capitalize font-weight-normal">-->
+            <!--Tableau comparatif <span class="font-italic text-primary">Alpicam</span> <small><b> {{datS3 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS4 | date: 'dd MMM yy' | uppercase}}</b> VS <b> {{datS1 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS2 | date: 'dd MMM yy' | uppercase}}</b></small>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="bod">-->
+        <!--<div class="tbl-header">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th class="th">Section</th>-->
+                    <!--<th class="th">N°1</th>-->
+                    <!--<th class="th">N°2</th>-->
+                    <!--<th class="th">% N°</th>-->
+                    <!--<th class="th">TDT1</th>-->
+                    <!--<th class="th">TDT2</th>-->
+                    <!--<th class="th">% TDT</th>-->
+                    <!--&lt;!&ndash;<th class="th">WT1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">WT2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% WT</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% TTR</th>&ndash;&gt;-->
+                    <!--<th class="th">MDT1</th>-->
+                    <!--<th class="th">MDT2</th>-->
+                    <!--<th class="th">% MDT</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="tbl-content">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<tbody>-->
+                <!--<tr *ngFor="let stat of sec_alpi">-->
+                    <!--<td class="td text-capitalize" >{{stat.dep}}-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre2}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre1}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success' :-->
+            <!--stat.taux > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux == 0 ? stat.taux+' %':-->
+                    <!--(stat.taux == 100) ? stat.taux+' %':-->
+                    <!--(stat.taux == -100) ? (stat.taux) * (-1)+' %':-->
+                    <!--(stat.taux < 0 ) ? (stat.taux.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT2}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT1}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_TDT == 0 ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == 100) ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == -100) ? (stat.taux_TDT) * (-1)+' %':-->
+                    <!--(stat.taux_TDT < 0 ) ? (stat.taux_TDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_TDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT2 == 0 ? stat.WT2 : stat.WT2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT1 == 0 ? stat.WT1 : stat.WT1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_WT == 0 ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == 100) ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == -100) ? (stat.taux_WT) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT < 0 ) ? (stat.taux_WT.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR2 == 0 ? stat.TTR2 : stat.TTR2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR1 == 0 ? stat.TTR1 : stat.TTR1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_TTR == 0 ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == 100) ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == -100) ? (stat.taux_TTR) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR < 0 ) ? (stat.taux_TTR.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT2 == 0 ? stat.MDT2 : stat.MDT2.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT1 == 0 ? stat.MDT1 : stat.MDT1.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_MDT == 0 ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == 100) ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == -100) ? (stat.taux_MDT) * (-1)+' %':-->
+                    <!--(stat.taux_MDT < 0 ) ? (stat.taux_MDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_MDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="border-top bg-light card-header">-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°1 :</span> Nombre de pannes période 1</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°2 :</span> Nombre de pannes période 2</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">% N°:</span> Taux de pannes</small>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<div id="placage" class="main-card mb-3 card" >-->
+    <!--<div class="card-header">-->
+        <!--<div class="card-header-title font-size-lg text-capitalize font-weight-normal">-->
+            <!--Tableau comparatif <span class="font-italic text-primary">Placage</span> <small><b> {{datS3 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS4 | date: 'dd MMM yy' | uppercase}}</b> VS <b> {{datS1 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS2 | date: 'dd MMM yy' | uppercase}}</b></small>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="bod">-->
+        <!--<div class="tbl-header">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th class="th">Section</th>-->
+                    <!--<th class="th">N°1</th>-->
+                    <!--<th class="th">N°2</th>-->
+                    <!--<th class="th">% N°</th>-->
+                    <!--<th class="th">TDT1</th>-->
+                    <!--<th class="th">TDT2</th>-->
+                    <!--<th class="th">% TDT</th>-->
+                    <!--&lt;!&ndash;<th class="th">WT1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">WT2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% WT</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% TTR</th>&ndash;&gt;-->
+                    <!--<th class="th">MDT1</th>-->
+                    <!--<th class="th">MDT2</th>-->
+                    <!--<th class="th">% MDT</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="tbl-content2">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<tbody>-->
+                <!--<tr *ngFor="let stat of sec_pla">-->
+                    <!--<td class="td text-capitalize" >{{stat.dep}}-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre2}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre1}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success' :-->
+            <!--stat.taux > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux == 0 ? stat.taux+' %':-->
+                    <!--(stat.taux == 100) ? stat.taux+' %':-->
+                    <!--(stat.taux == -100) ? (stat.taux) * (-1)+' %':-->
+                    <!--(stat.taux < 0 ) ? (stat.taux.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT2}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT1}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_TDT == 0 ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == 100) ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == -100) ? (stat.taux_TDT) * (-1)+' %':-->
+                    <!--(stat.taux_TDT < 0 ) ? (stat.taux_TDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_TDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT2 == 0 ? stat.WT2 : stat.WT2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT1 == 0 ? stat.WT1 : stat.WT1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_WT == 0 ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == 100) ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == -100) ? (stat.taux_WT) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT < 0 ) ? (stat.taux_WT.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR2 == 0 ? stat.TTR2 : stat.TTR2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR1 == 0 ? stat.TTR1 : stat.TTR1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_TTR == 0 ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == 100) ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == -100) ? (stat.taux_TTR) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR < 0 ) ? (stat.taux_TTR.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT2 == 0 ? stat.MDT2 : stat.MDT2.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT1 == 0 ? stat.MDT1 : stat.MDT1.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_MDT == 0 ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == 100) ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == -100) ? (stat.taux_MDT) * (-1)+' %':-->
+                    <!--(stat.taux_MDT < 0 ) ? (stat.taux_MDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_MDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="border-top bg-light card-header">-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°1 :</span> Nombre de pannes période 1</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°2 :</span> Nombre de pannes période 2</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">% N°:</span> Taux de pannes</small>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<div id="brazil" class="main-card mb-3 card" >-->
+    <!--<div class="card-header">-->
+        <!--<div class="card-header-title font-size-lg text-capitalize font-weight-normal">-->
+            <!--Tableau comparatif <span class="font-italic text-primary">Brazil</span> <small><b> {{datS3 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS4 | date: 'dd MMM yy' | uppercase}}</b> VS <b> {{datS1 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS2 | date: 'dd MMM yy' | uppercase}}</b></small>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="bod">-->
+        <!--<div class="tbl-header">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th class="th">Section</th>-->
+                    <!--<th class="th">N°1</th>-->
+                    <!--<th class="th">N°2</th>-->
+                    <!--<th class="th">% N°</th>-->
+                    <!--<th class="th">TDT1</th>-->
+                    <!--<th class="th">TDT2</th>-->
+                    <!--<th class="th">% TDT</th>-->
+                    <!--&lt;!&ndash;<th class="th">WT1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">WT2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% WT</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% TTR</th>&ndash;&gt;-->
+                    <!--<th class="th">MDT1</th>-->
+                    <!--<th class="th">MDT2</th>-->
+                    <!--<th class="th">% MDT</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="tbl-content">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<tbody>-->
+                <!--<tr *ngFor="let stat of sec_bra">-->
+                    <!--<td class="td text-capitalize" >{{stat.dep}}-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre2}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre1}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success' :-->
+            <!--stat.taux > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux == 0 ? stat.taux+' %':-->
+                    <!--(stat.taux == 100) ? stat.taux+' %':-->
+                    <!--(stat.taux == -100) ? (stat.taux) * (-1)+' %':-->
+                    <!--(stat.taux < 0 ) ? (stat.taux.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT2}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT1}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_TDT == 0 ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == 100) ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == -100) ? (stat.taux_TDT) * (-1)+' %':-->
+                    <!--(stat.taux_TDT < 0 ) ? (stat.taux_TDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_TDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT2 == 0 ? stat.WT2 : stat.WT2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT1 == 0 ? stat.WT1 : stat.WT1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_WT == 0 ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == 100) ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == -100) ? (stat.taux_WT) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT < 0 ) ? (stat.taux_WT.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR2 == 0 ? stat.TTR2 : stat.TTR2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR1 == 0 ? stat.TTR1 : stat.TTR1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_TTR == 0 ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == 100) ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == -100) ? (stat.taux_TTR) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR < 0 ) ? (stat.taux_TTR.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT2 == 0 ? stat.MDT2 : stat.MDT2.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT1 == 0 ? stat.MDT1 : stat.MDT1.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_MDT == 0 ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == 100) ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == -100) ? (stat.taux_MDT) * (-1)+' %':-->
+                    <!--(stat.taux_MDT < 0 ) ? (stat.taux_MDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_MDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="border-top bg-light card-header">-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°1 :</span> Nombre de pannes période 1</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°2 :</span> Nombre de pannes période 2</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">% N°:</span> Taux de pannes</small>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<div id="cp" class="main-card mb-3 card" >-->
+    <!--<div class="card-header">-->
+        <!--<div class="card-header-title font-size-lg text-capitalize font-weight-normal">-->
+            <!--Tableau comparatif <span class="font-italic text-primary">Contreplaqué</span> <small><b> {{datS3 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS4 | date: 'dd MMM yy' | uppercase}}</b> VS <b> {{datS1 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS2 | date: 'dd MMM yy' | uppercase}}</b></small>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="bod">-->
+        <!--<div class="tbl-header">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th class="th">Section</th>-->
+                    <!--<th class="th">N°1</th>-->
+                    <!--<th class="th">N°2</th>-->
+                    <!--<th class="th">% N°</th>-->
+                    <!--<th class="th">TDT1</th>-->
+                    <!--<th class="th">TDT2</th>-->
+                    <!--<th class="th">% TDT</th>-->
+                    <!--&lt;!&ndash;<th class="th">WT1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">WT2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% WT</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% TTR</th>&ndash;&gt;-->
+                    <!--<th class="th">MDT1</th>-->
+                    <!--<th class="th">MDT2</th>-->
+                    <!--<th class="th">% MDT</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="tbl-content">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<tbody>-->
+                <!--<tr *ngFor="let stat of sec_cp">-->
+                    <!--<td class="td text-capitalize" >{{stat.dep}}-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre2}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre1}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success' :-->
+            <!--stat.taux > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux == 0 ? stat.taux+' %':-->
+                    <!--(stat.taux == 100) ? stat.taux+' %':-->
+                    <!--(stat.taux == -100) ? (stat.taux) * (-1)+' %':-->
+                    <!--(stat.taux < 0 ) ? (stat.taux.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT2}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT1}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_TDT == 0 ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == 100) ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == -100) ? (stat.taux_TDT) * (-1)+' %':-->
+                    <!--(stat.taux_TDT < 0 ) ? (stat.taux_TDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_TDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT2 == 0 ? stat.WT2 : stat.WT2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT1 == 0 ? stat.WT1 : stat.WT1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_WT == 0 ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == 100) ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == -100) ? (stat.taux_WT) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT < 0 ) ? (stat.taux_WT.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR2 == 0 ? stat.TTR2 : stat.TTR2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR1 == 0 ? stat.TTR1 : stat.TTR1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_TTR == 0 ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == 100) ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == -100) ? (stat.taux_TTR) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR < 0 ) ? (stat.taux_TTR.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT2 == 0 ? stat.MDT2 : stat.MDT2.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT1 == 0 ? stat.MDT1 : stat.MDT1.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_MDT == 0 ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == 100) ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == -100) ? (stat.taux_MDT) * (-1)+' %':-->
+                    <!--(stat.taux_MDT < 0 ) ? (stat.taux_MDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_MDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="border-top bg-light card-header">-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°1 :</span> Nombre de pannes période 1</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°2 :</span> Nombre de pannes période 2</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">% N°:</span> Taux de pannes</small>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--<div id="scierie" class="main-card mb-3 card" >-->
+    <!--<div class="card-header">-->
+        <!--<div class="card-header-title font-size-lg text-capitalize font-weight-normal">-->
+            <!--Tableau comparatif <span class="font-italic text-primary">Scierie</span> <small><b> {{datS3 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS4 | date: 'dd MMM yy' | uppercase}}</b> VS <b> {{datS1 | date: 'dd MMM yy' | uppercase}}</b> - <b>{{datS2 | date: 'dd MMM yy' | uppercase}}</b></small>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="bod">-->
+        <!--<div class="tbl-header">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th class="th">Section</th>-->
+                    <!--<th class="th">N°1</th>-->
+                    <!--<th class="th">N°2</th>-->
+                    <!--<th class="th">% N°</th>-->
+                    <!--<th class="th">TDT1</th>-->
+                    <!--<th class="th">TDT2</th>-->
+                    <!--<th class="th">% TDT</th>-->
+                    <!--&lt;!&ndash;<th class="th">WT1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">WT2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% WT</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">TTR2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th class="th">% TTR</th>&ndash;&gt;-->
+                    <!--<th class="th">MDT1</th>-->
+                    <!--<th class="th">MDT2</th>-->
+                    <!--<th class="th">% MDT</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="tbl-content">-->
+            <!--<table class="tables" cellpadding="0" cellspacing="0" border="0">-->
+                <!--<tbody>-->
+                <!--<tr *ngFor="let stat of sec_sci">-->
+                    <!--<td class="td text-capitalize" >{{stat.dep}}-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre2}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.nbre1}}</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success' :-->
+            <!--stat.taux > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux == 0 ? stat.taux+' %':-->
+                    <!--(stat.taux == 100) ? stat.taux+' %':-->
+                    <!--(stat.taux == -100) ? (stat.taux) * (-1)+' %':-->
+                    <!--(stat.taux < 0 ) ? (stat.taux.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT2}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.TDT1}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_TDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_TDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_TDT == 0 ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == 100) ? stat.taux_TDT+' %':-->
+                    <!--(stat.taux_TDT == -100) ? (stat.taux_TDT) * (-1)+' %':-->
+                    <!--(stat.taux_TDT < 0 ) ? (stat.taux_TDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_TDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT2 == 0 ? stat.WT2 : stat.WT2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.WT1 == 0 ? stat.WT1 : stat.WT1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_WT == 0 ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == 100) ? stat.taux_WT+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT == -100) ? (stat.taux_WT) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_WT < 0 ) ? (stat.taux_WT.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_WT.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR2 == 0 ? stat.TTR2 : stat.TTR2.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="" style="font-weight: bold">{{stat.TTR1 == 0 ? stat.TTR1 : stat.TTR1.toFixed(2)}} <small>min</small></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="td">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="widget-description">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="widget-numbers  " [ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger' : 'text-warning'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="pr-2 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i&ndash;&gt;-->
+                    <!--&lt;!&ndash;[ngClass]="&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR < 0 ? 'text-success fa fa-arrow-down' :&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">&ndash;&gt;-->
+                    <!--&lt;!&ndash;</i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="" style="font-weight: bold">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ stat.taux_TTR == 0 ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == 100) ? stat.taux_TTR+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR == -100) ? (stat.taux_TTR) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;(stat.taux_TTR < 0 ) ? (stat.taux_TTR.toFixed(2)) * (-1)+' %':&ndash;&gt;-->
+                    <!--&lt;!&ndash;stat.taux_TTR.toFixed(2)+' %'}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT2 == 0 ? stat.MDT2 : stat.MDT2.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="" style="font-weight: bold">{{stat.MDT1 == 0 ? stat.MDT1 : stat.MDT1.toFixed(2)}} <small>min</small></div>-->
+                    <!--</td>-->
+                    <!--<td class="td">-->
+                        <!--<div class="widget-description">-->
+                        <!--<span class="widget-numbers  " [ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger' : 'text-warning'">-->
+                                        <!--<span class="pr-2 ">-->
+                                            <!--<i-->
+                                                    <!--[ngClass]="-->
+            <!--stat.taux_MDT < 0 ? 'text-success fa fa-arrow-down' :-->
+            <!--stat.taux_MDT > 0 ? 'text-danger fa fa-arrow-up' : 'text-warning fa fa-arrow-right'">-->
+                                    <!--</i>-->
+                                        <!--</span>-->
+                            <!--<span class="" style="font-weight: bold">-->
+                    <!--{{ stat.taux_MDT == 0 ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == 100) ? stat.taux_MDT+' %':-->
+                    <!--(stat.taux_MDT == -100) ? (stat.taux_MDT) * (-1)+' %':-->
+                    <!--(stat.taux_MDT < 0 ) ? (stat.taux_MDT.toFixed(2)) * (-1)+' %':-->
+                    <!--stat.taux_MDT.toFixed(2)+' %'}}-->
+                        <!--</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div class="border-top bg-light card-header">-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°1 :</span> Nombre de pannes période 1</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">N°2 :</span> Nombre de pannes période 2</small>-->
+            <!--</div>-->
+            <!--<div class="btn-actions-pane-left">-->
+                <!--<small><span class="text-primary">% N°:</span> Taux de pannes</small>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--</div>-->

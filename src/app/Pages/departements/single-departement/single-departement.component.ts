@@ -56,18 +56,18 @@ export class SingleDepartementComponent implements OnInit {
   selectedLigne: Ligne;
   lignes: Ligne[];
   machines: Machine[];
-  pannes: Pannes[];
+  pannes: Pannes[] = [];
   nomMaj:string;
   ranger:string = "false";
   ranges:string = "false";
   pages:number = 7;
-  cpannes: Pannes[];
-  Tpannes: Pannes[];
-  Opannes: Pannes[];
-  Detailspannes: Pannes[];
-  Outilpannes: Pannes[];
-  Hpannes: Pannes[];
-  times: Pannes[];
+  cpannes: Pannes[] = [];
+  Tpannes: Pannes[] = [];
+  Opannes: Pannes[] = [];
+  Detailspannes: Pannes[] = [];
+  Outilpannes: Pannes[] = [];
+  Hpannes: Pannes[] = [];
+  times: Pannes[] = [];
   selectedPanne: Pannes;
   countThisMonthPanneTDT: number;
   countThisMonthPannenbre: number;
@@ -89,68 +89,68 @@ export class SingleDepartementComponent implements OnInit {
   mtbf: Pannes[];
 
   // placage
-  L1mtbfY: any[];
-  L1mtbfTY: any[];
-  L1mtbf: any[];
+  L1mtbfY: any[] = [];
+  L1mtbfTY: any[] = [];
+  L1mtbf: any[] = [];
 
-  L2mtbfY: any[];
-  L2mtbfTY: any[];
-  L2mtbf: any[];
+  L2mtbfY: any[] = [];
+  L2mtbfTY: any[] = [];
+  L2mtbf: any[] = [];
 
-  L3mtbfY: any[];
-  L3mtbfTY: any[];
-  L3mtbf: any[];
+  L3mtbfY: any[] = [];
+  L3mtbfTY: any[] = [];
+  L3mtbf: any[] = [];
 
-  SecmtbfY: any[];
-  SecmtbfTY: any[];
-  Secmtbf: any[];
+  SecmtbfY: any[] = [];
+  SecmtbfTY: any[] = [];
+  Secmtbf: any[] = [];
 
-  EcmtbfY: any[];
-  EcmtbfTY: any[];
-  Ecmtbf: any[];
+  EcmtbfY: any[] = [];
+  EcmtbfTY: any[] = [];
+  Ecmtbf: any[] = [];
 
-  JmtbfY: any[];
-  JmtbfTY: any[];
-  Jmtbf: any[];
+  JmtbfY: any[] = [];
+  JmtbfTY: any[] = [];
+  Jmtbf: any[] = [];
 
   L1mdtByYear = {
-      labels: [],
-      datasets: []
+      labels: [] = [],
+      datasets: [] = []
   };
 
   L1mtbfByYear = {
-      labels: [],
-      datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
     L2mdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     L2mtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     L3mdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     L3mtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     SmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     SmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     EmdtByYear = {
@@ -159,18 +159,18 @@ export class SingleDepartementComponent implements OnInit {
     };
 
     EmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     JmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     JmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
   // brazil
@@ -187,33 +187,33 @@ export class SingleDepartementComponent implements OnInit {
   TRmtbf: any[];
 
     EBmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     EBmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     TEmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     TEmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     TRmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     TRmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     // ContrePlaqué
@@ -231,43 +231,43 @@ export class SingleDepartementComponent implements OnInit {
     PRmtbf: any[];
 
     ECPmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     ECPmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     POmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     POmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     PRmdtByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
     PRmtbfByYear = {
-        labels: [],
-        datasets: []
+      labels: [] = [],
+      datasets: [] = []
     };
 
   mdtByYear = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
   mtbfByYear = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
@@ -277,92 +277,92 @@ export class SingleDepartementComponent implements OnInit {
 
 
   paretoMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   DerouleuseparetoTDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   DerouleuseparetoMDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   BobineuseparetoTDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   BobineuseparetoMDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   MagBobineparetoTDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   MagBobineparetoMDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   MassicotparetoTDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   MassicotparetoMDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   SechoirparetoTDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   SechoirparetoMDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   TrancheuseparetoTDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   TrancheuseparetoMDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   EncolleuseparetoTDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
 
   EncolleuseparetoMDTMonth = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
   public labs = {
@@ -372,17 +372,17 @@ export class SingleDepartementComponent implements OnInit {
   date_this_month: any;
 
   datas = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
   private cdpannes: any[];
 
-  nbreThisYear: Pannes[];
+  nbreThisYear: Pannes[] = [];
   depPanneThisYear: number;
   depTDTThisYear: number;
   depMDTThisYear: number;
   depHourThisYear: number;
-  nbreLastMonth: Pannes[];
+  nbreLastMonth: Pannes[] = [];
   lastMonth: number;
   cdount: number;
 
@@ -558,6 +558,39 @@ export class SingleDepartementComponent implements OnInit {
   d: Date;
 
   ids: number;
+
+  loader: boolean = false;
+  loaderdash: boolean = false;
+  loaderPareto: boolean = false;
+  loaderMtbf: boolean = false;
+  loaderL1: boolean = false;
+  loaderL2: boolean = false;
+  loaderL3: boolean = false;
+  loaderSec: boolean = false;
+  loaderEcor: boolean = false;
+  loaderEncol: boolean = false;
+  loaderEncolCP: boolean = false;
+  loaderTeinteuse: boolean = false;
+  loaderTranch: boolean = false;
+  loaderPon: boolean = false;
+  loaderPress: boolean = false;
+  loaderParetoDerTDT: boolean = false;
+  loaderParetoDerMDT: boolean = false;
+  loaderParetoBobTDT: boolean = false;
+  loaderParetoBobMDT: boolean = false;
+  loaderParetoMassTDT: boolean = false;
+  loaderParetoMassMDT: boolean = false;
+  loaderParetoMagBobTDT: boolean = false;
+  loaderParetoMagBobMDT: boolean = false;
+  loaderParetoSechTDT: boolean = false;
+  loaderParetoSechMDT: boolean = false;
+  loaderParetoEncTDT: boolean = false;
+  loaderParetoEncMDT: boolean = false;
+  loaderParetoTranchTDT: boolean = false;
+  loaderParetoTranchMDT: boolean = false;
+  periode_panne: string = '';
+  dah: number = 0;
+  dah2: number = 0;
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
@@ -580,6 +613,10 @@ export class SingleDepartementComponent implements OnInit {
     this.dashForm();
 
     const dat = new Date();
+    // this.series1 = [];
+    // this.series2 = [];
+    // this.series3 = [];
+    // this.series4 = [];
     this.date_this_month = this.datePipe.transform(dat, 'MMMM yyyy');
     // this.route.params.subscribe(params => {
     //   let url = atob(params['id']);
@@ -590,6 +627,10 @@ export class SingleDepartementComponent implements OnInit {
     this.route.params.subscribe(params => {
       let url = atob(params['id']);
       const t = 1000;
+      this.series1 = [];
+      this.series2 = [];
+      this.series3 = [];
+      this.series4 = [];
       this.departementService.countThisMonthPannesDep(Number.parseInt(url)).subscribe(
           data => data.forEach(mach => {
             this.countThisMonthPanneTDT = Number.parseInt(mach.TDT);
@@ -989,6 +1030,8 @@ export class SingleDepartementComponent implements OnInit {
   getChart3(){
     this.datas.labels = [];
     this.datas.datasets = [];
+    this.loaderdash = true;
+    this.dah = 0;
         const datasetNbrePanne3 = {
           data: [],
           label: "Panne",
@@ -1005,24 +1048,39 @@ export class SingleDepartementComponent implements OnInit {
       this.route.params.subscribe(params => {
         let url = atob(params['id']);
         this.departementService.getDashboard(Number.parseInt(url)).subscribe(
-            list => list.forEach(mach => {
-              // datasetNbrePanne2.name = (mach.machine);
-              this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
-              datasetNbrePanne3.data.push(mach.nbre);
-              datasetNbrePanne4.data.push(mach.dt);
-              console.log('nombres : ' + mach.nbre)
+            list => {
+              for(let mach of list ) {
+                // datasetNbrePanne2.name = (mach.machine);
+                this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
 
-            }));
-      });
+                datasetNbrePanne3.data.push(mach.nbre);
+                datasetNbrePanne4.data.push(mach.dt);
+              }
+                this.dah = list.length;
+                this.loaderdash = false;
+
+              },
+              error => {
+                console.log('une erreur a été détectée!')
+                this.loaderdash = false;
+              },
+              () => {
+                console.log('chargement des pannes');
+                console.log("test007: "+this.dah)
+              }
+
+        )});
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
+      // this.datas.datasets ? this.loaders = false : this.loaders = true
 
   }
 
   DashboardThisMonth(){
     this.datas.labels = [];
     this.datas.datasets = [];
-
+    this.loaderdash = true;
+    this.dah = 0;
         const datasetNbrePanne3 = {
           data: [],
           label: "Panne",
@@ -1042,11 +1100,22 @@ export class SingleDepartementComponent implements OnInit {
             list => list.forEach(mach => {
               // datasetNbrePanne2.name = (mach.machine);
               this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+              this.dah = this.datas.labels.length;
               datasetNbrePanne3.data.push(mach.nbre);
               datasetNbrePanne4.data.push(mach.dt);
-              console.log('nombres : ' + mach.nbre)
+              // this.loaders = false;
+              // this.loaders = false
 
-            }));
+            }),
+            error => {
+              console.log('une erreur a été détectée!')
+              this.loaderdash = false;
+            },
+            () => {
+              console.log('chargement des pannes');
+              this.loaderdash = false;
+              console.log("test007: "+this.dah)
+            }) ;
       });
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
@@ -1056,7 +1125,8 @@ export class SingleDepartementComponent implements OnInit {
   DashboardLastMonth(){
     this.datas.labels = [];
     this.datas.datasets = [];
-
+    this.loaderdash = true;
+    this.dah = 0;
         const datasetNbrePanne3 = {
           data: [],
           label: "Panne",
@@ -1076,11 +1146,22 @@ export class SingleDepartementComponent implements OnInit {
             list => list.forEach(mach => {
               // datasetNbrePanne2.name = (mach.machine);
               this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+              this.dah = this.datas.labels.length;
               datasetNbrePanne3.data.push(mach.nbre);
               datasetNbrePanne4.data.push(mach.dt);
-              console.log('nombres : ' + mach.nbre)
+              // this.loaders = false;
+              // this.loaders = false
 
-            }));
+            }),
+            error => {
+              console.log('une erreur a été détectée!')
+              this.loaderdash = false;
+            },
+            () => {
+              console.log('chargement des pannes');
+              this.loaderdash = false;
+              console.log("test007: "+this.dah)
+            }) ;
       });
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
@@ -1090,7 +1171,8 @@ export class SingleDepartementComponent implements OnInit {
   DashboardRange(){
     this.datas.labels = [];
     this.datas.datasets = [];
-
+    this.loaderdash = true;
+    this.dah = 0;
         const datasetNbrePanne3 = {
           data: [],
           label: "Panne",
@@ -1114,11 +1196,22 @@ export class SingleDepartementComponent implements OnInit {
             list => list.forEach(mach => {
               // datasetNbrePanne2.name = (mach.machine);
               this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+              this.dah = this.datas.labels.length;
               datasetNbrePanne3.data.push(mach.nbre);
               datasetNbrePanne4.data.push(mach.dt);
-              console.log('nombres : ' + mach.nbre)
+              // this.loaders = false;
+              // this.loaders = false
 
-            }));
+            }),
+            error => {
+              console.log('une erreur a été détectée!')
+              this.loaderdash = false;
+            },
+            () => {
+              console.log('chargement des pannes');
+              this.loaderdash = false;
+              console.log("test007: "+this.dah)
+            }) ;
       });
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
@@ -1171,6 +1264,9 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   showPannesDep() {
+    this.loader = true;
+    this.pannes = [];
+    this.periode_panne = "toutes les pannes";
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
       this.departementService.showPannesDep(Number.parseInt(url)).subscribe(
@@ -1178,6 +1274,7 @@ export class SingleDepartementComponent implements OnInit {
             this.pannes = data;
             console.log("liste des lignes");
             console.log(this.pannes);
+            this.loader = false;
           }
       )
     })
@@ -1393,6 +1490,9 @@ export class SingleDepartementComponent implements OnInit {
       //       };
       //
       //     }));
+      //   this.countLastMonthPannenbre = 0;
+      //   this.countLastMonthPanneTDT = 0;
+      //   this.countLastMonthPanneMDT = 0;
       this.departementService.countLastMonthPannesDep(Number.parseInt(url)).subscribe(
           list => list.forEach(mach => {
             this.countLastMonthPanneTDT = Number.parseInt(mach.TDT);
@@ -1597,14 +1697,19 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   TodayPannes(){
+    this.loader = true;
+    this.pannes = [];
+    this.periode_panne = "pannes de la journée";
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getTodayPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -1614,14 +1719,19 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   HierPannes(){
+    this.loader = true;
+    this.pannes = [];
+    this.periode_panne = "pannes d'hier";
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getHierPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false;
         },
         () => {
           console.log('panne hier');
@@ -1631,14 +1741,19 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   ThisWeekPannes(){
+    this.loader = true;
+    this.pannes = [];
+    this.periode_panne = "pannes de la semaine";
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getThisWeekPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false;
         },
         () => {
           console.log('panne cette semaine');
@@ -1648,14 +1763,19 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   LastWeekPannes(){
+    this.loader = true;
+    this.pannes = [];
+    this.periode_panne = "pannes de la semaine passée";
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getLastWeekPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -1665,14 +1785,23 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   LastMonthPannes(){
+    this.loader = true;
+    this.pannes = [];
+    const dat = new Date();
+    const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM');
+    const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
+    console.log('last Month: '+ dat1);
+    this.periode_panne = "pannes du mois de "+ dat1+" "+x;
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getLastMonthPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -1682,14 +1811,22 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   ThisMonthPannes(){
+    this.loader = true;
+    this.pannes = [];
+    const dat = new Date();
+    const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()), 'MMMM yyyy');
+    console.log('last Month: '+ dat1);
+    this.periode_panne = "pannes du mois de "+ dat1;
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getThisMonthPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -1699,14 +1836,22 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   LastYearPannes(){
+    this.loader = true;
+        this.pannes = [];
+    const dat = new Date();
+    const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy');
+    console.log('last Month: '+ dat1);
+    this.periode_panne = "pannes de l'année "+ dat1;;
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getLastYearPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -1716,14 +1861,22 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   ThisYearPannes(){
+    this.loader = true;
+        this.pannes = [];
+    const dat = new Date();
+    const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy');
+    console.log('last Month: '+ dat1);
+    this.periode_panne = "pannes de l'année "+ dat1;
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getThisYearPannes(Number.parseInt(url)).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -1738,15 +1891,19 @@ export class SingleDepartementComponent implements OnInit {
     console.log('rien');
     const d1 = this.rangeForm.controls['date1'].value;
     const d2 = this.rangeForm.controls['date2'].value;
-
+      this.loader = true;
+      this.pannes = [];
+      this.periode_panne = "pannes de "+d1+" au "+d2 ;
     console.log(d1 + ' et '+ d2);
 
     this.departementService.getRangeDatePannes(Number.parseInt(url), d1, d2).subscribe(
         data => {
           this.pannes = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+          this.loader = false;
         },
         () => {
           console.log('panne aujourd\'hui');
@@ -1819,6 +1976,10 @@ export class SingleDepartementComponent implements OnInit {
       type: 'line',
     };
 
+    this.loaderMtbf = true;
+    // this.dah = 0;
+    this.mtbfByYear.labels = [];
+    this.mtbfByYear.datasets = [];
     this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.mtbfByYear(Number.parseInt(url)).subscribe(
@@ -1862,25 +2023,32 @@ export class SingleDepartementComponent implements OnInit {
               teste.data.push(mach.nbre);
 
             }
+            // this.dah = this.mtbfByYear.labels.length
             console.log('testons voir :' + JSON.stringify(test1));
             this.labs = test1;
             console.log('dépassé: '+this.labs.valueOf())
+            this.loaderMtbf = false;
           },
           error => {
             console.log('une erreur a été détectée!')
+            this.loaderMtbf = false;
           },
           () => {
             console.log('years');
             console.log(this.py);
+            // this.loaders = false
           }
         );
+        // this.loaders = false;
       },
       error => {
         console.log('une erreur a été détectée!')
+        // this.loaders = false;
       },
       () => {
         console.log('months');
         console.log(this.pm);
+        // this.loaders = false;
       }
     ) ;
   });
@@ -1901,6 +2069,8 @@ export class SingleDepartementComponent implements OnInit {
   paretoDepRange(){
     this.paretoMonth.labels = [];
     this.paretoMonth.datasets = [];
+    this.loaderPareto = true;
+    this.dah2 = 0
     const datasetNbrePanne3 = {
       data: [],
       label: "Panne",
@@ -1921,10 +2091,20 @@ export class SingleDepartementComponent implements OnInit {
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
           this.paretoMonth.labels.push(mach.nom);
+          this.dah2 = this.paretoMonth.labels.length;
           datasetNbrePanne3.data.push(mach.nbre);
           datasetNbrePanne4.data.push(mach.TDT);
 
-        }));
+        }),
+          error => {
+            console.log('une erreur a été détectée!')
+            this.loaderPareto = false;
+          },
+          () => {
+            console.log('months');
+            console.log(this.pm);
+            this.loaderPareto = false;
+          })
     });
     this.paretoMonth.datasets.push(datasetNbrePanne3);
     this.paretoMonth.datasets.push(datasetNbrePanne4);
@@ -1933,6 +2113,8 @@ export class SingleDepartementComponent implements OnInit {
   paretoThysMonth(){
     this.paretoMonth.labels = [];
     this.paretoMonth.datasets = [];
+    this.loaderPareto = true;
+    this.dah2 = 0
     const datasetNbrePanne3 = {
       data: [],
       label: "Panne",
@@ -1951,10 +2133,20 @@ export class SingleDepartementComponent implements OnInit {
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
           this.paretoMonth.labels.push(mach.nom);
+          this.dah2 = this.paretoMonth.labels.length;
           datasetNbrePanne3.data.push(mach.nbre);
           datasetNbrePanne4.data.push(mach.TDT);
-
-        }));
+        }),
+          error => {
+            console.log('une erreur a été détectée!')
+            this.loaderPareto = false;
+          },
+          () => {
+            console.log('months');
+            console.log(this.pm);
+            this.loaderPareto = false;
+          }
+      ) ;
     });
     this.paretoMonth.datasets.push(datasetNbrePanne3);
     this.paretoMonth.datasets.push(datasetNbrePanne4);
@@ -1963,6 +2155,8 @@ export class SingleDepartementComponent implements OnInit {
   paretoLastMonth(){
     this.paretoMonth.labels = [];
     this.paretoMonth.datasets = [];
+    this.loaderPareto = true;
+    this.dah2 = 0;
     const datasetNbrePanne3 = {
       data: [],
       label: "Panne",
@@ -1981,10 +2175,21 @@ export class SingleDepartementComponent implements OnInit {
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
           this.paretoMonth.labels.push(mach.nom);
+          this.dah2 = this.paretoMonth.labels.length
           datasetNbrePanne3.data.push(mach.nbre);
           datasetNbrePanne4.data.push(mach.TDT);
 
-        }));
+        }),
+          error => {
+            console.log('une erreur a été détectée!')
+            this.loaderPareto = false;
+          },
+          () => {
+            console.log('months');
+            console.log(this.pm);
+            this.loaderPareto = false;
+          }
+      ) ;
     });
     this.paretoMonth.datasets.push(datasetNbrePanne3);
     this.paretoMonth.datasets.push(datasetNbrePanne4);
@@ -2036,6 +2241,7 @@ export class SingleDepartementComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line',
         };
+        this.loaderL1 = true
 
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
@@ -2077,9 +2283,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderL1 = false;
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderL1 = false
                         },
                         () => {
                             console.log('years');
@@ -2155,6 +2363,7 @@ export class SingleDepartementComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line',
         };
+        this.loaderL2 = true;
 
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
@@ -2196,9 +2405,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderL2 = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderL2 = false
                         },
                         () => {
                             console.log('years');
@@ -2275,6 +2486,7 @@ export class SingleDepartementComponent implements OnInit {
             type: 'line',
         };
 
+        this.loaderL3 = true;
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
             this.departementService.ligne3ByYear(Number.parseInt(url)).subscribe(
@@ -2315,9 +2527,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderL3 = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderL3 = false
                         },
                         () => {
                             console.log('years');
@@ -2394,6 +2608,7 @@ export class SingleDepartementComponent implements OnInit {
             type: 'line',
         };
 
+        this.loaderSec = true;
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
             this.departementService.sechoirByYear(Number.parseInt(url)).subscribe(
@@ -2434,9 +2649,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderSec = false;
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderSec = false;
                         },
                         () => {
                             console.log('years');
@@ -2513,6 +2730,7 @@ export class SingleDepartementComponent implements OnInit {
             type: 'line',
         };
 
+        this.loaderEcor = true
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
             this.departementService.ecorcageByYear(Number.parseInt(url)).subscribe(
@@ -2553,9 +2771,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderEcor = false;
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderEcor = false;
                         },
                         () => {
                             console.log('years');
@@ -2586,124 +2806,124 @@ export class SingleDepartementComponent implements OnInit {
 
     }
 
-  JointagemtbfDep(){
-        const mtbf = {
-            data: [],
-            label: "MTBF",
-            yAxisID: 'y-axis-0',
-            type: 'bar',
-        };
-        const mdt = {
-            data: [],
-            label: "MDT",
-            yAxisID: 'y-axis-0',
-            type: 'line',
-        };
-        const teste = {
-            data: [],
-            name: 'Nombre de Pannes'
-        };
-        const test1 = {
-            categories: []
-        };
-        const tdt = {
-            data: [],
-            label: "TDT",
-            yAxisID: 'y-axis-1',
-            type: 'bar',
-        };
-        const wt = {
-            data: [],
-            label: "MWT",
-            yAxisID: 'y-axis-1',
-            type: 'bar',
-        };
-        const ttr = {
-            data: [],
-            label: "MTTR",
-            yAxisID: 'y-axis-1',
-            type: 'bar',
-        };
-
-        const panne = {
-            data: [],
-            label: "Pannes",
-            yAxisID: 'y-axis-1',
-            type: 'line',
-        };
-
-        this.route.params.subscribe(params =>{
-          let url = atob(params['id']);
-            this.departementService.jointageByYear(Number.parseInt(url)).subscribe(
-                data1 => {
-                    this.JmtbfY = data1;
-                    this.departementService.jointageThisYear(Number.parseInt(url)).subscribe(
-                        data2 => {
-                            this.JmtbfTY = data2;
-                            this.Jmtbf = this.JmtbfY.concat(this.JmtbfTY);
-                            console.log('concat '+this.Jmtbf);
-
-                            for (let mach of this.Jmtbf){
-                                this.JmtbfByYear.labels.push(mach.date);
-                                this.JmdtByYear.labels.push(mach.date);
-                                test1.categories.push(mach.date);
-
-                                // var x = mach.AT/60;
-                                var y = mach.TDT/60;
-                                // var z = mach.HT - (x+y);
-                                var z = mach.HT - (y);
-
-
-                                var a = Number.parseInt(mach.nbre.toString()) + 1 ;
-
-
-                                var mt = z / a;
-                                mtbf.data.push(Math.trunc(mt));
-
-                                // mtbf.data.push(((mach.HT)-((Number.parseInt(mach.AT)/60)+(mach.TDT/60)))/(mach.nbre+1));
-                                panne.data.push(mach.nbre);
-                                tdt.data.push(mach.TDT);
-                                ttr.data.push(Math.trunc(mach.TTR/mach.nbre));
-                                wt.data.push(Math.trunc(mach.WT/mach.nbre));
-                                mdt.data.push(Math.trunc(mach.TDT/mach.nbre));
-                                teste.data.push(mach.nbre);
-
-                            }
-                            console.log('testons voir :' + JSON.stringify(test1));
-                            this.labs = test1;
-                            console.log('dépassé: '+this.labs.valueOf())
-                        },
-                        error => {
-                            console.log('une erreur a été détectée!')
-                        },
-                        () => {
-                            console.log('years');
-                            console.log(this.py);
-                        }
-                    );
-                },
-                error => {
-                    console.log('une erreur a été détectée!')
-                },
-                () => {
-                    console.log('months');
-                    console.log(this.pm);
-                }
-            ) ;
-        });
-
-        this.JmtbfByYear.datasets.push(mtbf);
-        this.JmtbfByYear.datasets.push(tdt);
-        this.JmtbfByYear.datasets.push(panne);
-
-        this.JmdtByYear.datasets.push(wt);
-        this.JmdtByYear.datasets.push(ttr);
-        this.JmdtByYear.datasets.push(mdt);
-        this.test.datasets.push(teste);
-        // this.labs.categories.push(this.mtbfByYear.labels);
-        // this.labs.categories.push(test1.categories)
-
-    }
+  // JointagemtbfDep(){
+  //       const mtbf = {
+  //           data: [],
+  //           label: "MTBF",
+  //           yAxisID: 'y-axis-0',
+  //           type: 'bar',
+  //       };
+  //       const mdt = {
+  //           data: [],
+  //           label: "MDT",
+  //           yAxisID: 'y-axis-0',
+  //           type: 'line',
+  //       };
+  //       const teste = {
+  //           data: [],
+  //           name: 'Nombre de Pannes'
+  //       };
+  //       const test1 = {
+  //           categories: []
+  //       };
+  //       const tdt = {
+  //           data: [],
+  //           label: "TDT",
+  //           yAxisID: 'y-axis-1',
+  //           type: 'bar',
+  //       };
+  //       const wt = {
+  //           data: [],
+  //           label: "MWT",
+  //           yAxisID: 'y-axis-1',
+  //           type: 'bar',
+  //       };
+  //       const ttr = {
+  //           data: [],
+  //           label: "MTTR",
+  //           yAxisID: 'y-axis-1',
+  //           type: 'bar',
+  //       };
+  //
+  //       const panne = {
+  //           data: [],
+  //           label: "Pannes",
+  //           yAxisID: 'y-axis-1',
+  //           type: 'line',
+  //       };
+  //
+  //       this.route.params.subscribe(params =>{
+  //         let url = atob(params['id']);
+  //           this.departementService.jointageByYear(Number.parseInt(url)).subscribe(
+  //               data1 => {
+  //                   this.JmtbfY = data1;
+  //                   this.departementService.jointageThisYear(Number.parseInt(url)).subscribe(
+  //                       data2 => {
+  //                           this.JmtbfTY = data2;
+  //                           this.Jmtbf = this.JmtbfY.concat(this.JmtbfTY);
+  //                           console.log('concat '+this.Jmtbf);
+  //
+  //                           for (let mach of this.Jmtbf){
+  //                               this.JmtbfByYear.labels.push(mach.date);
+  //                               this.JmdtByYear.labels.push(mach.date);
+  //                               test1.categories.push(mach.date);
+  //
+  //                               // var x = mach.AT/60;
+  //                               var y = mach.TDT/60;
+  //                               // var z = mach.HT - (x+y);
+  //                               var z = mach.HT - (y);
+  //
+  //
+  //                               var a = Number.parseInt(mach.nbre.toString()) + 1 ;
+  //
+  //
+  //                               var mt = z / a;
+  //                               mtbf.data.push(Math.trunc(mt));
+  //
+  //                               // mtbf.data.push(((mach.HT)-((Number.parseInt(mach.AT)/60)+(mach.TDT/60)))/(mach.nbre+1));
+  //                               panne.data.push(mach.nbre);
+  //                               tdt.data.push(mach.TDT);
+  //                               ttr.data.push(Math.trunc(mach.TTR/mach.nbre));
+  //                               wt.data.push(Math.trunc(mach.WT/mach.nbre));
+  //                               mdt.data.push(Math.trunc(mach.TDT/mach.nbre));
+  //                               teste.data.push(mach.nbre);
+  //
+  //                           }
+  //                           console.log('testons voir :' + JSON.stringify(test1));
+  //                           this.labs = test1;
+  //                           console.log('dépassé: '+this.labs.valueOf())
+  //                       },
+  //                       error => {
+  //                           console.log('une erreur a été détectée!')
+  //                       },
+  //                       () => {
+  //                           console.log('years');
+  //                           console.log(this.py);
+  //                       }
+  //                   );
+  //               },
+  //               error => {
+  //                   console.log('une erreur a été détectée!')
+  //               },
+  //               () => {
+  //                   console.log('months');
+  //                   console.log(this.pm);
+  //               }
+  //           ) ;
+  //       });
+  //
+  //       this.JmtbfByYear.datasets.push(mtbf);
+  //       this.JmtbfByYear.datasets.push(tdt);
+  //       this.JmtbfByYear.datasets.push(panne);
+  //
+  //       this.JmdtByYear.datasets.push(wt);
+  //       this.JmdtByYear.datasets.push(ttr);
+  //       this.JmdtByYear.datasets.push(mdt);
+  //       this.test.datasets.push(teste);
+  //       // this.labs.categories.push(this.mtbfByYear.labels);
+  //       // this.labs.categories.push(test1.categories)
+  //
+  //   }
 
     // Brazil
   EncolleuseBrazilmtbfDep(){
@@ -2752,6 +2972,7 @@ export class SingleDepartementComponent implements OnInit {
             type: 'line',
         };
 
+        this.loaderEncol = true;
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
             this.departementService.encollageBrazilByYear(Number.parseInt(url)).subscribe(
@@ -2792,9 +3013,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderEncol = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderEncol = false
                         },
                         () => {
                             console.log('years');
@@ -2870,6 +3093,7 @@ export class SingleDepartementComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line',
         };
+        this.loaderTeinteuse = true
 
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
@@ -2911,9 +3135,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderTeinteuse = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderTeinteuse = false
                         },
                         () => {
                             console.log('years');
@@ -2989,6 +3215,7 @@ export class SingleDepartementComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line',
         };
+        this.loaderTranch = true;
 
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
@@ -3030,9 +3257,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderTranch = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderTranch = false
                         },
                         () => {
                             console.log('years');
@@ -3109,6 +3338,7 @@ export class SingleDepartementComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line',
         };
+        this.loaderEncolCP = true
 
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
@@ -3150,9 +3380,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderEncolCP = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderEncolCP = false
                         },
                         () => {
                             console.log('years');
@@ -3228,6 +3460,7 @@ export class SingleDepartementComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line',
         };
+        this.loaderPon = true
 
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
@@ -3269,9 +3502,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderPon = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderPon = false
                         },
                         () => {
                             console.log('years');
@@ -3347,6 +3582,7 @@ export class SingleDepartementComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line',
         };
+        this.loaderPress = true;
 
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
@@ -3388,9 +3624,11 @@ export class SingleDepartementComponent implements OnInit {
                             console.log('testons voir :' + JSON.stringify(test1));
                             this.labs = test1;
                             console.log('dépassé: '+this.labs.valueOf())
+                            this.loaderPress = false
                         },
                         error => {
                             console.log('une erreur a été détectée!')
+                            this.loaderPress = false
                         },
                         () => {
                             console.log('years');
@@ -3426,6 +3664,7 @@ export class SingleDepartementComponent implements OnInit {
     paretoDerouleuseTDTRange(){
       this.DerouleuseparetoTDTMonth.datasets = [];
       this.DerouleuseparetoTDTMonth.labels = [];
+      this.loaderParetoDerTDT = true;
         const datasetNbrePanne3 = {
             data: [],
             label: "Panne",
@@ -3447,7 +3686,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoDerTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoDerTDT = false;
+            }
+        ) ;
         this.DerouleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.DerouleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3455,6 +3704,7 @@ export class SingleDepartementComponent implements OnInit {
     paretoDerouleuseTDTThysMonth(){
       this.DerouleuseparetoTDTMonth.datasets = [];
       this.DerouleuseparetoTDTMonth.labels = [];
+      this.loaderParetoDerTDT = true;
         const datasetNbrePanne3 = {
             data: [],
             label: "Panne",
@@ -3474,7 +3724,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoDerTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoDerTDT = false;
+            }
+        ) ;
         this.DerouleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.DerouleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3482,6 +3742,7 @@ export class SingleDepartementComponent implements OnInit {
     paretoDerouleuseTDTLastMonth(){
       this.DerouleuseparetoTDTMonth.datasets = [];
       this.DerouleuseparetoTDTMonth.labels = [];
+      this.loaderParetoDerTDT = true;
         const datasetNbrePanne3 = {
             data: [],
             label: "Panne",
@@ -3501,7 +3762,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoDerTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoDerTDT = false;
+            }
+        ) ;
         this.DerouleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.DerouleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3523,6 +3794,7 @@ export class SingleDepartementComponent implements OnInit {
       this.DerouleuseparetoMDTMonth.labels = [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoDerMDT = true;
         this.departementService.paretoDerouleuseMDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3530,7 +3802,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoDerMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoDerMDT = false;
+            }
+        ) ;
         this.DerouleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.DerouleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3550,6 +3832,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.DerouleuseparetoMDTMonth.datasets = [];
       this.DerouleuseparetoMDTMonth.labels = [];
+      this.loaderParetoDerMDT = true;
         this.departementService.paretoDerouleuseMDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3557,7 +3840,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoDerMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoDerMDT = false;
+            }
+        ) ;
         this.DerouleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.DerouleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3577,6 +3870,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.DerouleuseparetoMDTMonth.datasets = [];
       this.DerouleuseparetoMDTMonth.labels = [];
+      this.loaderParetoDerMDT = true;
         this.departementService.paretoDerouleuseMDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3584,7 +3878,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoDerMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoDerMDT = false;
+            }
+        ) ;
         this.DerouleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.DerouleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3608,6 +3912,7 @@ export class SingleDepartementComponent implements OnInit {
       this.BobineuseparetoTDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoBobTDT = true;
         this.departementService.paretoBobineuseTDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3615,7 +3920,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoBobTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoBobTDT = false;
+            }
+        ) ;
         this.BobineuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.BobineuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3635,6 +3950,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.BobineuseparetoTDTMonth.datasets = [];
       this.BobineuseparetoTDTMonth.labels= [];
+      this.loaderParetoBobTDT = true;
         this.departementService.paretoBobineuseTDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3642,7 +3958,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoBobTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoBobTDT = false;
+            }
+        ) ;
         this.BobineuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.BobineuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3662,6 +3988,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.BobineuseparetoTDTMonth.datasets = [];
       this.BobineuseparetoTDTMonth.labels= [];
+      this.loaderParetoBobTDT = true;
         this.departementService.paretoBobineuseTDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3669,7 +3996,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoBobTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoBobTDT = false;
+            }
+        ) ;
         this.BobineuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.BobineuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3692,6 +4029,7 @@ export class SingleDepartementComponent implements OnInit {
       this.BobineuseparetoMDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoBobMDT = true;
         this.departementService.paretoBobineuseMDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3699,7 +4037,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoBobMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoBobMDT = false;
+            }
+        ) ;
         this.BobineuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.BobineuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3719,6 +4067,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.BobineuseparetoMDTMonth.datasets = [];
       this.BobineuseparetoMDTMonth.labels= [];
+      this.loaderParetoBobMDT = true;
         this.departementService.paretoBobineuseMDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3726,7 +4075,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoBobMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoBobMDT = false;
+            }
+        ) ;
         this.BobineuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.BobineuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3746,6 +4105,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.BobineuseparetoMDTMonth.datasets = [];
       this.BobineuseparetoMDTMonth.labels= [];
+      this.loaderParetoBobMDT = true;
         this.departementService.paretoBobineuseMDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3753,7 +4113,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoBobMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoBobMDT = false;
+            }
+        ) ;
         this.BobineuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.BobineuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3777,6 +4147,7 @@ export class SingleDepartementComponent implements OnInit {
       this.MagBobineparetoTDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoMagBobTDT = true;
         this.departementService.paretoMagasinBobineTDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3784,7 +4155,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMagBobTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMagBobTDT = false;
+            }
+        ) ;
         this.MagBobineparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.MagBobineparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3804,6 +4185,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.MagBobineparetoTDTMonth.datasets = [];
       this.MagBobineparetoTDTMonth.labels= [];
+      this.loaderParetoMagBobTDT = true;
         this.departementService.paretoMagasinBobineTDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3811,7 +4193,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMagBobTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMagBobTDT = false;
+            }
+        ) ;
         this.MagBobineparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.MagBobineparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3831,6 +4223,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.MagBobineparetoTDTMonth.datasets = [];
       this.MagBobineparetoTDTMonth.labels= [];
+      this.loaderParetoMagBobTDT = true;
         this.departementService.paretoMagasinBobineTDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3838,7 +4231,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMagBobTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMagBobTDT = false;
+            }
+        ) ;
         this.MagBobineparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.MagBobineparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3860,6 +4263,7 @@ export class SingleDepartementComponent implements OnInit {
       this.MagBobineparetoMDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoMagBobMDT = true;
         this.departementService.paretoMagasinBobineMDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3867,7 +4271,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMagBobMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMagBobMDT = false;
+            }
+        ) ;
         this.MagBobineparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.MagBobineparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3887,6 +4301,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.MagBobineparetoMDTMonth.datasets = [];
       this.MagBobineparetoMDTMonth.labels= [];
+      this.loaderParetoMagBobMDT = true;
         this.departementService.paretoMagasinBobineMDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3894,7 +4309,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMagBobMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMagBobMDT = false;
+            }
+        ) ;
         this.MagBobineparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.MagBobineparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3914,6 +4339,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.MagBobineparetoMDTMonth.datasets = [];
       this.MagBobineparetoMDTMonth.labels= [];
+      this.loaderParetoMagBobMDT = true;
         this.departementService.paretoMagasinBobineMDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3921,7 +4347,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMagBobMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMagBobMDT = false;
+            }
+        ) ;
         this.MagBobineparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.MagBobineparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3946,6 +4382,7 @@ export class SingleDepartementComponent implements OnInit {
       this.MassicotparetoTDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoMassTDT = true;
         this.departementService.paretoMassicotTDTRange(d1,d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3953,7 +4390,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMassTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMassTDT = false;
+            }
+        ) ;
         this.MassicotparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.MassicotparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -3973,6 +4420,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.MassicotparetoTDTMonth.datasets = [];
       this.MassicotparetoTDTMonth.labels= [];
+      this.loaderParetoMassTDT = true;
         this.departementService.paretoMassicotTDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -3980,7 +4428,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMassTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMassTDT = false;
+            }
+        ) ;
         this.MassicotparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.MassicotparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4000,6 +4458,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.MassicotparetoTDTMonth.datasets = [];
       this.MassicotparetoTDTMonth.labels= [];
+      this.loaderParetoMassTDT = true;
         this.departementService.paretoMassicotTDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4007,7 +4466,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMassTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMassTDT = false;
+            }
+        ) ;
         this.MassicotparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.MassicotparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4029,6 +4498,7 @@ export class SingleDepartementComponent implements OnInit {
       this.MassicotparetoMDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoMassMDT = true;
         this.departementService.paretoMassicotMDTRange(d1,d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4036,7 +4506,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMassMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMassMDT = false;
+            }
+        ) ;
         this.MassicotparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.MassicotparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4057,6 +4537,7 @@ export class SingleDepartementComponent implements OnInit {
 
       this.MassicotparetoMDTMonth.datasets = [];
       this.MassicotparetoMDTMonth.labels= [];
+      this.loaderParetoMassMDT = true;
         this.departementService.paretoMassicotMDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4064,7 +4545,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMassMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMassMDT = false;
+            }
+        ) ;
         this.MassicotparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.MassicotparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4085,6 +4576,7 @@ export class SingleDepartementComponent implements OnInit {
 
       this.MassicotparetoMDTMonth.datasets = [];
       this.MassicotparetoMDTMonth.labels= [];
+      this.loaderParetoMassMDT = true;
         this.departementService.paretoMassicotMDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4092,7 +4584,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoMassMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoMassMDT = false;
+            }
+        ) ;
         this.MassicotparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.MassicotparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4116,6 +4618,7 @@ export class SingleDepartementComponent implements OnInit {
       this.SechoirparetoTDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoSechTDT = true;
         this.departementService.paretoSechoirTDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4123,7 +4626,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoSechTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoSechTDT = false;
+            }
+        ) ;
         this.SechoirparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.SechoirparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4143,6 +4656,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.SechoirparetoTDTMonth.datasets = [];
       this.SechoirparetoTDTMonth.labels= [];
+      this.loaderParetoSechTDT = true;
         this.departementService.paretoSechoirTDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4150,7 +4664,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoSechTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoSechTDT = false;
+            }
+        ) ;
         this.SechoirparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.SechoirparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4170,6 +4694,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.SechoirparetoTDTMonth.datasets = [];
       this.SechoirparetoTDTMonth.labels= [];
+      this.loaderParetoSechTDT = true;
         this.departementService.paretoSechoirTDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4177,7 +4702,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoSechTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoSechTDT = false;
+            }
+        ) ;
         this.SechoirparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.SechoirparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4199,6 +4734,7 @@ export class SingleDepartementComponent implements OnInit {
       this.SechoirparetoMDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoSechMDT = true;
         this.departementService.paretoSechoirMDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4206,7 +4742,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoSechMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoSechMDT = false;
+            }
+        ) ;
         this.SechoirparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.SechoirparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4226,6 +4772,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.SechoirparetoMDTMonth.datasets = [];
       this.SechoirparetoMDTMonth.labels= [];
+      this.loaderParetoSechMDT = true;
         this.departementService.paretoSechoirMDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4233,7 +4780,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoSechMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoSechMDT = false;
+            }
+        ) ;
         this.SechoirparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.SechoirparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4253,6 +4810,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.SechoirparetoMDTMonth.datasets = [];
       this.SechoirparetoMDTMonth.labels= [];
+      this.loaderParetoSechMDT = true;
         this.departementService.paretoSechoirMDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4260,7 +4818,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoSechMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoSechMDT = false;
+            }
+        ) ;
         this.SechoirparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.SechoirparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4285,6 +4853,7 @@ export class SingleDepartementComponent implements OnInit {
       this.TrancheuseparetoTDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoTranchTDT = true;
         this.departementService.paretoTrancheuseTDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4292,7 +4861,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoTranchTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoTranchTDT = false;
+            }
+        ) ;
         this.TrancheuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.TrancheuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4312,6 +4891,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.TrancheuseparetoTDTMonth.datasets = [];
       this.TrancheuseparetoTDTMonth.labels= [];
+      this.loaderParetoTranchTDT = true;
         this.departementService.paretoTrancheuseTDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4319,7 +4899,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoTranchTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoTranchTDT = false;
+            }
+        ) ;
         this.TrancheuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.TrancheuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4339,6 +4929,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.TrancheuseparetoTDTMonth.datasets = [];
       this.TrancheuseparetoTDTMonth.labels= [];
+      this.loaderParetoTranchTDT = true;
         this.departementService.paretoTrancheuseTDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4346,7 +4937,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoTranchTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoTranchTDT = false;
+            }
+        ) ;
         this.TrancheuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.TrancheuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4368,6 +4969,7 @@ export class SingleDepartementComponent implements OnInit {
       this.TrancheuseparetoMDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoTranchMDT = true;
         this.departementService.paretoTrancheuseMDTRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4375,7 +4977,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoTranchMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoTranchMDT = false;
+            }
+        ) ;
         this.TrancheuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.TrancheuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4395,6 +5007,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.TrancheuseparetoMDTMonth.datasets = [];
       this.TrancheuseparetoMDTMonth.labels= [];
+      this.loaderParetoTranchMDT = true;
         this.departementService.paretoTrancheuseMDTThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4402,7 +5015,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoTranchMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoTranchMDT = false;
+            }
+        ) ;
         this.TrancheuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.TrancheuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4422,6 +5045,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.TrancheuseparetoMDTMonth.datasets = [];
       this.TrancheuseparetoMDTMonth.labels= [];
+      this.loaderParetoTranchMDT = true;
         this.departementService.paretoTrancheuseMDTLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -4429,7 +5053,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.MDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoTranchMDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoTranchMDT = false;
+            }
+        ) ;
         this.TrancheuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.TrancheuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
     }
@@ -4453,6 +5087,7 @@ export class SingleDepartementComponent implements OnInit {
       this.EncolleuseparetoTDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoEncTDT = true;
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
         this.departementService.paretoEncolleuseTDTRange(Number.parseInt(url), d1, d2).subscribe(
@@ -4462,7 +5097,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoEncTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoEncTDT = false;
+            }
+        ) ;
             });
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
@@ -4483,6 +5128,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.EncolleuseparetoTDTMonth.datasets = [];
       this.EncolleuseparetoTDTMonth.labels= [];
+      this.loaderParetoEncTDT = true;
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
         this.departementService.paretoEncolleuseTDTThisMonth(Number.parseInt(url)).subscribe(
@@ -4492,7 +5138,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoEncTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoEncTDT = false;
+            }
+        ) ;
             });
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
@@ -4513,6 +5169,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.EncolleuseparetoTDTMonth.datasets = [];
       this.EncolleuseparetoTDTMonth.labels= [];
+      this.loaderParetoEncTDT = true;
         this.route.params.subscribe(params =>{
           let url = atob(params['id']);
         this.departementService.paretoEncolleuseTDTLastMonth(Number.parseInt(url)).subscribe(
@@ -4522,7 +5179,17 @@ export class SingleDepartementComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            }));
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoEncTDT = false;
+            },
+            () => {
+                console.log('months');
+                console.log(this.pm);
+                this.loaderParetoEncTDT = false;
+            }
+        ) ;
             });
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
@@ -4545,6 +5212,7 @@ export class SingleDepartementComponent implements OnInit {
       this.EncolleuseparetoMDTMonth.labels= [];
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loaderParetoEncMDT = true;
         this.route.params.subscribe(params => {
           let url = atob(params['id']);
             this.departementService.paretoEncolleuseMDTRange(Number.parseInt(url), d1, d2).subscribe(
@@ -4554,7 +5222,16 @@ export class SingleDepartementComponent implements OnInit {
                     datasetNbrePanne3.data.push(mach.nbre);
                     datasetNbrePanne4.data.push(mach.MDT);
 
-                }));
+                }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoEncMDT = false;
+            },
+            () => {
+                console.log('months');
+                this.loaderParetoEncMDT = false;
+            }
+        ) ;
         });
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
@@ -4575,6 +5252,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.EncolleuseparetoMDTMonth.datasets = [];
       this.EncolleuseparetoMDTMonth.labels= [];
+      this.loaderParetoEncMDT = true;
         this.route.params.subscribe(params => {
           let url = atob(params['id']);
             this.departementService.paretoEncolleuseMDTThisMonth(Number.parseInt(url)).subscribe(
@@ -4584,7 +5262,16 @@ export class SingleDepartementComponent implements OnInit {
                     datasetNbrePanne3.data.push(mach.nbre);
                     datasetNbrePanne4.data.push(mach.MDT);
 
-                }));
+                }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoEncMDT = false;
+            },
+            () => {
+                console.log('months');
+                this.loaderParetoEncMDT = false;
+            }
+        ) ;
         });
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
@@ -4605,6 +5292,7 @@ export class SingleDepartementComponent implements OnInit {
         };
       this.EncolleuseparetoMDTMonth.datasets = [];
       this.EncolleuseparetoMDTMonth.labels= [];
+      this.loaderParetoEncMDT = true;
         this.route.params.subscribe(params => {
           let url = atob(params['id']);
             this.departementService.paretoEncolleuseMDTLastMonth(Number.parseInt(url)).subscribe(
@@ -4614,7 +5302,16 @@ export class SingleDepartementComponent implements OnInit {
                     datasetNbrePanne3.data.push(mach.nbre);
                     datasetNbrePanne4.data.push(mach.MDT);
 
-                }));
+                }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderParetoEncMDT = false;
+            },
+            () => {
+                console.log('months');
+                this.loaderParetoEncMDT = false;
+            }
+        ) ;
         });
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
@@ -4657,9 +5354,10 @@ export class SingleDepartementComponent implements OnInit {
     }
     if (this.dashPanForm.controls['dashPeriode'].value == 'lmp'){
       const dat = new Date();
-      const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM yyyy');
+      const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM');
+      const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
       console.log('last Month: '+ dat1);
-      this.date_this_month = dat1;
+      this.date_this_month = dat1+' '+x;
       this.DashboardLastMonth();
       this.LastMonthPannes();
       this.paretoLastMonth();

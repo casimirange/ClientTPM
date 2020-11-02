@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
     pages: number = 7;
     board: string;
     errorMessage: string;
-    private series = [];
+    private series: any[] = []; dah: number = 0;
 
   headings = 'Tableau de Bord';
   subheadings = 'Consultez l\'actualité des évènements ';
@@ -58,31 +58,31 @@ export class DashboardComponent implements OnInit {
   selectPanForm: FormGroup;
   pageForm: FormGroup;
   rangeForm: FormGroup;
-  pannes: Pannes[];
+  pannes: Pannes[] = [];
   // ThisWeekPannes: Pannes[];
   countPannes: number;
   cpannes: any[] = [];
   StatsTec: any[];
-  Tpannes: Pannes[];
-  Hpannes: Pannes[];
-  departement: Departement[];
-  py: Pannes[];
-  pm: Pannes[];
-  pt: Pannes[];
-  nbreThisYear: Pannes[];
-  nbreLastMonth: Pannes[];
+  Tpannes: Pannes[] = [];
+  Hpannes: Pannes[] = [];
+  departement: Departement[] = [];
+  py: Pannes[] = [];
+  pm: Pannes[] = [];
+  pt: Pannes[] = [];
+  nbreThisYear: Pannes[] = [];
+  nbreLastMonth: Pannes[] = [];
   lastMonth: number;
-  mtbfY: Pannes[];
-  mtbfTY: Pannes[];
-  mtbf: Pannes[];
-  arrets: Arrets[];
+  mtbfY: Pannes[] = [];
+  mtbfTY: Pannes[] = [];
+  mtbf: Pannes[] = [];
+  arrets: Arrets[] = [];
   arretsLength: number;
-  cdpannes: Pannes[];
+  cdpannes: Pannes[] = [];
   cdpannesLength: number;
-  Opannes: Pannes[];
-  Detailspannes: Pannes[];
-  Outilpannes: Pannes[];
-  times: Pannes[];
+  Opannes: Pannes[] = [];
+  Detailspannes: Pannes[] = [];
+  Outilpannes: Pannes[] = [];
+  times: Pannes[] = [];
   selectedPanne: Pannes;
   selectedArret: Arrets;
   tail: number;
@@ -92,12 +92,12 @@ export class DashboardComponent implements OnInit {
   tount: number;
   closeResult: any;
   TDT: number = 0;
-  t1: Pannes[];
-  t2: Pannes[];
-  t3: Pannes[];
+  t1: Pannes[] = [];
+  t2: Pannes[] = [];
+  t3: Pannes[] = [];
 
-  years: Pannes[];
-  month: Pannes[];
+  years: Pannes[] = [];
+  month: Pannes[] = [];
   all: any[];
 
   dataPanne = {
@@ -106,8 +106,8 @@ export class DashboardComponent implements OnInit {
   };
 
   datas = {
-      labels: [],
-      datasets: []
+      labels: [] = [],
+      datasets: [] = []
   };
 
   mdtByYear = {
@@ -254,7 +254,9 @@ export class DashboardComponent implements OnInit {
     p: number;
     f: Date;
     d: Date;
-
+    loader: boolean = false;
+    loaders: boolean = false;
+    periode_panne: string = 'pannes de la semaine';
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private arretService: ArretsService,
@@ -640,6 +642,8 @@ export class DashboardComponent implements OnInit {
   last30days(){
       this.datas.labels = [];
       this.datas.datasets = [];
+      this.loaders = true;
+      this.dah = 0;
     const datasetNbrePanne3 = {
         data: [],
         label: "Panne",
@@ -657,17 +661,31 @@ export class DashboardComponent implements OnInit {
         list => list.forEach(mach => {
             // datasetNbrePanne2.name = (mach.machine);
             this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+            this.dah = this.datas.labels.length;
             datasetNbrePanne3.data.push(mach.nbre);
             datasetNbrePanne4.data.push(mach.dt);
-
-        } )) ;
+            // this.loaders = false;
+            // this.loaders = false
+        } ),
+        error => {
+            console.log('une erreur a été détectée!')
+            this.loaders = false;
+        },
+        () => {
+            console.log('chargement des pannes');
+            this.loaders = false;
+            console.log("test007: "+this.dah)
+        }) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
+
     }
 
     dashLastMonth(){
       this.datas.labels = [];
       this.datas.datasets = [];
+      this.loaders = true;
+        this.dah = 0;
     const datasetNbrePanne3 = {
         data: [],
         label: "Panne",
@@ -685,17 +703,30 @@ export class DashboardComponent implements OnInit {
         list => list.forEach(mach => {
             // datasetNbrePanne2.name = (mach.machine);
             this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+            this.dah = this.datas.labels.length;
+            console.log("test007: "+this.dah)
             datasetNbrePanne3.data.push(mach.nbre);
-            datasetNbrePanne4.data.push(mach.dt);
-
-        } )) ;
+            datasetNbrePanne4.data.push(mach.dt);this.loaders = false
+        } ),
+        error => {
+            console.log('une erreur a été détectée!')
+            this.loaders = false;
+        },
+        () => {
+            console.log('chargement des pannes');
+            this.loaders = false;
+            console.log("test007: "+this.dah)
+        }) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
+
     }
 
     dashThisMonth(){
         this.datas.labels = [];
         this.datas.datasets = [];
+        this.loaders = true;
+        this.dah = 0;
         const datasetNbrePanne3 = {
             data: [],
             label: "Panne",
@@ -711,19 +742,34 @@ export class DashboardComponent implements OnInit {
         };
         this.dashboardService.getCountDashThisPannes().subscribe(
             list => list.forEach(mach => {
+
                 // datasetNbrePanne2.name = (mach.machine);
                 this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                this.dah = this.datas.labels.length;
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.dt);
+                // this.loaders = false;
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaders = false;
+            },
+            () => {
+                console.log('chargement des pannes');
+                this.loaders = false;
+                console.log("test007: "+this.dah)
+            }) ;
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
+
     }
 
     dashRange(){
         this.datas.labels = [];
-        this.datas.datasets = [];
+        this.datas.datasets = [];this.dah = 0;
+        this.loaders = true
+
         const datasetNbrePanne3 = {
             data: [],
             label: "Panne",
@@ -744,14 +790,27 @@ export class DashboardComponent implements OnInit {
         console.log(d1 + ' et '+ d2);
         this.dashboardService.getCountRangePannes(d1, d2).subscribe(
             list => list.forEach(mach => {
+                // this.dah = list.length;
                 // datasetNbrePanne2.name = (mach.machine);
                 this.datas.labels.push(this.datePipe.transform(mach.date, 'dd-MMM'));
+                this.dah = this.datas.labels.length;
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.dt);
-
-            } )) ;
+                // this.loaders = false
+                this.loaders = false
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaders = false;
+            },
+            () => {
+                console.log('chargement des pannes');
+                this.loaders = false;
+                console.log("test007: "+this.dah)
+            }) ;
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
+
     }
 
     //modal
@@ -817,7 +876,9 @@ export class DashboardComponent implements OnInit {
 
 
     loadPannes(){
-
+        this.periode_panne = "toutes les pannes" ;
+        this.loader = true;
+        this.pannes = [];
         this.panneService.getAllPannes().subscribe(
             data => {
                 this.pannes = data;
@@ -825,9 +886,11 @@ export class DashboardComponent implements OnInit {
                 for (let pin of data){
                     this.selectedPanne.numero = pin.numero;
                 }
+                this.loader = false;
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.loader = false;
             },
             () => {
                 console.log('chargement des pannes');
@@ -967,16 +1030,21 @@ export class DashboardComponent implements OnInit {
     }
 
     TodayPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        this.todatpannes = [];
+        this.periode_panne = "pannes de la journée";
         this.panneService.getTodayPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.todatpannes = data;
                 this.todatpannesLength = data.length;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                console.log('une erreur a été détectée!');
+                this.loader = false;
             },
             () => {
                 console.log('panne aujourd\'hui');
@@ -986,14 +1054,18 @@ export class DashboardComponent implements OnInit {
     }
 
     HierPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        this.periode_panne = "pannes d'hier";
         this.panneService.getHierPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.loader = false;
             },
             () => {
                 console.log('panne hier');
@@ -1003,14 +1075,18 @@ export class DashboardComponent implements OnInit {
     }
 
     ThisWeekPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        this.periode_panne = "pannes de la semaine";
         this.panneService.getThisWeekPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.loader = false;
             },
             () => {
                 console.log('panne cette semaine');
@@ -1020,14 +1096,18 @@ export class DashboardComponent implements OnInit {
     }
 
     LastWeekPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        this.periode_panne = "pannes de la semaine passée";
         this.panneService.getLastWeekPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.loader = false;
             },
             () => {
                 console.log('panne aujourd\'hui');
@@ -1037,14 +1117,22 @@ export class DashboardComponent implements OnInit {
     }
 
     LastMonthPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        const dat = new Date();
+        const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM');
+        const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
+        console.log('last Month: '+ dat1);
+        this.periode_panne = "pannes du mois de "+ dat1+" "+x;
         this.panneService.getLastMonthPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.loader = false
             },
             () => {
                 console.log('panne aujourd\'hui');
@@ -1054,14 +1142,21 @@ export class DashboardComponent implements OnInit {
     }
 
     ThisMonthPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        const dat = new Date();
+        const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()), 'MMMM yyyy');
+        console.log('last Month: '+ dat1);
+        this.periode_panne = "pannes du mois de "+ dat1;
         this.panneService.getThisMonthPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.loader = false;
             },
             () => {
                 console.log('panne aujourd\'hui');
@@ -1071,14 +1166,21 @@ export class DashboardComponent implements OnInit {
     }
 
     LastYearPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        const dat = new Date();
+        const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy');
+        console.log('last Month: '+ dat1);
+        this.periode_panne = "pannes de l'année "+ dat1;
         this.panneService.getLastYearPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                console.log('une erreur a été détectée!');
+                this.loader = false;
             },
             () => {
                 console.log('panne aujourd\'hui');
@@ -1088,14 +1190,21 @@ export class DashboardComponent implements OnInit {
     }
 
     ThisYearPannes(){
-
+        this.loader = true;
+        this.pannes = [];
+        const dat = new Date();
+        const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy');
+        console.log('last Month: '+ dat1);
+        this.periode_panne = "pannes de l'année "+ dat1;
         this.panneService.getThisYearPannes().subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                console.log('une erreur a été détectée!');
+                this.loader = false;
             },
             () => {
                 console.log('panne aujourd\'hui');
@@ -1108,19 +1217,22 @@ export class DashboardComponent implements OnInit {
         console.log('rien');
         const d1 = this.rangeForm.controls['date1'].value;
         const d2 = this.rangeForm.controls['date2'].value;
-
+        this.periode_panne = "pannes de "+d1+" au "+d2 ;
         console.log(d1 + ' et '+ d2);
-
+        this.loader = true;
+        this.pannes = [];
         this.panneService.getRangeDatePannes(d1, d2).subscribe(
             data => {
                 this.pannes = data;
                 this.countPannes = data.length;
+                this.loader = false;
             },
             error => {
-                console.log('une erreur a été détectée!')
+                console.log('une erreur a été détectée!');
+                this.loader = false;
             },
             () => {
-                console.log('panne aujourd\'hui');
+                console.log('panne range');
                 console.log(this.pannes);
             }
         );

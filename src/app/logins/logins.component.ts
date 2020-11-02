@@ -33,6 +33,11 @@ export class LoginComponent implements OnInit {
               private fb: FormBuilder,private router: Router,) { }
 
   ngOnInit() {
+    let token = localStorage.getItem('authToken');
+    if(token){
+      this.router.navigateByUrl('/dashboard');
+      console.log('authtoken')
+    }
     this.loginForm = this.fb.group({
       username: ['', [Validators.minLength(3), Validators.required ]],
       password: ['', [Validators.minLength(6), Validators.required ]],

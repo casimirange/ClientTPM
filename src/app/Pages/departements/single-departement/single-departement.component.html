@@ -102,7 +102,7 @@
                             <div class="col-md-5">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-subheading">Mois Dernier a:{{countThisMonthPannenbre}} b:{{countLastMonthPannenbre}}</div>
+                                        <div class="widget-subheading">Mois Dernier </div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPannenbre ? countLastMonthPannenbre : 0}}</span></div>
                                         <div class="widget-description text-focus">
                                             {{(countThisMonthPannenbre < countLastMonthPannenbre) ? 'En baisse de' : (countThisMonthPannenbre > countLastMonthPannenbre) ? 'En Hausse de': 'Constant'}}
@@ -396,7 +396,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body p-2" id="pdf1">
+        <div class="card-body p-2"  *ngIf="dah != 0&& loaderdash == false ">
             <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
                 <div style="height: auto" >
                     <div class="flex-item">
@@ -409,6 +409,23 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="card-body p-2 text-center"  *ngIf="dah == 0 && loaderdash == false ">
+            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+        </div>
+        <div class="card-body p-2 text-center"  *ngIf="dah == 0 && loaderdash == true ">
+            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                    <div class="loader">
+                        <div class="ball-scale-multiple">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <p style="vertical-align: middle">Chargement...</p>
             </div>
         </div>
     </div>
@@ -435,12 +452,29 @@
                 <div class="tab-pane fade active show" id="tab-eg-65">
                     <div class="widget-chart p-0">
 
-                          <app-chart width="400" height="auto"
+                          <app-chart width="400" height="auto" *ngIf="mtbfByYear.labels.length != 0 && loaderMtbf == false"
                             [type]="'bar'"
                             [data]="mtbfByYear.datasets"
                             [lineChartLabels]="mtbfByYear.labels"
                             [lineChartColors]="colorsMTBF"
                           ></app-chart>
+                        <div class="card-body p-2 text-center"  *ngIf="mtbfByYear.labels.length == 0 && loaderMtbf == false ">
+                            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                        </div>
+                        <div class="card-body p-2 text-center"  *ngIf="mtbfByYear.labels.length == 0 && loaderMtbf == true ">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="ball-scale-multiple">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
                         <div class="widget-chart-content">
                             <div class="widget-description mt-0 text-warning">
                                 <span class="text-muted opacity-8 pl-1">{{date_this_month}}</span>
@@ -450,12 +484,29 @@
                 </div>
                 <div class="tab-pane fade" id="tab-eg-66">
                     <div class="widget-chart p-0">
-                      <app-chart width="400" height="auto"
+                      <app-chart width="400" height="auto" *ngIf="mdtByYear.labels.length != 0 && loaderMtbf == false"
                                  [type]="'bar'"
                                  [data]="mdtByYear.datasets"
                                  [lineChartLabels]="mdtByYear.labels"
                                  [lineChartColors]="colorsMDT"
                       ></app-chart>
+                        <div class="card-body p-2 text-center"  *ngIf="mdtByYear.labels.length == 0 && loaderMtbf == false ">
+                            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                        </div>
+                        <div class="card-body p-2 text-center"  *ngIf="mdtByYear.labels.length == 0 && loaderMtbf == true ">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="ball-scale-multiple">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
                         <div class="widget-chart-content">
                             <div class="widget-description mt-0 text-warning">
                                 <span class="text-muted opacity-8 pl-1">{{date_this_month }}</span>
@@ -465,12 +516,29 @@
                 </div>
                 <div class="tab-pane fade" id="tab-eg-67">
                     <div class="widget-chart p-0">
-                      <app-chart width="400" height="auto"
+                      <app-chart width="400" height="auto" *ngIf="paretoMonth.labels.length && loaderPareto == false"
                                  [type]="'bar'"
                                  [data]="paretoMonth.datasets"
                                  [lineChartLabels]="paretoMonth.labels"
                                  [lineChartColors]="colorsPARETO"
                       ></app-chart>
+                        <div class="card-body p-2 text-center"  *ngIf="!paretoMonth.labels.length && loaderPareto == false ">
+                            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                        </div>
+                        <div class="card-body p-2 text-center"  *ngIf="!paretoMonth.labels.length && loaderPareto == true ">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="ball-scale-multiple">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
                         <div class="widget-chart-content">
                             <div class="widget-description mt-0 text-warning">
                                 <span class="text-muted opacity-8 pl-1">{{date_this_month }}</span>
@@ -496,12 +564,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-              <app-chart width="auto" height="auto"
+              <app-chart width="auto" height="auto" *ngIf="L1mtbfByYear.labels.length && loaderL1 == false"
                          [type]="'bar'"
                          [data]="L1mtbfByYear.datasets"
                          [lineChartLabels]="L1mtbfByYear.labels"
                          [lineChartColors]="colorsMTBF"
               ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!L1mtbfByYear.labels.length && loaderL1 == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!L1mtbfByYear.labels.length && loaderL1 == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -515,12 +600,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-              <app-chart width="auto" height="auto"
+              <app-chart width="auto" height="auto" *ngIf="L1mdtByYear.labels.length && loaderL1 == false"
                          [type]="'bar'"
                          [data]="L1mdtByYear.datasets"
                          [lineChartLabels]="L1mdtByYear.labels"
                          [lineChartColors]="colorsMDT"
               ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!L1mdtByYear.labels.length && loaderL1 == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!L1mdtByYear.labels.length && loaderL1 == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -536,12 +638,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="L2mtbfByYear.labels.length && loaderL2 == false"
                            [type]="'bar'"
                            [data]="L2mtbfByYear.datasets"
                            [lineChartLabels]="L2mtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!L2mtbfByYear.labels.length && loaderL2 == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!L2mtbfByYear.labels.length && loaderL2 == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -555,12 +674,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="L2mdtByYear.labels.length && loaderL2 == false"
                            [type]="'bar'"
                            [data]="L2mdtByYear.datasets"
                            [lineChartLabels]="L2mdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!L2mdtByYear.labels.length && loaderL2 == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!L2mdtByYear.labels.length && loaderL2 == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -576,12 +712,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="L3mtbfByYear.labels.length && loaderL3 == false"
                            [type]="'bar'"
                            [data]="L3mtbfByYear.datasets"
                            [lineChartLabels]="L3mtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!L3mtbfByYear.labels.length && loaderL3 == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!L3mtbfByYear.labels.length && loaderL3 == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -595,12 +748,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="L3mdtByYear.labels.length && loaderL3 == false"
                            [type]="'bar'"
                            [data]="L3mdtByYear.datasets"
                            [lineChartLabels]="L3mdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!L3mdtByYear.labels.length && loaderL3 == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!L3mdtByYear.labels.length && loaderL3 == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -616,12 +786,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="SmtbfByYear.labels.length && loaderSec == false"
                            [type]="'bar'"
                            [data]="SmtbfByYear.datasets"
                            [lineChartLabels]="SmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!SmtbfByYear.labels.length && loaderSec == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!SmtbfByYear.labels.length && loaderSec == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -635,12 +822,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="SmdtByYear.labels.length && loaderSec == false"
                            [type]="'bar'"
                            [data]="SmdtByYear.datasets"
                            [lineChartLabels]="SmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!SmdtByYear.labels.length && loaderSec == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!SmdtByYear.labels.length && loaderSec == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -656,12 +860,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EmtbfByYear.labels.length && loaderEcor == false"
                            [type]="'bar'"
                            [data]="EmtbfByYear.datasets"
                            [lineChartLabels]="EmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EmtbfByYear.labels.length && loaderEcor == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EmtbfByYear.labels.length && loaderEcor == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -675,12 +896,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EmdtByYear.labels.length && loaderEcor == false"
                            [type]="'bar'"
                            [data]="EmdtByYear.datasets"
                            [lineChartLabels]="EmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EmdtByYear.labels.length && loaderEcor == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EmdtByYear.labels.length && loaderEcor == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -737,12 +975,30 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="DerouleuseparetoTDTMonth.labels.length && loaderParetoDerTDT == false "
                            [type]="'bar'"
                            [data]="DerouleuseparetoTDTMonth.datasets"
                            [lineChartLabels]="DerouleuseparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+
+                <div class="card-body p-2 text-center"  *ngIf="!DerouleuseparetoTDTMonth.labels.length && loaderParetoDerTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!DerouleuseparetoTDTMonth.labels.length && loaderParetoDerTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -765,12 +1021,30 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="DerouleuseparetoMDTMonth.labels.length && loaderParetoDerMDT == false "
                            [type]="'bar'"
                            [data]="DerouleuseparetoMDTMonth.datasets"
                            [lineChartLabels]="DerouleuseparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+
+                <div class="card-body p-2 text-center"  *ngIf="!DerouleuseparetoMDTMonth.labels.length && loaderParetoDerMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!DerouleuseparetoMDTMonth.labels.length && loaderParetoDerMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
 
@@ -796,12 +1070,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="BobineuseparetoTDTMonth.labels.length && loaderParetoBobTDT == false "
                            [type]="'bar'"
                            [data]="BobineuseparetoTDTMonth.datasets"
                            [lineChartLabels]="BobineuseparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!BobineuseparetoTDTMonth.labels.length && loaderParetoBobTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!BobineuseparetoTDTMonth.labels.length && loaderParetoBobTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -824,12 +1115,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="BobineuseparetoMDTMonth.labels.length && loaderParetoBobMDT == false "
                            [type]="'bar'"
                            [data]="BobineuseparetoMDTMonth.datasets"
                            [lineChartLabels]="BobineuseparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!BobineuseparetoMDTMonth.labels.length && loaderParetoBobMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!BobineuseparetoMDTMonth.labels.length && loaderParetoBobMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -854,12 +1162,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="MagBobineparetoTDTMonth.labels.length && loaderParetoMagBobTDT == false "
                            [type]="'bar'"
                            [data]="MagBobineparetoTDTMonth.datasets"
                            [lineChartLabels]="MagBobineparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!MagBobineparetoTDTMonth.labels.length && loaderParetoMagBobTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!MagBobineparetoTDTMonth.labels.length && loaderParetoMagBobTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -882,12 +1207,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="MagBobineparetoMDTMonth.labels.length && loaderParetoMagBobMDT == false "
                            [type]="'bar'"
                            [data]="MagBobineparetoMDTMonth.datasets"
                            [lineChartLabels]="MagBobineparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!MagBobineparetoMDTMonth.labels.length && loaderParetoMagBobMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!MagBobineparetoMDTMonth.labels.length && loaderParetoMagBobMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -912,12 +1254,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="MassicotparetoTDTMonth.labels.length && loaderParetoMassMDT == false "
                            [type]="'bar'"
                            [data]="MassicotparetoTDTMonth.datasets"
                            [lineChartLabels]="MassicotparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!MassicotparetoTDTMonth.labels.length && loaderParetoMassTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!MassicotparetoTDTMonth.labels.length && loaderParetoMassTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -940,12 +1299,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="MassicotparetoMDTMonth.labels.length && loaderParetoMassMDT == false "
                            [type]="'bar'"
                            [data]="MassicotparetoMDTMonth.datasets"
                            [lineChartLabels]="MassicotparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!MassicotparetoMDTMonth.labels.length && loaderParetoMassMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!MassicotparetoMDTMonth.labels.length && loaderParetoMassMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -970,12 +1346,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="SechoirparetoTDTMonth.labels.length && loaderParetoSechTDT == false "
                            [type]="'bar'"
                            [data]="SechoirparetoTDTMonth.datasets"
                            [lineChartLabels]="SechoirparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!SechoirparetoTDTMonth.labels.length && loaderParetoSechTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!SechoirparetoTDTMonth.labels.length && loaderParetoSechTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -998,12 +1391,29 @@
                 </div>
             </div>
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="SechoirparetoMDTMonth.labels.length && loaderParetoSechMDT == false "
                            [type]="'bar'"
                            [data]="SechoirparetoMDTMonth.datasets"
                            [lineChartLabels]="SechoirparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!SechoirparetoMDTMonth.labels.length && loaderParetoSechMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!SechoirparetoMDTMonth.labels.length && loaderParetoSechMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
             <div class="grid-menu grid-menu-2col">
@@ -1031,12 +1441,29 @@
             </div>
             
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EBmtbfByYear.labels.length && loaderEncol == false"
                            [type]="'bar'"
                            [data]="EBmtbfByYear.datasets"
                            [lineChartLabels]="EBmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EBmtbfByYear.labels.length && loaderEncol == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EBmtbfByYear.labels.length && loaderEncol == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1051,12 +1478,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EBmdtByYear.labels.length && loaderEncol == false"
                            [type]="'bar'"
                            [data]="EBmdtByYear.datasets"
                            [lineChartLabels]="EBmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EBmdtByYear.labels.length && loaderEncol == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EBmdtByYear.labels.length && loaderEncol == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1073,12 +1517,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="TEmtbfByYear.labels.length && loaderTeinteuse == false "
                            [type]="'bar'"
                            [data]="TEmtbfByYear.datasets"
                            [lineChartLabels]="TEmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!TEmtbfByYear.labels.length && loaderTeinteuse == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!TEmtbfByYear.labels.length && loaderTeinteuse == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1093,12 +1554,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="TEmdtByYear.labels.length && loaderTeinteuse == false "
                            [type]="'bar'"
                            [data]="TEmdtByYear.datasets"
                            [lineChartLabels]="TEmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!TEmdtByYear.labels.length && loaderTeinteuse == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!TEmdtByYear.labels.length && loaderTeinteuse == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1115,12 +1593,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="TRmtbfByYear.labels.length && loaderTranch == false "
                            [type]="'bar'"
                            [data]="TRmtbfByYear.datasets"
                            [lineChartLabels]="TRmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!TRmtbfByYear.labels.length && loaderTranch == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!TRmtbfByYear.labels.length && loaderTranch == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1135,12 +1630,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="TRmdtByYear.labels.length && loaderTranch == false "
                            [type]="'bar'"
                            [data]="TRmdtByYear.datasets"
                            [lineChartLabels]="TRmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!TRmdtByYear.labels.length && loaderTranch == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!TRmdtByYear.labels.length && loaderTranch == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1158,12 +1670,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="TrancheuseparetoTDTMonth.labels.length && loaderParetoTranchTDT == false "
                            [type]="'bar'"
                            [data]="TrancheuseparetoTDTMonth.datasets"
                            [lineChartLabels]="TrancheuseparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!TrancheuseparetoTDTMonth.labels.length && loaderParetoTranchTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!TrancheuseparetoTDTMonth.labels.length && loaderParetoTranchTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
              <div class="grid-menu grid-menu-2col">
@@ -1187,12 +1716,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="TrancheuseparetoMDTMonth.labels.length && loaderParetoTranchMDT == false "
                            [type]="'bar'"
                            [data]="TrancheuseparetoMDTMonth.datasets"
                            [lineChartLabels]="TrancheuseparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!TrancheuseparetoMDTMonth.labels.length && loaderParetoTranchMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!TrancheuseparetoMDTMonth.labels.length && loaderParetoTranchMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
              <div class="grid-menu grid-menu-2col">
@@ -1218,12 +1764,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EncolleuseparetoTDTMonth.labels.length && loaderParetoEncTDT == false "
                            [type]="'bar'"
                            [data]="EncolleuseparetoTDTMonth.datasets"
                            [lineChartLabels]="EncolleuseparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoTDTMonth.labels.length && loaderParetoEncTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoTDTMonth.labels.length && loaderParetoEncTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
              <div class="grid-menu grid-menu-2col">
@@ -1247,12 +1810,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EncolleuseparetoMDTMonth.labels.length && loaderParetoEncMDT == false "
                            [type]="'bar'"
                            [data]="EncolleuseparetoMDTMonth.datasets"
                            [lineChartLabels]="EncolleuseparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoMDTMonth.labels.length && loaderParetoEncMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoMDTMonth.labels.length && loaderParetoEncMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
              <div class="grid-menu grid-menu-2col">
@@ -1280,12 +1860,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto"  *ngIf="ECPmtbfByYear.labels.length && loaderEncolCP == false "
                            [type]="'bar'"
                            [data]="ECPmtbfByYear.datasets"
                            [lineChartLabels]="ECPmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!ECPmtbfByYear.labels.length && loaderEncolCP == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!ECPmtbfByYear.labels.length && loaderEncolCP == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1300,12 +1897,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto"  *ngIf="ECPmdtByYear.labels.length && loaderEncolCP == false "
                            [type]="'bar'"
                            [data]="ECPmdtByYear.datasets"
                            [lineChartLabels]="ECPmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!ECPmdtByYear.labels.length && loaderEncolCP == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!ECPmdtByYear.labels.length && loaderEncolCP == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1322,12 +1936,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="POmtbfByYear.labels.length && loaderPon == false "
                            [type]="'bar'"
                            [data]="POmtbfByYear.datasets"
                            [lineChartLabels]="POmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!POmtbfByYear.labels.length && loaderPon == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!POmtbfByYear.labels.length && loaderPon == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1342,12 +1973,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto"  *ngIf="POmdtByYear.labels.length && loaderPon == false "
                            [type]="'bar'"
                            [data]="POmdtByYear.datasets"
                            [lineChartLabels]="POmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!POmdtByYear.labels.length && loaderPon == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!POmdtByYear.labels.length && loaderPon == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1364,12 +2012,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="PRmtbfByYear.labels.length && loaderPress == false "
                            [type]="'bar'"
                            [data]="PRmtbfByYear.datasets"
                            [lineChartLabels]="PRmtbfByYear.labels"
                            [lineChartColors]="colorsMTBF"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!PRmtbfByYear.labels.length && loaderPress == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!PRmtbfByYear.labels.length && loaderPress == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1384,12 +2049,29 @@
             </div>
              
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="PRmdtByYear.labels.length && loaderPress == false "
                            [type]="'bar'"
                            [data]="PRmdtByYear.datasets"
                            [lineChartLabels]="PRmdtByYear.labels"
                            [lineChartColors]="colorsMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!PRmdtByYear.labels.length && loaderPress == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!PRmdtByYear.labels.length && loaderPress == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
         </div>
@@ -1404,17 +2086,34 @@
                     Pareto TDT Encolleuses
                 </div>
             </div>
-             
+
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EncolleuseparetoTDTMonth.labels.length && loaderParetoEncTDT == false "
                            [type]="'bar'"
                            [data]="EncolleuseparetoTDTMonth.datasets"
                            [lineChartLabels]="EncolleuseparetoTDTMonth.labels"
                            [lineChartColors]="colorsParetoTDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoTDTMonth.labels.length && loaderParetoEncTDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoTDTMonth.labels.length && loaderParetoEncTDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
-             <div class="grid-menu grid-menu-2col">
+            <div class="grid-menu grid-menu-2col">
                 <div class="no-gutters row">
                     <div class="p-2 col-sm-12 text-center">
                         <h6 class=" text-center pt-2 pb-2">Période:
@@ -1433,17 +2132,34 @@
                     Pareto MDT Encolleuses
                 </div>
             </div>
-             
+
             <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"
+                <app-chart width="auto" height="auto" *ngIf="EncolleuseparetoMDTMonth.labels.length && loaderParetoEncMDT == false "
                            [type]="'bar'"
                            [data]="EncolleuseparetoMDTMonth.datasets"
                            [lineChartLabels]="EncolleuseparetoMDTMonth.labels"
                            [lineChartColors]="colorsParetoMDT"
                 ></app-chart>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoMDTMonth.labels.length && loaderParetoEncMDT == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="!EncolleuseparetoMDTMonth.labels.length && loaderParetoEncMDT == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="divider mb-0"></div>
-             <div class="grid-menu grid-menu-2col">
+            <div class="grid-menu grid-menu-2col">
                 <div class="no-gutters row">
                     <div class="p-2 col-sm-12 text-center">
                         <h6 class=" text-center pt-2 pb-2">Période:
@@ -1460,10 +2176,9 @@
     <div class="col-md-12">
         <div class="main-card mb-3 card " id="htmlData" #htmlData>
             <div class="card-header">
-                Liste des Pannes
+                {{periode_panne}}&nbsp;<span>(Total :&nbsp;<span class="text-danger"> {{pannes.length }} {{pannes.length < 2 ? 'panne' : 'pannes'}}</span>)</span>
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
-                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                         <form [formGroup]="searchPanForm">
                             <input type="text" placeholder="Rechercher..." class="form-control form-control-sm" [(ngModel)]="term" formControlName="search">
                         </form>
@@ -1471,10 +2186,9 @@
                 </div>
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
-                        <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                         <form [formGroup]="selectPanForm">
                             <select (change)="findSso($event.target.value)" name=""  formControlName="periode" class="form-control form-control-sm">
-                                <option value="" selected disabled hidden>Toutes les pannes</option>
+                                <option value="" selected disabled hidden>-- Sélectionner la période --</option>
                                 <option value="ttesp">Toutes les pannes</option>
                                 <option value="tp" >Aujourd'hui</option>
                                 <option value="hp" >Hier</option>
@@ -1544,15 +2258,15 @@
                         <th>Machine</th>
                         <th class="">Cause</th>
                         <th class="text-center">Arrêt</th>
-                        <th class="text-center">Début Inter</th>
-                        <th class="text-center">Fin Inter</th>
+                        <th class="text-center">Début Inter.</th>
+                        <th class="text-center">Fin Inter.</th>
                         <th class="text-center">WT (min)</th>
                         <th class="text-center">TTR (min)</th>
                         <th class="text-center">DT (min)</th>
                         <!--<th class="text-center">Actions</th>-->
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="pannes.length && loader == false">
                     <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; " (click)="(pan.cont == false && pan.etat == true) ? modal(extendPanne) : open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
                         <ng-template #mymodal let-modal >
                             <div class="modal-header">
@@ -1903,7 +2617,21 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                     </tbody>
 
                 </table>
-                <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="!pannes">Aucune Panne trouvée !</p>
+                <p *ngIf="!pannes.length && loader == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune Panne trouvée !</p>
+                <div *ngIf="!pannes.length && loader == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="d-block clearfix card-footer">
                 <div class="float-left">
@@ -1943,7 +2671,7 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
 </div>
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-8 col-xl-8">
         <div class="main-card mb-3 card">
             <div class="card-header">Liste des Lignes</div>
             <ul class="todo-list-wrapper list-group list-group-flush">
@@ -1952,28 +2680,11 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                     <div class="widget-content p-0">
                         <div class="widget-content-wrapper">
                             <div class="widget-content-left mr-2">
-                                <div class="custom-checkbox custom-control"><input type="checkbox" id="exampleCustomCheckbox1" class="custom-control-input"><label class="custom-control-label"
-                                                                                                                                                                   for="exampleCustomCheckbox1">&nbsp;</label>
+                                <div class="custom-checkbox custom-control"><input type="checkbox" id="exampleCustomCheckbox1" class="custom-control-input"><label class="custom-control-label" for="exampleCustomCheckbox1">&nbsp;</label>
                                 </div>
                             </div>
                             <div class="widget-content-left">
                                 <div class="widget-heading">{{sel.nomLigne |  uppercase}}</div>
-                                <!--<div class="widget-subheading">-->
-                                    <!--<div>{{sel.idLigne}}</div>-->
-                                <!--</div>-->
-                            </div>
-                            <div class="widget-content-right widget-content-actions">
-                                <div class="d-inline-block dropdown">
-                                    <button type="button" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="border-0 btn-transition btn btn-link">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right"><h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                        <button type="button" disabled="" tabindex="-1" class="disabled dropdown-item">Action</button>
-                                        <button type="button" tabindex="0" class="dropdown-item">Another Action</button>
-                                        <div tabindex="-1" class="dropdown-divider"></div>
-                                        <button type="button" tabindex="0" class="dropdown-item">Another Action</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1981,33 +2692,15 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
             </ul>
         </div>
     </div>
-    <div class="col-lg-6 col-xl-4">
+    <div class="col-lg-4 col-xl-4">
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
                     <i class="header-icon lnr-cog mr-3 text-muted opacity-6"> </i>
                     Liste des Machines
                 </div>
-                <div class="btn-actions-pane-right actions-icon-btn">
-                    <div class="btn-group dropdown">
-                        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-icon btn-icon-only btn btn-link">
-                            <i class="pe-7s-menu btn-icon-wrapper"></i>
-                        </button>
-                        <!--<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu"><h6 tabindex="-1" class="dropdown-header">Header</h6>-->
-                            <!--<button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-inbox"> </i><span>Exporter</span></button>-->
-                            <!--<button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-file-empty"> </i><span>Settings</span></button>-->
-                            <!--<button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-book"> </i><span>Actions</span></button>-->
-                            <!--<div tabindex="-1" class="dropdown-divider"></div>-->
-                            <!--<div class="p-1 text-right">-->
-                                <!--<button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>-->
-                                <!--<button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    </div>
-                </div>
             </div>
             <div class="pt-2 pb-0 card-body">
-
                 <div class="scroll-area-md shadow-overflow">
                     <div class="scrollbar-container">
                         <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
@@ -2021,14 +2714,9 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                                         <div class="widget-content-left">
                                             <div class="widget-heading">{{machs.machine | uppercase}}</div>
                                             <div class="widget-subheading mt-1 opacity-10">
-                                                <div class="badge badge-pill badge-dark">{{machs.code | uppercase}}</div>
+                                                <div class="badge badge-pill badge-focus">{{machs.code | uppercase}}</div>
                                             </div>
                                         </div>
-                                        <!--<div class="widget-content-right">-->
-                                            <!--<div class="fsize-1 text-focus">-->
-                                                <!--{{machs.centreCout}}-->
-                                            <!--</div>-->
-                                        <!--</div>-->
                                     </div>
                                 </div>
                             </li>
@@ -2036,14 +2724,14 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                     </div>
                 </div>
             </div>
-            <div class="d-block text-center rm-border card-footer">
-                <button class="btn btn-primary">
-                    View complete report
-                    <span class="text-white pl-2 opacity-3">
-                                            <i class="fa fa-arrow-right"></i>
-                                        </span>
-                </button>
-            </div>
+            <!--<div class="d-block text-center rm-border card-footer">-->
+                <!--<button class="btn btn-primary">-->
+                    <!--View complete report-->
+                    <!--<span class="text-white pl-2 opacity-3">-->
+                                            <!--<i class="fa fa-arrow-right"></i>-->
+                                        <!--</span>-->
+                <!--</button>-->
+            <!--</div>-->
         </div>
     </div>
 </div>

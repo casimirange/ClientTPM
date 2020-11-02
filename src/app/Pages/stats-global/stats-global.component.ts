@@ -9,8 +9,14 @@ import {DepartementsService} from "../../services/departements/departements.serv
 import {Departement} from "../../Models/departement";
 // import {ApexOptions} from 'apexcharts'
 import {Router} from "@angular/router";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RapportService} from "../../services/rapport/rapport.service";
+import html2canvas from "html2canvas";
+import jsPDF from 'jspdf';
+// import pdfMake from 'pdfmake/build/pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+
 
 
 @Component({
@@ -22,7 +28,6 @@ export class StatsGlobalComponent implements OnInit {
   headings = 'Statistiques Alpicam';
   subheadings = 'Découvrez les données statistiques de l\'entreprise ';
   icons = 'pe-7s-graph icon-gradient bg-royal';
-
   rapport: boolean = false;
   filtrer: boolean = false;
   filt: boolean = false;
@@ -40,26 +45,26 @@ export class StatsGlobalComponent implements OnInit {
   mtbfY: Pannes[];
   mtbfTY: Pannes[];
   mtbf: Pannes[];
-  stats: any[];
+  stats: any[] = [];
 
   mdtByYear = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
   mtbfByYear = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
   datas = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
   graph = {
-    labels: [],
-    datasets: []
+    labels: []= [],
+    datasets: []= []
   };
 
   catP = {
@@ -236,7 +241,12 @@ export class StatsGlobalComponent implements OnInit {
   alpiLY: any[];
   tab: any[];
 
-  ridotto: any[];
+  ridotto: any[] = [];
+  sec_pla: any[];
+  sec_bra: any[];
+  sec_sci: any[];
+  sec_cp: any[];
+  sec_alpi: any[];
   section: string = "Alpicam";
 
   series: any[];
@@ -245,6 +255,23 @@ export class StatsGlobalComponent implements OnInit {
   datS3: any;
   datS4: any;
   date_this_months: any;
+  f: Date;
+  d: Date;
+  f1: Date;
+  d1: Date;
+  f2: Date;
+  d2: Date;
+
+  hihi: string[] = ["alpicam", "placage", "brazil", "cp", "scierie"]
+  loader: boolean = false;
+  loaderPareto: boolean = false;
+  loadertype: boolean = false;
+  loaderrecap: boolean = false;
+  loaderrapport: boolean = false;
+
+  pdfMake = require('pdfmake/build/pdfmake.js');
+
+  pdfFonts = require('pdfmake/build/vfs_fonts.js');
 
   public rangeForm: FormGroup;
   public ranges: string = 'false';
@@ -261,6 +288,8 @@ export class StatsGlobalComponent implements OnInit {
     this.rapportForms();
     this.pageForms();
     this.statsPanne();
+
+    this.pdfMake.vfs = this.pdfFonts.pdfMake.vfs;
   }
 
   pageForms() {
@@ -277,17 +306,17 @@ export class StatsGlobalComponent implements OnInit {
 
   rangeForms() {
     this.rangeForm = this.fb.group({
-      date1: [''],
-      date2: ['']
+      date1: ['', [Validators.required]],
+      date2: ['', [Validators.required]]
     });
   }
 
   rapportForms() {
     this.rapportRangeForm = this.fb.group({
-      date1: [''],
-      date2: [''],
-      date3: [''],
-      date4: ['']
+      date1: ['', [Validators.required]],
+      date2: ['', [Validators.required]],
+      date3: ['', [Validators.required]],
+      date4: ['', [Validators.required]]
     });
   }
 
@@ -310,6 +339,173 @@ export class StatsGlobalComponent implements OnInit {
 
 
     this.alpicam();
+    // this.alpicamRapport();
+    // this.placageRapport();
+    // this.brazilRapport();
+    // this.contreplaqueRapport();
+    // this.scierieRapport();
+
+  }
+
+  getBase64Image(img: any){
+    var canvas = document.createElement("canvas");
+    console.log('image');
+    canvas.width = img.width;
+    canvas.height= img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL;
+  }
+
+  download(){
+    let doc = new jsPDF();
+
+    for(var i = 0; i< this.hihi.length; i++){
+
+      let imageData = this.getBase64Image(document.getElementById(this.hihi[i]));
+      console.log(imageData);
+
+      doc.addImage(imageData, "JPG", 10, (i+1)*10);
+      doc.addPage();
+    }
+
+    doc.save("Rapport final");
+  }
+
+  downloads(){
+    html2canvas(document.getElementById('cp')).then(canvas => {
+      canvas.getContext('2d');
+      var data = canvas.toDataURL();
+      var docDefinition = {
+        content: [{
+          image: data,
+          width: 500,
+        }]
+      };
+      this.pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+    });
+  }
+
+  normal(){
+    this.alpicamRapport();
+    this.placageRapport();
+    this.brazilRapport();
+    this.contreplaqueRapport();
+    this.scierieRapport();
+    setTimeout(() =>{
+      html2canvas(document.getElementById("rapPDF")).then(canvas =>{
+      canvas.getContext('2d');
+      var HTML_Width = canvas.width;
+      var HTML_Height = canvas.height;
+      var top_left_margin = 5;
+      var PDF_Width = HTML_Width + (top_left_margin*2);
+      var PDF_Height = (PDF_Width*1.5) + (top_left_margin*2);
+      var canvas_image_width = HTML_Width;
+      var canvas_image_height = HTML_Height;
+
+      var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+      console.log(canvas.height+" "+canvas.width);
+
+      var imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+      for(var i = 1; i <= totalPDFPages; i++){
+        pdf.addPage(PDF_Width, PDF_Height);
+        let margin = -(PDF_Height*i) + (top_left_margin*4);
+        if(i > 1){
+          margin = margin + i*8;
+        }
+        console.log(top_left_margin);
+        console.log(-(PDF_Height*i) + (top_left_margin*4));
+        pdf.addImage(imgData, 'JPG', top_left_margin, margin, canvas_image_width, canvas_image_height);
+      }
+      pdf.save("alpi");
+    });
+    }, 3000)
+
+  }
+
+  normals(){
+    this.alpicamRapport();
+    this.placageRapport();
+    this.brazilRapport();
+    this.contreplaqueRapport();
+    this.scierieRapport();
+    setTimeout(() =>{
+      html2canvas(document.getElementById("rapPDF")).then(canvas =>{
+      canvas.getContext('2d');
+      var HTML_Width = canvas.width;
+      var HTML_Height = canvas.height;
+      var top_left_margin = 5;
+      var PDF_Width = HTML_Width + (top_left_margin*2);
+      var PDF_Height = (PDF_Width*1.5) + (top_left_margin*2);
+      var canvas_image_width = HTML_Width;
+      var canvas_image_height = HTML_Height;
+
+      var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+      console.log(canvas.height+" "+canvas.width);
+
+      var imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+      for(var i = 1; i <= totalPDFPages; i++){
+        pdf.addPage(PDF_Width, PDF_Height);
+        let margin = -(PDF_Height*i) + (top_left_margin*4);
+        if(i > 1){
+          margin = margin + i*8;
+        }
+        console.log(top_left_margin);
+        console.log(-(PDF_Height*i) + (top_left_margin*4));
+        pdf.addImage(imgData, 'JPG', top_left_margin, margin, canvas_image_width, canvas_image_height);
+      }
+      pdf.save("alpi");
+    });
+    }, 3000)
+
+  }
+  filts(){
+    this.alpicamRangeRapport();
+    this.placageRangeRapport();
+    this.brazilRangeRapport();
+    this.contreplaqueRangeRapport();
+    this.scierieRangeRapport();
+    setTimeout(() =>{
+      html2canvas(document.querySelector(".rapPDF")).then(canvas =>{
+      canvas.getContext('2d');
+      var HTML_Width = canvas.width;
+      var HTML_Height = canvas.height;
+      var top_left_margin = 5;
+      var PDF_Width = HTML_Width + (top_left_margin*2);
+      var PDF_Height = (PDF_Width*1.5) + (top_left_margin*2);
+      var canvas_image_width = HTML_Width;
+      var canvas_image_height = HTML_Height;
+
+      var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+      console.log(canvas.height+" "+canvas.width);
+
+      var imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+      for(var i = 1; i <= totalPDFPages; i++){
+        pdf.addPage(PDF_Width, PDF_Height);
+        let margin = -(PDF_Height*i) + (top_left_margin*4);
+        if(i > 1){
+          margin = margin + i*8;
+        }
+        console.log(top_left_margin);
+        console.log(-(PDF_Height*i) + (top_left_margin*4));
+        pdf.addImage(imgData, 'JPG', top_left_margin, margin, canvas_image_width, canvas_image_height);
+      }
+      pdf.save("alpiRange");
+    });
+    }, 3000)
 
   }
 
@@ -323,17 +519,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS2 = datm;
     this.datS3 = tomorrow;
     this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getRidotto().subscribe(
         data => {
           this.ridotto = data;
           this.section = "Alpicam"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  alpicamRapport(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.rapportService.getRidottos().subscribe(
+        data => {
+          this.sec_alpi = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport');
-          console.log(this.ridotto);
         }
     );
   }
@@ -348,17 +570,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS2 = datm;
     this.datS3 = tomorrow;
     this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getPlacage().subscribe(
         data => {
           this.ridotto = data;
-          this.section = "Placage"
+          this.section = "Placage";
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  placageRapport(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.rapportService.getPlacages().subscribe(
+        data => {
+          this.sec_pla = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport placage');
-          console.log(this.ridotto);
         }
     );
   }
@@ -373,17 +621,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS2 = datm;
     this.datS3 = tomorrow;
     this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getBrazil().subscribe(
         data => {
           this.ridotto = data;
           this.section = "Brazil"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  brazilRapport(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.rapportService.getBrazils().subscribe(
+        data => {
+          this.sec_bra = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport brazil');
-          console.log(this.ridotto);
         }
     );
   }
@@ -398,17 +672,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS2 = datm;
     this.datS3 = tomorrow;
     this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getContreplaque().subscribe(
         data => {
           this.ridotto = data;
           this.section = "Contreplaqué"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  contreplaqueRapport(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.rapportService.getContreplaques().subscribe(
+        data => {
+          this.sec_cp = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport contreplaque');
-          console.log(this.ridotto);
         }
     );
   }
@@ -423,17 +723,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS2 = datm;
     this.datS3 = tomorrow;
     this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getScierie().subscribe(
         data => {
           this.ridotto = data;
           this.section = "Scierie"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  scierieRapport(){
+    const dat = new Date();
+    const datm = new Date();
+    var today = new Date().setFullYear(dat.getFullYear(),0,1);
+    var tomorrow = new Date().setFullYear(dat.getFullYear()-1, 0, 1);
+    // tomorrow.setFullYear(today.getFullYear()-1);
+    this.datS1 = today;
+    this.datS2 = datm;
+    this.datS3 = tomorrow;
+    this.datS4 = dat.setFullYear(dat.getFullYear()-1);
+    this.rapportService.getScieries().subscribe(
+        data => {
+          this.sec_sci = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport contreplaque');
-          console.log(this.ridotto);
         }
     );
   }
@@ -448,17 +774,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS4 = d2;
     this.datS1 = d3;
     this.datS2 = d4;
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getRidottoRange(d1, d2, d3, d4).subscribe(
         data => {
           this.ridotto = data;
           this.section = "Alpicam"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  alpicamRangeRapport(){
+    const d1 = this.rapportRangeForm.controls['date1'].value;
+    const d2 = this.rapportRangeForm.controls['date2'].value;
+    const d3 = this.rapportRangeForm.controls['date3'].value;
+    const d4 = this.rapportRangeForm.controls['date4'].value;
+
+    this.datS3 = d1;
+    this.datS4 = d2;
+    this.datS1 = d3;
+    this.datS2 = d4;
+    this.rapportService.getRidottoRanges(d1, d2, d3, d4).subscribe(
+        data => {
+          this.sec_alpi = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport');
-          console.log(this.ridotto);
         }
     );
   }
@@ -473,17 +825,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS4 = d2;
     this.datS1 = d3;
     this.datS2 = d4;
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getPlacageRange(d1, d2, d3, d4).subscribe(
         data => {
           this.ridotto = data;
           this.section = "Placage"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  placageRangeRapport(){
+    const d1 = this.rapportRangeForm.controls['date1'].value;
+    const d2 = this.rapportRangeForm.controls['date2'].value;
+    const d3 = this.rapportRangeForm.controls['date3'].value;
+    const d4 = this.rapportRangeForm.controls['date4'].value;
+
+    this.datS3 = d1;
+    this.datS4 = d2;
+    this.datS1 = d3;
+    this.datS2 = d4;
+    this.rapportService.getPlacageRanges(d1, d2, d3, d4).subscribe(
+        data => {
+          this.sec_pla = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport placage');
-          console.log(this.ridotto);
         }
     );
   }
@@ -498,17 +876,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS4 = d2;
     this.datS1 = d3;
     this.datS2 = d4;
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getBrazilRange(d1, d2, d3, d4).subscribe(
         data => {
           this.ridotto = data;
           this.section = "Brazil"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  brazilRangeRapport(){
+    const d1 = this.rapportRangeForm.controls['date1'].value;
+    const d2 = this.rapportRangeForm.controls['date2'].value;
+    const d3 = this.rapportRangeForm.controls['date3'].value;
+    const d4 = this.rapportRangeForm.controls['date4'].value;
+
+    this.datS3 = d1;
+    this.datS4 = d2;
+    this.datS1 = d3;
+    this.datS2 = d4;
+    this.rapportService.getBrazilRanges(d1, d2, d3, d4).subscribe(
+        data => {
+          this.sec_bra = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport brazil');
-          console.log(this.ridotto);
         }
     );
   }
@@ -523,17 +927,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS4 = d2;
     this.datS1 = d3;
     this.datS2 = d4;
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getContreplaqueRange(d1, d2, d3, d4).subscribe(
         data => {
           this.ridotto = data;
           this.section = "Contreplaqué"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  contreplaqueRangeRapport(){
+    const d1 = this.rapportRangeForm.controls['date1'].value;
+    const d2 = this.rapportRangeForm.controls['date2'].value;
+    const d3 = this.rapportRangeForm.controls['date3'].value;
+    const d4 = this.rapportRangeForm.controls['date4'].value;
+
+    this.datS3 = d1;
+    this.datS4 = d2;
+    this.datS1 = d3;
+    this.datS2 = d4;
+    this.rapportService.getContreplaqueRanges(d1, d2, d3, d4).subscribe(
+        data => {
+          this.sec_cp = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport contreplaque');
-          console.log(this.ridotto);
         }
     );
   }
@@ -548,17 +978,43 @@ export class StatsGlobalComponent implements OnInit {
     this.datS4 = d2;
     this.datS1 = d3;
     this.datS2 = d4;
+    this.loaderrapport = true;
+    this.ridotto = [];
     this.rapportService.getScierieRange(d1, d2, d3, d4).subscribe(
         data => {
           this.ridotto = data;
           this.section = "Scierie"
+          this.loaderrapport = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrapport = false;
+        },
+        () => {
+          console.log('rapport');
+          console.log(this.ridotto);
+        }
+    );
+  }
+
+  scierieRangeRapport(){
+    const d1 = this.rapportRangeForm.controls['date1'].value;
+    const d2 = this.rapportRangeForm.controls['date2'].value;
+    const d3 = this.rapportRangeForm.controls['date3'].value;
+    const d4 = this.rapportRangeForm.controls['date4'].value;
+
+    this.datS3 = d1;
+    this.datS4 = d2;
+    this.datS1 = d3;
+    this.datS2 = d4;
+    this.rapportService.getScierieRanges(d1, d2, d3, d4).subscribe(
+        data => {
+          this.sec_sci = data;
         },
         error => {
           console.log('une erreur a été détectée!')
         },
         () => {
-          console.log('rapport contreplaque');
-          console.log(this.ridotto);
         }
     );
   }
@@ -580,6 +1036,7 @@ export class StatsGlobalComponent implements OnInit {
     this.datas.datasets = [];
     const d1 = this.rangeForm.controls['date1'].value;
     const d2 = this.rangeForm.controls['date2'].value;
+    this.loaderPareto = true;
     this.alpicamService.paretoAlpiRange(d1, d2).subscribe(
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
@@ -587,7 +1044,16 @@ export class StatsGlobalComponent implements OnInit {
           datasetNbrePanne3.data.push(mach.nbre);
           datasetNbrePanne4.data.push(mach.TDT);
 
-        } )) ;
+        } ),
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderPareto = false;
+        },
+        () => {
+          console.log('months');
+          this.loaderPareto = false;
+        }
+    ) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
   }
@@ -656,13 +1122,15 @@ export class StatsGlobalComponent implements OnInit {
       order: 2,
     };
 
+    this.loader = true;
     this.dashboardService.mtbfByYearAlpi().subscribe(
         data1 => {
           this.mtbfY = data1;
           this.dashboardService.mtbfThisYearAlpi().subscribe(
               data2 => {
                 this.mtbfTY = data2;
-                this.mtbf = this.mtbfY.slice((this.mtbfY.length - 6), this.mtbfY.length).concat(this.mtbfTY);
+                this.mtbf = this.mtbfY.concat(this.mtbfTY);
+                // this.mtbf = this.mtbfY.slice((this.mtbfY.length - 6), this.mtbfY.length).concat(this.mtbfTY);
                 console.log('concat '+this.mtbf)
 
                 for (let mach of this.mtbf){
@@ -702,10 +1170,11 @@ export class StatsGlobalComponent implements OnInit {
               },
               error => {
                 console.log('une erreur a été détectée!')
+                this.loader = false;
               },
               () => {
                 console.log('years');
-                console.log(this.py);
+                this.loader = false;
               }
           );
         },
@@ -878,6 +1347,7 @@ export class StatsGlobalComponent implements OnInit {
     };
     this.datas.labels = [];
     this.datas.datasets = [];
+    this.loaderPareto = true;
     this.alpicamService.paretoAlpiThisMonth().subscribe(
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
@@ -885,7 +1355,16 @@ export class StatsGlobalComponent implements OnInit {
           datasetNbrePanne3.data.push(mach.nbre);
           datasetNbrePanne4.data.push(mach.TDT);
 
-        } )) ;
+        } ),
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderPareto = false;
+        },
+        () => {
+          console.log('months');
+          this.loaderPareto = false;
+        }
+    ) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
   }
@@ -905,6 +1384,7 @@ export class StatsGlobalComponent implements OnInit {
     };
     this.datas.labels = [];
     this.datas.datasets = [];
+    this.loaderPareto = true;
     this.alpicamService.paretoAlpiLastMonth().subscribe(
         list => list.forEach(mach => {
           // datasetNbrePanne2.name = (mach.machine);
@@ -912,7 +1392,16 @@ export class StatsGlobalComponent implements OnInit {
           datasetNbrePanne3.data.push(mach.nbre);
           datasetNbrePanne4.data.push(mach.TDT);
 
-        } )) ;
+        } ),
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderPareto = false;
+        },
+        () => {
+          console.log('months');
+          this.loaderPareto = false;
+        }
+    ) ;
     this.datas.datasets.push(datasetNbrePanne3);
     this.datas.datasets.push(datasetNbrePanne4);
   }
@@ -956,7 +1445,7 @@ export class StatsGlobalComponent implements OnInit {
       type: 'bar',
         // stack: 'a'
     };
-
+    this.loaderrecap = true;
     this.alpicamService.getRecapPanne().subscribe(
         list => {
           this.stats = list;
@@ -968,6 +1457,15 @@ export class StatsGlobalComponent implements OnInit {
             ttr.data.push(this.decimal(mach.taux_TTR) == false ? mach.taux_TTR.toFixed(2) : mach.taux_TTR);
             mdt.data.push(this.decimal(mach.taux_MDT) == false ? mach.taux_MDT.toFixed(2) : mach.taux_MDT);
           }
+          this.loaderrecap = false;
+        },
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loaderrecap = false;
+        },
+        () => {
+          console.log('months');
+          this.loaderrecap = false;
         }
     );
     this.graph.datasets.push(panne);
@@ -980,24 +1478,44 @@ export class StatsGlobalComponent implements OnInit {
   typePanneThisMonth(){
     this.catP.labels = [];
     this.dta = [];
+    this.loadertype = true;
     this.alpicamService.getTypePanneThisMonth().subscribe(
         list => list.forEach(mach => {
           this.catP.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
           this.dta.push(mach.nbre);
         } )
-    );
+    ,
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loadertype = false;
+        },
+        () => {
+          console.log('months');
+          this.loadertype = false;
+        }
+    ) ;
 
   }
 
   typePanneLastMonth(){
     this.catP.labels = [];
     this.dta = [];
+    this.loadertype = true;
     this.alpicamService.getTypePanneLastMonth().subscribe(
         list => list.forEach(mach => {
           this.catP.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
           this.dta.push(mach.nbre);
         } )
-    );
+    ,
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loadertype = false;
+        },
+        () => {
+          console.log('months');
+          this.loadertype = false;
+        }
+    ) ;
 
   }
 
@@ -1007,12 +1525,22 @@ export class StatsGlobalComponent implements OnInit {
     const d1 = this.rangeForm.controls['date1'].value;
     const d2 = this.rangeForm.controls['date2'].value;
     this.date_this_months = d1 +' au '+ d2;
+    this.loadertype = true;
     this.alpicamService.getTypePanneRange(d1, d2).subscribe(
         list => list.forEach(mach => {
           this.catP.labels.push(mach.fonction.substr(0, 4).replace(/é|è|ê/g, "e").toUpperCase());
           this.dta.push(mach.nbre);
         } )
-    );
+    ,
+        error => {
+          console.log('une erreur a été détectée!')
+          this.loadertype = false;
+        },
+        () => {
+          console.log('months');
+          this.loadertype = false;
+        }
+    ) ;
 
   }
 

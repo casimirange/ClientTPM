@@ -21,11 +21,21 @@
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree{
-      if(this.token_storage.getToken()){
-        return true;
-      }
+      //   let token = localStorage.getItem('authToken')
+      // //
+      // if(token != null){
+      //
+      //     console.log('guard ', token);
+      //   return true;
+      //   this.router.navigate(['/dashboard']);
+      // }
+
+        if(this.token_storage.getToken()){
+            return true;
+        }
 
       this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
+      console.log('tests')
       return false;
 
 }

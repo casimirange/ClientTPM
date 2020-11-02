@@ -32,35 +32,35 @@ export class ArretsComponent implements OnInit {
 
   operation: string = 'add';
 
-  arrets: Arrets[];
+  arrets: Arrets[] = [];
   ActiveArret: Arrets[];
   DesactiveArret: Arrets[];
 
   selectedArret: Arrets;
   newArret: Arrets;
   arr: Arrets;
-  machines: Machine[];
+  machines: Machine[] = [];
   pages: number = 7;
   ranger: string = 'false';
   ranges: string = 'false';
   today: Date;
   typeArret = {
-    labels: [],
-    nbre: [],
-    tdt: []
+    labels: [] = [],
+    nbre: [] = [],
+    tdt: [] = []
   };
 
   titre: string;
   thisYearArret: any;
 
     datas = {
-        labels: [],
-        datasets: []
+        labels: [] = [],
+        datasets: [] = []
     };
 
     pareto = {
-        labels: [],
-        datasets: []
+        labels: [] = [],
+        datasets: [] = []
     };
 
     public lineChartColors: Color[] = [
@@ -91,7 +91,7 @@ export class ArretsComponent implements OnInit {
         }
     ];
     seriess = [];
-    public recapArret: any[];
+    public recapArret: any[] = [];
     taux: number;
     nbre_arret_last_month: number;
     date_this_months: any;
@@ -105,6 +105,11 @@ export class ArretsComponent implements OnInit {
     ha: DateTimeFormat;
     di: DateTimeFormat;
     piece: string;
+    loader: boolean = false;
+    loaderdash: boolean = false;
+    loaderpareto: boolean = false;
+    loadertype1: boolean = false;
+    loadertype2: boolean = false;
 
   constructor(private arretService: ArretsService,
               private fb: FormBuilder,
@@ -344,7 +349,7 @@ export class ArretsComponent implements OnInit {
       }
     this.thisYearArrets();
     this.loadMachines();
-    this.LoadArrets();
+    this.ThisMonthArrets();
     this.initArret();
     this.typeArretThisMonth();
     this.newArret = new Arrets();
@@ -355,8 +360,8 @@ export class ArretsComponent implements OnInit {
 
   rangeForms() {
     this.rangeForm = this.fb.group({
-      date1: ['', Validators.required],
-      date2: ['', Validators.required]
+      date1: ['', [Validators.required]],
+      date2: ['', [Validators.required]]
     });
   }
 
@@ -443,13 +448,15 @@ export class ArretsComponent implements OnInit {
   }
 
   ThisMonthArrets(){
-
+      this.loader = true
     this.arretService.getThisMonthArret().subscribe(
         data => {
           this.arrets = data;
+          this.loader = false
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false
         },
         () => {
           console.log('toutes les Arrets');
@@ -459,13 +466,15 @@ export class ArretsComponent implements OnInit {
   }
 
   LastMonthArrets(){
-
+    this.loader = true;
     this.arretService.getLastMonthArret().subscribe(
         data => {
           this.arrets = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false;
         },
         () => {
           console.log('toutes les Arrets');
@@ -478,12 +487,15 @@ export class ArretsComponent implements OnInit {
 
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.loader = true;
     this.arretService.getRangeArret(d1, d2).subscribe(
         data => {
           this.arrets = data;
+          this.loader = false;
         },
         error => {
           console.log('une erreur a été détectée!')
+            this.loader = false;
         },
         () => {
           console.log('toutes les Arrets');
@@ -496,12 +508,22 @@ export class ArretsComponent implements OnInit {
         this.typeArret.labels = [];
         this.typeArret.nbre = [];
         this.typeArret.tdt = [];
+        this.loadertype1 = true;
         this.arretService.getArretTypeThisMonth().subscribe(
             list => list.forEach(mach => {
                 this.typeArret.labels.push(mach.type.toUpperCase());
                 this.typeArret.nbre.push(mach.nbre);
                 this.typeArret.tdt.push(mach.TDT);
             })
+            ,
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loadertype1 = false
+            },
+            () => {
+                console.log('rapport');
+                this.loadertype1 = false
+            }
         );
 
     }
@@ -510,12 +532,21 @@ export class ArretsComponent implements OnInit {
         this.typeArret.labels = [];
         this.typeArret.nbre = [];
         this.typeArret.tdt = [];
+        this.loadertype1 = true;
         this.arretService.getArretTypeLastMonth().subscribe(
             list => list.forEach(mach => {
                 this.typeArret.labels.push(mach.type.toUpperCase());
                 this.typeArret.nbre.push(mach.nbre);
                 this.typeArret.tdt.push(mach.TDT);
-            })
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loadertype1 = false
+            },
+            () => {
+                console.log('rapport');
+                this.loadertype1 = false
+            }
         );
 
     }
@@ -527,12 +558,21 @@ export class ArretsComponent implements OnInit {
         const d1 = this.rangeForm.controls['date1'].value;
         const d2 = this.rangeForm.controls['date2'].value;
         this.date_this_months = d1 +' au '+ d2;
+        this.loadertype1 = true;
         this.arretService.getArretTypeRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 this.typeArret.labels.push(mach.type.toUpperCase());
                 this.typeArret.nbre.push(mach.nbre);
                 this.typeArret.tdt.push(mach.TDT);
-            })
+            }),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loadertype1 = false
+            },
+            () => {
+                console.log('rapport');
+                this.loadertype1 = false
+            }
         );
 
     }
@@ -782,6 +822,7 @@ export class ArretsComponent implements OnInit {
         this.datas.labels = [];
         this.datas.datasets = [];
         this.date_this_month = "30 derniers jours";
+        this.loaderdash = true;
         const datasetNbrePanne3 = {
             data: [],
             label: "Arrêt",
@@ -802,7 +843,16 @@ export class ArretsComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.dt);
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderdash = false
+            },
+            () => {
+                console.log('rapport');
+                this.loaderdash = false
+            }
+        );
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
     }
@@ -823,6 +873,7 @@ export class ArretsComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line'
         };
+        this.loaderdash = true;
         this.arretService.getCountDashLastPannes().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -830,7 +881,16 @@ export class ArretsComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.dt);
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderdash = false
+            },
+            () => {
+                console.log('rapport');
+                this.loaderdash = false
+            }
+        );
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
     }
@@ -851,6 +911,7 @@ export class ArretsComponent implements OnInit {
             yAxisID: 'y-axis-1',
             type: 'line'
         };
+        this.loaderdash = true;
         this.arretService.getCountDashThisPannes().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -858,7 +919,16 @@ export class ArretsComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.dt);
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderdash = false
+            },
+            () => {
+                console.log('rapport');
+                this.loaderdash = false
+            }
+        );
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
     }
@@ -884,6 +954,7 @@ export class ArretsComponent implements OnInit {
         const d2 = this.rangeForm.controls['date2'].value;
 
         console.log(d1 + ' et '+ d2);
+        this.loaderdash = true;
         this.arretService.getCountRangePannes(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -891,7 +962,16 @@ export class ArretsComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.dt);
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderdash = false
+            },
+            () => {
+                console.log('rapport');
+                this.loaderdash = false
+            }
+        );
         this.datas.datasets.push(datasetNbrePanne3);
         this.datas.datasets.push(datasetNbrePanne4);
     }
@@ -913,6 +993,7 @@ export class ArretsComponent implements OnInit {
         this.pareto.datasets = [];
         const d1 = this.rangeForm.controls['date1'].value;
         const d2 = this.rangeForm.controls['date2'].value;
+        this.loaderpareto = true;
         this.arretService.paretoAlpiRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -920,7 +1001,16 @@ export class ArretsComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderpareto = false
+            },
+            () => {
+                console.log('rapport');
+                this.loaderpareto = false
+            }
+        );
         this.pareto.datasets.push(datasetNbrePanne3);
         this.pareto.datasets.push(datasetNbrePanne4);
     }
@@ -940,6 +1030,7 @@ export class ArretsComponent implements OnInit {
         };
         this.pareto.labels = [];
         this.pareto.datasets = [];
+        this.loaderpareto = true;
         this.arretService.paretoAlpiThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -947,7 +1038,16 @@ export class ArretsComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderpareto = false
+            },
+            () => {
+                console.log('rapport');
+                this.loaderpareto = false
+            }
+        );
         this.pareto.datasets.push(datasetNbrePanne3);
         this.pareto.datasets.push(datasetNbrePanne4);
     }
@@ -967,6 +1067,7 @@ export class ArretsComponent implements OnInit {
         };
         this.pareto.labels = [];
         this.pareto.datasets = [];
+        this.loaderpareto = true;
         this.arretService.paretoAlpiLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
@@ -974,7 +1075,16 @@ export class ArretsComponent implements OnInit {
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
-            } )) ;
+            } ),
+            error => {
+                console.log('une erreur a été détectée!')
+                this.loaderpareto = false
+            },
+            () => {
+                console.log('rapport');
+                this.loaderpareto = false
+            }
+        );
         this.pareto.datasets.push(datasetNbrePanne3);
         this.pareto.datasets.push(datasetNbrePanne4);
     }

@@ -166,6 +166,7 @@ import { DashCartComponent } from './dashboard/dash-cart/dash-cart.component';
     ChartsModule,
     NgApexchartsModule,
     jqxGridModule,
+
     // IgxGridModule
     // NgScrollbarModule
     // DpDatePickerModule,

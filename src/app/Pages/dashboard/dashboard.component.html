@@ -82,7 +82,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body p-2" id="pdf1">
+                <div class="card-body p-2"  *ngIf="(datas.labels.length  && dah != 0) && loaders == false ">
                     <div class="widget-chart-wrapper widget-chart-wrapper-lg opacity-10 m-0">
                         <div style="height: auto" >
                             <div class="flex-item">
@@ -97,6 +97,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-body p-2 text-center"  *ngIf="(!datas.labels.length  || dah == 0)&& loaders == false ">
+                    <p class="text-center" style="color: grey; font-size: 1.8em">Aucune donnée disponible!</p>
+                </div>
+                <div class="card-body p-2 text-center"  *ngIf="(!datas.labels.length  || dah == 0)&& loaders == true ">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
+
                 <div class="border-top bg-light card-header" *ngIf="authority != 'user' && authority != 'responsable'">
                     <div class="actions-icon-btn mx-auto">
                         <div>
@@ -731,7 +749,7 @@
         <div class="col-md-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
-                    Pannes de la Semaine <span *ngIf="authority != 'user'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
+                    {{periode_panne}}&nbsp;<span *ngIf="authority != 'user'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
                     <div class="btn-actions-pane-right">
                         <div role="group" class="btn-group-sm btn-group">
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
@@ -1151,7 +1169,22 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                         </tbody>
 
                     </table>
-                    <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne trouvée !</p>
+                    <!--<p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="countPannes == 0">Aucune Panne trouvée !</p>-->
+                    <p *ngIf="!pannes.length && loader == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune Panne trouvée !</p>
+                    <div *ngIf="!pannes.length && loader == true" class="text-center">
+                        <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                            <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                <div class="loader">
+                                    <div class="ball-scale-multiple">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="vertical-align: middle">Chargement...</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="d-block clearfix card-footer">
                     <div class="float-left">

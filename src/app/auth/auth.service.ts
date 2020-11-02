@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { JwtResponse } from './jwt-response';
 import { AuthLoginInfo } from './login-info';
 import { SignUpInfo } from './signup-info';
+import {environment} from "../../environments/environment";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -23,22 +24,22 @@ export class AuthService {
   }
 
   attemptAuth(credentials: AuthLoginInfo): Observable<JwtResponse> {
-    return this.http.post<JwtResponse>(this.loginUrl, credentials, httpOptions);
+    return this.http.post<JwtResponse>(environment.LOGIN_URL, credentials, httpOptions);
   }
 
   signUp(info: SignUpInfo): Observable<string> {
-    return this.http.post<string>(this.signupUrl, info, httpOptions);
+    return this.http.post<string>(environment.SIGNUP_URL, info, httpOptions);
   }
 
   updateUser(info: SignUpInfo, id: number): Observable<string> {
-    return this.http.put<string>(this.users+ `/${id}`, info, httpOptions);
+    return this.http.put<string>(environment.URERS+ `/${id}`, info, httpOptions);
   }
 
   deleteUser(id: number): Observable<string> {
-    return this.http.delete<string>(this.users+ `/${id}`, httpOptions);
+    return this.http.delete<string>(environment.URERS+ `/${id}`, httpOptions);
   }
 
   getUsers(): Observable<string> {
-    return this.http.get<string>(this.users);
+    return this.http.get<string>(environment.URERS);
   }
 }

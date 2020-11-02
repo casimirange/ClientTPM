@@ -48,12 +48,12 @@
                         Alpicam
                     </a>
                 </li>
-                <li *ngFor=" let dp of departement" (click)="showDepart(dp)">
-                    <a routerLinkActive="mm-active" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'">
-                        <i class="metismenu-icon lnr-apartment"></i>
-                        {{dp.nom | titlecase}}
-                    </a>
-                </li>
+                <!--<li *ngFor=" let dp of departement" (click)="showDepart(dp)" style="cursor:pointer;">-->
+                    <!--<a routerLinkActive="mm-active" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'">-->
+                        <!--<i class="metismenu-icon lnr-apartment"></i>-->
+                        <!--{{dp.nom | titlecase}}-->
+                    <!--</a>-->
+                <!--</li>-->
                 <li *ngIf="authority != 'pm'" class="app-sidebar__heading">Gestion des Machines</li>
 
                 <li *ngIf="authority != 'pm'">
