@@ -35,6 +35,7 @@
     "ag-grid": "^18.1.2",
     "ag-grid-angular": "^23.0.3",
     "ag-grid-community": "^23.0.2",
+    "angular-ng-autocomplete": "^2.0.1",
     "angular2-chartjs": "^0.5.1",
     "apexcharts": "^3.13.2",
     "bootstrap": "^4.4.1",

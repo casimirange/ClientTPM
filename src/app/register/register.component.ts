@@ -51,55 +51,152 @@ export class RegisterComponent implements OnInit {
       userAL: ['',],
     });
 
+
     if (this.tokenStorage.getToken()) {
       this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      var content = document.createElement('div');
       this.roles.every(role => {
         if (role === 'ROLE_ADMIN') {
           this.authority = 'admin';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
           return false;
         } else if (role === 'ROLE_SUPER_ADMIN') {
           this.authority = 'super_admin';
           return false;
-        } else if (role === 'ROLE_PM') {
-          this.authority = 'pm';
+        } else if (role === 'ROLE_USER_MINDOUROU') {
+          this.authority = 'user_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
           return false;
-        } else if (role === 'ROLE_RESPONSABLE') {
-          this.authority = 'responsable';
+        } else if (role === 'ROLE_RESP_PLACAGE') {
+          this.authority = 'resp_pla';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
           return false;
+        } else if (role === 'ROLE_RESP_SCIERIE') {
+          this.authority = 'resp_sci';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_BRAZIL') {
+          this.authority = 'resp_bra';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_CP') {
+          this.authority = 'resp_cp';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_MAINTENANCE') {
+          this.authority = 'resp_maint';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_MINDOUROU') {
+          this.authority = 'resp_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+
         }
-        this.authority = 'user';
-        return true;
-      });
-
-      if(this.authority != 'super_admin') {
-        const Swal = require('sweetalert2');
-        var content = document.createElement('div');
-        content.innerHTML = 'Vous n\'avez pas les authorisations requises pour accéder à cette page' ;
+        this.authority = 'user_alpi';
+        content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
         Swal.fire({
-          title: 'Non Authorisé',
+          title: 'Aucun Accès!',
           html: content,
-          icon: 'warning',
-          footer: '<a >Rapprochez vous au près de votre administrateur</a>',
-
+          icon: 'error',
           showCancelButton: false,
-          showClass: {
-            popup: 'animate__animated animate__fadeInDown'
-          },
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-          },
-          confirmButtonColor: '#b97a56',
           confirmButtonText: 'OK',
           allowOutsideClick: false,
-          focusConfirm: false,
-          showLoaderOnConfirm: true
+          focusConfirm: true,
         }).then((result) => {
-          if (result.value) {
-            this._location.back();
-          }
+          this._location.back();
         })
-      }
-
+        return true;
+      });
     }
   }
 

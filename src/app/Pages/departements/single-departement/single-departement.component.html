@@ -3,7 +3,7 @@
             selectedDep.nom == 'Brazil' ? 'lnr-apartment icon-gradient bg-warning' :
             selectedDep.nom == 'Placage' ? 'lnr-apartment icon-gradient bg-success' :
             selectedDep.nom == 'Contreplaqué' ? 'lnr-apartment icon-gradient bg-info' : 'lnr-apartment icon-gradient bg-focus'
-" [bg]="bg"></app-page-title>
+" [bg]="bg"  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'"></app-page-title>
 
 <div class="row">
     <!--<div class="col-md-3">-->
@@ -77,7 +77,7 @@
     <!--</div>-->
 </div>
 
-<div class="row" id="element-pannes">
+<div class="row" id="element-pannes"  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
     <div class="col-md-6 col-lg-6 col-xl-6">
         <div class="main-card mb-3 card" id="pdf2">
             <div class="card-body">
@@ -102,7 +102,7 @@
                             <div class="col-md-5">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-subheading">Mois Dernier </div>
+                                        <div class="widget-subheading">Pannes Mois Dernier </div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPannenbre ? countLastMonthPannenbre : 0}}</span></div>
                                         <div class="widget-description text-focus">
                                             {{(countThisMonthPannenbre < countLastMonthPannenbre) ? 'En baisse de' : (countThisMonthPannenbre > countLastMonthPannenbre) ? 'En Hausse de': 'Constant'}}
@@ -133,7 +133,16 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-numbers-sm mt-0 text-primary" >
-                                            <span>{{depPanneThisYear}}</span>
+                                            <!--<span>{{depPanneThisYear}}</span>-->
+                                            <span *ngIf="depPanneThisYear && mini_loader == false">{{depPanneThisYear}}</span>
+                                            <span *ngIf="!depPanneThisYear && mini_loader == false">RAS</span>
+                                            <span *ngIf="!depPanneThisYear && mini_loader == true">
+                                                <div class="ball-pulse">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </span>
                                         </div>
                                         <div class="widget-subheading">Pannes Annuelle</div>
                                     </div>
@@ -169,7 +178,7 @@
                             <div class="col-md-6">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-subheading">Mois Dernier </div>
+                                        <div class="widget-subheading">TDT Mois Dernier </div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneTDT ? countLastMonthPanneTDT : 0}} min</span></div>
                                         <div class="widget-description text-focus">
                                             {{((countThisMonthPanneTDT - countLastMonthPanneTDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneTDT - countLastMonthPanneTDT) > 0) ? 'En Hausse de': 'Constant'}}
@@ -200,7 +209,16 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-numbers-sm mt-0 text-primary" >
-                                            <span>{{depTDTThisYear}} min</span>
+                                            <!--<span>{{depTDTThisYear}} min</span>-->
+                                            <span *ngIf="depTDTThisYear && mini_loader == false">{{depTDTThisYear}} min</span>
+                                            <span *ngIf="!depTDTThisYear && mini_loader == false">RAS</span>
+                                            <span *ngIf="!depTDTThisYear && mini_loader == true">
+                                                <div class="ball-pulse">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </span>
                                         </div>
                                         <div class="widget-subheading">TDT annuel</div>
                                     </div>
@@ -236,7 +254,7 @@
                             <div class="col-md-6">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-subheading">MDT Mois Dernier</div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{countLastMonthPanneMDT ? countLastMonthPanneMDT : 0}} min</span></div>
                                         <div class="widget-description text-focus">
                                             {{((countThisMonthPanneMDT - countLastMonthPanneMDT ) < 0) ? 'En baisse de' : ((countThisMonthPanneMDT - countLastMonthPanneMDT) > 0) ? 'En Hausse de': 'Constant'}}
@@ -269,7 +287,15 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-numbers-sm mt-0 text-primary" >
-                                            <span>{{depMDTThisYear}} min</span>
+                                            <span *ngIf="depMDTThisYear && mini_loader == false">{{depMDTThisYear}} min</span>
+                                            <span *ngIf="!depMDTThisYear && mini_loader == false">RAS</span>
+                                            <span *ngIf="!depMDTThisYear && mini_loader == true">
+                                                <div class="ball-pulse">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </span>
                                         </div>
                                         <div class="widget-subheading">MDT annuel</div>
                                     </div>
@@ -305,7 +331,7 @@
                             <div class="col-md-6">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-subheading">Heures Mois Dernier</div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{hourLastMonth ? (decimal(hourLastMonth) == false ? hourLastMonth : hourLastMonth) : 0}} h</span></div>
                                         <div class="widget-description text-focus">
                                             {{(hourThisMonth < hourLastMonth) ? 'En baisse de' : (hourThisMonth > hourLastMonth) ? 'En Hausse de': 'Constant'}}
@@ -337,7 +363,18 @@
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
                                         <div class="widget-numbers-sm mt-0 text-primary" >
-                                            <span>{{depHourThisYear ? (decimal(depHourThisYear) == false ? depHourThisYear.toFixed(0) : depHourThisYear) : 0 }} h</span>
+                                            <!--<span>{{depHourThisYear ? (decimal(depHourThisYear) == false ? depHourThisYear.toFixed(0) : depHourThisYear) : 0 }} h</span>-->
+                                            <span *ngIf="depHourThisYear && mini_loader == false">
+                                                {{depHourThisYear ? (decimal(depHourThisYear) == false ? depHourThisYear.toFixed(0) : depHourThisYear) : 0 }} h
+                                            </span>
+                                            <span *ngIf="!depHourThisYear && mini_loader == false">RAS</span>
+                                            <span *ngIf="!depHourThisYear && mini_loader == true">
+                                                <div class="ball-pulse">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </span>
                                         </div>
                                         <div class="widget-subheading">Heures annuelle</div>
                                     </div>
@@ -432,7 +469,7 @@
 </div>
 </div>
 
-<div class="row">
+<div class="row"  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
     <div class="col-md-12 col-lg-12 col-xl-12">
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
@@ -553,7 +590,7 @@
 
 
 
-<div class="row" *ngIf="selectedDep.nom == 'Placage';">
+<div class="row" *ngIf="selectedDep.nom == 'Placage' && (authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint')">
     <!--Ligne1-->
     <div class="col-lg-12 col-xl-6" >
         <div class="mb-3 card">
@@ -1429,7 +1466,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="selectedDep.nom == 'Brazil'">
+<div class="row" *ngIf="selectedDep.nom == 'Brazil' && (authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint')" >
     <!--Encollage Brazil-->
     <div class="col-lg-12 col-xl-6" >
         <div class="mb-3 card">
@@ -1848,7 +1885,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="selectedDep.nom == 'Contreplaqué'">
+<div class="row" *ngIf="selectedDep.nom == 'Contreplaqué' && (authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint')">
     <!--Encollage CP-->
     <div class="col-lg-12 col-xl-6" >
         <div class="mb-3 card">
@@ -2172,7 +2209,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row"  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
     <div class="col-md-12">
         <div class="main-card mb-3 card " id="htmlData" #htmlData>
             <div class="card-header">
@@ -2188,7 +2225,7 @@
                     <div role="group" class="btn-group-sm btn-group">
                         <form [formGroup]="selectPanForm">
                             <select (change)="findSso($event.target.value)" name=""  formControlName="periode" class="form-control form-control-sm">
-                                <option value="" selected disabled hidden>-- Sélectionner la période --</option>
+                                <option value="" selected disabled hidden>Sélectionner une période</option>
                                 <option value="ttesp">Toutes les pannes</option>
                                 <option value="tp" >Aujourd'hui</option>
                                 <option value="hp" >Hier</option>
@@ -2272,8 +2309,8 @@
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
                                 <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
-                                    <span class="timeline-title"><b>{{pan.machine}}</b></span>
-                                    <p>{{pan.code}}</p>
+                                    <span class="timeline-title"><b>{{pan.machine | uppercase}}</b></span>
+                                    <p>{{pan.code | uppercase}}</p>
                                 </div>
                             </div>
                             <div class="modal-body">
@@ -2670,7 +2707,7 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
     </div>
 </div>
 
-<div class="row">
+<div class="row"  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
     <div class="col-lg-8 col-xl-8">
         <div class="main-card mb-3 card">
             <div class="card-header">Liste des Lignes</div>

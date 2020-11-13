@@ -1,7 +1,6 @@
-<app-title [heading]="headings +': '+ continuePanne.numero" [subheading]="subheadings" [icon]="icons"></app-title>
+<app-title [heading]="headings +': '+ continuePanne.numero" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'super_admin'"></app-title>
 
-<div class="">
-
+<div  *ngIf="authority === 'super_admin'">
     <div class="app-inner-layout">
         <div class="app-inner-layout__wrapper">
             <div class="app-inner-layout__content card">

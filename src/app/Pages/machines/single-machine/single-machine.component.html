@@ -1,7 +1,7 @@
-<app-page-title [heading]="selectedMachine.nom | uppercase" [subheading]="subheading" [icon]="'lnr-layers icon-gradient bg-focus'
-" [bg]="bg"></app-page-title>
+<app-page-title [heading]="nom_mach | uppercase" [subheading]="subheading" [icon]="'lnr-layers icon-gradient bg-focus'
+" [bg]="bg" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'"></app-page-title>
 
-<div class="row">
+<div *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'" class="row">
     <div class="col-md-12 col-lg-12 col-xl-12">
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
@@ -20,23 +20,68 @@
                 <div class="tab-pane fade active show" id="tab-eg-65">
                     <div class="widget-chart p-0">
 
-                        <app-chart width="400" height="auto"
+                        <app-chart width="400" height="auto" *ngIf="mtbfByYear.labels.length && loader == false "
                                    [type]="'bar'"
                                    [data]="mtbfByYear.datasets"
                                    [lineChartLabels]="mtbfByYear.labels"
                                    [lineChartColors]="colorsMTBF"
                         ></app-chart>
+
+                        <div class="card-body p-2 text-center"  *ngIf="!mtbfByYear.labels.length && loader == false ">
+                            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                        </div>
+                        <div class="card-body p-2 text-center"  *ngIf="!mtbfByYear.labels.length && loader == true ">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="line-spin-fade-loader">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tab-eg-66">
                     <div class="widget-chart p-0">
                         <app-chart
-                                width="400" height="auto"
+                                width="400" height="auto" *ngIf="mdtByYear.labels.length && loader == false "
                                    [type]="'bar'"
                                    [data]="mdtByYear.datasets"
                                    [lineChartLabels]="mdtByYear.labels"
                                    [lineChartColors]="colorsMDT"
                         ></app-chart>
+                        <div class="card-body p-2 text-center"  *ngIf="!mdtByYear.labels.length && loader == false ">
+                            <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
+                        </div>
+                        <div class="card-body p-2 text-center"  *ngIf="!mdtByYear.labels.length && loader == true ">
+                            <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                                <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                                    <div class="loader">
+                                        <div class="line-spin-fade-loader">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="vertical-align: middle">Chargement...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,11 +89,11 @@
     </div>
 </div>
 
-<div class="row">
+<div *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'" class="row">
     <div class="col-md-12">
         <div class="main-card mb-3 card " id="htmlData" #htmlData>
             <div class="card-header">
-                Liste des Pannes
+                {{periode_panne}}&nbsp;<span *ngIf="authority != 'user'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
@@ -62,7 +107,7 @@
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                         <form [formGroup]="selectPanForm">
                             <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
-                                <option value="" selected disabled hidden>Toutes les pannes</option>
+                                <option value="" selected disabled hidden>Sélectionner une période</option>
                                 <option value="ttesp">Toutes les pannes</option>
                                 <option value="tp" >Aujourd'hui</option>
                                 <option value="hp" >Hier</option>
@@ -140,7 +185,7 @@
                         <!--<th class="text-center">Actions</th>-->
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody  *ngIf="pannes.length && loaders == false">
                     <tr style="cursor: pointer" *ngFor="let pan of pannes | filter: term | paginate:{itemsPerPage: pages, currentPage:p}; " (click)="(pan.cont == false && pan.etat == true) ? modal(extendPanne) : open(mymodal); selectedPanne = pan; loadTechPannes()" [ngClass]="{'bg-w': pan.etat == false }" >
                         <ng-template #mymodal let-modal >
                             <div class="modal-header">
@@ -449,8 +494,8 @@
                                         </div>
                                     </div>
                                     <div class="widget-content-left flex2">
-                                        <div class="widget-heading">{{pan.machine}}</div>
-                                        <div class="widget-subheading opacity-7">{{pan.code}}</div>
+                                        <div class="widget-heading">{{pan.machine | uppercase}}</div>
+                                        <div class="widget-subheading opacity-7">{{pan.code | uppercase}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -491,7 +536,21 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                     </tbody>
 
                 </table>
-                <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="!pannes">Aucune Panne trouvée !</p>
+                <p *ngIf="!pannes.length && loaders == false" style="color: grey; font-size: 1.5rem;" class="text-center" >Aucune Panne trouvée !</p>
+                <div *ngIf="!pannes.length && loaders == true" class="text-center">
+                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
+                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
+                            <div class="loader">
+                                <div class="ball-scale-multiple">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="vertical-align: middle">Chargement...</p>
+                    </div>
+                </div>
             </div>
             <div class="d-block clearfix card-footer">
                 <div class="float-left">
@@ -522,8 +581,6 @@ text-overflow: ellipsis;" >{{ pan.cause.length > 20 ? pan.cause.substr(0, 20)+'.
                             </pagination-controls>
                         </li>
                     </ul>
-                    <!--<button class="btn-wide btn btn-link btn-sm">View All</button>-->
-                    <!--<button class="btn-wide btn-shadow btn btn-primary btn-sm">Add New Entry</button>-->
                 </div>
             </div>
         </div>

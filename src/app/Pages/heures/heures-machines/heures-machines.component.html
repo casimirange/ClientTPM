@@ -1,4 +1,4 @@
-<app-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-title>
+<app-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'user_alpi'"></app-title>
 
 <div class="">
 
@@ -6,7 +6,7 @@
         <div class="app-inner-layout__wrapper">
             <div class="app-inner-layout__content card" style="background: transparent">
                 <div >
-                    <div class="col-lg-12 col-md-12 col-xl-12 ml-1 mt-1">
+                    <div class="col-lg-12 col-md-12 col-xl-12 ml-1 mt-1" *ngIf="authority === 'resp_cp' || authority === 'super_admin' || authority === 'user_alpi'"  >
                         <div class="main-card mb-3 card">
                             <div class="card-header">
                                 Enregistrer les heures de Travail Programmées des machines
@@ -85,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-xl-12 ml-1">
+                    <div class="col-lg-12 col-md-12 col-xl-12 ml-1" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'user_alpi'">
                         <div class="main-card mb-3 card">
                             <div class="card-header">
                                 <div *ngIf="ranger == 'false'">Récapitulatif des Heures par machine</div>
@@ -144,7 +144,7 @@
                                         <th  class="text-center" rowspan="2" style="vertical-align: middle;">H. Prog [h]</th>
                                         <th  class="text-center" colspan="2">Arrêts</th>
                                         <th  class="text-center" rowspan="2"  style="vertical-align: middle;">H. Fonct [h]</th>
-                                        <th  class="text-center" rowspan="2" style="vertical-align: middle;">Actions</th>
+                                        <th  class="text-center" rowspan="2" style="vertical-align: middle;"  *ngIf="authority === 'super_admin'">Actions</th>
                                     </tr>
                                     <tr>
                                         <th  class="text-center" >Nombre</th>
@@ -182,7 +182,7 @@
                                             decimal((heure.heure - (heure.AT/60))) == false ? (heure.heure - (heure.AT/60)).toFixed(2) : (heure.heure - (heure.AT/60))
                                             }} h
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center" *ngIf="authority === 'super_admin'">
                                             <div role="group" class="btn-group-sm btn-group">
                                                 <button class=" btn  btn-primary"><i class="fa fa-pencil"></i></button>
                                                 <button class="btn  btn-danger" ><i class="fa fa-times"></i></button>
@@ -194,7 +194,7 @@
 
                                 </table>
                                 <p style="color: grey; font-size: 1.8rem;" class="text-center" *ngIf="heures == []">Aucune Heure trouvée !</p>
-                             </div>
+                        </div>
 
                             <div class="d-block clearfix card-footer">
                                 <div class="float-left">
@@ -234,7 +234,7 @@
 
                 </div>
             </div>
-            <div class="app-inner-layout__sidebar card">
+            <div class="app-inner-layout__sidebar card" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'user_alpi'">
                 <ul class="nav flex-column">
                     <li class="pt-4 pl-3 pr-3 pb-1 nav-item">
                         <form [formGroup]="choiceForm">
@@ -422,9 +422,9 @@
     </div>
 </div>
 
-<script>
-    $(window).on("load resize ", function() {
-        var scrollWidth = $('.tbl-content').width() - $('.tbl-content .table').width();
-        $('.tbl-header').css({'padding-right':scrollWidth});
-    }).resize();
-</script>
+<!--<script>-->
+    <!--$(window).on("load resize ", function() {-->
+        <!--var scrollWidth = $('.tbl-content').width() - $('.tbl-content .table').width();-->
+        <!--$('.tbl-header').css({'padding-right':scrollWidth});-->
+    <!--}).resize();-->
+<!--</script>-->

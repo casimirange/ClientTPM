@@ -6,9 +6,10 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Heures} from "../../../Models/heures";
 import {HeuresService} from "../../../services/heures/heures.service";
 import {Router} from "@angular/router";
-import {DatePipe, Time} from "@angular/common";
+import {DatePipe, Location, Time} from "@angular/common";
 import {log} from "util";
 import {Departement} from "../../../Models/departement";
+import {TokenStorageService} from "../../../auth/token-storage.service";
 
 @Component({
   selector: 'app-heures-machines',
@@ -46,11 +47,14 @@ export class HeuresMachinesComponent implements OnInit {
   d: Date;
   piece: string;
 
+  private roles: string[];
+  public authority: string;
   constructor(private machineService: MachinesService,
               private fb: FormBuilder,
               private  heuresService: HeuresService,
               private datePipe: DatePipe,
               private router: Router,
+              private tokenStorage: TokenStorageService,private _location: Location,
               private modalService: NgbModal,)
   {
     this.createForm();
@@ -120,6 +124,79 @@ export class HeuresMachinesComponent implements OnInit {
     this.loadMachines();
     this.loadThisMonthHeures();
     this.loadHeuresByDep();
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      var content = document.createElement('div');
+      this.roles.every(role => {
+        if (role === 'ROLE_ADMIN') {
+          this.authority = 'admin';
+          return false;
+        } else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        } else if (role === 'ROLE_USER_MINDOUROU') {
+          this.authority = 'user_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_PLACAGE') {
+          this.authority = 'resp_pla';
+          return false;
+        } else if (role === 'ROLE_RESP_SCIERIE') {
+          this.authority = 'resp_sci';
+          return false;
+        } else if (role === 'ROLE_RESP_BRAZIL') {
+          this.authority = 'resp_bra';
+          return false;
+        } else if (role === 'ROLE_RESP_CP') {
+          this.authority = 'resp_cp';
+          return false;
+        } else if (role === 'ROLE_RESP_MAINTENANCE') {
+          this.authority = 'resp_maint';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_MINDOUROU') {
+          this.authority = 'resp_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        }
+        this.authority = 'user_alpi';
+        return true;
+      });
+    }
   }
 
   getMachine() {

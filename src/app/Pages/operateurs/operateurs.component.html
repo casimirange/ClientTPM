@@ -1,6 +1,6 @@
-<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'super_admin'"></app-page-title>
 
-<div class="row">
+<div *ngIf="authority === 'super_admin'" class="row">
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">

@@ -6,7 +6,7 @@ import {MachinesService} from "../../../services/machines/machines.service";
 import {Machine} from "../../../Models/machines";
 import DateTimeFormat = Intl.DateTimeFormat;
 import {Color} from "ng2-charts";
-import {DatePipe} from "@angular/common";
+import {DatePipe, Location} from "@angular/common";
 import {TokenStorageService} from "../../../auth/token-storage.service";
 
 @Component({
@@ -22,6 +22,7 @@ export class ArretsComponent implements OnInit {
   public chartOptions: Partial<any>;
     private roles: string[];
     public authority: string;
+    mini_loader: boolean = false;
 
   arretForm: FormGroup;
   rangeForm: FormGroup;
@@ -51,7 +52,7 @@ export class ArretsComponent implements OnInit {
   };
 
   titre: string;
-  thisYearArret: any;
+  thisYearArret: any[] = [];
 
     datas = {
         labels: [] = [],
@@ -115,7 +116,7 @@ export class ArretsComponent implements OnInit {
               private fb: FormBuilder,
               private datePipe: DatePipe,
               private tokenStorage: TokenStorageService,
-              private machineService: MachinesService,) {
+              private machineService: MachinesService,private _location: Location) {
 
       // this.arretService.getThisMonthArret().subscribe(
       //
@@ -206,12 +207,15 @@ export class ArretsComponent implements OnInit {
   }
 
   thisYearArrets(){
+      this.mini_loader = true
       this.arretService.getThisYearArret().subscribe(
           data => {
               this.thisYearArret = data;
+              this.mini_loader = false
           },
           error => {
               console.log('une erreur a été détectée!')
+              this.mini_loader = false
           },
           () => {
               console.log('nbre this year')
@@ -304,7 +308,7 @@ export class ArretsComponent implements OnInit {
           stroke: {
               lineCap: "round"
           },
-          labels: ["Arrêts Total"]
+          labels: ["Arrêts Du Mois"]
       };
   }
 
@@ -330,20 +334,81 @@ export class ArretsComponent implements OnInit {
       if (this.tokenStorage.getToken()) {
           this.roles = this.tokenStorage.getAuthorities();
           this.roles.every(role => {
+              // 'ROLE_USER_ALPI,,,,,,,'
               if (role === 'ROLE_ADMIN') {
                   this.authority = 'admin';
                   return false;
               } else if (role === 'ROLE_SUPER_ADMIN') {
                   this.authority = 'super_admin';
                   return false;
-              } else if (role === 'ROLE_PM') {
-                  this.authority = 'pm';
+              } else if (role === 'ROLE_USER_MINDOUROU') {
+                  this.authority = 'user_mind';
+
+                  const Swal = require('sweetalert2');
+                  var content = document.createElement('div');
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
                   return false;
-              } else if (role === 'ROLE_RESPONSABLE') {
-                  this.authority = 'responsable';
+              } else if (role === 'ROLE_RESP_PLACAGE') {
+                  this.authority = 'resp_pla';
+                  return false;
+              } else if (role === 'ROLE_RESP_SCIERIE') {
+                  this.authority = 'resp_sci';
+                  return false;
+              } else if (role === 'ROLE_RESP_BRAZIL') {
+                  this.authority = 'resp_bra';
+                  return false;
+              } else if (role === 'ROLE_RESP_CP') {
+                  this.authority = 'resp_cp';
+                  return false;
+              } else if (role === 'ROLE_RESP_MAINTENANCE') {
+                  this.authority = 'resp_maint';
+
+                  const Swal = require('sweetalert2');
+                  var content = document.createElement('div');
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
+                  return false;
+              } else if (role === 'ROLE_RESP_MINDOUROU') {
+                  this.authority = 'resp_mind';
+
+                  const Swal = require('sweetalert2');
+                  var content = document.createElement('div');
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
                   return false;
               }
-              this.authority = 'user';
+              this.authority = 'user_alpi';
               return true;
           });
       }

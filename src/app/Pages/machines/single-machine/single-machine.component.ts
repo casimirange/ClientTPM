@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {Machine} from "../../../Models/machines";
 import {MachinesService} from "../../../services/machines/machines.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Pannes} from "../../../Models/pannes";
 import {PannesService} from "../../../services/pannes/pannes.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Color} from "ng2-charts";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {DatePipe, Location} from "@angular/common";
+import {TokenStorageService} from "../../../auth/token-storage.service";
 
 @Component({
   selector: 'app-single-machine',
@@ -28,14 +30,14 @@ export class SingleMachineComponent implements OnInit {
   selectPanForm: FormGroup;
   rangeForm: FormGroup;
   pageForm: FormGroup;
-  pannes: Pannes[];
-  Tpannes: Pannes[];
-  Hpannes: Pannes[];
+  pannes: Pannes[] = [];
+  Tpannes: Pannes[] = [];
+  Hpannes: Pannes[] = [];
   ranger:string = "false";
   pages:number = 7;
   Opannes: Pannes[];
-  Detailspannes: Pannes[];
-  Outilpannes: Pannes[];
+  Detailspannes: Pannes[] = [];
+  Outilpannes: Pannes[] = [];
   public url: any;
   tail: number;
   closeResult: any;
@@ -43,21 +45,21 @@ export class SingleMachineComponent implements OnInit {
   hourThisMonth: any;
   hourLastMonth: any;
 
-  py: Pannes[];
-  pm: Pannes[];
-  pt: Pannes[];
-  mtbfY: Pannes[];
-  mtbfTY: Pannes[];
-  mtbf: Pannes[];
+  py: Pannes[] = [];
+  pm: Pannes[] = [];
+  pt: Pannes[] = [];
+  mtbfY: Pannes[] = [];
+  mtbfTY: Pannes[] = [];
+  mtbf: Pannes[] = [];
 
   mdtByYear = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
   mtbfByYear = {
-    labels: [],
-    datasets: []
+    labels: [] = [],
+    datasets: [] = []
   };
 
     public colorsMTBF: Color[] = [
@@ -158,10 +160,20 @@ export class SingleMachineComponent implements OnInit {
     OP1: any;
     OP2: any;
 
+    loader: boolean = false;
+    loaders: boolean = false;
+    periode_panne: string = '';
+    nom_mach: string = '';
+    countPannes: number;
+    private roles: string[];
+    public authority: string;
   constructor(private machineService: MachinesService,
               private panneService: PannesService,
               private modalService: NgbModal,
               private fb: FormBuilder,
+              private datePipe: DatePipe,
+              private router: Router,
+              private tokenStorage: TokenStorageService,private _location: Location,
               private route: ActivatedRoute) {
     this.selectedMachine = new Machine;
     this.selectedPanne = new Pannes();
@@ -179,6 +191,68 @@ export class SingleMachineComponent implements OnInit {
     this.ThisMonthPannes();
     this.HourPerMonth();
     this.mtbfAlpicam();
+      if (this.tokenStorage.getToken()) {
+          this.roles = this.tokenStorage.getAuthorities();
+          const Swal = require('sweetalert2');
+          var content = document.createElement('div');
+          this.roles.every(role => {
+              if (role === 'ROLE_ADMIN') {
+                  this.authority = 'admin';
+                  return false;
+              } else if (role === 'ROLE_SUPER_ADMIN') {
+                  this.authority = 'super_admin';
+                  return false;
+              } else if (role === 'ROLE_USER_MINDOUROU') {
+                  this.authority = 'user_mind';
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
+                  return false;
+              } else if (role === 'ROLE_RESP_PLACAGE') {
+                  this.authority = 'resp_pla';
+                  return false;
+              } else if (role === 'ROLE_RESP_SCIERIE') {
+                  this.authority = 'resp_sci';
+                  return false;
+              } else if (role === 'ROLE_RESP_BRAZIL') {
+                  this.authority = 'resp_bra';
+                  return false;
+              } else if (role === 'ROLE_RESP_CP') {
+                  this.authority = 'resp_cp';
+                  return false;
+              } else if (role === 'ROLE_RESP_MAINTENANCE') {
+                  this.authority = 'resp_maint';
+                  return false;
+              } else if (role === 'ROLE_RESP_MINDOUROU') {
+                  this.authority = 'resp_mind';
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
+                  return false;
+
+              }
+              this.authority = 'user_alpi';
+              return true;
+          });
+      }
   }
 
     createForm() {
@@ -207,17 +281,32 @@ export class SingleMachineComponent implements OnInit {
     }
 
   showMachine() {
-      this.machineService.showMachine(Number.parseInt(this.url)).subscribe(
-          res => {
-            this.selectedMachine = res;
-          }
-      )
+      this.route.params.subscribe(params => {
+          let urls = atob(params['id']);
+          this.nom_mach = '';
+          this.machineService.showMachine(Number.parseInt(urls)).subscribe(
+              res => {
+                  this.selectedMachine = res;
+                  this.nom_mach = this.selectedMachine.nom;
+              }
+          )
+      })
   }
 
   historiquePannes(){
+      this.loaders = true
+      this.periode_panne = "toutes les pannes" ;
     this.machineService.historiquePannes(Number.parseInt(this.url)).subscribe(
         res => {
           this.pannes = res;
+            this.loaders = false
+            this.countPannes = res.length;
+        },
+        error => {
+            this.loaders = false
+        },
+        () => {
+
         }
     )
   }
@@ -321,12 +410,17 @@ export class SingleMachineComponent implements OnInit {
     TodayPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true;
+            this.periode_panne = "pannes de la journée";
             this.machineService.getTodayPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne aujourd\'hui');
@@ -338,12 +432,17 @@ export class SingleMachineComponent implements OnInit {
     HierPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true
+            this.periode_panne = "pannes d'hier";
             this.machineService.getHierPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne hier');
@@ -355,12 +454,17 @@ export class SingleMachineComponent implements OnInit {
     ThisWeekPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true
+            this.periode_panne = "pannes de la semaine";
             this.machineService.getThisWeekPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne cette semaine');
@@ -372,12 +476,17 @@ export class SingleMachineComponent implements OnInit {
     LastWeekPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true
+            this.periode_panne = "pannes de la semaine passée";
             this.machineService.getLastWeekPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne aujourd\'hui');
@@ -389,12 +498,21 @@ export class SingleMachineComponent implements OnInit {
     LastMonthPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true
+            const dat = new Date();
+            const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMMM');
+            const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
+            console.log('last Month: '+ dat1);
+            this.periode_panne = "pannes du mois de "+ dat1+" "+x;
             this.machineService.getLastMonthPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne aujourd\'hui');
@@ -406,12 +524,20 @@ export class SingleMachineComponent implements OnInit {
     ThisMonthPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true
+            const dat = new Date();
+            const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()), 'MMMM yyyy');
+            console.log('last Month: '+ dat1);
+            this.periode_panne = "pannes du mois de "+ dat1;
             this.machineService.getThisMonthPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne aujourd\'hui');
@@ -423,12 +549,20 @@ export class SingleMachineComponent implements OnInit {
     LastYearPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true
+            const dat = new Date();
+            const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy');
+            console.log('last Month: '+ dat1);
+            this.periode_panne = "pannes de l'année "+ dat1;
             this.machineService.getLastYearPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne aujourd\'hui');
@@ -440,12 +574,20 @@ export class SingleMachineComponent implements OnInit {
     ThisYearPannes(){
         this.route.params.subscribe(params =>{
             let url = atob(params['id']);
+            this.loaders = true
+            const dat = new Date();
+            const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy');
+            console.log('last Month: '+ dat1);
+            this.periode_panne = "pannes de l'année "+ dat1;
             this.machineService.getThisYearPannes(Number.parseInt(url)).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne aujourd\'hui');
@@ -462,13 +604,19 @@ export class SingleMachineComponent implements OnInit {
             const d2 = this.rangeForm.controls['date2'].value;
 
             console.log(d1 + ' et '+ d2);
+            this.loaders = true
+            this.periode_panne = "pannes du "+d1+" au "+d2 ;
+            console.log(d1 + ' et '+ d2);
 
             this.machineService.getRangeDatePannes(Number.parseInt(url), d1, d2).subscribe(
                 data => {
                     this.pannes = data;
+                    this.loaders = false
+                    this.countPannes = data.length;
                 },
                 error => {
                     console.log('une erreur a été détectée!')
+                    this.loaders = false
                 },
                 () => {
                     console.log('panne aujourd\'hui');
@@ -511,54 +659,59 @@ export class SingleMachineComponent implements OnInit {
   }
 
   mtbfAlpicam(){
+
+      this.route.params.subscribe(params =>{
     const mtbf = {
-      data: [],
+      data: [] = [],
       label: "MTBF",
       yAxisID: 'y-axis-0',
       type: 'bar',
     };
     const mdt = {
-      data: [],
+      data: [] = [],
       label: "MDT",
       yAxisID: 'y-axis-0',
       type: 'line',
     };
     const teste = {
-      data: [],
+      data: [] = [],
       name: 'Nombre de Pannes'
     };
     const test1 = {
-      categories: []
+      categories: [] = []
     };
     const tdt = {
-      data: [],
+      data: [] = [],
       label: "TDT",
       yAxisID: 'y-axis-1',
       type: 'bar',
     };
     const wt = {
-      data: [],
+      data: [] = [],
       label: "MWT",
       yAxisID: 'y-axis-1',
       type: 'bar',
     };
     const ttr = {
-      data: [],
+      data: [] = [],
       label: "MTTR",
       yAxisID: 'y-axis-1',
       type: 'bar',
     };
 
     const panne = {
-      data: [],
+      data: [] = [],
       label: "Pannes",
       yAxisID: 'y-axis-0',
       type: 'line',
     };
-
-    this.route.params.subscribe(params =>{
-
-      this.machineService.mtbfByYear(Number.parseInt(atob(params['id']))).subscribe(
+      this.mtbfByYear.labels = [];
+      this.mtbfByYear.datasets = [];
+      this.mdtByYear.labels = [];
+      this.mdtByYear.datasets = [];
+          this.loader = true;
+          let url = atob(params['id']);
+      this.machineService.mtbfByYear(Number.parseInt(url)).subscribe(
           data1 => {
             this.mtbfY = data1;
             this.machineService.mtbfThisYear(Number.parseInt(atob(params['id']))).subscribe(
@@ -598,11 +751,12 @@ export class SingleMachineComponent implements OnInit {
                   // console.log('dépassé: '+this.labs.valueOf())
                 },
                 error => {
-                  console.log('une erreur a été détectée!')
+                  console.log('une erreur a été détectée!');
+                    this.loader = false;
                 },
                 () => {
                   console.log('years');
-                  console.log(this.py);
+                  this.loader = false;
                 }
             );
           },
@@ -614,7 +768,7 @@ export class SingleMachineComponent implements OnInit {
             console.log(this.pm);
           }
       ) ;
-    });
+
 
     this.mtbfByYear.datasets.push(mtbf);
     this.mtbfByYear.datasets.push(tdt);
@@ -626,7 +780,7 @@ export class SingleMachineComponent implements OnInit {
     // this.test.datasets.push(teste);
     // this.labs.categories.push(this.mtbfByYear.labels);
     // this.labs.categories.push(test1.categories)
-
+  });
   }
 
     findSso($event){

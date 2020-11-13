@@ -34,41 +34,41 @@
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner">
             <ul class="vertical-nav-menu">
-                <li class="app-sidebar__heading">Accueil</li>
-                <li>
+                <li class="app-sidebar__heading" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">Accueil</li>
+                <li *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
                     <a routerLinkActive="mm-active" routerLink="/dashboard">
                         <i class="metismenu-icon pe-7s-display1"></i>
                         Tableau de bord
                     </a>
                 </li>
-                <li *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'" class="app-sidebar__heading">Rapport</li>
-                <li *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'">
+                <li *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'" class="app-sidebar__heading">Rapport</li>
+                <li *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
                     <a routerLinkActive="mm-active" routerLink="/statistiques/alpicam">
                         <i class="metismenu-icon pe-7s-graph3"></i>
                         Alpicam
                     </a>
                 </li>
-                <!--<li *ngFor=" let dp of departement" (click)="showDepart(dp)" style="cursor:pointer;">-->
-                    <!--<a routerLinkActive="mm-active" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin' || authority === 'pm'">-->
-                        <!--<i class="metismenu-icon lnr-apartment"></i>-->
-                        <!--{{dp.nom | titlecase}}-->
-                    <!--</a>-->
-                <!--</li>-->
-                <li *ngIf="authority != 'pm'" class="app-sidebar__heading">Gestion des Machines</li>
+                <li *ngFor=" let dp of departement" (click)="showDepart(dp)" style="cursor:pointer;">
+                    <a routerLinkActive="mm-active" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
+                        <i class="metismenu-icon lnr-apartment"></i>
+                        {{dp.nom | titlecase}}
+                    </a>
+                </li>
+                <li *ngIf="authority != 'resp_maint'" class="app-sidebar__heading">Gestion des Machines</li>
 
-                <li *ngIf="authority != 'pm'">
+                <li *ngIf="authority != 'resp_maint'">
                     <a routerLinkActive="mm-active" routerLink="/tempsMachine">
                         <i class="metismenu-icon pe-7s-clock fa-spin"></i>
                         Horaires Machines
                     </a>
                 </li>
-                <li *ngIf="authority != 'pm'" routerLinkActive="mm-active">
+                <li *ngIf="authority != 'resp_maint'" routerLinkActive="mm-active">
                     <a routerLinkActive="mm-active" routerLink="/arrets">
                         <i class="pe-7s-timer metismenu-icon">
                         </i>Arrêts Machines
                     </a>
                 </li>
-                <li *ngIf="authority != 'pm'" routerLinkActive="mm-active">
+                <li *ngIf="authority != 'resp_maint'" routerLinkActive="mm-active">
                     <a routerLinkActive="mm-active" routerLink="/pannes">
                         <i class="pe-7s-tools metismenu-icon">
                         </i>Pannes Machines

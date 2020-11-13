@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 import  * as html2canvas from "html2canvas";
 import * as html2pdf from 'html2pdf.js';
 import {TokenStorageService} from "../../../auth/token-storage.service";
+import {Location} from "@angular/common";
 // import {content} from "html2canvas/dist/types/src/css";
 // import {content} from "html2canvas/dist/types/css";
 
@@ -89,7 +90,7 @@ export class PannesComponent implements OnInit {
               private machineService: MachinesService,
               private router: Router,
               private tokenStorage: TokenStorageService,
-              private modalService: NgbModal  ) {
+              private modalService: NgbModal, private _location: Location  ) {
       this.createForm();
       this.createForms();
       this.rangeForms();
@@ -101,20 +102,65 @@ export class PannesComponent implements OnInit {
       if (this.tokenStorage.getToken()) {
           this.roles = this.tokenStorage.getAuthorities();
           this.roles.every(role => {
+              // 'ROLE_USER_ALPI,,,,,,,'
               if (role === 'ROLE_ADMIN') {
                   this.authority = 'admin';
                   return false;
               } else if (role === 'ROLE_SUPER_ADMIN') {
                   this.authority = 'super_admin';
                   return false;
-              } else if (role === 'ROLE_PM') {
-                  this.authority = 'pm';
+              } else if (role === 'ROLE_USER_MINDOUROU') {
+                  this.authority = 'user_mind';
+                  const Swal = require('sweetalert2');
+                  var content = document.createElement('div');
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
                   return false;
-              } else if (role === 'ROLE_RESPONSABLE') {
-                  this.authority = 'responsable';
+              } else if (role === 'ROLE_RESP_PLACAGE') {
+                  this.authority = 'resp_pla';
                   return false;
+              } else if (role === 'ROLE_RESP_SCIERIE') {
+                  this.authority = 'resp_sci';
+                  return false;
+              } else if (role === 'ROLE_RESP_BRAZIL') {
+                  this.authority = 'resp_bra';
+                  return false;
+              } else if (role === 'ROLE_RESP_CP') {
+                  this.authority = 'resp_cp';
+                  return false;
+              } else if (role === 'ROLE_RESP_MAINTENANCE') {
+                  this.authority = 'resp_maint';
+                  return false;
+              } else if (role === 'ROLE_RESP_MINDOUROU') {
+                  this.authority = 'resp_mind';
+                  const Swal = require('sweetalert2');
+                  var content = document.createElement('div');
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
+                  return false;
+
               }
-              this.authority = 'user';
+              this.authority = 'user_alpi';
               return true;
           });
       }

@@ -6,7 +6,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DashboardService} from "../../services/dashboard/dashboard.service";
 import {BaseChartDirective, Color, Label} from "ng2-charts";
 // import {ChartDataSets, ChartOptions} from "chart.js";
-import {DatePipe} from "@angular/common";
+import {DatePipe, Location} from "@angular/common";
 import {Arrets} from "../../Models/arrets";
 import {ArretsService} from "../../services/arrets/arrets.service";
 import {Departement} from "../../Models/departement";
@@ -47,7 +47,8 @@ export class DashboardComponent implements OnInit {
     pages: number = 7;
     board: string;
     errorMessage: string;
-    private series: any[] = []; dah: number = 0;
+    series: any[] = [];
+    dah: number = 0;
 
   headings = 'Tableau de Bord';
   subheadings = 'Consultez l\'actualité des évènements ';
@@ -255,8 +256,10 @@ export class DashboardComponent implements OnInit {
     f: Date;
     d: Date;
     loader: boolean = false;
+    mini_loader: boolean = false;
     loaders: boolean = false;
     periode_panne: string = 'pannes de la semaine';
+    nombre: number = 0;
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private arretService: ArretsService,
@@ -264,6 +267,7 @@ export class DashboardComponent implements OnInit {
               private departementService: DepartementsService,
               private userService: UserService,
               private datePipe: DatePipe,
+              private _location: Location,
               private tokenStorage: TokenStorageService,
               private modalService: NgbModal, private router: Router  ) {
 
@@ -284,8 +288,10 @@ export class DashboardComponent implements OnInit {
               for(let pin of data){
                   console.log('récapitulatif: ', pin);
                   x = x + pin.nbre;
+                  this.nombre = this.nombre + pin.nbre;
               }
               this.series.push(x);
+
               console.log('bizzare ', this.series)
           },
           error => {
@@ -294,71 +300,73 @@ export class DashboardComponent implements OnInit {
           () => {
               console.log('Total');
               console.log(this.series);
+              this.chartOptions = {
+                  chart: {
+                      height: 200,
+                      type: "radialBar",
+                  },
+
+                  // series: [this.series],
+                  series: [this.nombre],
+
+                  plotOptions: {
+                      radialBar: {
+                          hollow: {
+                              margin: 0,
+                              size: "70%",
+                              background: "#293450",
+                              dropShadow: {
+                                  enabled: true,
+                                  top: 0,
+                                  left: 0,
+                                  blur: 3,
+                                  opacity: 0.5
+                              }
+                          },
+                          track: {
+                              dropShadow: {
+                                  enabled: true,
+                                  top: 2,
+                                  left: 0,
+                                  blur: 4,
+                                  opacity: 0.15
+                              }
+                          },
+                          dataLabels: {
+                              name: {
+                                  offsetY: -10,
+                                  color: "#fff",
+                                  fontSize: "13px"
+                              },
+                              value: {
+                                  color: "#fff",
+                                  fontSize: "30px",
+                                  show: true,
+                                  formatter: function (val) {
+                                      return val;
+                                  }
+                              }
+                          }
+                      }
+                  },
+                  fill: {
+                      type: "gradient",
+                      gradient: {
+                          shade: "dark",
+                          type: "horizontal",
+                          gradientToColors: ["#ABE5A1"],
+                          stops: [0, 100]
+                      }
+                  },
+                  stroke: {
+                      lineCap: "round"
+                  },
+                  labels: ["Pannes Du Mois"]
+              };
           }
       );
 
-      this.chartOptions = {
-          chart: {
-              height: 200,
-              type: "radialBar",
-          },
 
-          series: [this.series],
-
-          plotOptions: {
-              radialBar: {
-                  hollow: {
-                      margin: 0,
-                      size: "70%",
-                      background: "#293450",
-                      dropShadow: {
-                          enabled: true,
-                          top: 0,
-                          left: 0,
-                          blur: 3,
-                          opacity: 0.5
-                      }
-                  },
-                  track: {
-                      dropShadow: {
-                          enabled: true,
-                          top: 2,
-                          left: 0,
-                          blur: 4,
-                          opacity: 0.15
-                      }
-                  },
-                  dataLabels: {
-                      name: {
-                          offsetY: -10,
-                          color: "#fff",
-                          fontSize: "13px"
-                      },
-                      value: {
-                          color: "#fff",
-                          fontSize: "30px",
-                          show: true,
-                          formatter: function (val) {
-                              return val;
-                          }
-                      }
-                  }
-              }
-          },
-          fill: {
-              type: "gradient",
-              gradient: {
-                  shade: "dark",
-                  type: "horizontal",
-                  gradientToColors: ["#ABE5A1"],
-                  stops: [0, 100]
-              }
-          },
-          stroke: {
-              lineCap: "round"
-          },
-          labels: ["Total Pannes"]
-      };
 
   }
 
@@ -398,27 +406,86 @@ export class DashboardComponent implements OnInit {
       if (this.tokenStorage.getToken()) {
           this.roles = this.tokenStorage.getAuthorities();
           this.roles.every(role => {
+              // 'ROLE_USER_ALPI,,,,,,,'
               if (role === 'ROLE_ADMIN') {
                   this.authority = 'admin';
                   return false;
               } else if (role === 'ROLE_SUPER_ADMIN') {
                   this.authority = 'super_admin';
                   return false;
-              } else if (role === 'ROLE_PM') {
-                  this.authority = 'pm';
+              } else if (role === 'ROLE_USER_MINDOUROU') {
+                  this.authority = 'user_mind';
+                  const Swal = require('sweetalert2');
+                  var content = document.createElement('div');
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
                   return false;
-              } else if (role === 'ROLE_RESPONSABLE') {
-                  this.authority = 'responsable';
+              } else if (role === 'ROLE_RESP_PLACAGE') {
+                  this.authority = 'resp_pla';
                   return false;
+              } else if (role === 'ROLE_RESP_SCIERIE') {
+                  this.authority = 'resp_sci';
+                  return false;
+              } else if (role === 'ROLE_RESP_BRAZIL') {
+                  this.authority = 'resp_bra';
+                  return false;
+              } else if (role === 'ROLE_RESP_CP') {
+                  this.authority = 'resp_cp';
+                  return false;
+              } else if (role === 'ROLE_RESP_MAINTENANCE') {
+                  this.authority = 'resp_maint';
+                  return false;
+              } else if (role === 'ROLE_RESP_MINDOUROU') {
+                  this.authority = 'resp_mind';
+                  const Swal = require('sweetalert2');
+                  var content = document.createElement('div');
+                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  Swal.fire({
+                      title: 'Aucun Accès!',
+                      html: content,
+                      icon: 'error',
+                      showCancelButton: false,
+                      confirmButtonText: 'OK',
+                      allowOutsideClick: false,
+                      focusConfirm: true,
+                  }).then((result) => {
+                      this._location.back();
+                  })
+                  return false;
+
               }
-              this.authority = 'user';
+              this.authority = 'user_alpi';
+              const Swal = require('sweetalert2');
+              var content = document.createElement('div');
+              content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+              Swal.fire({
+                  title: 'Aucun Accès!',
+                  html: content,
+                  icon: 'error',
+                  showCancelButton: false,
+                  confirmButtonText: 'OK',
+                  allowOutsideClick: false,
+                  focusConfirm: true,
+              }).then((result) => {
+                  this._location.back();
+              })
               return true;
           });
       }
 
     this.selectedPanne = new Pannes();
     this.selectedArret = new Arrets();
-    this.TodayPannes();
+    this.PanneToday();
     this.LoadArrets();
     this.loadDepartements();
     this.countAllPannes();
@@ -857,10 +924,16 @@ export class DashboardComponent implements OnInit {
 
 
     countThisYear(){
+        this.mini_loader = true
     this.dashboardService.CountThisYear().subscribe(
         data => {
             this.nbreThisYear = data;
-        }
+            this.mini_loader = false
+        },
+        error => {
+            this.mini_loader = false
+        },
+        () =>{}
     );
 
     this.dashboardService.CountPastMonth().subscribe(
@@ -1029,6 +1102,29 @@ export class DashboardComponent implements OnInit {
         );
     }
 
+    PanneToday(){
+        this.loader = true;
+        this.pannes = [];
+        this.todatpannes = [];
+        this.periode_panne = "pannes de la journée";
+        this.panneService.getTodayPannes().subscribe(
+            data => {
+                this.todatpannes = data;
+                this.todatpannesLength = data.length;
+                this.countPannes = data.length;
+                this.loader = false;
+            },
+            error => {
+                console.log('une erreur a été détectée!');
+                this.loader = false;
+            },
+            () => {
+                console.log('panne aujourd\'hui');
+                console.log(this.pannes);
+            }
+        );
+    }
+
     TodayPannes(){
         this.loader = true;
         this.pannes = [];
@@ -1037,7 +1133,6 @@ export class DashboardComponent implements OnInit {
         this.panneService.getTodayPannes().subscribe(
             data => {
                 this.pannes = data;
-                this.todatpannes = data;
                 this.todatpannesLength = data.length;
                 this.countPannes = data.length;
                 this.loader = false;
@@ -1217,7 +1312,7 @@ export class DashboardComponent implements OnInit {
         console.log('rien');
         const d1 = this.rangeForm.controls['date1'].value;
         const d2 = this.rangeForm.controls['date2'].value;
-        this.periode_panne = "pannes de "+d1+" au "+d2 ;
+        this.periode_panne = "pannes du "+d1+" au "+d2 ;
         console.log(d1 + ' et '+ d2);
         this.loader = true;
         this.pannes = [];

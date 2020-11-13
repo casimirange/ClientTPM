@@ -88,6 +88,7 @@ import { RadialBarComponent } from './dashboard/radial-bar/radial-bar.component'
 import { EditPanneComponent } from './Pages/arrets/pannes/edit-panne/edit-panne.component';
 import {RapportService} from "./services/rapport/rapport.service";
 import { DashCartComponent } from './dashboard/dash-cart/dash-cart.component';
+import {AutocompleteLibModule} from "angular-ng-autocomplete";
 // import {ClientSideRowModel} from "ag-grid";
 // import {NgScrollbarModule} from "ngx-scrollbar";
 // import {IgxGridModule} from "igniteui-angular";
@@ -166,6 +167,7 @@ import { DashCartComponent } from './dashboard/dash-cart/dash-cart.component';
     ChartsModule,
     NgApexchartsModule,
     jqxGridModule,
+    AutocompleteLibModule,
 
     // IgxGridModule
     // NgScrollbarModule

@@ -31,15 +31,36 @@
             </span>
     </div>
     <div class="app-header__content">
-        <!--<div class="app-header-left">-->
-            <!--<div class="search-wrapper active">-->
+        <div class="app-header-left">
+            <div class="search-wrapper active">
                 <!--<div class="input-holder ">-->
                     <!--<input type="text" class="search-input" placeholder="Tapez une recherche...">-->
                     <!--<button class="search-icon"><span></span></button>-->
                 <!--</div>-->
                 <!--<button class="close"></button>-->
-            <!--</div>-->
-        <!--</div>-->
+                <div class="ng-autocomplete search-input">
+                    <ng-autocomplete
+                    [data] = "machines"
+                    [searchKeyword] = "'nom'"
+                    placeHolder = "Rechercher une machine..."
+                    [itemTemplate] = "itemTemplate"
+                    [notFoundTemplate] = "notFoundTemplate"
+                    (selected)='selectedEvent($event)'
+                    (inputFocused)='selectedEvent($event)'
+                    (inputChanged)='selectedEvent($event)'
+                    >
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplate let-item>
+                    <a [innerHTML]="item.nom | uppercase"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
         <div class="app-header-right">
 
             <div class="header-btn-lg pr-0">
@@ -69,11 +90,11 @@
                                                         <div class="widget-content-left">
                                                             <div class="widget-heading">
                                                                 <!--{{selectedUser.prenom}} {{selectedUser.nom}}-->
-                                                                {{info.username}}
+                                                                {{info.username | titlecase}}
                                                             </div>
                                                             <div class="widget-subheading opacity-8">
                                                                 <!--{{selectedUser.fonction}}-->
-                                                                {{info.authorities}}
+                                                                {{name}}
                                                             </div>
                                                         </div>
                                                         <div class="widget-content-right mr-2">
@@ -156,11 +177,11 @@
                         <div class="widget-content-left  ml-3 header-user-info">
                             <div class="widget-heading">
                                 <!--{{selectedUser.prenom}} {{selectedUser.nom}}-->
-                                {{info.username}}
+                                {{info.username | titlecase}}
                             </div>
                             <div class="widget-subheading">
                                 <!--{{selectedUser.fonction}}-->
-                                {{info.authorities}}
+                                {{name}}
                             </div>
                         </div>
                         <!--<div class="widget-content-right header-user-info ml-3">-->

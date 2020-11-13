@@ -13,6 +13,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RapportService} from "../../services/rapport/rapport.service";
 import html2canvas from "html2canvas";
 import jsPDF from 'jspdf';
+import {TokenStorageService} from "../../auth/token-storage.service";
 // import pdfMake from 'pdfmake/build/pdfmake';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 
@@ -242,11 +243,11 @@ export class StatsGlobalComponent implements OnInit {
   tab: any[];
 
   ridotto: any[] = [];
-  sec_pla: any[];
-  sec_bra: any[];
-  sec_sci: any[];
-  sec_cp: any[];
-  sec_alpi: any[];
+  sec_pla: any[] = [];
+  sec_bra: any[] = [];
+  sec_sci: any[] = [];
+  sec_cp: any[] = [];
+  sec_alpi: any[] = [];
   section: string = "Alpicam";
 
   series: any[];
@@ -268,6 +269,12 @@ export class StatsGlobalComponent implements OnInit {
   loadertype: boolean = false;
   loaderrecap: boolean = false;
   loaderrapport: boolean = false;
+  b1: boolean = false;
+  b2: boolean = false;
+  b3: boolean = false;
+  b4: boolean = false;
+  b5: boolean = false;
+  chargement: boolean = false;
 
   pdfMake = require('pdfmake/build/pdfmake.js');
 
@@ -276,10 +283,13 @@ export class StatsGlobalComponent implements OnInit {
   public rangeForm: FormGroup;
   public ranges: string = 'false';
 
+  Swal: any = require('sweetalert2');
+
   constructor(private dashboardService: DashboardService,
               private rapportService: RapportService,
               private datePipe: DatePipe,
               private router: Router,
+              private token: TokenStorageService,
               private fb: FormBuilder,
               private departementService: DepartementsService,
               private alpicamService: AlpicamService) {
@@ -347,43 +357,643 @@ export class StatsGlobalComponent implements OnInit {
 
   }
 
-  getBase64Image(img: any){
-    var canvas = document.createElement("canvas");
-    console.log('image');
-    canvas.width = img.width;
-    canvas.height= img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    return dataURL;
-  }
+  // async downloads(){
+  async downloads(){
+    const dat = new Date();
+    const min = 'min';
+    const tab = this.ridotto
+    const user = this.token.getUsername();
+    const dat1 = this.datS3;
+    const dat2 = this.datS4;
+    const dat3 = this.datS1;
+    const dat4 = this.datS2;
 
-  download(){
-    let doc = new jsPDF();
+    this.sec_alpi = [];
+    this.sec_pla = [];
+    this.sec_cp = [];
+    this.sec_bra = [];
+    this.sec_sci = [];
+    this.b1 = true;
+    this.b2 = true;
+    this.b3 = true;
+    this.b4 = true;
+    this.b5 = true;
 
-    for(var i = 0; i< this.hihi.length; i++){
+    this.rapportService.getRidottos().subscribe(
+        data => {
+          this.sec_alpi = data;
+          this.b1 = false;
+        },
+        error => {
+          console.log('error alpi!')
+        },
+        () => {
+          console.log('alp', this.sec_alpi);
+        }
+    );
 
-      let imageData = this.getBase64Image(document.getElementById(this.hihi[i]));
-      console.log(imageData);
+    this.rapportService.getPlacages().subscribe(
+        data => {
+          this.sec_pla = data;
+          this.b2 = false;
+        },
+        error => {
+          console.log('error plac')
+        },
+        () => {
+          console.log('pla', this.sec_pla);
+        }
+    );
 
-      doc.addImage(imageData, "JPG", 10, (i+1)*10);
-      doc.addPage();
-    }
+    this.rapportService.getBrazils().subscribe(
+        data => {
+          this.sec_bra = data;
+          this.b3 = false;
+        },
+        error => {
+          console.log('error bra')
+        },
+        () => {
+          console.log('bra', this.sec_bra);
+        }
+    );
 
-    doc.save("Rapport final");
-  }
+    this.rapportService.getContreplaques().subscribe(
+        data => {
+          this.sec_cp = data;
+          this.b4 = false;
+        },
+        error => {
+          console.log('error cp')
+        },
+        () => {
+          console.log('con', this.sec_cp);
+        }
+    );
 
-  downloads(){
-    html2canvas(document.getElementById('cp')).then(canvas => {
-      canvas.getContext('2d');
-      var data = canvas.toDataURL();
+    this.rapportService.getScieries().subscribe(
+        data => {
+          this.sec_sci = data;
+          this.b5 = false;
+        },
+        error => {
+          console.log('error scierir')
+        },
+        () => {
+          console.log('scie', this.sec_sci);
+        }
+    );
+
+    // this.alpicamRapport();
+
+    // if (!this.sec_alpi.length ){
+    //   // this.chargements()
+    //   console.log("first test")
+    // }
+    // if (this.sec_alpi.length ) {
+      console.log('this.ridotto ', this.ridotto)
+      console.log('this.pl ', this.sec_pla)
+      console.log('this.s ', this.sec_sci)
+      console.log('this.b ', this.sec_bra)
+      console.log('this.c ', this.sec_cp)
       var docDefinition = {
-        content: [{
-          image: data,
-          width: 500,
-        }]
+        pageSize: 'A4',
+        pageOrientation: 'portrait',
+        pageMargins: [40, 60, 40, 60],
+        footer: function (currentPage, pageCount) {
+          return {
+            columns: [
+              {
+                text: 'from acon-stats produced by ' + user,
+                fontSize: 8,
+                italics: true,
+                margin: [40, 20, 0, 0],
+                alignment: 'left'
+              },
+              // { text: 'from acon-stats produced by '+this.token.getUsername().bold(), fontSize: 8, italics: true, margin: [ 10, 10, 0, 0 ], alignment: 'left'},
+              {
+                text: currentPage.toString() + '/' + pageCount,
+                fontSize: 8,
+                italics: true,
+                margin: [0, 20, 40, 0],
+                alignment: 'right'
+              }
+            ],
+          }
+        },
+        header: {
+          columns: [
+            {
+              image: await this.getBase64ImageFromURL("/assets/images/logo24.png"),
+              width: 87,
+              height: 22,
+              margin: [40, 12, 0, 0], alignment: 'left'
+            },
+            {
+              text: 'Rapport de Maintenance ALPICAM Industries',
+              alignment: 'right',
+              fontSize: 8,
+              italics: true,
+              margin: [0, 12, 0, 0],
+            },
+            {
+              text: 'Exporté le: ' + this.datePipe.transform(dat, 'dd/MM/yyyy'),
+              bold: true, fontSize: 8, italics: true, alignment: 'right', margin: [0, 12, 40, 0],
+            }
+          ]
+        },
+
+        background: function(){
+          return [
+            {
+              image: 'bee',
+              height: 42,
+              margin: [0, 0, 0, 0],
+            }
+          ];
+        },
+
+        images: {
+          bee: await this.getBase64ImageFromURL("/assets/images/test.png"),
+        },
+
+
+        info: {
+          title: 'Rapport de Maintenance' + this.datePipe.transform(dat, 'MMM-yyyy'),
+          author: user,
+          subject: 'tpm subject',
+          creator: 'ACON',
+          producer: user,
+          creationDate: this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm')
+        },
+        content: [
+          {
+            text: 'TOTAL PRODUCTIVE MAINTENANCE',
+            fontSize: 16, bold: true, alignment: 'center',
+            decoration: 'underline', decorationStyle: 'double',
+            margin: [0, 0, 0, 100]
+          },
+          {
+            image: await this.getBase64ImageFromURL("/assets/images/TPM.jpg"),
+            width: 400,
+            height: 300,
+            alignment: 'center',
+            margin: [0, 0, 0, 60]
+          },
+          {
+            text: [
+              {
+                text: 'Le présent document fait état de la situation des pannes de l\'entreprise entre les périodes allant du ',
+                fontSize: 12
+              },
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 12,
+                bold: true
+              },
+              {text: ' et celle du ', fontSize: 12,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 12,
+                bold: true
+              }
+            ]
+          },
+          {
+            margin: [0, 80],
+            columns: [
+              {
+                text: [
+                  {
+                    text: 'Créer Par :\n',
+                    fontSize: 13,
+                    italics: true,
+                    bold: true,
+                    alignment: 'left',
+                    decoration: 'underline',
+                    margin: [0, 10]
+                  },
+                  {
+                    text: [
+                      {text: user, fontSize: 12, alignment: 'left',},
+                    ],
+                  },
+                ]
+              },
+              {
+                qr: 'Rapport TPM Alpicam Industries, Creer le : ' + this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm') + ' par ' + user,
+                fit: '100',
+                alignment: 'right',
+                width: 100,
+                height: 100,
+              },
+
+            ]
+          },
+
+
+          // {
+          //        text: 'tableau 4',
+          //        pageBreak: 'before',
+          //        pageOrientation: 'landscape'
+          //       },
+          //         this.fp(),
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Alpicam: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+                margin: [0, 0, 0, 20]
+              },
+            ],
+            pageBreak: 'before',
+            pageOrientation: 'landscape',
+          },
+          this.getTable(this.sec_alpi),
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Brazil: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+            ],
+            margin: [0, 20]
+          },
+          this.getTable(this.sec_bra),
+
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Placage: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+              },
+            ], margin: [0, 0, 0, 20],
+            pageBreak: 'before',
+            pageOrientation: 'landscape',
+          },
+          this.getTable(this.sec_pla),
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Contreplaqué: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+              },
+            ], margin: [0, 20]
+          },
+          this.getTable(this.sec_cp),
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Scierie: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+              },
+            ], margin: [0, 20]
+          },
+          this.getTable(this.sec_sci),
+          {
+            text: 'EXPLICATIONS DES ABBREVIATIONS',
+            fontSize: 16,
+            decoration: 'underline',
+            alignment: 'center',
+            decorationStyle: 'double',
+            margin: [0, 0, 0, 40],
+            pageBreak: 'before',
+            pageOrientation: 'portrait',
+          },
+          {
+            text: [
+              {text: 'N°1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {
+                text: 'Nombre de pannes de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 12,
+              }
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: 'N°2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {
+                text: 'Nombre de pannes de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 12,
+              }
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: '%N°: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {text: 'Taux d\'évolution (en %) des pannes entre les deux périodes ', fontSize: 12,}
+            ], margin: [0, 0, 0, 20]
+          },
+
+          {
+            text: [
+              {text: 'TDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {
+                text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 12,
+              }
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: 'TDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {
+                text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 12,
+              }
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: '%TDT: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {text: 'Taux d\'évolution (en %) du Total Down Time entre les deux périodes ', fontSize: 12,}
+            ], margin: [0, 0, 0, 20]
+          },
+
+          {
+            text: [
+              {text: 'MDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {
+                text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 12,
+              }
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: 'MDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {
+                text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 12,
+              }
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: '%MDT: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+              {text: 'Taux d\'évolution (en %) du Mean Down Time entre les deux périodes ', fontSize: 12,}
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: '%: ', fontSize: 12, color: '#d92550', bold: true, alignment: 'left',},
+              {text: 'Augmentation ', fontSize: 12,}
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: '%: ', fontSize: 12, color: '#3ac47d', bold: true, alignment: 'left',},
+              {text: 'Baisse ', fontSize: 12,}
+            ], margin: [0, 0, 0, 20]
+          },
+          {
+            text: [
+              {text: '%: ', fontSize: 12, color: '#f7b924', bold: true, alignment: 'left',},
+              {text: 'Constant ', fontSize: 12,}
+            ], margin: [0, 0, 0, 20]
+          },
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            bold: true,
+            margin: [0, 0, 0, 10],
+
+          },
+          subheader: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 5]
+          },
+          tableExample: {
+            margin: [0, 5, 0, 15]
+          },
+          tableOpacityExample: {
+            margin: [0, 5, 0, 15],
+            fillColor: 'blue',
+            fillOpacity: 0.3
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 12,
+            fillColor: '#d0eeff',
+            fontFamily: 'Roboto',
+            alignement: 'left',
+            color: '#0b5885',
+          },
+          td: {
+            bold: false,
+            fontSize: 10,
+            fillColor: '#fff',
+            fontFamily: 'Roboto',
+            alignement: 'left',
+            color: '#000',
+          },
+          tv: {
+            bold: false,
+            fontSize: 10,
+            fillColor: '#fff',
+            fontFamily: 'Roboto',
+            alignement: 'left',
+            color: '#3ac47d',
+          },
+          tr: {
+            bold: false,
+            fontSize: 10,
+            fillColor: '#fff',
+            fontFamily: 'Roboto',
+            alignement: 'left',
+            color: '#d92550',
+          },
+          tj: {
+            bold: false,
+            fontSize: 10,
+            fillColor: '#fff',
+            fontFamily: 'Roboto',
+            alignement: 'left',
+            color: '#f7b924',
+          }
+        },
+
       };
-      this.pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+      this.pdfMake.createPdf(docDefinition).open();
+
+    // }
+  }
+  chargements(){
+
+    this.Swal.fire({
+      html: '<div class="p-2 text-center">'+
+     '<div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">'+
+      '<div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">'+
+      '<div class="loader">'+
+      '<div class="line-spin-fade-loader">'+
+      '<div></div>'+
+      '<div></div>'+
+      '<div></div>'+
+      '<div></div>'+
+      '<div></div>'+
+      '<div></div>'+
+      '<div></div>'+
+      '<div></div>'+
+      '</div>'+
+      '</div>'+
+      '</div>'+
+      '<p style="vertical-align: middle">Exportation du rapport...</p>'+
+      '</div>'+
+      '</div>',
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: true,
+    })
+  }
+  fp(){
+    const dat1 = this.datS3;
+    const dat2 = this.datS4;
+    const dat3 = this.datS1;
+    const dat4 = this.datS2;
+    return [
+      { text: 'RAPPORT DE MAINTENANCE', fontSize: 16, bold: true, alignment: 'center', decoration: 'underline', decorationStyle: 'double', margin: [0, 0, 0, 20] },
+      { text:
+          [
+            {text:'Le présent document fait état de la situation de l\'entreprise entre les périodes allant du ', fontSize: 12},
+            {text:this.datePipe.transform(dat1, 'dd/MM/yyyy') +' au '+ this.datePipe.transform(dat2, 'dd/MM/yyyy'), fontSize: 12, bold: true},
+            {text:' vs ', fontSize: 12, bold: false, color: '#777777'},
+            {text:this.datePipe.transform(dat3, 'dd/MM/yyyy') +' au '+ this.datePipe.transform(dat4, 'dd/MM/yyyy'), fontSize: 12, bold: true}
+          ]
+      },
+      { text: 'Légende', fontSize: 13, italics: true, bold: true, alignment: 'left', decoration: 'underline', margin: [0, 10] },
+      { text:
+          [
+            {text:'N°1: ', fontSize: 12, color: '#00ace6', bold: true, alignment: 'left',},
+            {text:'nombre de pannes de la période comprise entre '+this.datePipe.transform(dat1, 'dd/MM/yyyy') +' et '+ this.datePipe.transform(dat2, 'dd/MM/yyyy'), fontSize: 12, }
+          ],
+      },
+      { text:
+          [
+            {text:'N°2: ', fontSize: 12, color: '#00ace6', bold: true, alignment: 'left',},
+            {text:'nombre de pannes de la période comprise entre '+this.datePipe.transform(dat3, 'dd/MM/yyyy') +' et '+ this.datePipe.transform(dat4, 'dd/MM/yyyy'), fontSize: 12, }
+          ],
+      },
+      { text:
+          [
+            {text:'%N°: ', fontSize: 12, color: '#00ace6', bold: true, alignment: 'left',},
+            {text:'taux d\'évolution (en %) des pannes entre les deux périodes ', fontSize: 12, }
+          ],
+      },
+
+      { text: 'Rapport Alpicam Industries', fontSize: 13, italics: true, bold: true, alignment: 'left', decoration: 'underline', margin: [0, 20] },
+      this.getTable(this.ridotto),
+      {
+        text: 'tableau 2',
+        pageBreak: 'before',
+        pageOrientation: 'landscape',
+      },
+    ]
+  }
+
+  getTable(rap: any[]){
+    return {
+      style: 'tableExample',
+      table: {
+        headerRows: 1,
+        widths: [100, '*', '*', '*', '*', '*', '*', '*', '*', '*'],
+        body: [
+          [{ text: 'Section', style: 'tableHeader' }, { text: 'N°1', style: 'tableHeader' }, { text: 'N°2', style: 'tableHeader' }, { text: '%N°', style: 'tableHeader' }, { text: 'TDT1', style: 'tableHeader' }, { text: 'TDT2', style: 'tableHeader' }, { text: '%TDT', style: 'tableHeader' }, { text: 'MDT1', style: 'tableHeader' }, { text: 'MDT2', style: 'tableHeader' }, { text: '%MDT', style: 'tableHeader' }],
+
+            ...rap.map(stat => {
+            return [{text: stat.dep, style: 'td'},
+              {text: stat.nbre2, style: 'td'}, {text: stat.nbre1, style: 'td'}, {text: stat.taux == 0 ? stat.taux+' %':
+                (stat.taux == 100) ? stat.taux+' %':
+                    (stat.taux == -100) ? (stat.taux) * (-1)+' %':
+                        (stat.taux < 0 ) ? (stat.taux.toFixed(2)) * (-1)+' %':
+                            stat.taux.toFixed(2)+' %', style: stat.taux < 0 ? 'tv' : stat.taux > 0 ? 'tr' : 'tj'},
+
+              {text: stat.TDT2, style: 'td'}, {text: stat.TDT1, style: 'td'}, {text: stat.taux_TDT == 0 ? stat.taux_TDT+' %':
+                  (stat.taux_TDT == 100) ? stat.taux_TDT+' %':
+                      (stat.taux_TDT == -100) ? (stat.taux_TDT) * (-1)+' %':
+                          (stat.taux_TDT < 0 ) ? (stat.taux_TDT.toFixed(2)) * (-1)+' %':
+                              stat.taux_TDT.toFixed(2)+' %', style: stat.taux_TDT < 0 ? 'tv' : stat.taux_TDT > 0 ? 'tr' : 'tj'},
+
+              {text: stat.MDT2 == 0 ? stat.MDT2 : stat.MDT2.toFixed(2), style: 'td'}, {text: stat.MDT1 == 0 ? stat.MDT1 : stat.MDT1.toFixed(2), style: 'td'}, {text: stat.taux_MDT == 0 ? stat.taux_MDT+' %':
+                  (stat.taux_MDT == 100) ? stat.taux_MDT+' %':
+                      (stat.taux_MDT == -100) ? (stat.taux_MDT) * (-1)+' %':
+                          (stat.taux_MDT < 0 ) ? (stat.taux_MDT.toFixed(2)) * (-1)+' %':
+                              stat.taux_MDT.toFixed(2)+' %', style: stat.taux_MDT < 0 ? 'tv' : stat.taux_MDT > 0 ? 'tr' : 'tj'}]
+          }),
+          // [{text: 'Alpicam', style: 'td'}, {text: '1008', style: 'td'}, {text: '488', style: 'td'}, {text: '51.59%', style: 'td'}, {text: '69839', style: 'td'}, {text: '32781', style: 'td'}, {text: '53.06%', style: 'td'}, {text: '69.28', style: 'td'}, {text: '67.17', style: 'td'}, {text: '3.05%', style: 'td'}],
+          // [{text: 'Brazil', style: 'td'}, {text: '1008', style: 'td'}, {text: '488', style: 'td'}, {text: '51.59%', style: 'tr'}, {text: '69839', style: 'td'}, {text: '32781', style: 'td'}, {text: '53.06%', style: 'td'}, {text: '69.28', style: 'td'}, {text: '67.17', style: 'td'}, {text: '3.05%', style: 'td'}],
+          // [{text: 'Contreplaqué', style: 'td'}, {text: '1008', style: 'td'}, {text: '4881w', style: 'td'}, {text: '51.59%', style: 'td'}, {text: '69839', style: 'td'}, {text: '32781', style: 'td'}, {text: '53.06%', style: 'td'}, {text: '69.28', style: 'td'}, {text: '67.17', style: 'td'}, {text: '3.05%', style: 'td'}],
+          // [{text: 'Placage', style: 'td'}, {text: '1008', style: 'td'}, {text: '488', style: 'td'}, {text: '51.59%', style: 'td'}, {text: '69839', style: 'td'}, {text: '32781', style: 'td'}, {text: '53.06%', style: 'td'}, {text: '69.28', style: 'td'}, {text: '67.17', style: 'td'}, {text: '3.05%', style: 'td'}],
+          // [{text: 'Scierie', style: 'td'}, {text: '1008', style: 'td'}, {text: '488', style: 'td'}, {text: '51.59%', style: 'tv'}, {text: '69839', style: 'td'}, {text: '32781', style: 'td'}, {text: '53.06%', style: 'td'}, {text: '69.28', style: 'td'}, {text: '67.17', style: 'td'}, {text: '3.05%', style: 'td'}],
+        ]
+      },
+      layout: 'lightHorizontalLines'
+    };
+  }
+
+  getBase64ImageFromURL(url) {
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL);
+      };
+      img.onerror = error => {
+        reject(error);
+      };
+      img.src = url;
     });
   }
 
@@ -551,6 +1161,7 @@ export class StatsGlobalComponent implements OnInit {
     this.rapportService.getRidottos().subscribe(
         data => {
           this.sec_alpi = data;
+          this.placageRapport();
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -602,6 +1213,7 @@ export class StatsGlobalComponent implements OnInit {
     this.rapportService.getPlacages().subscribe(
         data => {
           this.sec_pla = data;
+          this.brazilRapport();
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -653,6 +1265,7 @@ export class StatsGlobalComponent implements OnInit {
     this.rapportService.getBrazils().subscribe(
         data => {
           this.sec_bra = data;
+          this.contreplaqueRapport();
         },
         error => {
           console.log('une erreur a été détectée!')
@@ -704,6 +1317,7 @@ export class StatsGlobalComponent implements OnInit {
     this.rapportService.getContreplaques().subscribe(
         data => {
           this.sec_cp = data;
+          this.scierieRapport();
         },
         error => {
           console.log('une erreur a été détectée!')

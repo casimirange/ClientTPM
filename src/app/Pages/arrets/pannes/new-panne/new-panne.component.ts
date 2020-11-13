@@ -15,6 +15,8 @@ import {Pannes} from "../../../../Models/pannes";
 // import  Swal from 'sweetalert2/dist/sweetalert2.js';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import DateTimeFormat = Intl.DateTimeFormat;
+import {TokenStorageService} from "../../../../auth/token-storage.service";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-new-panne',
@@ -54,6 +56,10 @@ export class NewPanneComponent implements OnInit {
     di: DateTimeFormat;
     piece: string;
 
+    add_tec: boolean = false;
+    private roles: string[];
+    public authority: string;
+
     // @ViewChild('dayPicker') datePicker: DatePickerComponent;
 
     constructor(private machineService: MachinesService,
@@ -62,7 +68,8 @@ export class NewPanneComponent implements OnInit {
                 private fb: FormBuilder,
                 private panneService: PannesService,
                 private modalService: NgbModal,
-                private router: Router) {
+                private tokenStorage: TokenStorageService,
+                private router: Router, private _location: Location) {
         this.createForm();
         this.panne = new Pannes();
         this.pn = new Pannes();
@@ -105,6 +112,154 @@ export class NewPanneComponent implements OnInit {
         this.loadActiveTechniciens();
         this.loadUnfinishedPannes();
         this.loadTechPannes(this.panne);
+        if (this.tokenStorage.getToken()) {
+            this.roles = this.tokenStorage.getAuthorities();
+            this.roles.every(role => {
+                if (role === 'ROLE_ADMIN') {
+                    this.authority = 'admin';
+                    const Swal = require('sweetalert2');
+                    var content = document.createElement('div');
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_SUPER_ADMIN') {
+                    this.authority = 'super_admin';
+                    return false;
+                } else if (role === 'ROLE_USER_MINDOUROU') {
+                    this.authority = 'user_mind';
+                    // const Swal = require('sweetalert2');
+                    // var content = document.createElement('div');
+                    // content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    // Swal.fire({
+                    //     title: 'Aucun Accès!',
+                    //     html: content,
+                    //     icon: 'error',
+                    //     showCancelButton: false,
+                    //     confirmButtonText: 'OK',
+                    //     allowOutsideClick: false,
+                    //     focusConfirm: true,
+                    // }).then((result) => {
+                    //     this._location.back();
+                    // })
+                    return false;
+                } else if (role === 'ROLE_RESP_PLACAGE') {
+                    this.authority = 'resp_pla';
+                    const Swal = require('sweetalert2');
+                    var content = document.createElement('div');
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_SCIERIE') {
+                    this.authority = 'resp_sci';
+                    const Swal = require('sweetalert2');
+                    var content = document.createElement('div');
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_BRAZIL') {
+                    this.authority = 'resp_bra';
+                    const Swal = require('sweetalert2');
+                    var content = document.createElement('div');
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_CP') {
+                    this.authority = 'resp_cp';
+                    const Swal = require('sweetalert2');
+                    var content = document.createElement('div');
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_MAINTENANCE') {
+                    this.authority = 'resp_maint';
+                    const Swal = require('sweetalert2');
+                    var content = document.createElement('div');
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_MINDOUROU') {
+                    this.authority = 'resp_mind';
+                    const Swal = require('sweetalert2');
+                    var content = document.createElement('div');
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+
+                }
+                this.authority = 'user_alpi';
+                return true;
+            });
+        }
     }
 
     addPanne() {
@@ -138,6 +293,19 @@ export class NewPanneComponent implements OnInit {
 
         //ici je parcours la liste des utilisateurs ajoutés puis j'insère
 
+
+        if(!this.panne.idT.length){
+            Swal.fire({
+                title: 'Attention!!',
+                text: "Vous n'avez sélectionné aucun technicien ",
+                icon: 'warning',
+                showCancelButton: true,
+                showConfirmButton: false,
+                cancelButtonColor: '#b97a56',
+                cancelButtonText: 'OK',
+                allowOutsideClick: false
+            });
+        }else{
         for (let x = 0; x < this.panne.idT.length; x++) {
             console.log('nbre enrg ' + x);
             console.log(this.panne.idT[x]);
@@ -201,7 +369,7 @@ export class NewPanneComponent implements OnInit {
             }
 
         }
-
+    }
         // const Swal = require('sweetalert2');
         if((this.dt <= 15 && this.panForm.controls['etat'].value == 'false') || this.dt > 15) {
             const Toast = Swal.mixin({

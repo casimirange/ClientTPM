@@ -1,6 +1,6 @@
-<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'"></app-page-title>
 
-<div class="row">
+<div class="row" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'">
     <div class="col-md-12">
         <div class="main-card mb-3 card " id="htmlData" #htmlData>
             <div class="card-header">
@@ -18,17 +18,17 @@
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                         <form [formGroup]="selectPanForm">
                             <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
-                                <option value="" selected disabled hidden>Toutes les pannes</option>
-                                <option value="ttesp">Toutes les pannes</option>
+                                <option value="" selected disabled hidden>Sélectionner une période</option>
+                                <option value="ttesp" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">Toutes les pannes</option>
                                 <option value="tp" >Aujourd'hui</option>
                                 <option value="hp" >Hier</option>
                                 <option value="twp" >Cette Semaine</option>
                                 <option value="lwp" >Semaine Dernière</option>
                                 <option value="tmp" >Ce mois</option>
                                 <option value="lmp" >Mois Dernier</option>
-                                <option value="typ" >Cette Année</option>
-                                <option value="lyp" >Année Dernière</option>
-                                <option value="pp"  >Personaliser la recherche</option>
+                                <option value="typ" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">Cette Année</option>
+                                <option value="lyp" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">Année Dernière</option>
+                                <option value="pp"  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">Personaliser la recherche</option>
                             </select>
                         </form>
                     </div>
@@ -79,8 +79,8 @@
                             <div class="modal-header">
                                 <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
                                 <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
-                                    <span class="timeline-title"><b>{{pan.machine}}</b></span>
-                                    <p>{{pan.code}}</p>
+                                    <span class="timeline-title"><b>{{pan.machine | uppercase}}</b></span>
+                                    <p>{{pan.code | uppercase}}</p>
                                 </div>
                             </div>
                             <div class="modal-body">

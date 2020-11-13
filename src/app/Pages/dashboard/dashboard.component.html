@@ -1,6 +1,6 @@
-<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' "></app-page-title>
 
-<div class="row" *ngIf="cdpannes && authority != 'user'">
+<div class="row" *ngIf="cdpannes && authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
     <div class="col-md-6 "  style="cursor: pointer;" *ngFor="let cdp of cdpannes" (click)="showDepart(cdp)" [ngClass]="cdpannesLength == 4 ? 'col-lg-3' : cdpannesLength == 3 ? 'col-lg-4' : cdpannesLength == 2 ? 'col-lg-6' : 'col-lg-3'">
         <div class="mb-3 widget-chart widget-chart2 text-left card" [ngClass]="
             cdp.dep == 'Scierie' ? 'card-shadow-danger' :
@@ -36,7 +36,7 @@
     </div>
 
 </div>
-<div class="tabs-animation">
+<div class="tabs-animation" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'" >
     <div class="row" >
         <div class="col-md-12 col-lg-6 col-xl-7">
             <div class="main-card mb-3 card">
@@ -44,12 +44,11 @@
                     <div>
                         <h5 class="menu-header-title text-capitalize text-secondary">Suivi Journalier</h5>
                     </div>
-                    <div class="btn-actions-pane-right" *ngIf="authority != 'user'">
+                    <div class="btn-actions-pane-right" *ngIf="authority === 'admin' || authority === 'super_admin' || authority === 'resp_maint'">
                         <div role="group" class="btn-group-sm btn-group">
-                            <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                             <form [formGroup]="dashPanForm">
                                 <select (change)="suiviJournalier($event.target.value)" name="" formControlName="dashPeriode" class="form-control form-control-sm">
-                                    <option value="" selected disabled hidden>30 Derniers Jours</option>
+                                    <option value="" selected disabled hidden>Sélectionner une période</option>
                                     <option value="l30d" >30 Derniers Jours</option>
                                     <option value="tmp" >Ce mois</option>
                                     <option value="lmp" >Mois Dernier</option>
@@ -60,7 +59,7 @@
                     </div>
 
                 </div>
-                <div *ngIf="ranger == 'true' && authority != 'user'" class="btn-actions-pane-right mr-2">
+                <div *ngIf="ranger == 'true'" class="btn-actions-pane-right mr-2">
                     <div  role="group" class="btn-group-sm btn-group">
                         <div >
                             <form [formGroup]="rangeForm">
@@ -115,7 +114,7 @@
                     </div>
                 </div>
 
-                <div class="border-top bg-light card-header" *ngIf="authority != 'user' && authority != 'responsable'">
+                <div class="border-top bg-light card-header" *ngIf="authority === 'admin' || authority === 'super_admin' || authority === 'resp_maint'">
                     <div class="actions-icon-btn mx-auto">
                         <div>
                             <div role="group" class="btn-group-lg btn-group nav">
@@ -125,7 +124,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body" *ngIf="authority != 'user' && authority != 'responsable'">
+                <div class="card-body" *ngIf="authority === 'admin' || authority === 'super_admin' || authority === 'resp_maint'">
                     <div class="tab-content">
                         <div class="tab-pane active fade show" id="tab-content-income" role="tabpanel">
                             <h5 class="menu-header-title">Pannes
@@ -286,7 +285,7 @@
                                 <div class="col-md-6" *ngFor="let recap of recapMonthFailure">
                                     <div class="widget-chart">
                                         <div class="widget-chart-content">
-                                            <div class="widget-subheading">Mois Dernier</div>
+                                            <div class="widget-subheading">Pannes Mois Dernier</div>
                                             <div class="widget-numbers-sm mt-0 text-alternate"><span>{{recap.lastMonthFailure}}</span></div>
                                             <div class="widget-description text-focus">
                                                 {{(recap.taux < 0) ? 'En baisse de' : (recap.taux > 0) ? 'En Hausse de': 'Constant'}}
@@ -315,15 +314,24 @@
                                     <div class="divider mt-0 mb-0 mr-2"></div>
                                     <div class="widget-chart">
                                         <div class="widget-chart-content">
-                                            <div class="widget-numbers-sm mt-0 text-primary" >
-                                                <span *ngFor="let nber of nbreThisYear">{{nber.nbre}}</span>
+                                            <div class="widget-numbers-sm mt-0 text-primary" *ngFor="let nber of nbreThisYear" >
+                                                <!--<span>{{nber.nbre}}</span>-->
+                                                <span *ngIf="nbreThisYear.length && mini_loader == false">{{nber.nbre}}</span>
+                                                <span *ngIf="!nbreThisYear.length && mini_loader == false">RAS</span>
+                                                <span *ngIf="!nbreThisYear.length && mini_loader == true">
+                                                <div class="ball-pulse">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </span>
                                             </div>
-                                            <div class="widget-subheading">Total annuel</div>
+                                            <div class="widget-subheading">Pannes Annuelle</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
                                 <div class="widget-subheading text-capitalize text-center col-md-3" *ngFor=" let dp of departement" (click)="showDepart(dp)" style="cursor: pointer; width: auto;">
                                     <span class="mb-2 mr-2 border-0 btn-transition btn btn-outline-secondary">{{dp.nom}}</span>
                                 </div>
@@ -343,7 +351,7 @@
             </div>
 
 
-            <div class="main-card mb-3 card" *ngIf="authority != 'user'">
+            <div class="main-card mb-3 card" *ngIf="authority === 'admin' || authority === 'super_admin' || authority === 'resp_maint'">
                 <div class="card-body">
                     <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Liste des Pannes de la Journée</h6>
                     <div class="border-light card-border scroll-area-sm card">
@@ -674,7 +682,7 @@
                 </div>
             </div>
 
-            <div class="main-card mb-3 card" *ngIf="authority != 'user'">
+            <div class="main-card mb-3 card" *ngIf="authority === 'admin' || authority === 'super_admin'">
                 <div class="card-body">
                     <h6 class="text-muted text-uppercase font-size-md opacity-7 mb-3 font-weight-normal">Liste des Machines en Arrêt</h6>
                     <div class="border-light card-border scroll-area-sm card">
@@ -745,11 +753,11 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">
         <div class="col-md-12">
             <div class="main-card mb-3 card " id="htmlData" #htmlData>
                 <div class="card-header">
-                    {{periode_panne}}&nbsp;<span *ngIf="authority != 'user'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
+                    {{periode_panne}}&nbsp;<span>(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
                     <div class="btn-actions-pane-right">
                         <div role="group" class="btn-group-sm btn-group">
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
@@ -763,17 +771,17 @@
                             <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
                             <form [formGroup]="selectPanForm">
                                 <select (change)="findSso($event.target.value)" name="" id="" formControlName="periode" class="form-control form-control-sm">
-                                    <option value="" selected disabled hidden>Cette Semaine</option>
-                                    <option value="ttesp" *ngIf="authority != 'user'">Toutes les pannes</option>
+                                    <option value="" selected disabled hidden>Sélectionner une période</option>
+                                    <option value="ttesp" >Toutes les pannes</option>
                                     <option value="tp" >Aujourd'hui</option>
                                     <option value="hp" >Hier</option>
                                     <option value="twp" >Cette Semaine</option>
                                     <option value="lwp" >Semaine Dernière</option>
                                     <option value="tmp" >Ce mois</option>
                                     <option value="lmp" >Mois Dernier</option>
-                                    <option value="typ" *ngIf="authority != 'user'">Cette Année</option>
-                                    <option value="lyp" *ngIf="authority != 'user'">Année Dernière</option>
-                                    <option value="pp"  *ngIf="authority != 'user'">Personaliser la recherche</option>
+                                    <option value="typ" >Cette Année</option>
+                                    <option value="lyp" >Année Dernière</option>
+                                    <option value="pp" >Personaliser la recherche</option>
                                 </select>
                             </form>
                         </div>
@@ -931,8 +939,8 @@
                                 <div class="modal-header">
                                     <h6 class="modal-title timeline-title" id="modal-basic-title"><b>Panne N°:</b> {{pan.numero}}</h6>
                                     <div class="close vertical-timeline-element-content bounce-in" (click)="showMachine(pan); modal.close('save click')" >
-                                        <span class="timeline-title"><b>{{pan.machine}}</b></span>
-                                        <p>{{pan.code}}</p>
+                                        <span class="timeline-title"><b>{{pan.machine | uppercase}}</b></span>
+                                        <p>{{pan.code | uppercase}}</p>
                                     </div>
                                 </div>
                                 <div class="modal-body">
@@ -1127,8 +1135,8 @@
                                             </div>
                                         </div>
                                         <div class="widget-content-left flex2">
-                                            <div class="widget-heading">{{pan.machine}}</div>
-                                            <div class="widget-subheading opacity-7">{{pan.code}}</div>
+                                            <div class="widget-heading">{{pan.machine | uppercase}}</div>
+                                            <div class="widget-subheading opacity-7">{{pan.code | uppercase}}</div>
                                         </div>
                                     </div>
                                 </div>

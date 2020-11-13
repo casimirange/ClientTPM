@@ -3,7 +3,7 @@ import {DepartementsService} from "../../../services/departements/departements.s
 import {Departement} from "../../../Models/departement";
 import {Route} from "@angular/compiler/src/core";
 import {ActivatedRoute, ActivatedRouteSnapshot, Params, Router} from "@angular/router";
-import {DatePipe, formatNumber} from "@angular/common";
+import {DatePipe, formatNumber, Location} from "@angular/common";
 import {__param} from "tslib";
 import {LignesService} from "../../../services/lignes/lignes.service";
 import {Ligne} from "../../../Models/lignes";
@@ -19,6 +19,7 @@ import {DashboardService} from "../../../services/dashboard/dashboard.service";
 import {ChartComponent} from "ng-apexcharts";
 import {angularClassDecoratorKeys} from "codelyzer/util/utils";
 import {Color} from "ng2-charts";
+import {TokenStorageService} from "../../../auth/token-storage.service";
 
 
 @Component({
@@ -560,6 +561,7 @@ export class SingleDepartementComponent implements OnInit {
   ids: number;
 
   loader: boolean = false;
+  mini_loader: boolean = false;
   loaderdash: boolean = false;
   loaderPareto: boolean = false;
   loaderMtbf: boolean = false;
@@ -591,6 +593,8 @@ export class SingleDepartementComponent implements OnInit {
   periode_panne: string = '';
   dah: number = 0;
   dah2: number = 0;
+  private roles: string[];
+  public authority: string;
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
@@ -600,7 +604,8 @@ export class SingleDepartementComponent implements OnInit {
                private route: ActivatedRoute,
                private dashboardService: DashboardService,
                private datePipe: DatePipe,
-               private router: Router
+               private router: Router,
+               private tokenStorage: TokenStorageService,private _location: Location
   ) {
     this.selectedDep = new Departement();
     this.selectedLigne = new Ligne();
@@ -644,6 +649,198 @@ export class SingleDepartementComponent implements OnInit {
             this.series2.push(Number.parseInt(mach.TDT));
             this.series3.push(this.countThisMonthPanneMDT);
             // var options = {
+                this.chartOptions = {
+                  chart: {
+                    height: 200,
+                    type: "radialBar",
+                  },
+
+                  series: [mach.nbre],
+
+                  plotOptions: {
+                    radialBar: {
+                      hollow: {
+                        margin: 0,
+                        size: "70%",
+                        background: "#293450",
+                        dropShadow: {
+                          enabled: true,
+                          top: 0,
+                          left: 0,
+                          blur: 3,
+                          opacity: 0.5
+                        }
+                      },
+                      track: {
+                        dropShadow: {
+                          enabled: true,
+                          top: 2,
+                          left: 0,
+                          blur: 4,
+                          opacity: 0.15
+                        }
+                      },
+                      dataLabels: {
+                        name: {
+                          offsetY: -10,
+                          color: "#fff",
+                          fontSize: "13px"
+                        },
+                        value: {
+                          color: "#fff",
+                          fontSize: "30px",
+                          show: true,
+                          formatter: function (val) {
+                            return val;
+                          }
+                        }
+                      }
+                    }
+                  },
+                  fill: {
+                    type: "gradient",
+                    gradient: {
+                      shade: "dark",
+                      type: "horizontal",
+                      gradientToColors: ["#e3a1e5"],
+                      stops: [0, 100]
+                    }
+                  },
+                  stroke: {
+                    lineCap: "round"
+                  },
+                  labels: [this.countThisMonthPannenbre > 1 ? "Total Pannes" : "Total Panne"]
+                };
+                // var options = {
+                this.TDTOptions = {
+                  chart: {
+                    height: 200,
+                    type: "radialBar",
+                  },
+
+                  series: [mach.TDT],
+
+                  plotOptions: {
+                    radialBar: {
+                      hollow: {
+                        margin: 0,
+                        size: "70%",
+                        background: "#293450",
+                        dropShadow: {
+                          enabled: true,
+                          top: 0,
+                          left: 0,
+                          blur: 3,
+                          opacity: 0.5
+                        }
+                      },
+                      track: {
+                        dropShadow: {
+                          enabled: true,
+                          top: 2,
+                          left: 0,
+                          blur: 4,
+                          opacity: 0.15
+                        }
+                      },
+                      dataLabels: {
+                        name: {
+                          offsetY: -10,
+                          color: "#fff",
+                          fontSize: "20px"
+                        },
+                        value: {
+                          color: "#fff",
+                          fontSize: this.countThisMonthPanneTDT >= 10000 ? "25px" : this.countThisMonthPanneTDT >= 1000 ? "28px" : "30px",
+                          show: true,
+                          formatter: function (val) {
+                            return val + " min";
+                          }
+                        }
+                      }
+                    }
+                  },
+                  fill: {
+                    type: "gradient",
+                    gradient: {
+                      shade: "dark",
+                      type: "horizontal",
+                      gradientToColors: ["#f65656"],
+                      stops: [0, 100]
+                    }
+                  },
+                  stroke: {
+                    lineCap: "round"
+                  },
+                  labels: ["TDT"]
+                };
+                // var options = {
+                this.MDTOptions = {
+                  chart: {
+                    height: 200,
+                    type: "radialBar",
+                  },
+
+                  series: [this.countThisMonthPanneMDT],
+
+                  plotOptions: {
+                    radialBar: {
+                      hollow: {
+                        margin: 0,
+                        size: "70%",
+                        background: "#293450",
+                        dropShadow: {
+                          enabled: true,
+                          top: 0,
+                          left: 0,
+                          blur: 3,
+                          opacity: 0.5
+                        }
+                      },
+                      track: {
+                        // background: "#e5a1b2",
+                        dropShadow: {
+                          enabled: true,
+                          top: 2,
+                          left: 0,
+                          blur: 4,
+                          opacity: 0.15
+                        }
+                      },
+                      dataLabels: {
+                        name: {
+                          offsetY: -10,
+                          color: "#fff",
+                          fontSize: "20px"
+                        },
+                        value: {
+                          color: "#fff",
+                          fontSize: "30px",
+                          show: true,
+                          formatter: function (val) {
+                            return val + " min";
+                          }
+                        }
+                      }
+                    }
+                  },
+                  fill: {
+                    type: "gradient",
+                    // colors: "transparent",
+                    gradient: {
+                      shade: "dark",
+                      type: "vertical",
+                      // inverseColors: true,
+                      // gradientToColors: ["#e5d4a1"],
+                      gradientToColors: ["#f9ce66"],
+                      stops: [0, 100]
+                    }
+                  },
+                  stroke: {
+                    lineCap: "round",
+                  },
+                  labels: ["MDT"]
+                };
 
           },
               error => {
@@ -661,6 +858,70 @@ export class SingleDepartementComponent implements OnInit {
             // this.hourThisMonth = machs.heure;
             this.series4.push(this.hourThisMonth);
 
+            // var options ={
+            this.HOUROptions = {
+              chart: {
+                height: 200,
+                type: "radialBar",
+              },
+
+              series: [this.hourThisMonth],
+
+              plotOptions: {
+                radialBar: {
+                  hollow: {
+                    margin: 0,
+                    size: "70%",
+                    background: "#293450",
+                    dropShadow: {
+                      enabled: true,
+                      top: 0,
+                      left: 0,
+                      blur: 3,
+                      opacity: 0.5
+                    }
+                  },
+                  track: {
+                    dropShadow: {
+                      enabled: true,
+                      top: 2,
+                      left: 0,
+                      blur: 4,
+                      opacity: 0.15
+                    }
+                  },
+                  dataLabels: {
+                    name: {
+                      offsetY: -10,
+                      color: "#fff",
+                      fontSize: "13px"
+                    },
+                    value: {
+                      color: "#fff",
+                      fontSize: this.hourThisMonth >= 10000 ? "25px" : this.hourThisMonth >= 1000 ? "28px" : "30px",
+                      show: true,
+                      formatter: function (val) {
+                        return val+" h";
+                      }
+                    }
+                  }
+                }
+              },
+              fill: {
+                type: "gradient",
+                gradient: {
+                  shade: "dark",
+                  type: "horizontal",
+                  gradientToColors: ["#abe5a1"],
+                  stops: [0, 100]
+                }
+              },
+              stroke: {
+                lineCap: "round"
+              },
+              labels: ["Total Heures"]
+            };
+
           },
               error => {
                 console.log('une erreur a été détectée!')
@@ -672,261 +933,7 @@ export class SingleDepartementComponent implements OnInit {
               );
     });
 
-    this.chartOptions = {
-      chart: {
-        height: 200,
-        type: "radialBar",
-      },
 
-      series: [this.series1],
-
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            margin: 0,
-            size: "70%",
-            background: "#293450",
-            dropShadow: {
-              enabled: true,
-              top: 0,
-              left: 0,
-              blur: 3,
-              opacity: 0.5
-            }
-          },
-          track: {
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              blur: 4,
-              opacity: 0.15
-            }
-          },
-          dataLabels: {
-            name: {
-              offsetY: -10,
-              color: "#fff",
-              fontSize: "13px"
-            },
-            value: {
-              color: "#fff",
-              fontSize: "30px",
-              show: true,
-              formatter: function (val) {
-                return val;
-              }
-            }
-          }
-        }
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "dark",
-          type: "horizontal",
-          gradientToColors: ["#e3a1e5"],
-          stops: [0, 100]
-        }
-      },
-      stroke: {
-        lineCap: "round"
-      },
-      labels: [this.countThisMonthPannenbre > 1 ? "Total Pannes" : "Total Panne"]
-    };
-    // var options = {
-    this.TDTOptions = {
-      chart: {
-        height: 200,
-        type: "radialBar",
-      },
-
-      series: [this.series2],
-
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            margin: 0,
-            size: "70%",
-            background: "#293450",
-            dropShadow: {
-              enabled: true,
-              top: 0,
-              left: 0,
-              blur: 3,
-              opacity: 0.5
-            }
-          },
-          track: {
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              blur: 4,
-              opacity: 0.15
-            }
-          },
-          dataLabels: {
-            name: {
-              offsetY: -10,
-              color: "#fff",
-              fontSize: "20px"
-            },
-            value: {
-              color: "#fff",
-              fontSize: this.countThisMonthPanneTDT >= 10000 ? "25px" : this.countThisMonthPanneTDT >= 1000 ? "28px" : "30px",
-              show: true,
-              formatter: function (val) {
-                return val + " min";
-              }
-            }
-          }
-        }
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "dark",
-          type: "horizontal",
-          gradientToColors: ["#f65656"],
-          stops: [0, 100]
-        }
-      },
-      stroke: {
-        lineCap: "round"
-      },
-      labels: ["TDT"]
-    };
-    // var options = {
-    this.MDTOptions = {
-      chart: {
-        height: 200,
-        type: "radialBar",
-      },
-
-      series: [this.series3],
-
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            margin: 0,
-            size: "70%",
-            background: "#293450",
-            dropShadow: {
-              enabled: true,
-              top: 0,
-              left: 0,
-              blur: 3,
-              opacity: 0.5
-            }
-          },
-          track: {
-            // background: "#e5a1b2",
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              blur: 4,
-              opacity: 0.15
-            }
-          },
-          dataLabels: {
-            name: {
-              offsetY: -10,
-              color: "#fff",
-              fontSize: "20px"
-            },
-            value: {
-              color: "#fff",
-              fontSize: "30px",
-              show: true,
-              formatter: function (val) {
-                return val + " min";
-              }
-            }
-          }
-        }
-      },
-      fill: {
-        type: "gradient",
-        // colors: "transparent",
-        gradient: {
-          shade: "dark",
-          type: "vertical",
-          // inverseColors: true,
-          // gradientToColors: ["#e5d4a1"],
-          gradientToColors: ["#f9ce66"],
-          stops: [0, 100]
-        }
-      },
-      stroke: {
-        lineCap: "round",
-      },
-      labels: ["MDT"]
-    };
-    // var options ={
-    this.HOUROptions = {
-      chart: {
-        height: 200,
-        type: "radialBar",
-      },
-
-      series: [this.series4],
-
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            margin: 0,
-            size: "70%",
-            background: "#293450",
-            dropShadow: {
-              enabled: true,
-              top: 0,
-              left: 0,
-              blur: 3,
-              opacity: 0.5
-            }
-          },
-          track: {
-            dropShadow: {
-              enabled: true,
-              top: 2,
-              left: 0,
-              blur: 4,
-              opacity: 0.15
-            }
-          },
-          dataLabels: {
-            name: {
-              offsetY: -10,
-              color: "#fff",
-              fontSize: "13px"
-            },
-            value: {
-              color: "#fff",
-              fontSize: this.hourThisMonth >= 10000 ? "25px" : this.hourThisMonth >= 1000 ? "28px" : "30px",
-              show: true,
-              formatter: function (val) {
-                return val+" h";
-              }
-            }
-          }
-        }
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "dark",
-          type: "horizontal",
-          gradientToColors: ["#abe5a1"],
-          stops: [0, 100]
-        }
-      },
-      stroke: {
-        lineCap: "round"
-      },
-      labels: ["Total Heures"]
-    };
   }
 
   dashForm() {
@@ -1025,9 +1032,85 @@ export class SingleDepartementComponent implements OnInit {
     var date = new Date();
     var lastDay = new Date(date.getFullYear()-1, 1, date.setDate(1));
     console.log('la date: '+ lastDay);
+
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      var content = document.createElement('div');
+      this.roles.every(role => {
+        if (role === 'ROLE_ADMIN') {
+          this.authority = 'admin';
+          return false;
+        } else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        } else if (role === 'ROLE_USER_MINDOUROU') {
+          this.authority = 'user_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_PLACAGE') {
+          this.authority = 'resp_pla';
+          return false;
+        } else if (role === 'ROLE_RESP_SCIERIE') {
+          this.authority = 'resp_sci';
+          return false;
+        } else if (role === 'ROLE_RESP_BRAZIL') {
+          this.authority = 'resp_bra';
+          return false;
+        } else if (role === 'ROLE_RESP_CP') {
+          this.authority = 'resp_cp';
+          return false;
+        } else if (role === 'ROLE_RESP_MAINTENANCE') {
+          this.authority = 'resp_maint';
+          return false;
+        } else if (role === 'ROLE_RESP_MINDOUROU') {
+          this.authority = 'resp_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+
+        }
+        this.authority = 'user_alpi';
+        content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+        Swal.fire({
+          title: 'Aucun Accès!',
+          html: content,
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          focusConfirm: true,
+        }).then((result) => {
+          this._location.back();
+        })
+        return true;
+      });
+    }
   }
 
   getChart3(){
+    this.route.params.subscribe(params => {
     this.datas.labels = [];
     this.datas.datasets = [];
     this.loaderdash = true;
@@ -1045,7 +1128,6 @@ export class SingleDepartementComponent implements OnInit {
           yAxisID: 'y-axis-1',
           type: 'line'
         };
-      this.route.params.subscribe(params => {
         let url = atob(params['id']);
         this.departementService.getDashboard(Number.parseInt(url)).subscribe(
             list => {
@@ -1068,15 +1150,16 @@ export class SingleDepartementComponent implements OnInit {
                 console.log('chargement des pannes');
                 console.log("test007: "+this.dah)
               }
+        )
 
-        )});
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
       // this.datas.datasets ? this.loaders = false : this.loaders = true
-
+  });
   }
 
   DashboardThisMonth(){
+    this.route.params.subscribe(params => {
     this.datas.labels = [];
     this.datas.datasets = [];
     this.loaderdash = true;
@@ -1094,7 +1177,6 @@ export class SingleDepartementComponent implements OnInit {
           yAxisID: 'y-axis-1',
           type: 'line'
         };
-      this.route.params.subscribe(params => {
         let url = atob(params['id']);
         this.departementService.getDashboardThisMonth(Number.parseInt(url)).subscribe(
             list => list.forEach(mach => {
@@ -1116,13 +1198,14 @@ export class SingleDepartementComponent implements OnInit {
               this.loaderdash = false;
               console.log("test007: "+this.dah)
             }) ;
-      });
+
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
-
+  });
   }
 
   DashboardLastMonth(){
+    this.route.params.subscribe(params => {
     this.datas.labels = [];
     this.datas.datasets = [];
     this.loaderdash = true;
@@ -1140,7 +1223,6 @@ export class SingleDepartementComponent implements OnInit {
           yAxisID: 'y-axis-1',
           type: 'line'
         };
-      this.route.params.subscribe(params => {
         let url = atob(params['id']);
         this.departementService.getDashboardLastMonth(Number.parseInt(url)).subscribe(
             list => list.forEach(mach => {
@@ -1162,13 +1244,14 @@ export class SingleDepartementComponent implements OnInit {
               this.loaderdash = false;
               console.log("test007: "+this.dah)
             }) ;
-      });
+
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
-
+  });
   }
 
   DashboardRange(){
+    this.route.params.subscribe(params => {
     this.datas.labels = [];
     this.datas.datasets = [];
     this.loaderdash = true;
@@ -1186,7 +1269,6 @@ export class SingleDepartementComponent implements OnInit {
           yAxisID: 'y-axis-1',
           type: 'line'
         };
-      this.route.params.subscribe(params => {
         const d1 = this.rangeForm.controls['date1'].value;
         const d2 = this.rangeForm.controls['date2'].value;
         const dat = new Date();
@@ -1212,16 +1294,17 @@ export class SingleDepartementComponent implements OnInit {
               this.loaderdash = false;
               console.log("test007: "+this.dah)
             }) ;
-      });
+
       this.datas.datasets.push(datasetNbrePanne3);
       this.datas.datasets.push(datasetNbrePanne4);
-
+  });
   }
 
   countThisYear(){
     this.route.params.subscribe(params => {
       let url = atob(params['id']);
       console.log('url finale: ' +url);
+      this.mini_loader = true;
         this.departementService.year(Number.parseInt(url)).subscribe(
             data => {
               for(let pin of data){
@@ -1229,7 +1312,14 @@ export class SingleDepartementComponent implements OnInit {
                 this.depPanneThisYear = pin.nbre;
                 this.depMDTThisYear = Math.round(pin.MDT);
                 this.depHourThisYear = Math.round(pin.hour);
+                this.mini_loader = false
               }
+            },
+            error => {
+              this.mini_loader = false
+            },
+            () => {
+
             }
         );
     });
@@ -1264,10 +1354,10 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   showPannesDep() {
+    this.route.params.subscribe(params =>{
     this.loader = true;
     this.pannes = [];
     this.periode_panne = "toutes les pannes";
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
       this.departementService.showPannesDep(Number.parseInt(url)).subscribe(
           data => {
@@ -1697,10 +1787,10 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   TodayPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
     this.pannes = [];
     this.periode_panne = "pannes de la journée";
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getTodayPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1719,10 +1809,10 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   HierPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
     this.pannes = [];
     this.periode_panne = "pannes d'hier";
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getHierPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1741,10 +1831,10 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   ThisWeekPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
     this.pannes = [];
     this.periode_panne = "pannes de la semaine";
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getThisWeekPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1763,10 +1853,10 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   LastWeekPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
     this.pannes = [];
     this.periode_panne = "pannes de la semaine passée";
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getLastWeekPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1785,6 +1875,7 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   LastMonthPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
     this.pannes = [];
     const dat = new Date();
@@ -1792,7 +1883,6 @@ export class SingleDepartementComponent implements OnInit {
     const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
     console.log('last Month: '+ dat1);
     this.periode_panne = "pannes du mois de "+ dat1+" "+x;
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getLastMonthPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1811,13 +1901,13 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   ThisMonthPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
     this.pannes = [];
     const dat = new Date();
     const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()), 'MMMM yyyy');
     console.log('last Month: '+ dat1);
     this.periode_panne = "pannes du mois de "+ dat1;
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getThisMonthPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1836,13 +1926,13 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   LastYearPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
         this.pannes = [];
     const dat = new Date();
     const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy');
     console.log('last Month: '+ dat1);
-    this.periode_panne = "pannes de l'année "+ dat1;;
-    this.route.params.subscribe(params =>{
+    this.periode_panne = "pannes de l'année "+ dat1;
       let url = atob(params['id']);
     this.departementService.getLastYearPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1861,13 +1951,13 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   ThisYearPannes(){
+    this.route.params.subscribe(params =>{
     this.loader = true;
         this.pannes = [];
     const dat = new Date();
     const dat1 = this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy');
     console.log('last Month: '+ dat1);
     this.periode_panne = "pannes de l'année "+ dat1;
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.getThisYearPannes(Number.parseInt(url)).subscribe(
         data => {
@@ -1931,33 +2021,34 @@ export class SingleDepartementComponent implements OnInit {
   }
 
   mtbfAlpicam(){
+    this.route.params.subscribe(params =>{
     const mtbf = {
-      data: [],
+      data: [] = [],
       label: "MTBF",
       yAxisID: 'y-axis-0',
       type: 'bar',
     };
     const mdt = {
-      data: [],
+      data: [] = [],
       label: "MDT",
       yAxisID: 'y-axis-0',
       type: 'line',
     };
     const teste = {
-      data: [],
+      data: [] = [],
       name: 'Nombre de Pannes'
     };
     const test1 = {
-      categories: []
+      categories: [] = []
     };
     const tdt = {
-      data: [],
+      data: [] = [],
       label: "TDT",
       yAxisID: 'y-axis-1',
       type: 'bar',
     };
     const wt = {
-      data: [],
+      data: [] = [],
       label: "MWT",
       yAxisID: 'y-axis-1',
       type: 'bar',
@@ -1970,7 +2061,7 @@ export class SingleDepartementComponent implements OnInit {
     };
 
     const panne = {
-      data: [],
+      data: [] = [],
       label: "Pannes",
       yAxisID: 'y-axis-1',
       type: 'line',
@@ -1980,7 +2071,6 @@ export class SingleDepartementComponent implements OnInit {
     // this.dah = 0;
     this.mtbfByYear.labels = [];
     this.mtbfByYear.datasets = [];
-    this.route.params.subscribe(params =>{
       let url = atob(params['id']);
     this.departementService.mtbfByYear(Number.parseInt(url)).subscribe(
       data1 => {
@@ -2051,7 +2141,7 @@ export class SingleDepartementComponent implements OnInit {
         // this.loaders = false;
       }
     ) ;
-  });
+
 
     this.mtbfByYear.datasets.push(mtbf);
     this.mtbfByYear.datasets.push(tdt);
@@ -2063,27 +2153,27 @@ export class SingleDepartementComponent implements OnInit {
     this.test.datasets.push(teste);
     // this.labs.categories.push(this.mtbfByYear.labels);
     // this.labs.categories.push(test1.categories)
-
+  });
   }
 
   paretoDepRange(){
+    this.route.params.subscribe(params => {
     this.paretoMonth.labels = [];
     this.paretoMonth.datasets = [];
     this.loaderPareto = true;
     this.dah2 = 0
     const datasetNbrePanne3 = {
-      data: [],
+      data: []= [],
       label: "Panne",
       yAxisID: 'y-axis-1',
       type: 'line'
     };
     const datasetNbrePanne4 = {
-      data: [],
+      data: []= [],
       label: "Total Down Time",
       yAxisID: 'y-axis-0',
       type: 'bar'
     };
-    this.route.params.subscribe(params => {
       let url = atob(params['id']);
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
@@ -2105,29 +2195,30 @@ export class SingleDepartementComponent implements OnInit {
             console.log(this.pm);
             this.loaderPareto = false;
           })
-    });
+
     this.paretoMonth.datasets.push(datasetNbrePanne3);
     this.paretoMonth.datasets.push(datasetNbrePanne4);
+    });
   }
 
   paretoThysMonth(){
+    this.route.params.subscribe(params => {
     this.paretoMonth.labels = [];
     this.paretoMonth.datasets = [];
     this.loaderPareto = true;
     this.dah2 = 0
     const datasetNbrePanne3 = {
-      data: [],
+      data: [] = [],
       label: "Panne",
       yAxisID: 'y-axis-1',
       type: 'line'
     };
     const datasetNbrePanne4 = {
-      data: [],
+      data: [] = [],
       label: "Total Down Time",
       yAxisID: 'y-axis-0',
       type: 'bar'
     };
-    this.route.params.subscribe(params => {
       let url = atob(params['id']);
       this.departementService.paretoThisMonth(Number.parseInt(url)).subscribe(
         list => list.forEach(mach => {
@@ -2147,29 +2238,30 @@ export class SingleDepartementComponent implements OnInit {
             this.loaderPareto = false;
           }
       ) ;
-    });
+
     this.paretoMonth.datasets.push(datasetNbrePanne3);
     this.paretoMonth.datasets.push(datasetNbrePanne4);
+    });
   }
 
   paretoLastMonth(){
+    this.route.params.subscribe(params => {
     this.paretoMonth.labels = [];
     this.paretoMonth.datasets = [];
     this.loaderPareto = true;
     this.dah2 = 0;
     const datasetNbrePanne3 = {
-      data: [],
+      data: [] = [],
       label: "Panne",
       yAxisID: 'y-axis-1',
       type: 'line'
     };
     const datasetNbrePanne4 = {
-      data: [],
+      data: [] = [],
       label: "Total Down Time",
       yAxisID: 'y-axis-0',
       type: 'bar'
     };
-    this.route.params.subscribe(params => {
       let url = atob(params['id']);
       this.departementService.paretoLastMonth(Number.parseInt(url)).subscribe(
         list => list.forEach(mach => {
@@ -2190,60 +2282,65 @@ export class SingleDepartementComponent implements OnInit {
             this.loaderPareto = false;
           }
       ) ;
-    });
+
     this.paretoMonth.datasets.push(datasetNbrePanne3);
     this.paretoMonth.datasets.push(datasetNbrePanne4);
+    });
   }
 
   // Placage
   Ligne1mtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
         this.loaderL1 = true
 
-        this.route.params.subscribe(params =>{
+      this.L1mtbfByYear.labels = [];
+      this.L1mtbfByYear.datasets = [];
+      this.L1mdtByYear.labels = [];
+      this.L1mdtByYear.datasets = [];
           let url = atob(params['id']);
             this.departementService.ligne1ByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -2303,7 +2400,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.L1mtbfByYear.datasets.push(mtbf);
         this.L1mtbfByYear.datasets.push(tdt);
@@ -2315,57 +2412,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
 }
 
   Ligne2mtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
         this.loaderL2 = true;
 
-        this.route.params.subscribe(params =>{
+      this.L2mtbfByYear.labels = [];
+      this.L2mtbfByYear.datasets = [];
+      this.L2mdtByYear.labels = [];
+      this.L2mdtByYear.datasets = [];
+
           let url = atob(params['id']);
             this.departementService.ligne2ByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -2425,7 +2527,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.L2mtbfByYear.datasets.push(mtbf);
         this.L2mtbfByYear.datasets.push(tdt);
@@ -2437,57 +2539,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   Ligne3mtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
 
         this.loaderL3 = true;
-        this.route.params.subscribe(params =>{
+
+      this.L3mtbfByYear.labels = [];
+      this.L3mtbfByYear.datasets = [];
+      this.L3mdtByYear.labels = [];
+      this.L3mdtByYear.datasets = [];
           let url = atob(params['id']);
             this.departementService.ligne3ByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -2547,7 +2654,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.L3mtbfByYear.datasets.push(mtbf);
         this.L3mtbfByYear.datasets.push(tdt);
@@ -2559,57 +2666,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   SechoirmtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
             categories: []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
 
         this.loaderSec = true;
-        this.route.params.subscribe(params =>{
+
+      this.SmtbfByYear.labels = [];
+      this.SmtbfByYear.datasets = [];
+      this.SmdtByYear.labels = [];
+      this.SmdtByYear.datasets = [];
           let url = atob(params['id']);
             this.departementService.sechoirByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -2669,7 +2781,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.SmtbfByYear.datasets.push(mtbf);
         this.SmtbfByYear.datasets.push(tdt);
@@ -2681,57 +2793,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   EcorcagemtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
 
         this.loaderEcor = true
-        this.route.params.subscribe(params =>{
+
+      this.EmtbfByYear.labels = [];
+      this.EmtbfByYear.datasets = [];
+      this.EmdtByYear.labels = [];
+      this.EmdtByYear.datasets = [];
           let url = atob(params['id']);
             this.departementService.ecorcageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -2791,7 +2908,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.EmtbfByYear.datasets.push(mtbf);
         this.EmtbfByYear.datasets.push(tdt);
@@ -2803,7 +2920,7 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   // JointagemtbfDep(){
@@ -2927,53 +3044,58 @@ export class SingleDepartementComponent implements OnInit {
 
     // Brazil
   EncolleuseBrazilmtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
 
         this.loaderEncol = true;
-        this.route.params.subscribe(params =>{
+
+      this.EBmtbfByYear.labels = [];
+      this.EBmtbfByYear.datasets = [];
+      this.EBmdtByYear.labels = [];
+      this.EBmdtByYear.datasets = [];
           let url = atob(params['id']);
             this.departementService.encollageBrazilByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -3033,7 +3155,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.EBmtbfByYear.datasets.push(mtbf);
         this.EBmtbfByYear.datasets.push(tdt);
@@ -3045,57 +3167,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   TeinturemtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
         this.loaderTeinteuse = true
 
-        this.route.params.subscribe(params =>{
+      this.TEmtbfByYear.labels = [];
+      this.TEmtbfByYear.datasets = [];
+      this.TEmdtByYear.labels = [];
+      this.TEmdtByYear.datasets = [];
+
           let url = atob(params['id']);
             this.departementService.teintureByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -3155,7 +3282,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.TEmtbfByYear.datasets.push(mtbf);
         this.TEmtbfByYear.datasets.push(tdt);
@@ -3167,57 +3294,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   TranchagemtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
         this.loaderTranch = true;
 
-        this.route.params.subscribe(params =>{
+      this.TRmtbfByYear.labels = [];
+      this.TRmtbfByYear.datasets = [];
+      this.TRmdtByYear.labels = [];
+      this.TRmdtByYear.datasets = [];
+
           let url = atob(params['id']);
             this.departementService.tranchageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -3277,7 +3409,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.TRmtbfByYear.datasets.push(mtbf);
         this.TRmtbfByYear.datasets.push(tdt);
@@ -3289,58 +3421,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   // ContrePlaqué
   EncolleuseCPmtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
         this.loaderEncolCP = true
+      this.ECPmtbfByYear.labels = [];
+      this.ECPmtbfByYear.datasets = [];
+      this.ECPmdtByYear.labels = [];
+      this.ECPmdtByYear.datasets = [];
 
-        this.route.params.subscribe(params =>{
           let url = atob(params['id']);
             this.departementService.encollageCPByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -3400,7 +3536,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.ECPmtbfByYear.datasets.push(mtbf);
         this.ECPmtbfByYear.datasets.push(tdt);
@@ -3412,57 +3548,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   PonçagemtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
         this.loaderPon = true
 
-        this.route.params.subscribe(params =>{
+      this.POmtbfByYear.labels = [];
+      this.POmtbfByYear.datasets = [];
+      this.POmdtByYear.labels = [];
+      this.POmdtByYear.datasets = [];
+
           let url = atob(params['id']);
             this.departementService.ponçageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -3522,7 +3663,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.POmtbfByYear.datasets.push(mtbf);
         this.POmtbfByYear.datasets.push(tdt);
@@ -3534,57 +3675,62 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
   PressagemtbfDep(){
+    this.route.params.subscribe(params =>{
         const mtbf = {
-            data: [],
+            data: [] = [],
             label: "MTBF",
             yAxisID: 'y-axis-0',
             type: 'bar',
         };
         const mdt = {
-            data: [],
+            data: [] = [],
             label: "MDT",
             yAxisID: 'y-axis-0',
             type: 'line',
         };
         const teste = {
-            data: [],
+            data: [] = [],
             name: 'Nombre de Pannes'
         };
         const test1 = {
-            categories: []
+            categories: [] = []
         };
         const tdt = {
-            data: [],
+            data: [] = [],
             label: "TDT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const wt = {
-            data: [],
+            data: [] = [],
             label: "MWT",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
         const ttr = {
-            data: [],
+            data: [] = [],
             label: "MTTR",
             yAxisID: 'y-axis-1',
             type: 'bar',
         };
 
         const panne = {
-            data: [],
+            data: [] = [],
             label: "Pannes",
             yAxisID: 'y-axis-1',
             type: 'line',
         };
         this.loaderPress = true;
 
-        this.route.params.subscribe(params =>{
+      this.PRmtbfByYear.labels = [];
+      this.PRmtbfByYear.datasets = [];
+      this.PRmdtByYear.labels = [];
+      this.PRmdtByYear.datasets = [];
+
           let url = atob(params['id']);
             this.departementService.pressageByYear(Number.parseInt(url)).subscribe(
                 data1 => {
@@ -3644,7 +3790,7 @@ export class SingleDepartementComponent implements OnInit {
                     console.log(this.pm);
                 }
             ) ;
-        });
+
 
         this.PRmtbfByYear.datasets.push(mtbf);
         this.PRmtbfByYear.datasets.push(tdt);
@@ -3656,7 +3802,7 @@ export class SingleDepartementComponent implements OnInit {
         this.test.datasets.push(teste);
         // this.labs.categories.push(this.mtbfByYear.labels);
         // this.labs.categories.push(test1.categories)
-
+  });
     }
 
     // Paretos Placage
@@ -3666,13 +3812,13 @@ export class SingleDepartementComponent implements OnInit {
       this.DerouleuseparetoTDTMonth.labels = [];
       this.loaderParetoDerTDT = true;
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3706,13 +3852,13 @@ export class SingleDepartementComponent implements OnInit {
       this.DerouleuseparetoTDTMonth.labels = [];
       this.loaderParetoDerTDT = true;
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3744,13 +3890,13 @@ export class SingleDepartementComponent implements OnInit {
       this.DerouleuseparetoTDTMonth.labels = [];
       this.loaderParetoDerTDT = true;
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3779,13 +3925,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoDerouleuseMDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3819,13 +3965,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoDerouleuseMDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3857,13 +4003,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoDerouleuseMDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3897,13 +4043,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoBobineuseTDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3937,13 +4083,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoBobineuseTDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -3975,13 +4121,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoBobineuseTDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4013,13 +4159,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoBobineuseMDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4054,13 +4200,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoBobineuseMDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4092,13 +4238,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoBobineuseMDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4132,13 +4278,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMagasinBobineTDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4172,13 +4318,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMagasinBobineTDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4210,13 +4356,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMagasinBobineTDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4248,13 +4394,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMagasinBobineMDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4288,13 +4434,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMagasinBobineMDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4326,13 +4472,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMagasinBobineMDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4366,13 +4512,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMassicotTDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4407,13 +4553,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMassicotTDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4445,13 +4591,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMassicotTDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4483,13 +4629,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMassicotMDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4523,13 +4669,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMassicotMDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4562,13 +4708,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoMassicotMDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4603,13 +4749,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoSechoirTDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4643,13 +4789,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoSechoirTDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4681,13 +4827,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoSechoirTDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4719,13 +4865,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoSechoirMDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4759,13 +4905,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoSechoirMDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4797,13 +4943,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoSechoirMDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4838,13 +4984,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoTrancheuseTDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4878,13 +5024,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoTrancheuseTDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4916,13 +5062,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoTrancheuseTDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4954,13 +5100,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoTrancheuseMDTRange(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -4994,13 +5140,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoTrancheuseMDTThysMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -5032,13 +5178,13 @@ export class SingleDepartementComponent implements OnInit {
 
     paretoTrancheuseMDTLastMonth(){
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -5071,14 +5217,15 @@ export class SingleDepartementComponent implements OnInit {
     // ---------------------------------
 
     paretoEncolleuseTDTRange(){
+      this.route.params.subscribe(params =>{
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -5088,7 +5235,6 @@ export class SingleDepartementComponent implements OnInit {
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
       this.loaderParetoEncTDT = true;
-        this.route.params.subscribe(params =>{
           let url = atob(params['id']);
         this.departementService.paretoEncolleuseTDTRange(Number.parseInt(url), d1, d2).subscribe(
             list => list.forEach(mach => {
@@ -5108,20 +5254,22 @@ export class SingleDepartementComponent implements OnInit {
                 this.loaderParetoEncTDT = false;
             }
         ) ;
-            });
+
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
+      });
     }
 
     paretoEncolleuseTDTThysMonth(){
+      this.route.params.subscribe(params =>{
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -5129,7 +5277,6 @@ export class SingleDepartementComponent implements OnInit {
       this.EncolleuseparetoTDTMonth.datasets = [];
       this.EncolleuseparetoTDTMonth.labels= [];
       this.loaderParetoEncTDT = true;
-        this.route.params.subscribe(params =>{
           let url = atob(params['id']);
         this.departementService.paretoEncolleuseTDTThisMonth(Number.parseInt(url)).subscribe(
             list => list.forEach(mach => {
@@ -5149,20 +5296,22 @@ export class SingleDepartementComponent implements OnInit {
                 this.loaderParetoEncTDT = false;
             }
         ) ;
-            });
+
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
+      });
     }
 
     paretoEncolleuseTDTLastMonth(){
+      this.route.params.subscribe(params =>{
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Total Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -5170,7 +5319,6 @@ export class SingleDepartementComponent implements OnInit {
       this.EncolleuseparetoTDTMonth.datasets = [];
       this.EncolleuseparetoTDTMonth.labels= [];
       this.loaderParetoEncTDT = true;
-        this.route.params.subscribe(params =>{
           let url = atob(params['id']);
         this.departementService.paretoEncolleuseTDTLastMonth(Number.parseInt(url)).subscribe(
             list => list.forEach(mach => {
@@ -5190,20 +5338,22 @@ export class SingleDepartementComponent implements OnInit {
                 this.loaderParetoEncTDT = false;
             }
         ) ;
-            });
+
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoTDTMonth.datasets.push(datasetNbrePanne4);
+      });
     }
 
     paretoEncolleuseMDTRange(){
+      this.route.params.subscribe(params => {
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -5213,7 +5363,6 @@ export class SingleDepartementComponent implements OnInit {
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
       this.loaderParetoEncMDT = true;
-        this.route.params.subscribe(params => {
           let url = atob(params['id']);
             this.departementService.paretoEncolleuseMDTRange(Number.parseInt(url), d1, d2).subscribe(
                 list => list.forEach(mach => {
@@ -5232,28 +5381,31 @@ export class SingleDepartementComponent implements OnInit {
                 this.loaderParetoEncMDT = false;
             }
         ) ;
-        });
+
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
+      });
     }
 
     paretoEncolleuseMDTThysMonth(){
+      this.route.params.subscribe(params => {
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
         };
       this.EncolleuseparetoMDTMonth.datasets = [];
       this.EncolleuseparetoMDTMonth.labels= [];
+        datasetNbrePanne3.data = [];
+        datasetNbrePanne4.data = [];
       this.loaderParetoEncMDT = true;
-        this.route.params.subscribe(params => {
           let url = atob(params['id']);
             this.departementService.paretoEncolleuseMDTThisMonth(Number.parseInt(url)).subscribe(
                 list => list.forEach(mach => {
@@ -5272,20 +5424,22 @@ export class SingleDepartementComponent implements OnInit {
                 this.loaderParetoEncMDT = false;
             }
         ) ;
-        });
+
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
+      });
     }
 
     paretoEncolleuseMDTLastMonth(){
+      this.route.params.subscribe(params => {
         const datasetNbrePanne3 = {
-            data: [],
+            data: [] = [],
             label: "Panne",
             yAxisID: 'y-axis-1',
             type: 'line'
         };
         const datasetNbrePanne4 = {
-            data: [],
+            data: [] = [],
             label: "Mean Down Time",
             yAxisID: 'y-axis-0',
             type: 'bar'
@@ -5293,7 +5447,6 @@ export class SingleDepartementComponent implements OnInit {
       this.EncolleuseparetoMDTMonth.datasets = [];
       this.EncolleuseparetoMDTMonth.labels= [];
       this.loaderParetoEncMDT = true;
-        this.route.params.subscribe(params => {
           let url = atob(params['id']);
             this.departementService.paretoEncolleuseMDTLastMonth(Number.parseInt(url)).subscribe(
                 list => list.forEach(mach => {
@@ -5312,9 +5465,10 @@ export class SingleDepartementComponent implements OnInit {
                 this.loaderParetoEncMDT = false;
             }
         ) ;
-        });
+
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne3);
         this.EncolleuseparetoMDTMonth.datasets.push(datasetNbrePanne4);
+      });
     }
 
     showMachine(m: Machine){

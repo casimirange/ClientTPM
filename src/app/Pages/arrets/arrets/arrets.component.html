@@ -1,7 +1,7 @@
-<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
+<app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'user_alpi'"></app-page-title>
 
 <div class="row">
-    <div class="col-lg-12" *ngIf="authority != 'pm' && authority != 'admin' ">
+    <div class="col-lg-12" *ngIf="authority != 'resp_maint' && authority != 'admin'  && authority != 'user_mind'   && authority != 'resp_mind' ">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 {{operation == 'add' ? 'Nouvel Arrêt' :
@@ -147,7 +147,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-12">
+    <div class="col-lg-12" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'user_alpi'">
         <div class="main-card mb-3 card">
             <div class="card-header">
                 Liste des Arrêts
@@ -292,7 +292,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin'">
+<div class="row" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin'">
     <div class="col-md-12 col-lg-6 col-xl-7">
         <div class="main-card mb-3 card">
             <div class="rm-border card-header">
@@ -382,7 +382,7 @@
                             <div class="col-md-6" *ngFor="let x of recapArret">
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-subheading">Mois Dernier</div>
+                                        <div class="widget-subheading">Arrêts Mois Dernier</div>
                                         <div class="widget-numbers-sm mt-0 text-alternate"><span>{{x.lm}}</span></div>
                                         <div class="widget-description text-focus">
                                             {{x.taux < 0  ? 'En baisse de' : x.taux > 0  ? 'En Hausse de': 'Constant'}}
@@ -408,10 +408,19 @@
                                 <div class="divider mt-0 mb-0 mr-2"></div>
                                 <div class="widget-chart">
                                     <div class="widget-chart-content">
-                                        <div class="widget-numbers-sm mt-0 text-primary" >
-                                            <span *ngFor="let nber of thisYearArret">{{nber.nbre}}</span>
+                                        <div class="widget-numbers-sm mt-0 text-primary" *ngFor="let nber of thisYearArret" >
+                                            <!--<span>{{nber.nbre}}</span>-->
+                                            <span *ngIf="thisYearArret.length && mini_loader == false">{{nber.nbre}}</span>
+                                            <span *ngIf="!thisYearArret.length && mini_loader == false">RAS</span>
+                                            <span *ngIf="!thisYearArret.length && mini_loader == true">
+                                                <div class="ball-pulse">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </span>
                                         </div>
-                                        <div class="widget-subheading">Total annuel</div>
+                                        <div class="widget-subheading">Arrêts annuel</div>
                                     </div>
                                 </div>
                             </div>
@@ -423,7 +432,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin'">
+<div class="row" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin'">
     <div class="col-lg-6">
         <div class="main-card mb-3 card">
             <div class="card-header">
@@ -494,7 +503,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="authority === 'admin' || authority === 'responsable' || authority === 'super_admin'">
+<div class="row" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin'">
     <div class="col-lg-12">
         <div class="main-card mb-3 card">
             <div class="card-header">

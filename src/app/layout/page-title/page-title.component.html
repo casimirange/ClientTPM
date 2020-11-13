@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <div class="page-title-actions">
+        <div class="page-title-actions" *ngIf="authority === 'super_admin' || authority === 'user_alpi' || authority === 'user_mind'">
             <button type="button" data-toggle="tooltip" title="Nouvelle Panne" routerLink="/new-panne" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
                         <span class="btn-icon-wrapper pr-2 opacity-7">
                             <i class="fa fa-plus fa-w-20"></i>

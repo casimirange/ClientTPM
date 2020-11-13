@@ -1,7 +1,6 @@
-<app-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-title>
+<app-title [heading]="headings" [subheading]="subheadings" [icon]="icons" *ngIf="authority === 'super_admin' || authority === 'user_alpi' || authority === 'user_mind'"></app-title>
 
-<div class="">
-
+<div class="" *ngIf="authority === 'super_admin' || authority === 'user_alpi' || authority === 'user_mind'">
     <div class="app-inner-layout">
         <div class="app-inner-layout__wrapper">
             <div class="app-inner-layout__content card">
@@ -103,7 +102,7 @@
                             <div class="form-group ">
                                 <label>Maintenanciers</label> &nbsp;
                                 <span>
-                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddTech()"><i class="fa fa-plus-circle"></i> Ajouter</button>
+                                    <button class="border-0 btn-transition btn btn-sm btn-shadow btn-outline-primary " (click)="onAddTech(); add_tec = true"><i class="fa fa-plus-circle"></i> Ajouter</button>
                                 </span>
                             </div>
 

@@ -4,6 +4,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DepartementsService} from "../../services/departements/departements.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataModel} from "../../Models/data.model";
+import {TokenStorageService} from "../../auth/token-storage.service";
+import {Location} from "@angular/common";
 
 @Component({
     selector: 'app-departements',
@@ -38,8 +40,14 @@ export class DepartementsComponent implements OnInit {
 
     depModel: DataModel[];
     dataArray: any;
+    private roles: string[];
+    public authority: string;
 
-    constructor(private fb: FormBuilder, private departementService: DepartementsService, private route: ActivatedRoute, private router: Router) {
+    constructor(private fb: FormBuilder,
+                private departementService: DepartementsService,
+                private route: ActivatedRoute,
+                private router: Router,
+                private tokenStorage: TokenStorageService,private _location: Location) {
         this.createForm();
         this.fileForm();
         this.newDep = new Departement();
@@ -64,15 +72,152 @@ export class DepartementsComponent implements OnInit {
     ngOnInit() {
         this.loadDepartements();
         this.initDep();
+        if (this.tokenStorage.getToken()) {
+            this.roles = this.tokenStorage.getAuthorities();
+            const Swal = require('sweetalert2');
+            var content = document.createElement('div');
+            this.roles.every(role => {
+                if (role === 'ROLE_ADMIN') {
+                    this.authority = 'admin';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_SUPER_ADMIN') {
+                    this.authority = 'super_admin';
+                    return false;
+                } else if (role === 'ROLE_USER_MINDOUROU') {
+                    this.authority = 'user_mind';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_PLACAGE') {
+                    this.authority = 'resp_pla';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_SCIERIE') {
+                    this.authority = 'resp_sci';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_BRAZIL') {
+                    this.authority = 'resp_bra';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_CP') {
+                    this.authority = 'resp_cp';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_MAINTENANCE') {
+                    this.authority = 'resp_maint';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
+                } else if (role === 'ROLE_RESP_MINDOUROU') {
+                    this.authority = 'resp_mind';
+                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                    return false;
 
-         // this.departements = this.route.snapshot.data.departements;
-
-        this.depModel = [
-            new DataModel('id', 'ID', 'number'),
-            new DataModel('nom', 'nom', 'String'),
-            new DataModel('centre_cout', 'centre cout', 'String'),
-            new DataModel('responsable', 'responsable', 'String'),
-        ]
+                }
+                this.authority = 'user_alpi';
+                content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    Swal.fire({
+                        title: 'Aucun Accès!',
+                        html: content,
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonText: 'OK',
+                        allowOutsideClick: false,
+                        focusConfirm: true,
+                    }).then((result) => {
+                        this._location.back();
+                    })
+                return true;
+            });
+        }
     }
 
     loadDepartements() {
