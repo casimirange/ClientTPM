@@ -31,8 +31,8 @@ export class UserComponent implements OnInit {
   authority: string;
   closeResult: any;
   registerForm: FormGroup;
-  private roles: string[];
-  public authority: string;
+  // private roles: string[];
+  // public authority: string;
 
 
   role: string[] = [];
