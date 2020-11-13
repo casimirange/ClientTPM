@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DashboardService} from "../../services/dashboard/dashboard.service";
 import {Pannes} from "../../Models/pannes";
-import {DatePipe} from "@angular/common";
+import {DatePipe, Location} from "@angular/common";
 import {Color} from "ng2-charts";
 import {ApexXAxis, NgApexchartsModule} from "ng-apexcharts";
 import {AlpicamService} from "../../services/alpicam/alpicam.service";
@@ -285,6 +285,9 @@ export class StatsGlobalComponent implements OnInit {
 
   Swal: any = require('sweetalert2');
 
+  private roles: string[];
+  public authority: string;
+
   constructor(private dashboardService: DashboardService,
               private rapportService: RapportService,
               private datePipe: DatePipe,
@@ -292,7 +295,8 @@ export class StatsGlobalComponent implements OnInit {
               private token: TokenStorageService,
               private fb: FormBuilder,
               private departementService: DepartementsService,
-              private alpicamService: AlpicamService) {
+              private alpicamService: AlpicamService,
+              private tokenStorage: TokenStorageService,private _location: Location) {
     this.dashForm();
     this.rangeForms();
     this.rapportForms();
@@ -335,6 +339,80 @@ export class StatsGlobalComponent implements OnInit {
     this.paretoAlpiThisMonth();
     this.typePanneThisMonth();
     this.loadDepartements();
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      const Swal = require('sweetalert2');
+      var content = document.createElement('div');
+      this.roles.every(role => {
+        if (role === 'ROLE_ADMIN') {
+          this.authority = 'admin';
+          return false;
+        } else if (role === 'ROLE_SUPER_ADMIN') {
+          this.authority = 'super_admin';
+          return false;
+        } else if (role === 'ROLE_USER_MINDOUROU') {
+          this.authority = 'user_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+        } else if (role === 'ROLE_RESP_PLACAGE') {
+          this.authority = 'resp_pla';
+          return false;
+        } else if (role === 'ROLE_RESP_SCIERIE') {
+          this.authority = 'resp_sci';
+          return false;
+        } else if (role === 'ROLE_RESP_BRAZIL') {
+          this.authority = 'resp_bra';
+          return false;
+        } else if (role === 'ROLE_RESP_CP') {
+          this.authority = 'resp_cp';
+          return false;
+        } else if (role === 'ROLE_RESP_MAINTENANCE') {
+          this.authority = 'resp_maint';
+          return false;
+        } else if (role === 'ROLE_RESP_MINDOUROU') {
+          this.authority = 'resp_mind';
+          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          Swal.fire({
+            title: 'Aucun Accès!',
+            html: content,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            focusConfirm: true,
+          }).then((result) => {
+            this._location.back();
+          })
+          return false;
+
+        }
+        this.authority = 'user_alpi';
+        content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+        Swal.fire({
+          title: 'Aucun Accès!',
+          html: content,
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          focusConfirm: true,
+        }).then((result) => {
+          this._location.back();
+        })
+        return true;
+      });
+    }
 
     const dat = new Date();
     const datm = new Date();

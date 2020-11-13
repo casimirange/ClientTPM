@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   roles: string[] = [];
-  private authority: string;
+  authority: string;
 
   role: string[] = [];
 

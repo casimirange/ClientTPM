@@ -93,7 +93,7 @@
     <div class="col-md-12">
         <div class="main-card mb-3 card " id="htmlData" #htmlData>
             <div class="card-header">
-                {{periode_panne}}&nbsp;<span *ngIf="authority != 'user'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
+                {{periode_panne}}&nbsp;<span  *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint'">(Total :&nbsp;<span class="text-danger"> {{countPannes }} {{countPannes < 2 ? 'panne' : 'pannes'}}</span>)</span>
                 <div class="btn-actions-pane-right">
                     <div role="group" class="btn-group-sm btn-group">
                         <!--<button routerLink="/new-panne" class="btn btn-primary" [swal]="deleteSwals">Nouvelle Panne</button>-->
