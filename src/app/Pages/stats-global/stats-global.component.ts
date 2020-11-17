@@ -248,6 +248,11 @@ export class StatsGlobalComponent implements OnInit {
   sec_sci: any[] = [];
   sec_cp: any[] = [];
   sec_alpi: any[] = [];
+  _pla2: any[] = [];
+  _bra2: any[] = [];
+  _sci2: any[] = [];
+  _cp2: any[] = [];
+  _alpi2: any[] = [];
   section: string = "Alpicam";
 
   series: any[];
@@ -274,6 +279,11 @@ export class StatsGlobalComponent implements OnInit {
   b3: boolean = false;
   b4: boolean = false;
   b5: boolean = false;
+  b6: boolean = false;
+  b7: boolean = false;
+  b8: boolean = false;
+  b9: boolean = false;
+  b0: boolean = false;
   chargement: boolean = false;
 
   pdfMake = require('pdfmake/build/pdfmake.js');
@@ -287,6 +297,12 @@ export class StatsGlobalComponent implements OnInit {
 
   private roles: string[];
   public authority: string;
+
+  tab1: any[] = [];
+  tab2: any[] = [];
+  tab3: any[] = [];
+  tab4: any[] = [];
+  tab5: any[] = [];
 
   constructor(private dashboardService: DashboardService,
               private rapportService: RapportService,
@@ -426,16 +442,293 @@ export class StatsGlobalComponent implements OnInit {
     this.date_this_months = this.datePipe.transform(datm, 'MMMM yyyy');
 
 
-    this.alpicam();
+    // this.alpicam();
     // this.alpicamRapport();
     // this.placageRapport();
     // this.brazilRapport();
     // this.contreplaqueRapport();
     // this.scierieRapport();
 
+    this.load()
+  }
+  load(){
+    this.loaderrapport = true;
+    this.b1 = true;
+    this.b2 = true;
+    this.b3 = true;
+    this.b4 = true;
+    this.b5 = true;
+    this.rapportService.getRidottos().subscribe(
+        data => {
+          if (!this.sec_alpi.length){
+            this.sec_alpi = data;
+            this.ridotto = data;
+            this.b1 = false;
+            this.loaderrapport = false;
+            console.log('this.ridotto ', this.sec_alpi)
+          }
+
+          this.rapportService.getPlacages().subscribe(
+              data1 => {
+                if (!this.sec_pla.length){
+                  this.sec_pla = data1;
+                  this.b2 = false;
+                  console.log('this.pl ', this.sec_pla)
+                }
+                // this.sec_pla = data;
+                // this.b2 = false;
+
+                this.rapportService.getBrazils().subscribe(
+                    data2 => {
+                      if (!this.sec_bra.length){
+                        this.sec_bra = data2;
+                        this.b3 = false;
+                        console.log('this.b ', this.sec_bra)
+                      }
+                      // this.sec_bra = data;
+                      // this.b3 = false;
+
+                      this.rapportService.getContreplaques().subscribe(
+                          data3 => {
+                            if (!this.sec_cp.length){
+                              this.sec_cp = data3;
+                              this.b4 = false;
+                              console.log('this.c ', this.sec_cp)
+                            }
+                            // this.sec_cp = data;
+                            // this.b4 = false;
+
+                            this.rapportService.getScieries().subscribe(
+                                data4 => {
+                                  if (!this.sec_sci.length){
+                                    this.sec_sci = data4;
+                                    this.b5 = false;
+                                    console.log('this.s ', this.sec_sci)
+                                  }
+                                  console.log('this.sdza ', this.sec_alpi)
+                                },
+                            );
+                          },
+                      );
+                    },
+                );
+              },
+          );
+        },
+    );
+
+    // this.tab1 = this.sec_alpi;
+    // this.tab2 = this.sec_bra;
+    // this.tab3 = this.sec_pla;
+    // this.tab4 = this.sec_cp;
+    // this.tab5 = this.sec_sci;
   }
 
-  // async downloads(){
+  load2(){
+    this.b1 = true;
+    this.b2 = true;
+    this.b3 = true;
+    this.b4 = true;
+    this.b5 = true;
+    this.sec_alpi = [];
+    this.sec_pla = [];
+    this.sec_bra = [];
+    this.sec_cp = [];
+    this.sec_sci = [];
+    this.rapportService.getRidottos().subscribe(
+        data => {
+          if (!this.sec_alpi.length){
+            this.sec_alpi = data;
+            this.b1 = false;
+            console.log('this.ridotto ', this.sec_alpi)
+          }
+
+          this.rapportService.getPlacages().subscribe(
+              data1 => {
+                if (!this.sec_pla.length){
+                  this.sec_pla = data1;
+                  this.b2 = false;
+                  console.log('this.pl ', this.sec_pla)
+                }
+                // this.sec_pla = data;
+                // this.b2 = false;
+
+                this.rapportService.getBrazils().subscribe(
+                    data2 => {
+                      if (!this.sec_bra.length){
+                        this.sec_bra = data2;
+                        this.b3 = false;
+                        console.log('this.b ', this.sec_bra)
+                      }
+                      // this.sec_bra = data;
+                      // this.b3 = false;
+
+                      this.rapportService.getContreplaques().subscribe(
+                          data3 => {
+                            if (!this.sec_cp.length){
+                              this.sec_cp = data3;
+                              this.b4 = false;
+                              console.log('this.c ', this.sec_cp)
+                            }
+                            // this.sec_cp = data;
+                            // this.b4 = false;
+
+                            this.rapportService.getScieries().subscribe(
+                                data4 => {
+                                  if (!this.sec_sci.length){
+                                    this.sec_sci = data4;
+                                    this.b5 = false;
+                                    console.log('this.s ', this.sec_sci)
+                                  }
+                                  console.log('this.sdza ', this.sec_alpi)
+                                },
+                            );
+                          },
+                      );
+                    },
+                );
+              },
+          );
+        },
+    );
+  }
+
+  loads(){
+    this.loaderrapport = true;
+    this.b6 = true;
+    this.b7 = true;
+    this.b8 = true;
+    this.b9 = true;
+    this.b0 = true;
+
+    const d1 = this.rapportRangeForm.controls['date1'].value;
+    const d2 = this.rapportRangeForm.controls['date2'].value;
+    const d3 = this.rapportRangeForm.controls['date3'].value;
+    const d4 = this.rapportRangeForm.controls['date4'].value;
+
+    this.datS3 = d1;
+    this.datS4 = d2;
+    this.datS1 = d3;
+    this.datS2 = d4;
+    this.loaderrapport = true;
+    this._alpi2 = [];
+    this._pla2 = [];
+    this._bra2 = [];
+    this._cp2 = [];
+    this._sci2 = [];
+
+    this.rapportService.getRidottoRange(d1, d2, d3, d4).subscribe(
+        data => {
+          if(!this._alpi2.length){
+            this._alpi2 = data;
+            this.b6 = false;
+          }
+
+          this.rapportService.getPlacageRange(d1, d2, d3, d4).subscribe(
+              data => {
+                if (!this._pla2.length){
+                  this._pla2 = data;
+                  this.b7 = false;
+                }
+
+                this.rapportService.getBrazilRange(d1, d2, d3, d4).subscribe(
+                    data => {
+                      if (!this._bra2.length){
+                        this._bra2 = data;
+                        this.b8 = false;
+                      }
+
+                      this.rapportService.getContreplaqueRange(d1, d2, d3, d4).subscribe(
+                          data => {
+                            if (!this._cp2.length){
+                              this._cp2 = data;
+                              this.b9 = false;
+                            }
+
+                            this.rapportService.getScierieRange(d1, d2, d3, d4).subscribe(
+                                data => {
+                                  if (!this._sci2.length){
+                                    this._sci2 = data;
+                                    this.b0 = false;
+                                  }
+                                }
+                            );
+                          }
+                      );
+                    }
+                );
+              }
+          );
+        }
+    );
+
+
+    // this.rapportService.getRidottos().subscribe(
+    //     data => {
+    //       if (!this.sec_alpi.length){
+    //         this.sec_alpi = data;
+    //         this.ridotto = data;
+    //         this.b1 = false;
+    //         this.loaderrapport = false;
+    //         console.log('this.ridotto ', this.sec_alpi)
+    //       }
+    //
+    //       this.rapportService.getPlacages().subscribe(
+    //           data1 => {
+    //             if (!this.sec_pla.length){
+    //               this.sec_pla = data1;
+    //               this.b2 = false;
+    //               console.log('this.pl ', this.sec_pla)
+    //             }
+    //             // this.sec_pla = data;
+    //             // this.b2 = false;
+    //
+    //             this.rapportService.getBrazils().subscribe(
+    //                 data2 => {
+    //                   if (!this.sec_bra.length){
+    //                     this.sec_bra = data2;
+    //                     this.b3 = false;
+    //                     console.log('this.b ', this.sec_bra)
+    //                   }
+    //                   // this.sec_bra = data;
+    //                   // this.b3 = false;
+    //
+    //                   this.rapportService.getContreplaques().subscribe(
+    //                       data3 => {
+    //                         if (!this.sec_cp.length){
+    //                           this.sec_cp = data3;
+    //                           this.b4 = false;
+    //                           console.log('this.c ', this.sec_cp)
+    //                         }
+    //                         // this.sec_cp = data;
+    //                         // this.b4 = false;
+    //
+    //                         this.rapportService.getScieries().subscribe(
+    //                             data4 => {
+    //                               if (!this.sec_sci.length){
+    //                                 this.sec_sci = data4;
+    //                                 this.b5 = false;
+    //                                 console.log('this.s ', this.sec_sci)
+    //                               }
+    //                               console.log('this.sdza ', this.sec_alpi)
+    //                             },
+    //                         );
+    //                       },
+    //                   );
+    //                 },
+    //             );
+    //           },
+    //       );
+    //     },
+    // );
+
+    // this.tab1 = this.sec_alpi;
+    // this.tab2 = this.sec_bra;
+    // this.tab3 = this.sec_pla;
+    // this.tab4 = this.sec_cp;
+    // this.tab5 = this.sec_sci;
+  }
+
   async downloads(){
     const dat = new Date();
     const min = 'min';
@@ -446,94 +739,104 @@ export class StatsGlobalComponent implements OnInit {
     const dat3 = this.datS1;
     const dat4 = this.datS2;
 
-    this.sec_alpi = [];
-    this.sec_pla = [];
-    this.sec_cp = [];
-    this.sec_bra = [];
-    this.sec_sci = [];
+    // this.sec_alpi = [];
+    // this.sec_pla = [];
+    // this.sec_cp = [];
+    // this.sec_bra = [];
+    // this.sec_sci = [];
     this.b1 = true;
     this.b2 = true;
     this.b3 = true;
     this.b4 = true;
     this.b5 = true;
 
-    this.rapportService.getRidottos().subscribe(
-        data => {
-          this.sec_alpi = data;
-          this.b1 = false;
-        },
-        error => {
-          console.log('error alpi!')
-        },
-        () => {
-          console.log('alp', this.sec_alpi);
-        }
-    );
+    // this.rapportService.getRidottos().subscribe(
+    //     data => {
+    //       this.sec_alpi = data;
+    //       this.b1 = false;
+    //     },
+    //     error => {
+    //       console.log('error alpi!')
+    //     },
+    //     () => {
+    //       console.log('alp', this.sec_alpi);
+    //     }
+    // );
+    //
+    //   this.rapportService.getPlacages().subscribe(
+    //       data => {
+    //         this.sec_pla = data;
+    //         this.b2 = false;
+    //       },
+    //       error => {
+    //         console.log('error plac')
+    //       },
+    //       () => {
+    //         console.log('pla', this.sec_pla);
+    //       }
+    //   );
+    //
+    //   this.rapportService.getBrazils().subscribe(
+    //       data => {
+    //         this.sec_bra = data;
+    //         this.b3 = false;
+    //       },
+    //       error => {
+    //         console.log('error bra')
+    //       },
+    //       () => {
+    //         console.log('bra', this.sec_bra);
+    //       }
+    //   );
+    //
+    //   this.rapportService.getContreplaques().subscribe(
+    //       data => {
+    //         this.sec_cp = data;
+    //         this.b4 = false;
+    //       },
+    //       error => {
+    //         console.log('error cp')
+    //       },
+    //       () => {
+    //         console.log('con', this.sec_cp);
+    //       }
+    //   );
+    //
+    //   this.rapportService.getScieries().subscribe(
+    //       data => {
+    //         this.sec_sci = data;
+    //         this.b5 = false;
+    //       },
+    //       error => {
+    //         console.log('error scierie')
+    //       },
+    //       () => {
+    //         console.log('scie', this.sec_sci);
+    //       }
+    //   );
 
-    this.rapportService.getPlacages().subscribe(
-        data => {
-          this.sec_pla = data;
-          this.b2 = false;
-        },
-        error => {
-          console.log('error plac')
-        },
-        () => {
-          console.log('pla', this.sec_pla);
-        }
-    );
 
-    this.rapportService.getBrazils().subscribe(
-        data => {
-          this.sec_bra = data;
-          this.b3 = false;
-        },
-        error => {
-          console.log('error bra')
-        },
-        () => {
-          console.log('bra', this.sec_bra);
-        }
-    );
 
-    this.rapportService.getContreplaques().subscribe(
-        data => {
-          this.sec_cp = data;
-          this.b4 = false;
-        },
-        error => {
-          console.log('error cp')
-        },
-        () => {
-          console.log('con', this.sec_cp);
-        }
-    );
-
-    this.rapportService.getScieries().subscribe(
-        data => {
-          this.sec_sci = data;
-          this.b5 = false;
-        },
-        error => {
-          console.log('error scierir')
-        },
-        () => {
-          console.log('scie', this.sec_sci);
-        }
-    );
 
     // this.alpicamRapport();
-
-    // if (!this.sec_alpi.length ){
-    //   // this.chargements()
-    //   console.log("first test")
+    // setTimeout(()=>{                           //<<<---using ()=> syntax
+    //   if (!this.sec_alpi.length ){
+    //     console.log("first test")
+    //   }
+    //   if (this.sec_alpi.length ) {
+    //     console.log('okay')
+    //   }
+    // }, 3000);
+    //
+    // while (!this.ridotto.length){
+    //   console.log("first test");
+    //
+    //   if(this.ridotto.length){
+    //     console.log("affichage", this.ridotto)
+    //   }
     // }
-    // if (this.sec_alpi.length ) {
-      console.log('this.ridotto ', this.ridotto)
-      console.log('this.pl ', this.sec_pla)
-      console.log('this.s ', this.sec_sci)
-      console.log('this.b ', this.sec_bra)
-      console.log('this.c ', this.sec_cp)
+
+
       var docDefinition = {
         pageSize: 'A4',
         pageOrientation: 'portrait',
@@ -565,18 +868,21 @@ export class StatsGlobalComponent implements OnInit {
               image: await this.getBase64ImageFromURL("/assets/images/logo24.png"),
               width: 87,
               height: 22,
-              margin: [40, 12, 0, 0], alignment: 'left'
+              margin: [40, 12, 0, 0],
+              alignment: 'left'
             },
             {
               text: 'Rapport de Maintenance ALPICAM Industries',
-              alignment: 'right',
+              alignment: 'center',
               fontSize: 8,
               italics: true,
               margin: [0, 12, 0, 0],
             },
             {
               text: 'Exporté le: ' + this.datePipe.transform(dat, 'dd/MM/yyyy'),
-              bold: true, fontSize: 8, italics: true, alignment: 'right', margin: [0, 12, 40, 0],
+              bold: true, fontSize: 8, italics: true,
+              alignment: 'right',
+              margin: [0, 12, 40, 0],
             }
           ]
         },
@@ -696,6 +1002,7 @@ export class StatsGlobalComponent implements OnInit {
             pageBreak: 'before',
             pageOrientation: 'landscape',
           },
+
           this.getTable(this.sec_alpi),
           {
             text: [
@@ -939,9 +1246,455 @@ export class StatsGlobalComponent implements OnInit {
         },
 
       };
+      // if(this.sec_alpi.length && this.sec_bra.length && this.sec_pla.length && this.sec_cp.length && this.sec_sci.length){
+      // if((this.sec_alpi.length) &&
+      //     (this.sec_pla.length) &&
+      //     (this.sec_bra.length) &&
+      //     (this.sec_cp.length) &&
+      //     (this.sec_sci.length)) {
+    // setTimeout(()=>{                           //<<<---using ()=> syntax
       this.pdfMake.createPdf(docDefinition).open();
+    // }, 2000);
+          // this.pdfMake.createPdf(docDefinition).open();
+      // }else {
+      //   console.log('Rééssayez encore1!', this.sec_alpi)
+      //   console.log(this.sec_alpi)
+      //   console.log('Rééssayez encore2!', this.sec_pla)
+      //   console.log(this.sec_pla)
+      //   console.log('Rééssayez encore3!', this.sec_bra)
+      //   console.log(this.sec_bra)
+      //   console.log('Rééssayez encore4!', this.sec_cp)
+      //   console.log(this.sec_cp)
+      //   console.log('Rééssayez encore5!', this.sec_sci)
+      //   console.log(this.sec_sci)
+      // }
+
 
     // }
+  }
+
+  async downloads_filtre(){
+    const dat = new Date();
+    const min = 'min';
+    const tab = this.ridotto
+    const user = this.token.getUsername();
+
+    const dat1 = this.rapportRangeForm.controls['date1'].value;
+    const dat2 = this.rapportRangeForm.controls['date2'].value;
+    const dat3 = this.rapportRangeForm.controls['date3'].value;
+    const dat4 = this.rapportRangeForm.controls['date4'].value;
+
+
+    var docDefinition = {
+      pageSize: 'A4',
+      pageOrientation: 'portrait',
+      pageMargins: [40, 60, 40, 60],
+      footer: function (currentPage, pageCount) {
+        return {
+          columns: [
+            {
+              text: 'from acon-stats produced by ' + user,
+              fontSize: 8,
+              italics: true,
+              margin: [40, 20, 0, 0],
+              alignment: 'left'
+            },
+            // { text: 'from acon-stats produced by '+this.token.getUsername().bold(), fontSize: 8, italics: true, margin: [ 10, 10, 0, 0 ], alignment: 'left'},
+            {
+              text: currentPage.toString() + '/' + pageCount,
+              fontSize: 8,
+              italics: true,
+              margin: [0, 20, 40, 0],
+              alignment: 'right'
+            }
+          ],
+        }
+      },
+      header: {
+        columns: [
+          {
+            image: await this.getBase64ImageFromURL("/assets/images/logo24.png"),
+            width: 87,
+            height: 22,
+            margin: [40, 12, 0, 0],
+            alignment: 'left'
+          },
+          {
+            text: 'Rapport de Maintenance ALPICAM Industries',
+            alignment: 'center',
+            fontSize: 8,
+            italics: true,
+            margin: [0, 12, 0, 0],
+          },
+          {
+            text: 'Exporté le: ' + this.datePipe.transform(dat, 'dd/MM/yyyy'),
+            bold: true, fontSize: 8, italics: true,
+            alignment: 'right',
+            margin: [0, 12, 40, 0],
+          }
+        ]
+      },
+
+      background: function(){
+        return [
+          {
+            image: 'bee',
+            height: 42,
+            margin: [0, 0, 0, 0],
+          }
+        ];
+      },
+
+      images: {
+        bee: await this.getBase64ImageFromURL("/assets/images/test.png"),
+      },
+
+
+      info: {
+        title: 'Rapport de Maintenance' + this.datePipe.transform(dat, 'MMM-yyyy'),
+        author: user,
+        subject: 'tpm subject',
+        creator: 'ACON',
+        producer: user,
+        creationDate: this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm')
+      },
+      content: [
+        {
+          text: 'TOTAL PRODUCTIVE MAINTENANCE',
+          fontSize: 16, bold: true, alignment: 'center',
+          decoration: 'underline', decorationStyle: 'double',
+          margin: [0, 0, 0, 100]
+        },
+        {
+          image: await this.getBase64ImageFromURL("/assets/images/TPM.jpg"),
+          width: 400,
+          height: 300,
+          alignment: 'center',
+          margin: [0, 0, 0, 60]
+        },
+        {
+          text: [
+            {
+              text: 'Le présent document fait état de la situation des pannes de l\'entreprise entre les périodes allant du ',
+              fontSize: 12
+            },
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 12,
+              bold: true
+            },
+            {text: ' et celle du ', fontSize: 12,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 12,
+              bold: true
+            }
+          ]
+        },
+        {
+          margin: [0, 80],
+          columns: [
+            {
+              text: [
+                {
+                  text: 'Créer Par :\n',
+                  fontSize: 13,
+                  italics: true,
+                  bold: true,
+                  alignment: 'left',
+                  decoration: 'underline',
+                  margin: [0, 10]
+                },
+                {
+                  text: [
+                    {text: user, fontSize: 12, alignment: 'left',},
+                  ],
+                },
+              ]
+            },
+            {
+              qr: 'Rapport TPM Alpicam Industries, Creer le : ' + this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm') + ' par ' + user,
+              fit: '100',
+              alignment: 'right',
+              width: 100,
+              height: 100,
+            },
+
+          ]
+        },
+
+
+        // {
+        //        text: 'tableau 4',
+        //        pageBreak: 'before',
+        //        pageOrientation: 'landscape'
+        //       },
+        //         this.fp(),
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Alpicam: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+              margin: [0, 0, 0, 20]
+            },
+          ],
+          pageBreak: 'before',
+          pageOrientation: 'landscape',
+        },
+
+        this.getTable(this._alpi2),
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Brazil: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+          ],
+          margin: [0, 20]
+        },
+        this.getTable(this._bra2),
+
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Placage: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+            },
+          ], margin: [0, 0, 0, 20],
+          pageBreak: 'before',
+          pageOrientation: 'landscape',
+        },
+        this.getTable(this._pla2),
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Contreplaqué: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+            },
+          ], margin: [0, 20]
+        },
+        this.getTable(this._cp2),
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Scierie: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+            },
+          ], margin: [0, 20]
+        },
+        this.getTable(this._sci2),
+        {
+          text: 'EXPLICATIONS DES ABBREVIATIONS',
+          fontSize: 16,
+          decoration: 'underline',
+          alignment: 'center',
+          decorationStyle: 'double',
+          margin: [0, 0, 0, 40],
+          pageBreak: 'before',
+          pageOrientation: 'portrait',
+        },
+        {
+          text: [
+            {text: 'N°1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {
+              text: 'Nombre de pannes de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 12,
+            }
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: 'N°2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {
+              text: 'Nombre de pannes de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 12,
+            }
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: '%N°: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {text: 'Taux d\'évolution (en %) des pannes entre les deux périodes ', fontSize: 12,}
+          ], margin: [0, 0, 0, 20]
+        },
+
+        {
+          text: [
+            {text: 'TDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {
+              text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 12,
+            }
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: 'TDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {
+              text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 12,
+            }
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: '%TDT: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {text: 'Taux d\'évolution (en %) du Total Down Time entre les deux périodes ', fontSize: 12,}
+          ], margin: [0, 0, 0, 20]
+        },
+
+        {
+          text: [
+            {text: 'MDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {
+              text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 12,
+            }
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: 'MDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {
+              text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 12,
+            }
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: '%MDT: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
+            {text: 'Taux d\'évolution (en %) du Mean Down Time entre les deux périodes ', fontSize: 12,}
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: '%: ', fontSize: 12, color: '#d92550', bold: true, alignment: 'left',},
+            {text: 'Augmentation ', fontSize: 12,}
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: '%: ', fontSize: 12, color: '#3ac47d', bold: true, alignment: 'left',},
+            {text: 'Baisse ', fontSize: 12,}
+          ], margin: [0, 0, 0, 20]
+        },
+        {
+          text: [
+            {text: '%: ', fontSize: 12, color: '#f7b924', bold: true, alignment: 'left',},
+            {text: 'Constant ', fontSize: 12,}
+          ], margin: [0, 0, 0, 20]
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10],
+
+        },
+        subheader: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 10, 0, 5]
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15]
+        },
+        tableOpacityExample: {
+          margin: [0, 5, 0, 15],
+          fillColor: 'blue',
+          fillOpacity: 0.3
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 12,
+          fillColor: '#d0eeff',
+          fontFamily: 'Roboto',
+          alignement: 'left',
+          color: '#0b5885',
+        },
+        td: {
+          bold: false,
+          fontSize: 10,
+          fillColor: '#fff',
+          fontFamily: 'Roboto',
+          alignement: 'left',
+          color: '#000',
+        },
+        tv: {
+          bold: false,
+          fontSize: 10,
+          fillColor: '#fff',
+          fontFamily: 'Roboto',
+          alignement: 'left',
+          color: '#3ac47d',
+        },
+        tr: {
+          bold: false,
+          fontSize: 10,
+          fillColor: '#fff',
+          fontFamily: 'Roboto',
+          alignement: 'left',
+          color: '#d92550',
+        },
+        tj: {
+          bold: false,
+          fontSize: 10,
+          fillColor: '#fff',
+          fontFamily: 'Roboto',
+          alignement: 'left',
+          color: '#f7b924',
+        }
+      },
+
+    };
+    this.pdfMake.createPdf(docDefinition).open();
   }
   chargements(){
 

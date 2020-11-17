@@ -685,10 +685,11 @@ export class ArretsComponent implements OnInit {
           this.arretService.postArret(this.newArret).subscribe(
               res => {
                   this.initArret();
-                  this.LoadArrets();
+                  // this.LoadArrets();
                   this.typeArretThisMonth();
                   this.dashLast30days();
-                  this.thisYearArrets();
+                  this.ThisMonthArrets();
+                  this.paretoArretThisMonth();
                   this.radialBar();
 
                   const Toast = Swal.mixin({
@@ -755,7 +756,7 @@ export class ArretsComponent implements OnInit {
     this.arretService.putArret(this.arr, this.selectedArret.numero).subscribe(
         res => {
           this.initArret();
-          this.LoadArrets();
+          this.ThisMonthArrets();
             this.typeArretThisMonth();
             this.dashLast30days();
             this.thisYearArrets();
@@ -820,8 +821,7 @@ export class ArretsComponent implements OnInit {
     this.arretService.deleteArret(this.selectedArret.idArret).subscribe(
         res => {
           this.initArret()
-          this.LoadArrets();
-
+          this.ThisMonthArrets();
         }
     );
   }
@@ -1062,7 +1062,7 @@ export class ArretsComponent implements OnInit {
         this.arretService.paretoAlpiRange(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
-                this.pareto.labels.push(mach.nom);
+                this.pareto.labels.push(mach.nom.toUpperCase());
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
@@ -1099,7 +1099,7 @@ export class ArretsComponent implements OnInit {
         this.arretService.paretoAlpiThisMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
-                this.pareto.labels.push(mach.nom);
+                this.pareto.labels.push(mach.nom.toUpperCase());
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
@@ -1136,7 +1136,7 @@ export class ArretsComponent implements OnInit {
         this.arretService.paretoAlpiLastMonth().subscribe(
             list => list.forEach(mach => {
                 // datasetNbrePanne2.name = (mach.machine);
-                this.pareto.labels.push(mach.nom);
+                this.pareto.labels.push(mach.nom.toUpperCase());
                 datasetNbrePanne3.data.push(mach.nbre);
                 datasetNbrePanne4.data.push(mach.TDT);
 
