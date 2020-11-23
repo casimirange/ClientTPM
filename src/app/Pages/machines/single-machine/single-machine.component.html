@@ -5,20 +5,25 @@
     <div class="col-md-12 col-lg-12 col-xl-12">
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
-                <div class="card-header-title">
+                <div class="card-header-title" style="cursor: pointer;">
                     <i class="header-icon pe-7s-graph2 icon-gradient bg-happy-green"> </i>
                     Rapport
                 </div>
+                <div class="btn-actions-pane-right" *ngIf="authority === 'admin' || authority === 'super_admin'">
+                    <button class="btn btn-outline-primary btn-sm" *ngIf="mtbfByYear.labels.length && loader == false " (click)="div == true ? exportsMDT() : exportsMTBF();">
+                        <i class="fa fa-file-pdf"></i> Export PDF
+                    </button>
+                </div>
                 <div class="btn-actions-pane-right">
                     <div class="nav">
-                        <a href="#tab-eg-65" data-toggle="tab" class="btn-pill btn-wide active btn btn-outline-primary btn-sm">MTBF {{selectedMachine.nom | uppercase}}</a>
-                        <a href="#tab-eg-66" data-toggle="tab" class="btn-pill btn-wide mr-1 ml-1  btn btn-outline-primary btn-sm">MDT {{selectedMachine.nom | uppercase}}</a>
+                        <a (click)="div = false " href="#tab-eg-65" data-toggle="tab" class="btn-pill btn-wide active btn btn-outline-primary btn-sm">MTBF {{selectedMachine.nom | uppercase}}</a>
+                        <a (click)="div = true" href="#tab-eg-66" data-toggle="tab" class="btn-pill btn-wide mr-1 ml-1  btn btn-outline-primary btn-sm">MDT {{selectedMachine.nom | uppercase}}</a>
                     </div>
                 </div>
             </div>
             <div class="tab-content">
-                <div class="tab-pane fade active show" id="tab-eg-65">
-                    <div class="widget-chart p-0">
+                <div class="tab-pane fade active show mtbf1" id="tab-eg-65">
+                    <div class="widget-chart p-0" id="xyz">
 
                         <app-chart width="400" height="auto" *ngIf="mtbfByYear.labels.length && loader == false "
                                    [type]="'bar'"
@@ -26,6 +31,27 @@
                                    [lineChartLabels]="mtbfByYear.labels"
                                    [lineChartColors]="colorsMTBF"
                         ></app-chart>
+
+                        <table class="table table-inverse mt-3" *ngIf="mtbfByYear.labels.length && loader == false  && val == true">
+                            <tbody>
+                            <tr>
+                                <th class="text-left">Période</th>
+                                <th *ngFor="let x of mtbfByYear.labels">{{x}}</th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-vert"></div>&nbsp; MTBF [h]</th>
+                                <td *ngFor="let y of mtbfByYear.mtbfs">{{y}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-bleu"></div>&nbsp; TDT [min]</th>
+                                <td *ngFor="let z of mtbfByYear.tdt">{{z}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-rouge"></div>&nbsp; Pannes</th>
+                                <td *ngFor="let x of mtbfByYear.nbr">{{x}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
 
                         <div class="card-body p-2 text-center"  *ngIf="!mtbfByYear.labels.length && loader == false ">
                             <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
@@ -52,7 +78,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tab-eg-66">
-                    <div class="widget-chart p-0">
+                    <div class="widget-chart p-0" id="xyz1">
                         <app-chart
                                 width="400" height="auto" *ngIf="mdtByYear.labels.length && loader == false "
                                    [type]="'bar'"
@@ -60,6 +86,27 @@
                                    [lineChartLabels]="mdtByYear.labels"
                                    [lineChartColors]="colorsMDT"
                         ></app-chart>
+
+                        <table class="table table-inverse mt-3" *ngIf="mdtByYear.labels.length && loader == false && vals == true">
+                            <tbody>
+                            <tr>
+                                <th class="text-left">Période</th>
+                                <th *ngFor="let x of mdtByYear.labels">{{x}}</th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-noir"></div>&nbsp;MDT [min]</th>
+                                <td *ngFor="let x of mdtByYear.mdt">{{x}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-bleu"></div>&nbsp;TTR [min]</th>
+                                <td *ngFor="let x of mdtByYear.ttr">{{x}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left" style="display: inline-block; vertical-align: middle; float:left;"><div class="carre-orange"></div>&nbsp;WT [min]</th>
+                                <td *ngFor="let x of mdtByYear.wt">{{x}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                         <div class="card-body p-2 text-center"  *ngIf="!mdtByYear.labels.length && loader == false ">
                             <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
                         </div>
@@ -89,7 +136,7 @@
     </div>
 </div>
 
-<div *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'" class="row">
+<div *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'" id="tableau" class="row">
     <div class="col-md-12">
         <div class="main-card mb-3 card " id="htmlData" #htmlData>
             <div class="card-header">

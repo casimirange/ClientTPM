@@ -79,7 +79,7 @@ export class DepartementsComponent implements OnInit {
             this.roles.every(role => {
                 if (role === 'ROLE_ADMIN') {
                     this.authority = 'admin';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -97,7 +97,7 @@ export class DepartementsComponent implements OnInit {
                     return false;
                 } else if (role === 'ROLE_USER_MINDOUROU') {
                     this.authority = 'user_mind';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -112,7 +112,7 @@ export class DepartementsComponent implements OnInit {
                     return false;
                 } else if (role === 'ROLE_RESP_PLACAGE') {
                     this.authority = 'resp_pla';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -127,7 +127,7 @@ export class DepartementsComponent implements OnInit {
                     return false;
                 } else if (role === 'ROLE_RESP_SCIERIE') {
                     this.authority = 'resp_sci';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -142,7 +142,7 @@ export class DepartementsComponent implements OnInit {
                     return false;
                 } else if (role === 'ROLE_RESP_BRAZIL') {
                     this.authority = 'resp_bra';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -157,7 +157,7 @@ export class DepartementsComponent implements OnInit {
                     return false;
                 } else if (role === 'ROLE_RESP_CP') {
                     this.authority = 'resp_cp';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -172,7 +172,7 @@ export class DepartementsComponent implements OnInit {
                     return false;
                 } else if (role === 'ROLE_RESP_MAINTENANCE') {
                     this.authority = 'resp_maint';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -187,7 +187,7 @@ export class DepartementsComponent implements OnInit {
                     return false;
                 } else if (role === 'ROLE_RESP_MINDOUROU') {
                     this.authority = 'resp_mind';
-                    content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                    content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,
@@ -203,7 +203,7 @@ export class DepartementsComponent implements OnInit {
 
                 }
                 this.authority = 'user_alpi';
-                content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                     Swal.fire({
                         title: 'Aucun Accès!',
                         html: content,

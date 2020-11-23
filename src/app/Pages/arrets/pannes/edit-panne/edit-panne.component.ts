@@ -184,7 +184,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'admin';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -204,7 +204,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'user_mind';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -221,7 +221,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'resp_pla';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -238,7 +238,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'resp_sci';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -255,7 +255,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'resp_bra';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -272,7 +272,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'resp_cp';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -289,7 +289,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'resp_maint';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -306,7 +306,7 @@ export class EditPanneComponent implements OnInit {
           this.authority = 'resp_mind';
           const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -324,7 +324,7 @@ export class EditPanneComponent implements OnInit {
         this.authority = 'user_alpi';
         const Swal = require('sweetalert2');
           var content = document.createElement('div');
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,

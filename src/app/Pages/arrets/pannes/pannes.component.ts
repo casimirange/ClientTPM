@@ -12,7 +12,6 @@ import jsPDF from 'jspdf';
 import {Router} from "@angular/router";
 
 import  * as html2canvas from "html2canvas";
-import * as html2pdf from 'html2pdf.js';
 import {TokenStorageService} from "../../../auth/token-storage.service";
 import {Location} from "@angular/common";
 // import {content} from "html2canvas/dist/types/src/css";
@@ -113,7 +112,7 @@ export class PannesComponent implements OnInit {
                   this.authority = 'user_mind';
                   const Swal = require('sweetalert2');
                   var content = document.createElement('div');
-                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                   Swal.fire({
                       title: 'Aucun Accès!',
                       html: content,
@@ -145,7 +144,7 @@ export class PannesComponent implements OnInit {
                   this.authority = 'resp_mind';
                   const Swal = require('sweetalert2');
                   var content = document.createElement('div');
-                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                   Swal.fire({
                       title: 'Aucun Accès!',
                       html: content,

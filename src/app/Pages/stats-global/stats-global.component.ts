@@ -14,6 +14,7 @@ import {RapportService} from "../../services/rapport/rapport.service";
 import html2canvas from "html2canvas";
 import jsPDF from 'jspdf';
 import {TokenStorageService} from "../../auth/token-storage.service";
+import {toTitleCase} from "codelyzer/util/utils";
 // import pdfMake from 'pdfmake/build/pdfmake';
 // import pdfFonts from 'pdfmake/build/vfs_fonts';
 
@@ -304,6 +305,8 @@ export class StatsGlobalComponent implements OnInit {
   tab4: any[] = [];
   tab5: any[] = [];
 
+  dater: any;
+
   constructor(private dashboardService: DashboardService,
               private rapportService: RapportService,
               private datePipe: DatePipe,
@@ -320,6 +323,7 @@ export class StatsGlobalComponent implements OnInit {
     this.statsPanne();
 
     this.pdfMake.vfs = this.pdfFonts.pdfMake.vfs;
+
   }
 
   pageForms() {
@@ -368,7 +372,7 @@ export class StatsGlobalComponent implements OnInit {
           return false;
         } else if (role === 'ROLE_USER_MINDOUROU') {
           this.authority = 'user_mind';
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -398,7 +402,7 @@ export class StatsGlobalComponent implements OnInit {
           return false;
         } else if (role === 'ROLE_RESP_MINDOUROU') {
           this.authority = 'resp_mind';
-          content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+          content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
           Swal.fire({
             title: 'Aucun Accès!',
             html: content,
@@ -414,7 +418,7 @@ export class StatsGlobalComponent implements OnInit {
 
         }
         this.authority = 'user_alpi';
-        content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+        content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
         Swal.fire({
           title: 'Aucun Accès!',
           html: content,
@@ -739,103 +743,11 @@ export class StatsGlobalComponent implements OnInit {
     const dat3 = this.datS1;
     const dat4 = this.datS2;
 
-    // this.sec_alpi = [];
-    // this.sec_pla = [];
-    // this.sec_cp = [];
-    // this.sec_bra = [];
-    // this.sec_sci = [];
     this.b1 = true;
     this.b2 = true;
     this.b3 = true;
     this.b4 = true;
     this.b5 = true;
-
-    // this.rapportService.getRidottos().subscribe(
-    //     data => {
-    //       this.sec_alpi = data;
-    //       this.b1 = false;
-    //     },
-    //     error => {
-    //       console.log('error alpi!')
-    //     },
-    //     () => {
-    //       console.log('alp', this.sec_alpi);
-    //     }
-    // );
-    //
-    //   this.rapportService.getPlacages().subscribe(
-    //       data => {
-    //         this.sec_pla = data;
-    //         this.b2 = false;
-    //       },
-    //       error => {
-    //         console.log('error plac')
-    //       },
-    //       () => {
-    //         console.log('pla', this.sec_pla);
-    //       }
-    //   );
-    //
-    //   this.rapportService.getBrazils().subscribe(
-    //       data => {
-    //         this.sec_bra = data;
-    //         this.b3 = false;
-    //       },
-    //       error => {
-    //         console.log('error bra')
-    //       },
-    //       () => {
-    //         console.log('bra', this.sec_bra);
-    //       }
-    //   );
-    //
-    //   this.rapportService.getContreplaques().subscribe(
-    //       data => {
-    //         this.sec_cp = data;
-    //         this.b4 = false;
-    //       },
-    //       error => {
-    //         console.log('error cp')
-    //       },
-    //       () => {
-    //         console.log('con', this.sec_cp);
-    //       }
-    //   );
-    //
-    //   this.rapportService.getScieries().subscribe(
-    //       data => {
-    //         this.sec_sci = data;
-    //         this.b5 = false;
-    //       },
-    //       error => {
-    //         console.log('error scierie')
-    //       },
-    //       () => {
-    //         console.log('scie', this.sec_sci);
-    //       }
-    //   );
-
-
-
-
-    // this.alpicamRapport();
-    // setTimeout(()=>{                           //<<<---using ()=> syntax
-    //   if (!this.sec_alpi.length ){
-    //     console.log("first test")
-    //   }
-    //   if (this.sec_alpi.length ) {
-    //     console.log('okay')
-    //   }
-    // }, 3000);
-    //
-    // while (!this.ridotto.length){
-    //   console.log("first test");
-    //
-    //   if(this.ridotto.length){
-    //     console.log("affichage", this.ridotto)
-    //   }
-    // }
-
 
       var docDefinition = {
         pageSize: 'A4',
@@ -845,7 +757,7 @@ export class StatsGlobalComponent implements OnInit {
           return {
             columns: [
               {
-                text: 'from acon-stats produced by ' + user,
+                text: window.location.toString()+' généré par: ' + user,
                 fontSize: 8,
                 italics: true,
                 margin: [40, 20, 0, 0],
@@ -871,15 +783,15 @@ export class StatsGlobalComponent implements OnInit {
               margin: [40, 12, 0, 0],
               alignment: 'left'
             },
+            // {
+            //   text: 'Rapport de Maintenance ALPICAM Industries',
+            //   alignment: 'center',
+            //   fontSize: 8,
+            //   italics: true,
+            //   margin: [0, 12, 0, 0],
+            // },
             {
-              text: 'Rapport de Maintenance ALPICAM Industries',
-              alignment: 'center',
-              fontSize: 8,
-              italics: true,
-              margin: [0, 12, 0, 0],
-            },
-            {
-              text: 'Exporté le: ' + this.datePipe.transform(dat, 'dd/MM/yyyy'),
+              text: 'Rapport de Maintenance ALPICAM Industries. Exporté le: ' + this.datePipe.transform(dat, 'dd/MM/yyyy'),
               bold: true, fontSize: 8, italics: true,
               alignment: 'right',
               margin: [0, 12, 40, 0],
@@ -903,9 +815,9 @@ export class StatsGlobalComponent implements OnInit {
 
 
         info: {
-          title: 'Rapport de Maintenance' + this.datePipe.transform(dat, 'MMM-yyyy'),
+          title: 'Rapport de Maintenance - ' + this.datePipe.transform(dat, 'MMM-yyyy'),
           author: user,
-          subject: 'tpm subject',
+          subject: 'Total Productive Maintenance',
           creator: 'ACON',
           producer: user,
           creationDate: this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm')
@@ -918,7 +830,7 @@ export class StatsGlobalComponent implements OnInit {
             margin: [0, 0, 0, 100]
           },
           {
-            image: await this.getBase64ImageFromURL("/assets/images/TPM.jpg"),
+            image: await this.getBase64ImageFromURL("/assets/images/TPM2.jpg"),
             width: 400,
             height: 300,
             alignment: 'center',
@@ -949,7 +861,7 @@ export class StatsGlobalComponent implements OnInit {
               {
                 text: [
                   {
-                    text: 'Créer Par :\n',
+                    text: 'Généré Par :\n',
                     fontSize: 13,
                     italics: true,
                     bold: true,
@@ -965,7 +877,7 @@ export class StatsGlobalComponent implements OnInit {
                 ]
               },
               {
-                qr: 'Rapport TPM Alpicam Industries, Creer le : ' + this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm') + ' par ' + user,
+                qr: 'Rapport TPM Alpicam Industries, genere le : ' + this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm') + ' par ' + user,
                 fit: '100',
                 alignment: 'right',
                 width: 100,
@@ -974,112 +886,6 @@ export class StatsGlobalComponent implements OnInit {
 
             ]
           },
-
-
-          // {
-          //        text: 'tableau 4',
-          //        pageBreak: 'before',
-          //        pageOrientation: 'landscape'
-          //       },
-          //         this.fp(),
-          {
-            text: [
-              {text: 'Tableau Comparatif ', fontSize: 13},
-              {text: 'Alpicam: ', fontSize: 13, color: '#0b5885'},
-              {
-                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true
-              },
-              {text: ' VS ', fontSize: 13,},
-              {
-                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true,
-                margin: [0, 0, 0, 20]
-              },
-            ],
-            pageBreak: 'before',
-            pageOrientation: 'landscape',
-          },
-
-          this.getTable(this.sec_alpi),
-          {
-            text: [
-              {text: 'Tableau Comparatif ', fontSize: 13},
-              {text: 'Brazil: ', fontSize: 13, color: '#0b5885'},
-              {
-                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true
-              },
-              {text: ' VS ', fontSize: 13,},
-              {
-                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true
-              },
-            ],
-            margin: [0, 20]
-          },
-          this.getTable(this.sec_bra),
-
-          {
-            text: [
-              {text: 'Tableau Comparatif ', fontSize: 13},
-              {text: 'Placage: ', fontSize: 13, color: '#0b5885'},
-              {
-                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true
-              },
-              {text: ' VS ', fontSize: 13,},
-              {
-                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true,
-              },
-            ], margin: [0, 0, 0, 20],
-            pageBreak: 'before',
-            pageOrientation: 'landscape',
-          },
-          this.getTable(this.sec_pla),
-          {
-            text: [
-              {text: 'Tableau Comparatif ', fontSize: 13},
-              {text: 'Contreplaqué: ', fontSize: 13, color: '#0b5885'},
-              {
-                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true
-              },
-              {text: ' VS ', fontSize: 13,},
-              {
-                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true,
-              },
-            ], margin: [0, 20]
-          },
-          this.getTable(this.sec_cp),
-          {
-            text: [
-              {text: 'Tableau Comparatif ', fontSize: 13},
-              {text: 'Scierie: ', fontSize: 13, color: '#0b5885'},
-              {
-                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true
-              },
-              {text: ' VS ', fontSize: 13,},
-              {
-                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-                fontSize: 13,
-                bold: true,
-              },
-            ], margin: [0, 20]
-          },
-          this.getTable(this.sec_sci),
           {
             text: 'EXPLICATIONS DES ABBREVIATIONS',
             fontSize: 16,
@@ -1182,6 +988,106 @@ export class StatsGlobalComponent implements OnInit {
               {text: 'Constant ', fontSize: 12,}
             ], margin: [0, 0, 0, 20]
           },
+
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Alpicam: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+                margin: [0, 0, 0, 20]
+              },
+            ],
+            pageBreak: 'before',
+            pageOrientation: 'landscape',
+          },
+
+          this.getTable(this.sec_alpi),
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Brazil: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+            ],
+            margin: [0, 20]
+          },
+          this.getTable(this.sec_bra),
+
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Placage: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+              },
+            ], margin: [0, 0, 0, 20],
+            pageBreak: 'before',
+            pageOrientation: 'landscape',
+          },
+          this.getTable(this.sec_pla),
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Contreplaqué: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+              },
+            ], margin: [0, 20]
+          },
+          this.getTable(this.sec_cp),
+          {
+            text: [
+              {text: 'Tableau Comparatif ', fontSize: 13},
+              {text: 'Scierie: ', fontSize: 13, color: '#0b5885'},
+              {
+                text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true
+              },
+              {text: ' VS ', fontSize: 13,},
+              {
+                text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                fontSize: 13,
+                bold: true,
+              },
+            ], margin: [0, 20]
+          },
+          this.getTable(this.sec_sci),
+
         ],
         styles: {
           header: {
@@ -1246,31 +1152,7 @@ export class StatsGlobalComponent implements OnInit {
         },
 
       };
-      // if(this.sec_alpi.length && this.sec_bra.length && this.sec_pla.length && this.sec_cp.length && this.sec_sci.length){
-      // if((this.sec_alpi.length) &&
-      //     (this.sec_pla.length) &&
-      //     (this.sec_bra.length) &&
-      //     (this.sec_cp.length) &&
-      //     (this.sec_sci.length)) {
-    // setTimeout(()=>{                           //<<<---using ()=> syntax
-      this.pdfMake.createPdf(docDefinition).open();
-    // }, 2000);
-          // this.pdfMake.createPdf(docDefinition).open();
-      // }else {
-      //   console.log('Rééssayez encore1!', this.sec_alpi)
-      //   console.log(this.sec_alpi)
-      //   console.log('Rééssayez encore2!', this.sec_pla)
-      //   console.log(this.sec_pla)
-      //   console.log('Rééssayez encore3!', this.sec_bra)
-      //   console.log(this.sec_bra)
-      //   console.log('Rééssayez encore4!', this.sec_cp)
-      //   console.log(this.sec_cp)
-      //   console.log('Rééssayez encore5!', this.sec_sci)
-      //   console.log(this.sec_sci)
-      // }
-
-
-    // }
+      this.pdfMake.createPdf(docDefinition).download('Rapport de Maintenance - ' + this.datePipe.transform(dat, 'MMM-yyyy'));
   }
 
   async downloads_filtre(){
@@ -1293,7 +1175,7 @@ export class StatsGlobalComponent implements OnInit {
         return {
           columns: [
             {
-              text: 'from acon-stats produced by ' + user,
+              text: window.location.toString()+' généré par: ' + user,
               fontSize: 8,
               italics: true,
               margin: [40, 20, 0, 0],
@@ -1319,15 +1201,15 @@ export class StatsGlobalComponent implements OnInit {
             margin: [40, 12, 0, 0],
             alignment: 'left'
           },
+          // {
+          //   text: 'Rapport de Maintenance ALPICAM Industries',
+          //   alignment: 'center',
+          //   fontSize: 8,
+          //   italics: true,
+          //   margin: [0, 12, 0, 0],
+          // },
           {
-            text: 'Rapport de Maintenance ALPICAM Industries',
-            alignment: 'center',
-            fontSize: 8,
-            italics: true,
-            margin: [0, 12, 0, 0],
-          },
-          {
-            text: 'Exporté le: ' + this.datePipe.transform(dat, 'dd/MM/yyyy'),
+            text: 'Rapport de Maintenance ALPICAM Industries. Exporté le: ' + this.datePipe.transform(dat, 'dd/MM/yyyy'),
             bold: true, fontSize: 8, italics: true,
             alignment: 'right',
             margin: [0, 12, 40, 0],
@@ -1351,9 +1233,9 @@ export class StatsGlobalComponent implements OnInit {
 
 
       info: {
-        title: 'Rapport de Maintenance' + this.datePipe.transform(dat, 'MMM-yyyy'),
+        title: 'Rapport de Maintenance - ' + this.datePipe.transform(dat, 'MMM-yyyy'),
         author: user,
-        subject: 'tpm subject',
+        subject: 'Total Productive Maintenance',
         creator: 'ACON',
         producer: user,
         creationDate: this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm')
@@ -1366,7 +1248,7 @@ export class StatsGlobalComponent implements OnInit {
           margin: [0, 0, 0, 100]
         },
         {
-          image: await this.getBase64ImageFromURL("/assets/images/TPM.jpg"),
+          image: await this.getBase64ImageFromURL("/assets/images/TPM2.jpg"),
           width: 400,
           height: 300,
           alignment: 'center',
@@ -1397,7 +1279,7 @@ export class StatsGlobalComponent implements OnInit {
             {
               text: [
                 {
-                  text: 'Créer Par :\n',
+                  text: 'Généré Par :\n',
                   fontSize: 13,
                   italics: true,
                   bold: true,
@@ -1413,7 +1295,7 @@ export class StatsGlobalComponent implements OnInit {
               ]
             },
             {
-              qr: 'Rapport TPM Alpicam Industries, Creer le : ' + this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm') + ' par ' + user,
+              qr: 'Rapport TPM Alpicam Industries, Genere le : ' + this.datePipe.transform(dat, 'dd/MM/yyyy HH:mm') + ' par ' + user,
               fit: '100',
               alignment: 'right',
               width: 100,
@@ -1422,112 +1304,6 @@ export class StatsGlobalComponent implements OnInit {
 
           ]
         },
-
-
-        // {
-        //        text: 'tableau 4',
-        //        pageBreak: 'before',
-        //        pageOrientation: 'landscape'
-        //       },
-        //         this.fp(),
-        {
-          text: [
-            {text: 'Tableau Comparatif ', fontSize: 13},
-            {text: 'Alpicam: ', fontSize: 13, color: '#0b5885'},
-            {
-              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true
-            },
-            {text: ' VS ', fontSize: 13,},
-            {
-              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true,
-              margin: [0, 0, 0, 20]
-            },
-          ],
-          pageBreak: 'before',
-          pageOrientation: 'landscape',
-        },
-
-        this.getTable(this._alpi2),
-        {
-          text: [
-            {text: 'Tableau Comparatif ', fontSize: 13},
-            {text: 'Brazil: ', fontSize: 13, color: '#0b5885'},
-            {
-              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true
-            },
-            {text: ' VS ', fontSize: 13,},
-            {
-              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true
-            },
-          ],
-          margin: [0, 20]
-        },
-        this.getTable(this._bra2),
-
-        {
-          text: [
-            {text: 'Tableau Comparatif ', fontSize: 13},
-            {text: 'Placage: ', fontSize: 13, color: '#0b5885'},
-            {
-              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true
-            },
-            {text: ' VS ', fontSize: 13,},
-            {
-              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true,
-            },
-          ], margin: [0, 0, 0, 20],
-          pageBreak: 'before',
-          pageOrientation: 'landscape',
-        },
-        this.getTable(this._pla2),
-        {
-          text: [
-            {text: 'Tableau Comparatif ', fontSize: 13},
-            {text: 'Contreplaqué: ', fontSize: 13, color: '#0b5885'},
-            {
-              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true
-            },
-            {text: ' VS ', fontSize: 13,},
-            {
-              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true,
-            },
-          ], margin: [0, 20]
-        },
-        this.getTable(this._cp2),
-        {
-          text: [
-            {text: 'Tableau Comparatif ', fontSize: 13},
-            {text: 'Scierie: ', fontSize: 13, color: '#0b5885'},
-            {
-              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true
-            },
-            {text: ' VS ', fontSize: 13,},
-            {
-              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
-              fontSize: 13,
-              bold: true,
-            },
-          ], margin: [0, 20]
-        },
-        this.getTable(this._sci2),
         {
           text: 'EXPLICATIONS DES ABBREVIATIONS',
           fontSize: 16,
@@ -1630,6 +1406,106 @@ export class StatsGlobalComponent implements OnInit {
             {text: 'Constant ', fontSize: 12,}
           ], margin: [0, 0, 0, 20]
         },
+
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Alpicam: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+              margin: [0, 0, 0, 20]
+            },
+          ],
+          pageBreak: 'before',
+          pageOrientation: 'landscape',
+        },
+
+        this.getTable(this._alpi2),
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Brazil: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+          ],
+          margin: [0, 20]
+        },
+        this.getTable(this._bra2),
+
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Placage: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+            },
+          ], margin: [0, 0, 0, 20],
+          pageBreak: 'before',
+          pageOrientation: 'landscape',
+        },
+        this.getTable(this._pla2),
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Contreplaqué: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+            },
+          ], margin: [0, 20]
+        },
+        this.getTable(this._cp2),
+        {
+          text: [
+            {text: 'Tableau Comparatif ', fontSize: 13},
+            {text: 'Scierie: ', fontSize: 13, color: '#0b5885'},
+            {
+              text: this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true
+            },
+            {text: ' VS ', fontSize: 13,},
+            {
+              text: this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' au ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              fontSize: 13,
+              bold: true,
+            },
+          ], margin: [0, 20]
+        },
+        this.getTable(this._sci2),
+
       ],
       styles: {
         header: {

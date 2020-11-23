@@ -11,3 +11,53 @@
 .bg-w{
     background: #f4f0ab;
 }
+
+.carre-vert{
+    background: rgba(146, 208, 80, 0.7);
+    width: 10px;
+    height: 10px;
+    border: 1px solid grey;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+}
+
+.carre-rouge{
+    background: #ff4560;
+    width: 10px;
+    height: 10px;
+    border: 1px solid grey;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+}
+
+.carre-bleu{
+    background: rgba(91, 155, 213, 0.7);
+    width: 10px;
+    height: 10px;
+    border: 1px solid grey;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+}
+
+.carre-orange{
+    background: rgba(237, 125, 49, 0.7);
+    width: 10px;
+    height: 10px;
+    border: 1px solid grey;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+}
+
+.carre-noir{
+    background: rgba(77,83,96,0.2);
+    width: 10px;
+    height: 10px;
+    border: 1px solid grey;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+}

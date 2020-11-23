@@ -417,7 +417,7 @@ export class DashboardComponent implements OnInit {
                   this.authority = 'user_mind';
                   const Swal = require('sweetalert2');
                   var content = document.createElement('div');
-                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                   Swal.fire({
                       title: 'Aucun Accès!',
                       html: content,
@@ -449,7 +449,7 @@ export class DashboardComponent implements OnInit {
                   this.authority = 'resp_mind';
                   const Swal = require('sweetalert2');
                   var content = document.createElement('div');
-                  content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+                  content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
                   Swal.fire({
                       title: 'Aucun Accès!',
                       html: content,
@@ -467,7 +467,7 @@ export class DashboardComponent implements OnInit {
               this.authority = 'user_alpi';
               const Swal = require('sweetalert2');
               var content = document.createElement('div');
-              content.innerHTML = 'Vous n\'êtes pas authorisé à accéder à cette page';
+              content.innerHTML = 'Vous n\'êtes pas autorisé à accéder à cette page';
               Swal.fire({
                   title: 'Aucun Accès!',
                   html: content,

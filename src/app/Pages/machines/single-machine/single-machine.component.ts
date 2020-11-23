@@ -9,7 +9,11 @@ import {Color} from "ng2-charts";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {DatePipe, Location} from "@angular/common";
 import {TokenStorageService} from "../../../auth/token-storage.service";
+import html2canvas from 'html2canvas';
+import * as jsPDF from 'jspdf';
+// import html2PDF from 'jspdf-html2canvas';
 
+// declare let html2canvas: any;
 @Component({
   selector: 'app-single-machine',
   templateUrl: './single-machine.component.html',
@@ -21,9 +25,9 @@ export class SingleMachineComponent implements OnInit {
   icon = 'fa fa-home icon-gradient';
   bg = 'text-white bg-midnight-bloom';
 
-    term: string;
-    p: number;
-
+  term: string;
+  p: number;
+  div: boolean;
   selectedMachine: Machine;
   selectedPanne: Pannes;
   searchPanForm: FormGroup;
@@ -54,13 +58,23 @@ export class SingleMachineComponent implements OnInit {
 
   mdtByYear = {
     labels: [] = [],
-    datasets: [] = []
+    datasets: [] = [],
+      mdt: [] = [],
+      wt: [] = [],
+      ttr: [] = []
   };
 
   mtbfByYear = {
     labels: [] = [],
-    datasets: [] = []
+    datasets: [] = [],
+      tdt: [] = [],
+      nbr: [] = [],
+      mtbfs: [] = []
   };
+
+  mdt: any[] = []
+  wt: any[] = []
+  ttr: any[] = []
 
     public colorsMTBF: Color[] = [
         { // vert MTBF
@@ -167,6 +181,11 @@ export class SingleMachineComponent implements OnInit {
     countPannes: number;
     private roles: string[];
     public authority: string;
+    img1: 1;
+    img2: 2;
+    val: boolean = false;
+    vali: boolean = false;
+    vals: boolean = false;
   constructor(private machineService: MachinesService,
               private panneService: PannesService,
               private modalService: NgbModal,
@@ -709,6 +728,12 @@ export class SingleMachineComponent implements OnInit {
       this.mtbfByYear.datasets = [];
       this.mdtByYear.labels = [];
       this.mdtByYear.datasets = [];
+      this.mtbfByYear.tdt = [];
+      this.mtbfByYear.nbr = [];
+      this.mtbfByYear.mtbfs = [];
+      this.mdtByYear.mdt = [];
+      this.mdtByYear.ttr = [];
+      this.mdtByYear.wt = [];
           this.loader = true;
           let url = atob(params['id']);
       this.machineService.mtbfByYear(Number.parseInt(url)).subscribe(
@@ -722,6 +747,9 @@ export class SingleMachineComponent implements OnInit {
 
                   for (let mach of this.mtbf){
                     this.mtbfByYear.labels.push(mach.date);
+                      this.mtbfByYear.tdt.push(Math.trunc(mach.TDT));
+                      this.mtbfByYear.nbr.push(mach.nbre);
+
                     this.mdtByYear.labels.push(mach.date);
                     test1.categories.push(mach.date);
 
@@ -736,6 +764,7 @@ export class SingleMachineComponent implements OnInit {
 
                     var mt = z / a;
                     mtbf.data.push(Math.trunc(mt));
+                    this.mtbfByYear.mtbfs.push(Math.trunc(mt));
 
                     // mtbf.data.push(((mach.HT)-((Number.parseInt(mach.AT)/60)+(mach.TDT/60)))/(mach.nbre+1));
                     panne.data.push(mach.nbre);
@@ -743,6 +772,10 @@ export class SingleMachineComponent implements OnInit {
                     ttr.data.push(mach.TTR/mach.nbre);
                     wt.data.push(mach.WT/mach.nbre);
                     mdt.data.push(mach.TDT/mach.nbre);
+
+                      this.mdtByYear.wt.push(mach.nbre >= 1 ? Math.trunc(mach.WT/mach.nbre) : 0);
+                      this.mdtByYear.ttr.push(mach.nbre >= 1 ? Math.trunc(mach.TTR/mach.nbre) : 0);
+                      this.mdtByYear.mdt.push(mach.nbre >= 1 ? Math.trunc(mach.TDT/mach.nbre) : 0);
                     teste.data.push(mach.nbre);
 
                   }
@@ -777,6 +810,7 @@ export class SingleMachineComponent implements OnInit {
     this.mdtByYear.datasets.push(wt);
     this.mdtByYear.datasets.push(ttr);
     this.mdtByYear.datasets.push(mdt);
+
     // this.test.datasets.push(teste);
     // this.labs.categories.push(this.mtbfByYear.labels);
     // this.labs.categories.push(test1.categories)
@@ -837,5 +871,86 @@ export class SingleMachineComponent implements OnInit {
         if (this.pageForm.controls['page'].value == '1000'){
             this.pages = 1000;
         }
+    }
+
+    exportsMTBF(){
+        const dat = new Date();
+        const pdf = new jsPDF("l", "mm", 'A4');
+        this.val = true
+        if(this.val == true){
+            setTimeout(()=>{
+                var img = new Image()
+                img.src = '/assets/images/logo24.png'
+                pdf.addImage(img, 'png', 15, 10, 25, 8)
+                pdf.setFont('Times New Roman');
+                pdf.setFontSize(8);
+                // pdfs.text(15,10, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
+                pdf.setFontStyle('bold')
+                pdf.text(270,10, this.datePipe.transform(dat, 'dd/MM/yyyy'));
+                pdf.setFontSize(16);
+                pdf.text(95,25, 'Annual Mean Time Between Failure '+this.selectedMachine.nom.toUpperCase());
+                html2canvas(document.getElementById("xyz"), {scale: 1}).then(canvas => {
+                    var img = canvas.toDataURL();
+                    pdf.addImage(img, 'png', 15, 35, 270, 155);
+                    pdf.setFontStyle('italic')
+                    pdf.setFontSize(8);
+                    pdf.text(15,200, window.location.toString());
+                    pdf.save("MTBF-"+this.selectedMachine.nom+" "+this.datePipe.transform(dat, 'dd/MM/yyyy hh:mm')+".pdf")
+                })
+                this.val = false
+            }, 5)
+
+        }
+
+    }
+
+    exportsMDT(){
+        const dats = new Date();
+        const pdfs = new jsPDF("l", "mm", 'A4');
+        this.vals = true
+        if(this.vals == true){
+            setTimeout(()=>{
+                var img = new Image()
+                img.src = '/assets/images/logo24.png'
+                pdfs.addImage(img, 'png', 15, 10, 25, 8)
+                pdfs.setFont('Times New Roman');
+                pdfs.setFontSize(8);
+                // pdfs.text(15,10, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
+                pdfs.setFontStyle('bold')
+                pdfs.text(270,10, this.datePipe.transform(dats, 'dd/MM/yyyy'));
+                pdfs.setFontSize(16);
+                pdfs.text(95,25, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
+                html2canvas(document.getElementById("xyz1"), {scale: 1}).then(canvas => {
+                    var imgs = canvas.toDataURL();
+                    pdfs.addImage(imgs, 'png', 15, 35, 270, 155);
+                    pdfs.setFontStyle('italic')
+                    pdfs.setFontSize(8);
+                    pdfs.text(15,200, window.location.toString());
+                    pdfs.save("MDT-"+this.selectedMachine.nom+" "+this.datePipe.transform(dats, 'dd/MM/yyyy hh:mm')+".pdf")
+                })
+                this.vals = false
+            }, 50)
+
+        }
+    }
+
+    getBase64ImageFromURL(url) {
+        return new Promise((resolve, reject) => {
+            var img = new Image();
+            img.setAttribute("crossOrigin", "anonymous");
+            img.onload = () => {
+                var canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                var dataURL = canvas.toDataURL("image/png");
+                resolve(dataURL);
+            };
+            img.onerror = error => {
+                reject(error);
+            };
+            img.src = url;
+        });
     }
 }
