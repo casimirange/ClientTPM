@@ -89,6 +89,7 @@ import { EditPanneComponent } from './Pages/arrets/pannes/edit-panne/edit-panne.
 import {RapportService} from "./services/rapport/rapport.service";
 import { DashCartComponent } from './dashboard/dash-cart/dash-cart.component';
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
+import {MessageServiceService} from "./services/message-service.service";
 // import {ClientSideRowModel} from "ag-grid";
 // import {NgScrollbarModule} from "ngx-scrollbar";
 // import {IgxGridModule} from "igniteui-angular";
@@ -198,6 +199,7 @@ import {AutocompleteLibModule} from "angular-ng-autocomplete";
     ArretsService,
     HeuresService,
     RapportService,
+    MessageServiceService,
     // AuthInterceptor,
     // TokenStorageService
     httpInterceptorProviders,

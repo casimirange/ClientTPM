@@ -1,6 +1,12 @@
 <app-page-title [heading]="headings" [subheading]="subheadings" [icon]="icons"></app-page-title>
 
 
-
+<input class="form-control" type="text" placeholder="message" [(ngModel)]="input">
+<button class="btn btn-success" (click)="sendMessage()">Send</button>
+<div class="content">
+    <div *ngFor="let msg of messageService.msg">
+        message: {{msg}}
+    </div>
+</div>
 
 

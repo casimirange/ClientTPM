@@ -20,6 +20,8 @@ import {ChartComponent} from "ng-apexcharts";
 import {angularClassDecoratorKeys} from "codelyzer/util/utils";
 import {Color} from "ng2-charts";
 import {TokenStorageService} from "../../../auth/token-storage.service";
+import html2canvas from 'html2canvas';
+import * as jsPDF from 'jspdf';
 
 
 @Component({
@@ -263,14 +265,19 @@ export class SingleDepartementComponent implements OnInit {
 
   mdtByYear = {
     labels: [] = [],
-    datasets: [] = []
+    datasets: [] = [],
+    mdt: [] = [],
+    wt: [] = [],
+    ttr: [] = []
   };
 
   mtbfByYear = {
     labels: [] = [],
-    datasets: [] = []
+    datasets: [] = [],
+    tdt: [] = [],
+    nbr: [] = [],
+    mtbfs: [] = []
   };
-
 
   test = {
     datasets: []
@@ -595,6 +602,10 @@ export class SingleDepartementComponent implements OnInit {
   dah2: number = 0;
   private roles: string[];
   public authority: string;
+  val: boolean = false;
+  vali: boolean = false;
+  vals: boolean = false;
+  div: boolean;
   constructor( private departementService: DepartementsService,
                private ligneService: LignesService,
                private panneService: PannesService,
@@ -2068,9 +2079,17 @@ export class SingleDepartementComponent implements OnInit {
     };
 
     this.loaderMtbf = true;
-    // this.dah = 0;
-    this.mtbfByYear.labels = [];
-    this.mtbfByYear.datasets = [];
+
+      this.mtbfByYear.labels = [];
+      this.mtbfByYear.datasets = [];
+      this.mdtByYear.labels = [];
+      this.mdtByYear.datasets = [];
+      this.mtbfByYear.tdt = [];
+      this.mtbfByYear.nbr = [];
+      this.mtbfByYear.mtbfs = [];
+      this.mdtByYear.mdt = [];
+      this.mdtByYear.ttr = [];
+      this.mdtByYear.wt = [];
       let url = atob(params['id']);
     this.departementService.mtbfByYear(Number.parseInt(url)).subscribe(
       data1 => {
@@ -2090,6 +2109,8 @@ export class SingleDepartementComponent implements OnInit {
             for (let mach of this.mtbf){
               this.mtbfByYear.labels.push(mach.date);
               this.mdtByYear.labels.push(mach.date);
+              this.mtbfByYear.tdt.push(Math.trunc(mach.TDT));
+              this.mtbfByYear.nbr.push(mach.nbre);
               test1.categories.push(mach.date);
 
                 // var x = mach.AT/60;
@@ -2111,6 +2132,9 @@ export class SingleDepartementComponent implements OnInit {
               wt.data.push(Math.trunc(mach.WT/mach.nbre));
               mdt.data.push(Math.trunc(mach.TDT/mach.nbre));
               teste.data.push(mach.nbre);
+              this.mdtByYear.wt.push(mach.nbre >= 1 ? Math.trunc(mach.WT/mach.nbre) : 0);
+              this.mdtByYear.ttr.push(mach.nbre >= 1 ? Math.trunc(mach.TTR/mach.nbre) : 0);
+              this.mdtByYear.mdt.push(mach.nbre >= 1 ? Math.trunc(mach.TDT/mach.nbre) : 0);
 
             }
             // this.dah = this.mtbfByYear.labels.length
@@ -5599,5 +5623,66 @@ export class SingleDepartementComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  exportsMTBF(){
+    const dat = new Date();
+    const pdf = new jsPDF("l", "mm", 'A4');
+    this.val = true
+    if(this.val == true){
+      setTimeout(()=>{
+        var img = new Image()
+        img.src = '/assets/images/logo24.png'
+        pdf.addImage(img, 'png', 15, 10, 25, 8)
+        pdf.setFont('Times New Roman');
+        pdf.setFontSize(8);
+        // pdfs.text(15,10, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
+        pdf.setFontStyle('bold')
+        pdf.text(270,10, this.datePipe.transform(dat, 'dd/MM/yyyy'));
+        pdf.setFontSize(16);
+        pdf.text(90,25, 'Annual Mean Time Between Failure '+this.selectedDep.nom.toUpperCase());
+        html2canvas(document.getElementById("xyz"), {scale: 1}).then(canvas => {
+          var img = canvas.toDataURL();
+          pdf.addImage(img, 'png', 15, 35, 270, 155);
+          pdf.setFontStyle('italic')
+          pdf.setFontSize(8);
+          pdf.text(15,200, window.location.toString());
+          pdf.save("MTBF-"+this.selectedDep.nom+" "+this.datePipe.transform(dat, 'dd/MM/yyyy hh:mm')+".pdf")
+        })
+        this.val = false
+      }, 5)
+
+    }
+
+  }
+
+  exportsMDT(){
+    const dats = new Date();
+    const pdfs = new jsPDF("l", "mm", 'A4');
+    this.vals = true
+    if(this.vals == true){
+      setTimeout(()=>{
+        var img = new Image()
+        img.src = '/assets/images/logo24.png'
+        pdfs.addImage(img, 'png', 15, 10 , 25, 8)
+        pdfs.setFont('Times New Roman');
+        pdfs.setFontSize(8);
+        // pdfs.text(15,10, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
+        pdfs.setFontStyle('bold')
+        pdfs.text(270,10, this.datePipe.transform(dats, 'dd/MM/yyyy'));
+        pdfs.setFontSize(16);
+        pdfs.text(95,25, 'Annual Mean Down Time '+this.selectedDep.nom.toUpperCase());
+        html2canvas(document.getElementById("xyz1"), {scale: 1}).then(canvas => {
+          var imgs = canvas.toDataURL();
+          pdfs.addImage(imgs, 'png', 15, 35, 270, 155);
+          pdfs.setFontStyle('italic')
+          pdfs.setFontSize(8);
+          pdfs.text(15,200, window.location.toString());
+          pdfs.save("MDT-"+this.selectedDep.nom+" "+this.datePipe.transform(dats, 'dd/MM/yyyy hh:mm')+".pdf")
+        })
+        this.vals = false
+      }, 50)
+
+    }
   }
 }

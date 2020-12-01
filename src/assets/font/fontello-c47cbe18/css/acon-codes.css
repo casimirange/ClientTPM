@@ -1,0 +1,4 @@
+
+.acon-up-big:before { content: '\2191'; } /* '↑' */
+.acon-right-big:before { content: '\2192'; } /* '→' */
+.acon-down-big:before { content: '\2193'; } /* '↓' */

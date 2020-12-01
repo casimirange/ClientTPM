@@ -186,6 +186,8 @@ export class SingleMachineComponent implements OnInit {
     val: boolean = false;
     vali: boolean = false;
     vals: boolean = false;
+    capture1;
+    capture2;
   constructor(private machineService: MachinesService,
               private panneService: PannesService,
               private modalService: NgbModal,
@@ -912,7 +914,7 @@ export class SingleMachineComponent implements OnInit {
             setTimeout(()=>{
                 var img = new Image()
                 img.src = '/assets/images/logo24.png'
-                pdfs.addImage(img, 'png', 15, 10, 25, 8)
+                pdfs.addImage(img, 'png', 15, 10 , 25, 8)
                 pdfs.setFont('Times New Roman');
                 pdfs.setFontSize(8);
                 // pdfs.text(15,10, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
@@ -934,23 +936,37 @@ export class SingleMachineComponent implements OnInit {
         }
     }
 
-    getBase64ImageFromURL(url) {
-        return new Promise((resolve, reject) => {
-            var img = new Image();
-            img.setAttribute("crossOrigin", "anonymous");
-            img.onload = () => {
-                var canvas = document.createElement("canvas");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-                var dataURL = canvas.toDataURL("image/png");
-                resolve(dataURL);
-            };
-            img.onerror = error => {
-                reject(error);
-            };
-            img.src = url;
-        });
+    capture(){
+        const dats = new Date();
+        const pdfs = new jsPDF("l", "mm", 'A4');
+        this.vals = true
+        if(this.vals == true){
+            setTimeout(()=>{
+                var img = new Image()
+                img.src = '/assets/images/logo24.png'
+                pdfs.addImage(img, 'png', 15, 10 , 25, 8)
+                pdfs.setFont('Times New Roman');
+                pdfs.setFontSize(8);
+                // pdfs.text(15,10, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
+                pdfs.setFontStyle('bold')
+                pdfs.text(270,10, this.datePipe.transform(dats, 'dd/MM/yyyy'));
+                pdfs.setFontSize(16);
+                var n = pdfs.getFontSize()
+                var m = pdfs.pageSize.width
+                var c = pdfs.pageSize.width
+                var v = pdfs.pageSize.width
+                pdfs.text(95,25, 'Annual Mean Down Time '+this.selectedMachine.nom.toUpperCase());
+                html2canvas(document.getElementById("xyz"), {scale: 1}).then(canvas => {
+                    var imgs = canvas.toDataURL();
+                    pdfs.addImage(imgs, 'png', 15, 35, 270, 155);
+                    pdfs.setFontStyle('italic')
+                    pdfs.setFontSize(8);
+                    pdfs.text(15,200, window.location.toString());
+                    pdfs.save("MDT-"+this.selectedMachine.nom+" "+this.datePipe.transform(dats, 'dd/MM/yyyy hh:mm')+".pdf")
+                })
+                this.vals = false
+            }, 50)
+
+        }
     }
 }

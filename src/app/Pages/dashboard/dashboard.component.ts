@@ -260,6 +260,11 @@ export class DashboardComponent implements OnInit {
     loaders: boolean = false;
     periode_panne: string = 'pannes de la semaine';
     nombre: number = 0;
+    per_dash: string;
+    per_pan: string;
+    per_tec: string;
+    cloaders: boolean = false;
+    tloaders: boolean = false;
   constructor(private fb: FormBuilder,
               private panneService: PannesService,
               private arretService: ArretsService,
@@ -538,6 +543,10 @@ export class DashboardComponent implements OnInit {
   countAllPannes(){
 
       this.cpannes = [];
+      const dat = new Date();
+      const dat1 = this.datePipe.transform(dat, 'MMM yyyy');
+      this.per_pan = dat1;
+      this.cloaders = true;
         this.panneService.getCountThisPannes().subscribe(
             data => {
                 this.cpannes = data;
@@ -545,10 +554,11 @@ export class DashboardComponent implements OnInit {
                 for (let pin of data){
                     this.count = this.count + pin.nbre;
                 }
-
+                this.cloaders = false
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.cloaders = false
             },
             () => {
                 console.log('Total');
@@ -561,6 +571,12 @@ export class DashboardComponent implements OnInit {
 
   countAllLastMonthPannes(){
       this.cpannes = [];
+      this.cloaders
+      const dat = new Date();
+      const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMM');
+      const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
+      console.log('last Month: '+ dat1);
+      this.per_pan = dat1+" "+x;
         this.panneService.getCountLastPannes().subscribe(
             data => {
                 this.cpannes = data;
@@ -568,9 +584,11 @@ export class DashboardComponent implements OnInit {
                 for (let pin of data){
                     this.count = this.count + pin.nbre;
                 }
+                this.cloaders = false
 
             },
             error => {
+                this.cloaders = false
                 console.log('une erreur a été détectée!')
             },
             () => {
@@ -584,8 +602,10 @@ export class DashboardComponent implements OnInit {
 
   countAllRangePannes(){
       this.cpannes = [];
+      this.cloaders
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.per_pan = d1+" au "+d2;
         this.panneService.getCountRangePannes(d1, d2).subscribe(
             data => {
                 this.cpannes = data;
@@ -593,9 +613,11 @@ export class DashboardComponent implements OnInit {
                 for (let pin of data){
                     this.count = this.count + pin.nbre;
                 }
+                this.cloaders = false
 
             },
             error => {
+                this.cloaders = false
                 console.log('une erreur a été détectée!')
             },
             () => {
@@ -608,13 +630,18 @@ export class DashboardComponent implements OnInit {
   }
 
   StatistiquesTechniciens(){
-
+      this.tloaders = true
+      const dat = new Date();
+      const dat1 = this.datePipe.transform(dat, 'MMM yyyy');
+      this.per_tec = dat1;
         this.dashboardService.statsTechniciensByMonth().subscribe(
             data => {
                 this.StatsTec = data;
+                this.tloaders = false
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.tloaders = false
             },
             () => {
                 console.log('Total');
@@ -624,13 +651,20 @@ export class DashboardComponent implements OnInit {
     }
 
   StatistiquesTechniciensLastMonth(){
-
+      this.tloaders = true
+      const dat = new Date();
+      const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMM');
+      const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
+      console.log('last Month: '+ dat1);
+      this.per_tec = dat1+" "+x;
         this.dashboardService.statsTechniciensLastMonth().subscribe(
             data => {
                 this.StatsTec = data;
+                this.tloaders = false
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.tloaders = false
             },
             () => {
                 console.log('Total');
@@ -640,14 +674,18 @@ export class DashboardComponent implements OnInit {
     }
 
   StatistiquesTechniciensRange(){
+      this.tloaders = true
       const d1 = this.rangeForm.controls['date1'].value;
       const d2 = this.rangeForm.controls['date2'].value;
+      this.per_tec = d1+" au "+d2;
         this.dashboardService.statsTechniciensRange(d1, d2).subscribe(
             data => {
                 this.StatsTec = data;
+                this.tloaders = false
             },
             error => {
                 console.log('une erreur a été détectée!')
+                this.tloaders = false
             },
             () => {
                 console.log('Total');
@@ -703,7 +741,6 @@ export class DashboardComponent implements OnInit {
 
     this.dataPanne.datasets.push(datasetNbrePanne);
 
-
   }
 
   last30days(){
@@ -711,6 +748,7 @@ export class DashboardComponent implements OnInit {
       this.datas.datasets = [];
       this.loaders = true;
       this.dah = 0;
+      this.per_dash = '30 Derniers Jours';
     const datasetNbrePanne3 = {
         data: [],
         label: "Panne",
@@ -753,6 +791,11 @@ export class DashboardComponent implements OnInit {
       this.datas.datasets = [];
       this.loaders = true;
         this.dah = 0;
+        const dat = new Date();
+        const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()-1), 'MMM');
+        const x = dat.getMonth() == 1 ? this.datePipe.transform(dat.setFullYear(dat.getFullYear()-1), 'yyyy') : this.datePipe.transform(dat.setFullYear(dat.getFullYear()), 'yyyy')
+        console.log('last Month: '+ dat1);
+        this.per_dash = dat1+" "+x;
     const datasetNbrePanne3 = {
         data: [],
         label: "Panne",
@@ -794,6 +837,9 @@ export class DashboardComponent implements OnInit {
         this.datas.datasets = [];
         this.loaders = true;
         this.dah = 0;
+        const dat = new Date();
+        const dat1 = this.datePipe.transform(dat.setMonth(dat.getMonth()), 'MMM yyyy');
+        this.per_dash = dat1;
         const datasetNbrePanne3 = {
             data: [],
             label: "Panne",
@@ -855,6 +901,7 @@ export class DashboardComponent implements OnInit {
         const d2 = this.rangeForm.controls['date2'].value;
 
         console.log(d1 + ' et '+ d2);
+        this.per_dash = d1 + ' au '+ d2;
         this.dashboardService.getCountRangePannes(d1, d2).subscribe(
             list => list.forEach(mach => {
                 // this.dah = list.length;

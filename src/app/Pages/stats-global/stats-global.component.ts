@@ -1152,7 +1152,8 @@ export class StatsGlobalComponent implements OnInit {
         },
 
       };
-      this.pdfMake.createPdf(docDefinition).download('Rapport de Maintenance - ' + this.datePipe.transform(dat, 'MMM-yyyy'));
+      // this.pdfMake.createPdf(docDefinition).download('Rapport de Maintenance - ' + this.datePipe.transform(dat, 'MMM-yyyy'));
+      this.pdfMake.createPdf(docDefinition).open();
   }
 
   async downloads_filtre(){

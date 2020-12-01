@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Pannes} from "../Models/pannes";
+import {MessageServiceService} from "../services/message-service.service";
 
 @Component({
   selector: 'app-admin',
@@ -12,9 +13,13 @@ export class AdminComponent implements OnInit {
   subheadings = 'Gérez les arrêts machines ';
   icons = 'fa fa-clock fa-spin icon-gradient bg-mixed-hopes';
 
-  test: Pannes[];
-
-  constructor( private fb: FormBuilder,) {
+  input;
+  constructor(public messageService: MessageServiceService) {}
+  sendMessage() {
+    if (this.input) {
+      this.messageService.sendMessage(this.input);
+      this.input = '';
+    }
   }
 
   ngOnInit() {

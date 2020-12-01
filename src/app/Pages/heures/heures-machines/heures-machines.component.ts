@@ -45,7 +45,7 @@ export class HeuresMachinesComponent implements OnInit {
   p: number;
   f: Date;
   d: Date;
-  piece: string;
+  piece: string = '';
 
   private roles: string[];
   public authority: string;
@@ -244,7 +244,7 @@ export class HeuresMachinesComponent implements OnInit {
         },
         () => {
           console.log('chargement des heures');
-          console.log(this.machines);
+          console.log(this.heures);
         }
     );
   }
@@ -259,7 +259,7 @@ export class HeuresMachinesComponent implements OnInit {
         },
         () => {
           console.log('chargement des heures');
-          console.log(this.machines);
+          console.log(this.heures);
         }
     );
   }
@@ -276,7 +276,7 @@ export class HeuresMachinesComponent implements OnInit {
         },
         () => {
           console.log('chargement des heures');
-          console.log(this.machines);
+          console.log(this.heures);
         }
     );
   }
@@ -444,8 +444,24 @@ export class HeuresMachinesComponent implements OnInit {
 
       this.heuresService.addHeure(this.selectedHeure).subscribe(
           res => {
-              this.loadLastMonthHeures();
-              this.loadHeuresByDep();
+            if (this.selectPanForm.controls['periode'].value == 'tmp'){
+              this.loadThisMonthHeures()
+            }
+            if (this.selectPanForm.controls['periode'].value == 'lmp'){
+              this.loadLastMonthHeures()
+            }
+            if (this.selectPanForm.controls['periode'].value == 'pp'){
+              this.RangeHeures()
+            }
+            if(this.piece == 'jour'){
+              this.loadHeuresByDepRange()
+            }
+            if(this.piece == 'mois'){
+              this.loadHeuresByDepRangeMonth()
+            }
+            if(this.piece == ''){
+              this.loadHeuresByDep()
+            }
               this.onResetMachine();
               this.createForm();
               // this.router.navigateByUrl('/tempsMachine')
@@ -511,6 +527,62 @@ export class HeuresMachinesComponent implements OnInit {
           this.closeResult = `Closed with: ${result}`;
         }, (reason) =>{
 
+        }
+    );
+  }
+
+  swal(heur: Heures){
+    const Swal = require('sweetalert2');
+    var content = document.createElement('div');
+    content.innerHTML = 'Vouslez-vous vraimment supprimer cette heure? '+heur.machine;
+    Swal.fire({
+      title: 'Suppression',
+      html: content,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#00ace6',
+      cancelButtonColor: '#f65656',
+      confirmButtonText: 'OUI',
+      cancelButtonText: 'Annuler',
+      allowOutsideClick: true,
+      focusConfirm: false,
+      focusCancel: true,
+      focusDeny: true,
+    }).then((result) => {
+      if (result.value) {
+        this.deleteHour();
+        Swal.fire({
+          // title: tec.etat == false ? 'Activation' : 'Désactivation',
+          html:  'suppression réussie',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        })
+      }
+    })
+  }
+
+  deleteHour(){
+    this.heuresService.deleteDep(this.selectedHeure.idHeure).subscribe(
+        res => {
+          if (this.selectPanForm.controls['periode'].value == 'tmp'){
+            this.loadThisMonthHeures()
+          }
+          if (this.selectPanForm.controls['periode'].value == 'lmp'){
+            this.loadLastMonthHeures()
+          }
+          if (this.selectPanForm.controls['periode'].value == 'pp'){
+            this.RangeHeures()
+          }
+          if(this.piece == 'jour'){
+            this.loadHeuresByDepRange()
+          }
+          if(this.piece == 'mois'){
+            this.loadHeuresByDepRangeMonth()
+          }
+          if(this.piece == ''){
+            this.loadHeuresByDep()
+          }
         }
     );
   }

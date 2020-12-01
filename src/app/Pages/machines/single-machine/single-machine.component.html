@@ -1,11 +1,11 @@
-<app-page-title [heading]="nom_mach | uppercase" [subheading]="subheading" [icon]="'lnr-layers icon-gradient bg-focus'
+<app-page-title id="heads" [heading]="nom_mach | uppercase" [subheading]="subheading" [icon]="'lnr-layers icon-gradient bg-focus'
 " [bg]="bg" *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'"></app-page-title>
 
 <div *ngIf="authority === 'admin' || authority === 'resp_pla' || authority === 'resp_cp' || authority === 'resp_sci' || authority === 'resp_bra' || authority === 'super_admin' || authority === 'resp_maint' || authority === 'user_alpi'" class="row">
     <div class="col-md-12 col-lg-12 col-xl-12">
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
-                <div class="card-header-title" style="cursor: pointer;">
+                <div class="card-header-title" style="cursor: pointer;" (click)="capture()">
                     <i class="header-icon pe-7s-graph2 icon-gradient bg-happy-green"> </i>
                     Rapport
                 </div>

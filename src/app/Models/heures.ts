@@ -7,6 +7,7 @@ export class Heures {
 
     date?: Date;
     idMachine?: number;
+    idHeure?: number;
     machine?: string;
     code?: string;
     heure?: number;
