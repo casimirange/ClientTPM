@@ -925,7 +925,7 @@ export class StatsGlobalComponent implements OnInit {
             text: [
               {text: 'TDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
               {
-                text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                text: 'Total Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
                 fontSize: 12,
               }
             ], margin: [0, 0, 0, 20]
@@ -934,7 +934,7 @@ export class StatsGlobalComponent implements OnInit {
             text: [
               {text: 'TDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
               {
-                text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                text: 'Total Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
                 fontSize: 12,
               }
             ], margin: [0, 0, 0, 20]
@@ -950,7 +950,7 @@ export class StatsGlobalComponent implements OnInit {
             text: [
               {text: 'MDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
               {
-                text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+                text: 'Mean Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
                 fontSize: 12,
               }
             ], margin: [0, 0, 0, 20]
@@ -959,7 +959,7 @@ export class StatsGlobalComponent implements OnInit {
             text: [
               {text: 'MDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
               {
-                text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+                text: 'Mean Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
                 fontSize: 12,
               }
             ], margin: [0, 0, 0, 20]
@@ -1344,7 +1344,7 @@ export class StatsGlobalComponent implements OnInit {
           text: [
             {text: 'TDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
             {
-              text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              text: 'Total Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
               fontSize: 12,
             }
           ], margin: [0, 0, 0, 20]
@@ -1353,7 +1353,7 @@ export class StatsGlobalComponent implements OnInit {
           text: [
             {text: 'TDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
             {
-              text: 'Total Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              text: 'Total Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
               fontSize: 12,
             }
           ], margin: [0, 0, 0, 20]
@@ -1369,7 +1369,7 @@ export class StatsGlobalComponent implements OnInit {
           text: [
             {text: 'MDT1: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
             {
-              text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
+              text: 'Mean Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat1, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat2, 'dd/MM/yyyy'),
               fontSize: 12,
             }
           ], margin: [0, 0, 0, 20]
@@ -1378,7 +1378,7 @@ export class StatsGlobalComponent implements OnInit {
           text: [
             {text: 'MDT2: ', fontSize: 12, color: '#0b5885', bold: true, alignment: 'left',},
             {
-              text: 'Mean Down Time de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
+              text: 'Mean Down Time (en min) de la période comprise entre ' + this.datePipe.transform(dat3, 'dd/MM/yyyy') + ' et ' + this.datePipe.transform(dat4, 'dd/MM/yyyy'),
               fontSize: 12,
             }
           ], margin: [0, 0, 0, 20]
@@ -1392,19 +1392,19 @@ export class StatsGlobalComponent implements OnInit {
         {
           text: [
             {text: '%: ', fontSize: 12, color: '#d92550', bold: true, alignment: 'left',},
-            {text: 'Augmentation ', fontSize: 12,}
+            {text: 'Indique qu\'il y a une Augmentation ', fontSize: 12,}
           ], margin: [0, 0, 0, 20]
         },
         {
           text: [
             {text: '%: ', fontSize: 12, color: '#3ac47d', bold: true, alignment: 'left',},
-            {text: 'Baisse ', fontSize: 12,}
+            {text: 'Indique qu\'il y a une Baisse ', fontSize: 12,}
           ], margin: [0, 0, 0, 20]
         },
         {
           text: [
             {text: '%: ', fontSize: 12, color: '#f7b924', bold: true, alignment: 'left',},
-            {text: 'Constant ', fontSize: 12,}
+            {text: 'Indique qu\'il y a une Constante ', fontSize: 12,}
           ], margin: [0, 0, 0, 20]
         },
 
@@ -2492,7 +2492,7 @@ export class StatsGlobalComponent implements OnInit {
               },
               error => {
                 console.log('une erreur a été détectée!')
-                this.loader = false;
+                // this.loader = false;
               },
               () => {
                 console.log('years');

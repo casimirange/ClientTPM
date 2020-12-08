@@ -283,6 +283,11 @@ export class DashboardComponent implements OnInit {
       this.rangeForms();
       this.pageForms();
 
+
+      // var canvas = html2canvas(document.getElementsByClassName(".testss"));
+      // var dataURL = canvas.toDataURL()
+      // console.log('graphhhh\n', dataURL)
+
       this.dashboardService.getCountDepPannes().subscribe(
 
           data => {

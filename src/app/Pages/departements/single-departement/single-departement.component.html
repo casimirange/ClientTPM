@@ -1998,157 +1998,158 @@
     </div>
 
     <!--Ponçage-->
-    <div class="col-lg-12 col-xl-6" >
-        <div class="mb-3 card">
-            <div class="card-header-tab card-header">
-                <div class="card-header-title">
-                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
-                    Ligne Ponçage MTBF
-                </div>
-            </div>
-             
-            <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto" *ngIf="POmtbfByYear.labels.length && loaderPon == false "
-                           [type]="'bar'"
-                           [data]="POmtbfByYear.datasets"
-                           [lineChartLabels]="POmtbfByYear.labels"
-                           [lineChartColors]="colorsMTBF"
-                ></app-chart>
-                <div class="card-body p-2 text-center"  *ngIf="!POmtbfByYear.labels.length && loaderPon == false ">
-                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
-                </div>
-                <div class="card-body p-2 text-center"  *ngIf="!POmtbfByYear.labels.length && loaderPon == true ">
-                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
-                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
-                            <div class="loader">
-                                <div class="ball-scale-multiple">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="vertical-align: middle">Chargement...</p>
-                    </div>
-                </div>
-            </div>
-            <div class="divider mb-0"></div>
-        </div>
-    </div>
-    <div class="col-lg-12 col-xl-6" >
-        <div class="mb-3 card">
-            <div class="card-header-tab card-header">
-                <div class="card-header-title">
-                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
-                    Ligne Ponçage MDT
-                </div>
-            </div>
-             
-            <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto"  *ngIf="POmdtByYear.labels.length && loaderPon == false "
-                           [type]="'bar'"
-                           [data]="POmdtByYear.datasets"
-                           [lineChartLabels]="POmdtByYear.labels"
-                           [lineChartColors]="colorsMDT"
-                ></app-chart>
-                <div class="card-body p-2 text-center"  *ngIf="!POmdtByYear.labels.length && loaderPon == false ">
-                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
-                </div>
-                <div class="card-body p-2 text-center"  *ngIf="!POmdtByYear.labels.length && loaderPon == true ">
-                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
-                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
-                            <div class="loader">
-                                <div class="ball-scale-multiple">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="vertical-align: middle">Chargement...</p>
-                    </div>
-                </div>
-            </div>
-            <div class="divider mb-0"></div>
-        </div>
-    </div>
+    <div>
+    <!--<div class="col-lg-12 col-xl-6" >-->
+        <!--<div class="mb-3 card">-->
+            <!--<div class="card-header-tab card-header">-->
+                <!--<div class="card-header-title">-->
+                    <!--<i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>-->
+                    <!--Ligne Ponçage MTBF-->
+                <!--</div>-->
+            <!--</div>-->
+             <!---->
+            <!--<div class="widget-chart p-0">-->
+                <!--<app-chart width="auto" height="auto" *ngIf="POmtbfByYear.labels.length && loaderPon == false "-->
+                           <!--[type]="'bar'"-->
+                           <!--[data]="POmtbfByYear.datasets"-->
+                           <!--[lineChartLabels]="POmtbfByYear.labels"-->
+                           <!--[lineChartColors]="colorsMTBF"-->
+                <!--&gt;</app-chart>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!POmtbfByYear.labels.length && loaderPon == false ">-->
+                    <!--<p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>-->
+                <!--</div>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!POmtbfByYear.labels.length && loaderPon == true ">-->
+                    <!--<div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">-->
+                        <!--<div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">-->
+                            <!--<div class="loader">-->
+                                <!--<div class="ball-scale-multiple">-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<p style="vertical-align: middle">Chargement...</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="divider mb-0"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-lg-12 col-xl-6" >-->
+        <!--<div class="mb-3 card">-->
+            <!--<div class="card-header-tab card-header">-->
+                <!--<div class="card-header-title">-->
+                    <!--<i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>-->
+                    <!--Ligne Ponçage MDT-->
+                <!--</div>-->
+            <!--</div>-->
+             <!---->
+            <!--<div class="widget-chart p-0">-->
+                <!--<app-chart width="auto" height="auto"  *ngIf="POmdtByYear.labels.length && loaderPon == false "-->
+                           <!--[type]="'bar'"-->
+                           <!--[data]="POmdtByYear.datasets"-->
+                           <!--[lineChartLabels]="POmdtByYear.labels"-->
+                           <!--[lineChartColors]="colorsMDT"-->
+                <!--&gt;</app-chart>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!POmdtByYear.labels.length && loaderPon == false ">-->
+                    <!--<p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>-->
+                <!--</div>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!POmdtByYear.labels.length && loaderPon == true ">-->
+                    <!--<div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">-->
+                        <!--<div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">-->
+                            <!--<div class="loader">-->
+                                <!--<div class="ball-scale-multiple">-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<p style="vertical-align: middle">Chargement...</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="divider mb-0"></div>-->
+        <!--</div>-->
+    <!--</div>-->
 
-    <!--Pressage-->
-    <div class="col-lg-12 col-xl-6" >
-        <div class="mb-3 card">
-            <div class="card-header-tab card-header">
-                <div class="card-header-title">
-                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
-                    Ligne Pressage MTBF
-                </div>
-            </div>
-             
-            <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto" *ngIf="PRmtbfByYear.labels.length && loaderPress == false "
-                           [type]="'bar'"
-                           [data]="PRmtbfByYear.datasets"
-                           [lineChartLabels]="PRmtbfByYear.labels"
-                           [lineChartColors]="colorsMTBF"
-                ></app-chart>
-                <div class="card-body p-2 text-center"  *ngIf="!PRmtbfByYear.labels.length && loaderPress == false ">
-                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
-                </div>
-                <div class="card-body p-2 text-center"  *ngIf="!PRmtbfByYear.labels.length && loaderPress == true ">
-                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
-                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
-                            <div class="loader">
-                                <div class="ball-scale-multiple">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="vertical-align: middle">Chargement...</p>
-                    </div>
-                </div>
-            </div>
-            <div class="divider mb-0"></div>
-        </div>
+    <!--&lt;!&ndash;Pressage&ndash;&gt;-->
+    <!--<div class="col-lg-12 col-xl-6" >-->
+        <!--<div class="mb-3 card">-->
+            <!--<div class="card-header-tab card-header">-->
+                <!--<div class="card-header-title">-->
+                    <!--<i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>-->
+                    <!--Ligne Pressage MTBF-->
+                <!--</div>-->
+            <!--</div>-->
+             <!---->
+            <!--<div class="widget-chart p-0">-->
+                <!--<app-chart width="auto" height="auto" *ngIf="PRmtbfByYear.labels.length && loaderPress == false "-->
+                           <!--[type]="'bar'"-->
+                           <!--[data]="PRmtbfByYear.datasets"-->
+                           <!--[lineChartLabels]="PRmtbfByYear.labels"-->
+                           <!--[lineChartColors]="colorsMTBF"-->
+                <!--&gt;</app-chart>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!PRmtbfByYear.labels.length && loaderPress == false ">-->
+                    <!--<p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>-->
+                <!--</div>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!PRmtbfByYear.labels.length && loaderPress == true ">-->
+                    <!--<div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">-->
+                        <!--<div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">-->
+                            <!--<div class="loader">-->
+                                <!--<div class="ball-scale-multiple">-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<p style="vertical-align: middle">Chargement...</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="divider mb-0"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-lg-12 col-xl-6" >-->
+        <!--<div class="mb-3 card">-->
+            <!--<div class="card-header-tab card-header">-->
+                <!--<div class="card-header-title">-->
+                    <!--<i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>-->
+                    <!--Ligne Pressage MDT-->
+                <!--</div>-->
+            <!--</div>-->
+             <!---->
+            <!--<div class="widget-chart p-0">-->
+                <!--<app-chart width="auto" height="auto" *ngIf="PRmdtByYear.labels.length && loaderPress == false "-->
+                           <!--[type]="'bar'"-->
+                           <!--[data]="PRmdtByYear.datasets"-->
+                           <!--[lineChartLabels]="PRmdtByYear.labels"-->
+                           <!--[lineChartColors]="colorsMDT"-->
+                <!--&gt;</app-chart>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!PRmdtByYear.labels.length && loaderPress == false ">-->
+                    <!--<p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>-->
+                <!--</div>-->
+                <!--<div class="card-body p-2 text-center"  *ngIf="!PRmdtByYear.labels.length && loaderPress == true ">-->
+                    <!--<div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">-->
+                        <!--<div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">-->
+                            <!--<div class="loader">-->
+                                <!--<div class="ball-scale-multiple">-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                    <!--<div></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<p style="vertical-align: middle">Chargement...</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="divider mb-0"></div>-->
+        <!--</div>-->
+    <!--</div>-->
     </div>
-    <div class="col-lg-12 col-xl-6" >
-        <div class="mb-3 card">
-            <div class="card-header-tab card-header">
-                <div class="card-header-title">
-                    <i class="header-icon pe-7s-graph3 icon-gradient bg-primary"> </i>
-                    Ligne Pressage MDT
-                </div>
-            </div>
-             
-            <div class="widget-chart p-0">
-                <app-chart width="auto" height="auto" *ngIf="PRmdtByYear.labels.length && loaderPress == false "
-                           [type]="'bar'"
-                           [data]="PRmdtByYear.datasets"
-                           [lineChartLabels]="PRmdtByYear.labels"
-                           [lineChartColors]="colorsMDT"
-                ></app-chart>
-                <div class="card-body p-2 text-center"  *ngIf="!PRmdtByYear.labels.length && loaderPress == false ">
-                    <p class="text-center" style="color: grey; font-size: 1.5rem;">Aucune donnée disponible!</p>
-                </div>
-                <div class="card-body p-2 text-center"  *ngIf="!PRmdtByYear.labels.length && loaderPress == true ">
-                    <div class="font-icon-wrapper mr-3 mb-3" style="border: none;display: inline-block">
-                        <div class="loader-wrapper d-flex justify-content-center align-items-center" style="vertical-align: middle;">
-                            <div class="loader">
-                                <div class="ball-scale-multiple">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="vertical-align: middle">Chargement...</p>
-                    </div>
-                </div>
-            </div>
-            <div class="divider mb-0"></div>
-        </div>
-    </div>
-
     <!--Pareto Encolleuses-->
     <div class="col-lg-12 col-xl-6" >
         <div class="mb-3 card">

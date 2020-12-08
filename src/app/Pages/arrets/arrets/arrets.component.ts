@@ -245,71 +245,72 @@ export class ArretsComponent implements OnInit {
           data => {
               this.seriess.push(data.length);
               console.log("log", this.seriess)
+              this.chartOptions = {
+                  chart: {
+                      height: 265,
+                      type: "radialBar",
+                  },
+
+                  series: [this.seriess ? this.seriess : 0],
+
+                  plotOptions: {
+                      radialBar: {
+                          hollow: {
+                              margin: 0,
+                              size: "70%",
+                              background: "#293450",
+                              dropShadow: {
+                                  enabled: true,
+                                  top: 0,
+                                  left: 0,
+                                  blur: 3,
+                                  opacity: 0.5
+                              }
+                          },
+                          track: {
+                              dropShadow: {
+                                  enabled: true,
+                                  top: 2,
+                                  left: 0,
+                                  blur: 4,
+                                  opacity: 0.15
+                              }
+                          },
+                          dataLabels: {
+                              name: {
+                                  offsetY: -10,
+                                  color: "#fff",
+                                  fontSize: "13px"
+                              },
+                              value: {
+                                  color: "#fff",
+                                  fontSize: "30px",
+                                  show: true,
+                                  formatter: function (val) {
+                                      return val;
+                                  }
+                              }
+                          }
+                      }
+                  },
+                  fill: {
+                      type: "gradient",
+                      gradient: {
+                          shade: "dark",
+                          type: "horizontal",
+                          gradientToColors: ["#ABE5A1"],
+                          stops: [0, 100]
+                      }
+                  },
+                  stroke: {
+                      lineCap: "round"
+                  },
+                  labels: ["Arrêts Du Mois"]
+              };
           }
       );
 
-      this.chartOptions = {
-          chart: {
-              height: 265,
-              type: "radialBar",
-          },
 
-          series: [this.seriess ? this.seriess : 0],
-
-          plotOptions: {
-              radialBar: {
-                  hollow: {
-                      margin: 0,
-                      size: "70%",
-                      background: "#293450",
-                      dropShadow: {
-                          enabled: true,
-                          top: 0,
-                          left: 0,
-                          blur: 3,
-                          opacity: 0.5
-                      }
-                  },
-                  track: {
-                      dropShadow: {
-                          enabled: true,
-                          top: 2,
-                          left: 0,
-                          blur: 4,
-                          opacity: 0.15
-                      }
-                  },
-                  dataLabels: {
-                      name: {
-                          offsetY: -10,
-                          color: "#fff",
-                          fontSize: "13px"
-                      },
-                      value: {
-                          color: "#fff",
-                          fontSize: "30px",
-                          show: true,
-                          formatter: function (val) {
-                              return val;
-                          }
-                      }
-                  }
-              }
-          },
-          fill: {
-              type: "gradient",
-              gradient: {
-                  shade: "dark",
-                  type: "horizontal",
-                  gradientToColors: ["#ABE5A1"],
-                  stops: [0, 100]
-              }
-          },
-          stroke: {
-              lineCap: "round"
-          },
-          labels: ["Arrêts Du Mois"]
-      };
   }
 
   createForm() {

@@ -878,6 +878,7 @@ export class SingleMachineComponent implements OnInit {
     exportsMTBF(){
         const dat = new Date();
         const pdf = new jsPDF("l", "mm", 'A4');
+        pdf.rect(7, 7, pdf.internal.pageSize.width - 15, pdf.internal.pageSize.height - 15, 'S');
         this.val = true
         if(this.val == true){
             setTimeout(()=>{
@@ -909,6 +910,7 @@ export class SingleMachineComponent implements OnInit {
     exportsMDT(){
         const dats = new Date();
         const pdfs = new jsPDF("l", "mm", 'A4');
+        pdfs.rect(7, 7, pdfs.internal.pageSize.width - 15, pdfs.internal.pageSize.height - 15, 'S');
         this.vals = true
         if(this.vals == true){
             setTimeout(()=>{
