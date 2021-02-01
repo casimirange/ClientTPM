@@ -9,7 +9,7 @@
                     <i class="header-icon pe-7s-graph2 icon-gradient bg-happy-green"> </i>
                     Rapport
                 </div>
-                <div class="btn-actions-pane-right" *ngIf="authority === 'admin' || authority === 'super_admin'">
+                <div class="btn-actions-pane-right" *ngIf="authority === 'admin' || authority === 'super_admin' || authority === 'user_alpi'">
                     <button class="btn btn-outline-primary btn-sm" *ngIf="mtbfByYear.labels.length && loader == false " (click)="div == true ? exportsMDT() : exportsMTBF();">
                         <i class="fa fa-file-pdf"></i> Export PDF
                     </button>

@@ -11,9 +11,6 @@ import {DatePipe, Location} from "@angular/common";
 import {TokenStorageService} from "../../../auth/token-storage.service";
 import html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
-// import html2PDF from 'jspdf-html2canvas';
-
-// declare let html2canvas: any;
 @Component({
   selector: 'app-single-machine',
   templateUrl: './single-machine.component.html',
@@ -893,8 +890,8 @@ export class SingleMachineComponent implements OnInit {
                 pdf.setFontSize(16);
                 pdf.text(95,25, 'Annual Mean Time Between Failure '+this.selectedMachine.nom.toUpperCase());
                 html2canvas(document.getElementById("xyz"), {scale: 1}).then(canvas => {
-                    var img = canvas.toDataURL();
-                    pdf.addImage(img, 'png', 15, 35, 270, 155);
+                    var imgs = canvas.toDataURL();
+                    pdf.addImage(imgs, 'png', 15, 35, 270, 155);
                     pdf.setFontStyle('italic')
                     pdf.setFontSize(8);
                     pdf.text(15,200, window.location.toString());

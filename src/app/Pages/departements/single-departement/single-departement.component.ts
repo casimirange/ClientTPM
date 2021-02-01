@@ -2124,6 +2124,7 @@ export class SingleDepartementComponent implements OnInit {
 
                 var mt = z / a;
                 mtbf.data.push(Math.trunc(mt));
+                this.mtbfByYear.mtbfs.push(Math.trunc(mt));
 
               // mtbf.data.push(((mach.HT)-((Number.parseInt(mach.AT)/60)+(mach.TDT/60)))/(mach.nbre+1));
               panne.data.push(mach.nbre);
@@ -5628,6 +5629,7 @@ export class SingleDepartementComponent implements OnInit {
   exportsMTBF(){
     const dat = new Date();
     const pdf = new jsPDF("l", "mm", 'A4');
+    pdf.rect(7, 7, pdf.internal.pageSize.width - 15, pdf.internal.pageSize.height - 15, 'S');
     this.val = true
     if(this.val == true){
       setTimeout(()=>{
@@ -5642,15 +5644,15 @@ export class SingleDepartementComponent implements OnInit {
         pdf.setFontSize(16);
         pdf.text(90,25, 'Annual Mean Time Between Failure '+this.selectedDep.nom.toUpperCase());
         html2canvas(document.getElementById("xyz"), {scale: 1}).then(canvas => {
-          var img = canvas.toDataURL();
-          pdf.addImage(img, 'png', 15, 35, 270, 155);
+          var imgs = canvas.toDataURL();
+          pdf.addImage(imgs, 'png', 15, 35, 270, 155);
           pdf.setFontStyle('italic')
           pdf.setFontSize(8);
           pdf.text(15,200, window.location.toString());
           pdf.save("MTBF-"+this.selectedDep.nom+" "+this.datePipe.transform(dat, 'dd/MM/yyyy hh:mm')+".pdf")
         })
         this.val = false
-      }, 5)
+      }, 1000)
 
     }
 
@@ -5681,7 +5683,7 @@ export class SingleDepartementComponent implements OnInit {
           pdfs.save("MDT-"+this.selectedDep.nom+" "+this.datePipe.transform(dats, 'dd/MM/yyyy hh:mm')+".pdf")
         })
         this.vals = false
-      }, 50)
+      }, 1000)
 
     }
   }
