@@ -35,7 +35,7 @@
     "angular2-chartjs": "^0.5.1",
     "apexcharts": "^3.13.2",
     "bootstrap": "^4.4.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "error-ex": "git+https://github.com/Qix-/node-error-ex.git",
     "flatpickr": "^4.6.6",
     "font-awesome": "^4.7.0",
