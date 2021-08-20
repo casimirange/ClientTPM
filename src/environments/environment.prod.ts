@@ -1,4 +1,4 @@
-const url = 'https://acon-stats-server.herokuapp.com';
+const url = 'https://tpm-server.herokuapp.com';
 export const environment = {
   production: true,
   api_url: 'https://acon-stats-server.herokuapp.com',
